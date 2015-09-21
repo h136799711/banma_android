@@ -24,24 +24,30 @@
             android:textColor="@color/white"
              android:textSize="15sp"
             />
-
-
     </RelativeLayout>
-
+    <com.itboye.banma.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
     <EditText
-        android:layout_marginTop="25dp"
-        android:id="@+id/et_name"
-        android:layout_width="fill_parent"
+        android:id="@+id/et_phone_number"
+        android:layout_width="match_parent"
         android:layout_height="28dp"
-        android:background="@color/white"
         android:layout_gravity="center_horizontal"
-        android:hint="    手机号"
-        android:textColor="@color/lightgray"
+        android:layout_marginTop="25dp"
+        android:background="@color/white"
+        android:hint="手机号"
+        android:textColor="@color/black"
         android:textSize="13sp" />
+
 	<View  android:layout_width="fill_parent"
 	    android:layout_height="1dp"
-	    android:layout_marginLeft="15dp"
-	    android:layout_marginRight="15dp"
 	    android:background="@color/lightgray"/>
 
 	<RelativeLayout
@@ -49,40 +55,41 @@
 	    android:layout_height="wrap_content" >
 
 	    <EditText
+	        android:id="@+id/et_check"
 	        android:layout_width="fill_parent"
 	        android:layout_height="28dp"
 	        android:background="@color/white"
 	        android:gravity="center_vertical"
-	        android:hint="    验证码"
-	        android:textColor="@color/lightgray"
+	        android:hint="验证码"
+	        android:textColor="@color/black"
 	        android:textSize="13sp" />
 
 	    <Button
-	        android:layout_width="wrap_content"
+	        android:id="@+id/btn_getcheckcode"
+	        android:layout_width="120dp"
 	        android:layout_height="28dp"
 	        android:layout_alignBottom="@+id/editText1"
 	        android:layout_alignParentRight="true"
 	        android:background="@color/greendenglu"
 	        android:text="获取验证码"
-	        android:textSize="14sp" 
-	        android:textColor="@color/white"/>
+	        android:textColor="@color/white"
+	        android:textSize="14sp" />
+
 	</RelativeLayout>
     
-    <Button
+<Button
         android:id="@+id/btn_next_step"
         android:layout_width="fill_parent"
         android:layout_height="28dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:layout_centerInParent="true"
         android:layout_marginTop="25dp"
         android:background="@color/lightgreen"
         android:text="下一步"
         android:textSize="14sp"
         android:textColor="@color/white" />
-
-
-
-    <RelativeLayout 
+  <RelativeLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18sp"
@@ -95,14 +102,20 @@
      	 android:text="注册代表同意"
         android:textSize="12sp" />
         <TextView
+            android:id="@+id/tv_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
             android:layout_marginRight="0dp"
             android:layout_toRightOf="@+id/tv_1"
             android:text="《用户服务协议》"
             android:textSize="12sp"
-            android:textColor="@color/blue"
-            android:autoLink="web"
+            android:textColor="@color/blue"   
             />
     </RelativeLayout>
+</LinearLayout>
+  </com.itboye.banma.view.BounceScrollView> 
+        <WebView 
+            android:id="@+id/wv_show_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
 </LinearLayout>

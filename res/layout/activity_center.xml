@@ -91,7 +91,16 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
-    <LinearLayout style="@style/PersonalMainLayoutStyle" >
+        
+    
+<com.itboye.banma.view.BounceScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:focusable="true"
+
+        android:focusableInTouchMode="true">
+   <LinearLayout style="@style/PersonalMainLayoutStyle" >
 
         <RelativeLayout
             style="@style/PersonalTopStyle"
@@ -148,7 +157,7 @@
 
         <View style="@style/PersonalLine" />
 
-        <RelativeLayout
+<RelativeLayout
             style="@style/PersonalBottomStyle"
             android:layout_height="30dp" >
 
@@ -198,4 +207,5 @@
                 android:text="更多设置" />
         </RelativeLayout>
     </LinearLayout> 
+   </com.itboye.banma.view.BounceScrollView>
 </LinearLayout>
