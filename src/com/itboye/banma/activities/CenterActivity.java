@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CenterActivity extends Activity {
-	ImageButton itnBackCenter;//·µ»Ø°´Å¥
-	ImageView ivPersonheadFail;//Ä¬ÈÏÃ»ÓÐµÇÂ½Ê±µÄÍ·Ïñ
-	TextView tvCheckList;//²é¿´È«²¿¶©µ¥
+	ImageButton itnBackCenter;//ï¿½ï¿½ï¿½Ø°ï¿½Å¥
+	ImageView ivPersonheadFail;//Ä¬ï¿½ï¿½Ã»ï¿½Ðµï¿½Â½Ê±ï¿½ï¿½Í·ï¿½ï¿½
+	TextView tvCheckList;//ï¿½é¿´È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +28,6 @@ public class CenterActivity extends Activity {
 				// TODO Auto-generated method stub
 				startActivity(new Intent(CenterActivity.this,LoginActivity.class));
 				
-				//Ìí¼Ó¸Ä±äÍ·ÏñÂß¼­
 			}
 	});
     }

@@ -1,7 +1,8 @@
 package com.itboye.banma.welcome;
 
 import com.itboye.banma.R;
-import com.itboye.banma.utils.SharedConfigs;
+import com.itboye.banma.service.TokenIntentService;
+import com.itboye.banma.utils.SharedConfig;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,15 +22,16 @@ public class AppStartActivity extends Activity {
 	private Animation animation;
 	private SharedPreferences shared;
 	private static int TIME = 500; 
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		view = View.inflate(this, R.layout.activity_main, null);
 		setContentView(view);
 		context = this; 
-		shared = new SharedConfigs(context).GetConfig(); 
+		shared = new SharedConfig(context).GetConfig(); 
 		into();
+this.startService(new Intent(this,TokenIntentService.class));
 	}
 
 	@Override

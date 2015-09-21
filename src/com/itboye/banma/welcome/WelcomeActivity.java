@@ -3,7 +3,7 @@ package com.itboye.banma.welcome;
 import java.util.ArrayList;
 
 import com.itboye.banma.R;
-import com.itboye.banma.utils.SharedConfigs;
+import com.itboye.banma.utils.SharedConfig;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -39,6 +39,7 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener,
 		images = new int[] { R.drawable.welcome_01, R.drawable.welcome_02,
 				R.drawable.welcome_03 };
 		initView();
+
 	}
 
 	private void initView() {
@@ -66,7 +67,7 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener,
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.start_Button) {
-			SharedPreferences shared = new SharedConfigs(this).GetConfig();
+			SharedPreferences shared = new SharedConfig(this).GetConfig();
 			Editor editor = shared.edit();
 			editor.putBoolean("First", false);
 			editor.commit();
