@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_layout"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top" />
+
+    <LinearLayout
+        android:id="@+id/show_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="111"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/address_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/line"
+            android:dividerHeight="1px" >
+        </ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/boot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/add_address"
+            android:layout_width="match_parent"
+            android:layout_height="35dip"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:background="@drawable/bg_home_but"
+            android:text="增加地址"
+            android:textSize="18sp" 
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>

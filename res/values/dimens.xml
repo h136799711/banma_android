@@ -18,5 +18,12 @@
     <!-- 首页Gallery高度 -->
     <dimen name="index_gallery_height">120dp</dimen>
     <!-- 首页Gallery高度 -->
+    
+    <dimen name="text_size_18">18dp</dimen>
+    <dimen name="text_size_16">16dp</dimen>
+    <dimen name="text_size_15">15dp</dimen>
+    <dimen name="text_size_14">14dp</dimen>
+    <dimen name="text_size_12">12dp</dimen>
+    <dimen name="text_size_10">10dp</dimen>
 
 </resources>
