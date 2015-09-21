@@ -64,22 +64,21 @@ public class TokenIntentService extends IntentService
 				        public void onResponse(JSONObject response) {
 				        	String token;
 							try {
-					        	JSONObject data=(JSONObject) response.get("data");
-								token = data.getString("access_token");
+					        //	JSONObject data=(JSONObject) response.get("data");
+								token = response.getString("access_token");
+								 android.util.Log.v("得到token", "response -> " +token);
 					            AppContext.setAccess_token(token);
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}
-				            android.util.Log.v("得到token", "response -> " + response.toString());
+							}				           
 				        }
 				    }, new Response.ErrorListener() {
 				        @Override
 				        public void onErrorResponse(VolleyError error) {
 				        	android.util.Log.v("得到token失败", "response -> " +error.toString());
-				    }});
+				    }});				
 			requestQueue.add(jsonRequest);
-			requestQueue.start();
 			}
 			else {
 				stopSelf();//若应用已经退出，则不进行请求
