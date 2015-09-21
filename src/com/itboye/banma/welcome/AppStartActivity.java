@@ -31,7 +31,7 @@ public class AppStartActivity extends Activity {
 		context = this; 
 		shared = new SharedConfig(context).GetConfig(); 
 		into();
-	//	this.startService(new Intent(this,TokenIntentService.class));
+this.startService(new Intent(this,TokenIntentService.class));
 	}
 
 	@Override

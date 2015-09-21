@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.Volley;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 
@@ -53,6 +54,27 @@ public class TokenIntentService extends IntentService
 			Boolean isRunning=getAppRunState();
 			if (isRunning) {
 				endTime=System.currentTimeMillis()+1000*20;//重新定时五十分钟			
+				
+				
+//				Map<String,String> map=new HashMap<String,String>();
+//				map.put("token", "AbCdEfGh123456");
+//				JSONObject params=new JSONObject(map);
+//				
+//				RequestQueue queue = Volley.newRequestQueue(this);
+//				String url = "http://m.weather.com.cn/data/101201401.html";
+//				JsonObjectRequest objRequest = new JsonObjectRequest(url, params,
+//						new Response.Listener<JSONObject>() {
+//							@Override
+//							public void onResponse(JSONObject obj) {
+//								System.out.println("----------:" + obj);
+//							}
+//						}, new Response.ErrorListener() {
+//							@Override
+//							public void onErrorResponse(VolleyError error) {
+//								error.getMessage();
+//							}
+//
+//						});
 				Map<String, String> map = new HashMap<String, String>();  
 				map.put("client_secret", "aedd16f80c192661016eebe3ac35a6e7");
 				map.put("grant_type", "client_credentials");  
@@ -63,14 +85,15 @@ public class TokenIntentService extends IntentService
 				        @Override
 				        public void onResponse(JSONObject response) {
 				        	String token;
-							try {
+							//try {
 					        //	JSONObject data=(JSONObject) response.get("data");
-								token = response.getString("access_token");
-								 android.util.Log.v("得到token", "response -> " +token);
-					            AppContext.setAccess_token(token);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}				           
+						//		token = response.getString("access_token");
+								 android.util.Log.v("得到token", "response -> " +response.toString());
+					       //     AppContext.setAccess_token(token);
+//							} catch (JSONException e) {
+//								e.printStackTrace();
+//								 android.util.Log.v("得到token", e.toString());
+//							}				           
 				        }
 				    }, new Response.ErrorListener() {
 				        @Override
@@ -82,7 +105,7 @@ public class TokenIntentService extends IntentService
 			else {
 				stopSelf();//若应用已经退出，则不进行请求
 				System.out.println("service结束");
-			}
+		}
 		}
 	}
 	
