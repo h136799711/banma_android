@@ -22,23 +22,23 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.itboye.banma.R;
-import com.itboye.banma.api.UIDataListener;
-import com.itboye.banma.api.VolleyInterface;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.utils.SharedConfig;
-public class LoginActivity extends Activity implements UIDataListener {
+public class LoginActivity extends Activity implements StrUIDataListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
 	private AppContext appContext;
-	private VolleyInterface networkHelper;
+	private StrVolleyInterface networkHelper;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		initId(this);
 		appContext = (AppContext) getApplication();
-		networkHelper = new VolleyInterface(this);
-		networkHelper.setUiDataListener(this);
+		networkHelper = new StrVolleyInterface(this);
+		networkHelper.setStrUIDataListener(this);
 		
 		
 		tvRegist.setOnClickListener(new RegistListener());
@@ -79,7 +79,7 @@ public class LoginActivity extends Activity implements UIDataListener {
 		
 	}
 	@Override
-	public void onDataChanged(JSONObject data) {
+	public void onDataChanged(String data) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -14,11 +14,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.itboye.banma.R;
 import com.itboye.banma.R.id;
 import com.itboye.banma.api.ApiClient;
-import com.itboye.banma.api.UIDataListener;
-import com.itboye.banma.api.VolleyInterface;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.welcome.HomeActivity;
@@ -40,7 +41,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RegistActivity extends Activity implements UIDataListener {
+public class RegistActivity extends Activity implements StrUIDataListener {
 private 	Button btnNextStep;//下一步按钮
 private Button btnGetCheckCode;//获取验证码
 private  EditText edPhoneNumber;//手机号
@@ -48,7 +49,7 @@ private EditText edCheckCode;//验证码编辑框
 private TextView tvUrl;//用户服务条款连接
 private WebView wvShowView;//用于显示webview
 private AppContext appContext;
-private VolleyInterface networkHelper;
+private StrVolleyInterface networkHelper;
 
 
 	 protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,8 @@ private VolleyInterface networkHelper;
 	        setContentView(R.layout.activity_regist);
 	        
 	    	appContext = (AppContext) getApplication();
-			networkHelper = new VolleyInterface(this);
-			networkHelper.setUiDataListener(this);
+			networkHelper = new StrVolleyInterface(this);
+			networkHelper.setStrUIDataListener(this);
 			
 	       initId(this);
 	       
@@ -122,12 +123,19 @@ private OnClickListener urlOnClick =new OnClickListener() {
 	}
 
 	@Override
-	public void onDataChanged(JSONObject data) {
+	public void onDataChanged(String data) {
 		// TODO Auto-generated method stub
+		JSONObject jsonObject = null;
+		try {
+			jsonObject = new JSONObject(data);
+		} catch (JSONException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		String checkCode = null;
 		int code = -1;
 		try {
-			int dat = data.getInt("code");
+			int dat = jsonObject.getInt("code");
 		//	System.out.println(dat+"");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
@@ -135,7 +143,7 @@ private OnClickListener urlOnClick =new OnClickListener() {
 		if (code == 0) {
 			try {
 			
-				checkCode= data.getString("data");
+				checkCode= jsonObject.getString("data");
 				edCheckCode.setText(checkCode);
 			} catch (JSONException e) {
 				e.printStackTrace();
