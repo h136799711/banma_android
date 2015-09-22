@@ -1,41 +1,11 @@
 package com.itboye.banma.activities;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.itboye.banma.R;
-import com.itboye.banma.R.id;
-import com.itboye.banma.api.ApiClient;
-import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.app.Constant;
-import com.itboye.banma.welcome.HomeActivity;
-
-import android.R.integer;
-import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -43,6 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+import com.itboye.banma.R;
+import com.itboye.banma.api.ApiClient;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.app.AppContext;
 
 public class RegistActivity extends Activity implements StrUIDataListener {
 private 	Button btnNextStep;//下一步按钮

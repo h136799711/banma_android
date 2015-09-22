@@ -33,25 +33,22 @@ public class ApiClient {
 	
 	public static void getCheckCode(Context context,String mobile,String type,StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
-		System.out.println(access_token);
 		String url = Constant.URL+"/Message/send?access_token="+access_token+"";
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
-        params.put("mobile","17764590001");
+		
+        params.put("mobile",mobile);
         params.put("type",type);
         VolleyRequest.StrRequestPost(context, url, "getToken",params, networkHelper);
 	}
 	//发送密码，用户完成用手机号的注册
 	public static void finishRegisit(Context context,String password,StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
-		//AppContext appContext;
-		//String url = Constant.URL+"/Message/send?access_token="+appContext.getAccess_token();
-
 		String url = Constant.URL+"/User/register?access_token="+access_token+"";
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		
-        params.put("username","17764590000");
+        params.put("username","17764590011");
         params.put("password",password);
         params.put("from", "0");
         params.put("type", "4");

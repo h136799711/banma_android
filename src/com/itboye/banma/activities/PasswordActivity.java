@@ -47,6 +47,8 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			String password=etPassword.getText().toString();
 			if (name.equals(password)) {
 				System.out.println("密码一致");
+				Toast.makeText(PasswordActivity.this, "注册成功" , Toast.LENGTH_LONG)
+				.show();
 				ApiClient.finishRegisit(PasswordActivity.this, password, networkHelper);
 			}	
 			else {
