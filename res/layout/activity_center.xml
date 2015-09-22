@@ -5,31 +5,12 @@
     android:background="@color/lightgray"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <include
+        android:visibility="visible"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/titlebar"
-        android:gravity="center_vertical" >
-
-        <ImageButton
-            android:id="@+id/btn_backcenter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/right_imbt"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentLeft="true"
-            android:background="@null"
-            android:src="@drawable/back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="个人中心"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15sp" />
-        <!-- actionbar 右边按钮 -->
-    </RelativeLayout>
+        layout="@layout/top"  >
+        </include>
     <!-- 登陆成功时 -->
 
     <RelativeLayout

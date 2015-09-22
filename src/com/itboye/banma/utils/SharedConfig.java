@@ -20,13 +20,13 @@ import com.itboye.banma.activities.LoginActivity;
 public class SharedConfig {
 
 	Context context;
-	SharedPreferences shared;
+	static SharedPreferences shared;
 	public SharedConfig(Context context){
 		this.context=context;
 		shared=context.getSharedPreferences("config", Context.MODE_PRIVATE);
 	}
 
-	public SharedPreferences GetConfig(){
+	public static SharedPreferences GetConfig(){
 		return shared;
 	}
 	public void ClearConfig(){

@@ -71,6 +71,7 @@
 	    android:layout_height="1dp"
 	    android:background="@color/lightgray"/>
     <EditText
+        android:id="@+id/et_password"
         android:layout_width="fill_parent"
         android:layout_height="28dp"
         android:background="@color/white"

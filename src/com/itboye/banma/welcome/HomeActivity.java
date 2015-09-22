@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import com.android.volley.VolleyError;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.CenterActivity;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.api.VolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.utils.SharedConfig;
@@ -19,11 +21,11 @@ import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
 
-public class HomeActivity extends Activity   implements com.itboye.banma.api.UIDataListener{
+public class HomeActivity extends Activity   implements StrUIDataListener{
 	Button btnEnter;//进入主界面按钮，这里请求token的操作暂时放到这里
 	Button btnClear;//清除第一次进入的缓存；
 	private AppContext appContext;
-	private VolleyInterface networkHelper;
+	private StrVolleyInterface networkHelper;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,8 +33,8 @@ public class HomeActivity extends Activity   implements com.itboye.banma.api.UID
 		btnEnter=(Button)findViewById(R.id.btn_enter);
 		btnClear=(Button) findViewById(R.id.btn_clear);
 		appContext = (AppContext) getApplication();
-		networkHelper = new VolleyInterface(this);
-		networkHelper.setUiDataListener(this);
+		networkHelper = new StrVolleyInterface(this);
+		networkHelper.setStrUIDataListener(this);
 		
 		btnClear.setOnClickListener(new OnClickListener() {
 			@Override
@@ -53,7 +55,7 @@ public class HomeActivity extends Activity   implements com.itboye.banma.api.UID
 				try {
 					appContext.getToken(HomeActivity.this,
 							"client_credentials", "by559a8de1c325c1",
-							"aedd16f80c192661016eebe3ac35a6e7", networkHelper);
+							"aedd16f80c192661016eebe3ac35a6e7",networkHelper);
 				} catch (Exception e) {
 					Toast.makeText(HomeActivity.this, "访问异常" + e,
 							Toast.LENGTH_LONG).show();
@@ -71,21 +73,23 @@ public class HomeActivity extends Activity   implements com.itboye.banma.api.UID
 		Log.v("获取token",error.toString() );
 	}
 	@Override
-	public void onDataChanged(JSONObject data) {
+	public void onDataChanged(String data) {
 		// TODO Auto-generated method stub
 		String access_token = null;
+		JSONObject jsonObject = null;
 		int code = -1;
 		try {
-			code = data.getInt("code");
+			jsonObject=new JSONObject(data);
+			code = jsonObject.getInt("code");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
 		if (code == 0) {
 			try {
-			JSONObject	tempdata=data.getJSONObject("data");
+			JSONObject	tempdata=(JSONObject) jsonObject.get("data");
 				access_token = tempdata.getString("access_token");
 				Log.v("获取token",access_token+"1");
-				appContext.setAccess_token(access_token);
+				AppContext.setAccess_token(access_token);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

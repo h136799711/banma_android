@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CenterActivity extends Activity {
-	ImageButton itnBackCenter;//���ذ�ť
+	ImageView ivBackCenter;//���ذ�ť
 	ImageView ivPersonheadFail;//Ĭ��û�е�½ʱ��ͷ��
-	TextView tvCheckList;//�鿴ȫ������
+	TextView tvCheckList;//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class CenterActivity extends Activity {
     }
 	private void initId(CenterActivity centerActivity) {
 		// TODO Auto-generated method stub
-		itnBackCenter=(ImageButton)findViewById(R.id.btn_backcenter);
+		ivBackCenter=(ImageView)findViewById(R.id.btn_back);
 		ivPersonheadFail=(ImageView)findViewById(R.id.iv_personheadfail);
 		tvCheckList=(TextView)findViewById(R.id.tv_check_list);
 	}

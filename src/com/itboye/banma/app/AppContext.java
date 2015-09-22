@@ -3,7 +3,7 @@ package com.itboye.banma.app;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.itboye.banma.api.ApiClient;
-import com.itboye.banma.api.VolleyInterface;
+import com.itboye.banma.api.StrVolleyInterface;
 
 import android.app.Application;
 import android.content.Context;
@@ -54,7 +54,7 @@ public class AppContext extends Application {
 	
 	
 	public void getToken(Context mContext, String grant_type, String client_id,
-			 String client_secret,VolleyInterface networkHelper) throws Exception {
+			 String client_secret,StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 
 			try {
