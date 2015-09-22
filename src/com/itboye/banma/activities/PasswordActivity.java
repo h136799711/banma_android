@@ -37,7 +37,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 		 initId(this);
 		btnRegist.setOnClickListener(regisitOnClickListener);
     }
-    
+   
     OnClickListener regisitOnClickListener =new OnClickListener() {
 		
 		@Override

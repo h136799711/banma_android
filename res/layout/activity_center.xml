@@ -7,7 +7,7 @@
 
     <include
         android:visibility="visible"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/top"  >
         </include>
@@ -165,7 +165,7 @@
 
         <View style="@style/PersonalLine" />
 
-        <RelativeLayout
+       <RelativeLayout
             style="@style/PersonalBottomStyle"
             android:layout_height="30dp" >
 
@@ -178,16 +178,9 @@
                 style="@style/PersonalTextStyle"
                 android:layout_toRightOf="@id/personal_icon_04"
                 android:text="更多设置" />
-
-            <ImageView
-                style="@style/PersonalRightIconStyle"
-                android:src="@drawable/android_list_idex" />
-
-            <TextView
-                style="@style/PersonalRightTextStyle"
-                android:layout_toLeftOf="@+id/android_list_index"
-                android:text="更多设置" />
         </RelativeLayout>
+            <View style="@style/PersonalLine" />
+       
     </LinearLayout> 
    </com.itboye.banma.view.BounceScrollView>
 </LinearLayout>
