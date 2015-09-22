@@ -89,10 +89,10 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 				String userId=jsonObject.getString("data");
 				System.out.println(userId);
 				//获得本程序的shareperference，并放入用户唯一的id,用于以后访问
-			    SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
+			    /*SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
 				Editor editor=sharedPreferences.edit();
 				editor.putString("USER_ONLY_ID", userId);
-				editor.commit();
+				editor.commit();*/
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

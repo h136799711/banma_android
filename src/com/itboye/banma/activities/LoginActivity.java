@@ -4,11 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
+import com.itboye.banma.app.Constant;
+import com.itboye.banma.entity.User;
+import com.itboye.banma.util.AESEncryptor;
 import com.itboye.banma.utils.SharedConfig;
 public class LoginActivity extends Activity implements StrUIDataListener {
 	TextView tvRegist;//注册view
@@ -29,11 +36,15 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 	EditText etPassword;//用户密码/明文
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
+	private Gson gson = new Gson();
+	private ProgressDialog dialog;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		initId(this);
+		dialog = new ProgressDialog(LoginActivity.this);
 		appContext = (AppContext) getApplication();
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
@@ -45,10 +56,26 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 
 	private void initId(LoginActivity loginActivity) {
 		// TODO Auto-generated method stub
+		
+		SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+        String account = sp.getString(Constant.MY_ACCOUNT, "");
+        String pass = sp.getString(Constant.MY_PASSWORD, "");  
+        //对密码进行AES解密  
+        try{  
+            pass = AESEncryptor.decrypt("41227677", pass);  
+        }catch(Exception ex){  
+            Toast.makeText(this, "获取密码时产生解密错误!", Toast.LENGTH_SHORT);  
+            pass = "";  
+        }  
+		
 		tvRegist=(TextView)findViewById(R.id.tv_regist);
 		btnLogin=(Button)findViewById(R.id.btn_login);
 		etName=(EditText)findViewById(R.id.et_name);
 		etPassword=(EditText)findViewById(R.id.et_password);
+		etName.addTextChangedListener(new TextChange());
+		etPassword.addTextChangedListener(new TextChange());
+		etName.setText(account);
+		etPassword.setText(pass);
 	}
 	
 	//各种监听
@@ -62,6 +89,9 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 			String name=etName.getText().toString();
 			String password=etPassword.getText().toString();
 			ApiClient.Login(LoginActivity.this, name, password, networkHelper);
+			dialog.setMessage("正在登录...");
+	        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	        dialog.show();
 		}
 	}
 
@@ -80,6 +110,8 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
+		dialog.dismiss();
+		appContext.setLogin(false);
 		Toast.makeText(LoginActivity.this, "登陆发生异常", Toast.LENGTH_LONG).show();
 	}
 	@Override
@@ -87,24 +119,82 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		// TODO Auto-generated method stub
 		JSONObject jsonObject=null;
 		int code = -1;
+		String content = null;
 		try {
-			jsonObject=new JSONObject(data);
-			code=jsonObject.getInt("code");
+			jsonObject = new JSONObject(data);
+			code = jsonObject.getInt("code");
+			content = jsonObject.getString("data");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
 		if (code == 0) {
 			//String userId=jsonObject.getString("data");
-			System.out.println("code=" + data.toString());
-			Toast.makeText(LoginActivity.this, "登陆成功",Toast.LENGTH_LONG).show();
-			//获得本程序的shareperference，并放入用户唯一的id,用于以后访问		
-		//	SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
-		//	Editor editor=sharedPreferences.edit();
-		//	editor.putString("USER_ONLY_ID", userId);
+			//System.out.println("code=" + data.toString());
+			User user = gson.fromJson(content, User.class);
+			appContext.setLogin(true);
+			appContext.setLoginUid(user.getId());
+			
+			//并使用AES加密算法给密码加密。
+	        String use = etName.getText().toString().trim();   
+	        String pas = etPassword.getText().toString().trim(); 
+	        try{  
+	        	pas = AESEncryptor.encrypt("41227677", pas);  
+	        }catch(Exception ex){  
+	            Toast.makeText(this, "给密码加密时产生错误!", Toast.LENGTH_SHORT);
+	            pas = "";  
+	        }  
+	        //获取名字为“MY_PREFERENCES”的参数文件对象。  
+	        SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+	        //使用Editor接口修改SharedPreferences中的值并提交。  
+	        Editor editor = sp.edit();  
+	        editor.putString(Constant.MY_ACCOUNT, use);  
+	        editor.putString(Constant.MY_PASSWORD,pas);  
+	        editor.commit();
+	        dialog.dismiss();
+	        Toast.makeText(LoginActivity.this, "登陆成功",Toast.LENGTH_LONG).show();
+	        finish();
+	        overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 		} else {
+			dialog.dismiss();
+			appContext.setLogin(false);
 			Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" + data.toString(), Toast.LENGTH_LONG)
 			.show();
 			System.out.println("code=" + data.toString());
 		}
 	}
+	
+	// EditText监听器
+    class TextChange implements TextWatcher {
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                int arg3) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence cs, int start, int before,
+                int count) {
+
+            boolean Sign2 = etName.getText().length() > 0;
+            boolean Sign3 = etPassword.getText().length() > 0;
+
+            if (Sign2 & Sign3) {
+            	btnLogin.setTextColor(0xFFFFFFFF);
+            	btnLogin.setEnabled(true);
+            }
+            // 在layout文件中，对Button的text属性应预先设置默认值，否则刚打开程序的时候Button是无显示的
+            else {
+            	btnLogin.setTextColor(0xFF808080);
+            	btnLogin.setEnabled(false);
+            }
+        }
+
+    }
 }

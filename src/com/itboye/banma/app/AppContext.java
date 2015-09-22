@@ -20,6 +20,8 @@ import android.util.Log;
 public class AppContext extends Application {
 	final static String TAG = "AppContext.java";
 	
+	private boolean login = false; // 登录状态
+	private int loginUid = 0; // 登录用户的id
 	public static String access_token; //访问令牌 
 	public static RequestQueue queues;  //volley请求队列
 
@@ -29,6 +31,24 @@ public class AppContext extends Application {
 		queues = Volley.newRequestQueue(getApplicationContext());
 	}
 	
+	public boolean isLogin() {
+		return login;
+	}
+
+	public void setLogin(boolean login) {
+		this.login = login;
+	}
+
+	public int getLoginUid() {
+		return loginUid;
+	}
+
+	public void setLoginUid(int loginUid) {
+		this.loginUid = loginUid;
+	}
+
+
+
 	public static RequestQueue getHttpQueues() {
 		return queues;
 	}
@@ -40,6 +60,7 @@ public class AppContext extends Application {
 	public static void setAccess_token(String access_token) {
 		AppContext.access_token = access_token;
 	}
+	
 
 	/**
 	 * 检测网络是否可用

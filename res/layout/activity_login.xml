@@ -109,6 +109,7 @@
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="18dp"
                     android:background="@drawable/bg_home_but"
+                    android:enabled="false"
                     android:text="登录"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
