@@ -4,7 +4,10 @@
     android:layout_height="fill_parent"
     android:background="@drawable/listview_item_selector"
     android:orientation="horizontal"
-    android:padding="10dip" >
+    android:paddingLeft="10dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
+     >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,41 +25,43 @@
             android:paddingTop="3dip" >
 
             <TextView
-                android:id="@+id/tech_classification"
+                android:id="@+id/adr_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dip"
                 android:singleLine="true"
                 android:text="姓名"
-                android:textColor="@color/gray"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14" />
 
             <TextView
-                android:id="@+id/classification"
+                android:id="@+id/adr_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dip"
+                android:layout_weight="1"
                 android:singleLine="true"
+                android:gravity="right"
                 android:text="电话"
-                android:textColor="@color/gray"
+                android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tech_classification1"
+            android:id="@+id/adr_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dip"
             android:singleLine="true"
-            android:text="姓名"
+            android:text="地址"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_14" />
     </LinearLayout>
 
     <ImageView
-        
         android:layout_width="30dip"
-        android:layout_height="20dip"
+        android:layout_height="53dp"
+        android:gravity="center"
         android:paddingRight="15dip"
         android:src="@drawable/arrow_right" />
 

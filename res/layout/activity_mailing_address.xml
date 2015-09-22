@@ -8,7 +8,6 @@
     <include layout="@layout/top" />
 
     <LinearLayout
-        android:id="@+id/show_detail"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="111"
@@ -28,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:padding="5dip"
         android:orientation="horizontal" >
 
         <Button

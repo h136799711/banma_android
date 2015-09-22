@@ -132,6 +132,7 @@
         <View style="@style/PersonalLine" />
 
         <RelativeLayout
+            android:id="@+id/address"
             style="@style/PersonalNormalStyle"
             android:layout_height="31dp" >
 

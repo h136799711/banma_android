@@ -10,12 +10,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class CenterActivity extends Activity {
+public class CenterActivity extends Activity implements OnClickListener{
 	ImageButton itnBackCenter;//���ذ�ť
 	ImageView ivPersonheadFail;//Ĭ��û�е�½ʱ��ͷ��
 	TextView tvCheckList;//�鿴ȫ������
+	private RelativeLayout mailing_address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,23 @@ public class CenterActivity extends Activity {
 		itnBackCenter=(ImageButton)findViewById(R.id.btn_backcenter);
 		ivPersonheadFail=(ImageView)findViewById(R.id.iv_personheadfail);
 		tvCheckList=(TextView)findViewById(R.id.tv_check_list);
+		
+		mailing_address = (RelativeLayout) findViewById(R.id.address);
+		mailing_address.setOnClickListener(this);
+	}
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.address:
+			Intent intent = new Intent(this, MailingAddressActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
+			break;
+
+		default:
+			break;
+		}
 	}
     
 }
