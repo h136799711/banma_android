@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:orientation="vertical"
-    android:background="@color/main_layout">
+    android:layout_height="match_parent"
+    android:background="@color/main_layout"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,22 +11,23 @@
         android:background="@color/titlebar"
         android:orientation="horizontal" >
 
-        <TextView  android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView
             android:id="@+id/tv_quxiao"
-            android:text="取消"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/white"
-            android:layout_centerVertical="true"
-            android:textSize="15sp"
-            />
-        <TextView  android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登录"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="取消"
             android:textColor="@color/white"
-              android:textSize="15sp"
-            />
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_regist"
@@ -36,91 +37,117 @@
             android:layout_alignBottom="@+id/tv_quxiao"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:textSize="15sp"
             android:text="注册"
-            android:textColor="@color/white" 
-            />
-
+            android:textColor="@color/white"
+            android:textSize="15sp" />
     </RelativeLayout>
-    
-<com.itboye.banma.view.BounceScrollView
+
+    <com.itboye.banma.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:fillViewport="true"
         android:focusable="true"
-        android:focusableInTouchMode="true">
-  <LinearLayout
+        android:focusableInTouchMode="true" >
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
- <LinearLayout
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content" 
-     android:orientation="vertical"    >
-     <EditText
-        android:layout_marginTop="25dp"
-        android:id="@+id/et_name"
-        android:layout_width="fill_parent"
-        android:layout_height="28dp"
-        android:background="@color/white"
-        android:layout_gravity="center_horizontal"
-        android:hint="手机/邮箱/用户名"
-        android:textColor="@color/black"
-        android:textSize="13sp" />
-	<View  android:layout_width="fill_parent"
-	    android:layout_height="1dp"
-	    android:background="@color/lightgray"/>
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="28dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:hint="密码"
-        android:textColor="@color/black"
-        android:textSize="13sp" />
-    
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="fill_parent"
-        android:layout_height="28dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="18dp"
-        android:background="#50C061"
-        android:text="登录"
-        android:textSize="14sp"
-        android:textColor="@color/white" />
-     
- </LinearLayout>
+            android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
+                android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tv_forget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="18dp"
-            android:text="忘记密码"
-            android:textSize="13sp" />
-    </RelativeLayout>
-    <TextView 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="第三方登陆"
-        android:textSize="12sp"
-        android:layout_gravity="center_horizontal"/>
-    <ImageView
-        android:layout_width="52dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/weixin" />
- </LinearLayout>
-</com.itboye.banma.view.BounceScrollView>
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_margin="10dip"
+                    android:background="@drawable/bg_edittext"
+                    android:hint="@string/username"
+                    android:padding="5dip"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="#AAAAAA"
+                    android:textSize="14dip" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_margin="10dip"
+                    android:background="@drawable/bg_edittext"
+                    android:hint="@string/password"
+                    android:padding="5dip"
+                    android:password="true"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="#AAAAAA"
+                    android:textSize="14dip" />
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="fill_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_home_but"
+                    android:text="登录"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip" >
+
+                <TextView
+                    android:id="@+id/tv_forget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginTop="10dp"
+                    android:text="忘记密码"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:text="第三方登陆"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="52dp"
+                android:layout_height="41dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/weixin" />
+        </LinearLayout>
+    </com.itboye.banma.view.BounceScrollView>
+	<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/registered"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/listview_item_selector"
+            android:gravity="center"
+            android:text="@string/registered"
+            android:textColor="@color/lightskyblue"
+            android:textSize="18sp" />
+    </LinearLayout>
 </LinearLayout>

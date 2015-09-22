@@ -13,5 +13,8 @@
     <string name="detailed_address">详细地址</string>
     <string name="postcode">邮编</string>
     <string name="save">保存</string>
+    <string name="password">密码</string>
+    <string name="username">手机/邮箱/用户名</string>
+    <string name="registered">新用户注册</string>
 
 </resources>
