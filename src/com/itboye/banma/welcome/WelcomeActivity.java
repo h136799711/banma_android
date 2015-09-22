@@ -67,7 +67,8 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener,
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.start_Button) {
-			SharedPreferences shared = new SharedConfig(this).GetConfig();
+			new SharedConfig(this);
+			SharedPreferences shared = SharedConfig.GetConfig();
 			Editor editor = shared.edit();
 			editor.putBoolean("First", false);
 			editor.commit();

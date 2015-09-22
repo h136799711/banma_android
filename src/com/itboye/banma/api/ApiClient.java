@@ -38,7 +38,7 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		
-        params.put("mobile",mobile);
+        params.put("mobile","17764590001");
         params.put("type",type);
         VolleyRequest.StrRequestPost(context, url, "getToken",params, networkHelper);
 	}
@@ -49,7 +49,7 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		
-        params.put("username","17764592053");
+        params.put("username","17764590000");
         params.put("password",password);
         params.put("from", "0");
         params.put("type", "4");
@@ -63,8 +63,8 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		
-        params.put("username","17764592053");
-        params.put("password","1234567890");
+        params.put("username",name);
+        params.put("password",password);
     //    params.put("from", "0");
     //    params.put("type", "4");
         VolleyRequest.StrRequestPost(context, url, "Login",params, networkHelper);

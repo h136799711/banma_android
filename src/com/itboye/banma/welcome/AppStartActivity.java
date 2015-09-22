@@ -28,10 +28,10 @@ public class AppStartActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		view = View.inflate(this, R.layout.activity_main, null);
 		setContentView(view);
-		context = this; 
-		shared = new SharedConfig(context).GetConfig(); 
+		new SharedConfig(this);
+		shared = SharedConfig.GetConfig(); 
 		into();
-this.startService(new Intent(this,TokenIntentService.class));
+		this.startService(new Intent(this,TokenIntentService.class));
 	}
 
 	@Override

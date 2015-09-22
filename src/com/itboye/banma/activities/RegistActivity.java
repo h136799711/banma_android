@@ -99,8 +99,7 @@ private OnClickListener urlOnClick =new OnClickListener() {
 			//Uri uri = Uri.parse("http://banma.itboye.com/Public/html/copyright.html");
 		// intent = new Intent(Intent.ACTION_VIEW, uri);
 		//	startActivity(intent);
-			wvShowView.loadUrl(url);
-			getCheck();
+		//	wvShowView.loadUrl(url);
 		}
 	};
 	
@@ -111,9 +110,7 @@ private OnClickListener urlOnClick =new OnClickListener() {
 				// TODO Auto-generated method stub
 			
 			String mobile=edPhoneNumber.getText().toString();
-			Log.v("手机号", mobile);
-			getCheck();
-			//ApiClient.getCheckCode(RegistActivity.this, mobile, "1", networkHelper);
+			ApiClient.getCheckCode(RegistActivity.this, mobile, "1", networkHelper);
 		}
 	};
 
@@ -152,47 +149,5 @@ private OnClickListener urlOnClick =new OnClickListener() {
 			System.out.println("code=" + data.toString());
 		}
 	}
-	
-		private void getCheck(){
-			RequestQueue requestQueue=AppContext.getHttpQueues();
-			final String token=AppContext.getAccess_token();
-			System.out.println(token);
-			String httpurl=Constant.URL+"/Message/send?access_token="+token+"";
-			StringRequest jsonRequest = new StringRequest(Request.Method.POST,httpurl, new Response.Listener<String>() {
-				@Override
-				public void onResponse(String response) {
-					// TODO Auto-generated method stub
-					System.out.println(response.toString());
-					try {
-					JSONObject jsonObject=new JSONObject(response);
-				     //	JSONObject 	data=(JSONObject) jsonObject.get("data");
-					//	String   access_token=data.getString("access_token");
-					//	AppContext.setAccess_token(access_token);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			},new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					// TODO Auto-generated method stub
-					System.out.println(error.toString());
-				}
-			}){
-				@Override 
-				  protected Map<String, String> getParams() throws AuthFailureError {  
-					Map<String, String> map = new HashMap<String, String>();  
-				//	map.put("access_token", token);
-					map.put("mobile", "17764592053");
-					map.put("type", "1");  
-		//			map.put("client_id", "by559a8de1c325c1");
-					return map;
-				}
-			};
-		requestQueue.add(jsonRequest);
-		//}
-		}
 }
 

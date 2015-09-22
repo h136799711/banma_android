@@ -2,7 +2,6 @@ package com.itboye.banma.activities;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.android.volley.VolleyError;
 import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
@@ -10,12 +9,13 @@ import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.utils.SharedConfig;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -70,6 +70,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 		.show();
 	}
 
+	@SuppressLint("CommitPrefEdits")
 	@Override
 	public void onDataChanged(String data) {
 		// TODO Auto-generated method stub
@@ -86,18 +87,19 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 				String userId=jsonObject.getString("data");
 				System.out.println(userId);
 				//获得本程序的shareperference，并放入用户唯一的id,用于以后访问
-			SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
+			    SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
 				Editor editor=sharedPreferences.edit();
 				editor.putString("USER_ONLY_ID", userId);
+				editor.commit();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			//Toast.makeText(RegistActivity.this, "获取验证码成功：" + checkCode, Toast.LENGTH_LONG)
 			//.show();
 		} else {
-			Toast.makeText(PasswordActivity.this, "获取验证码失败：code=" + data.toString(), Toast.LENGTH_LONG)
+			Toast.makeText(PasswordActivity.this, "注册失败" ,Toast.LENGTH_LONG)
 			.show();
-			System.out.println("code=" + data.toString());
+			Log.v("注册返回结果", data.toString());
 		}
 	}
 }

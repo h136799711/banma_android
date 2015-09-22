@@ -67,6 +67,7 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			//登陆请求
+			System.out.println(SharedConfig.GetConfig().getString("USER_ONLY_ID", "-1"));
 			String name=etName.getText().toString();
 			String password=etPassword.getText().toString();
 			ApiClient.Login(LoginActivity.this, name, password, networkHelper);
