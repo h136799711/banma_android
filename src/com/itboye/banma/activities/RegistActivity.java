@@ -17,13 +17,12 @@ import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.itboye.banma.R;
 import com.itboye.banma.R.id;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.api.UIDataListener;
-import com.itboye.banma.api.VolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.welcome.HomeActivity;
@@ -59,6 +58,8 @@ private StrVolleyInterface networkHelper;
 	 protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_regist);
+	        
+	    	appContext = (AppContext) getApplication();
 			networkHelper = new StrVolleyInterface(this);
 			networkHelper.setStrUIDataListener(this);
 			
@@ -123,9 +124,10 @@ private OnClickListener urlOnClick =new OnClickListener() {
 	}
 
 	@Override
-	public void onDataChanged(String  data) {
+	public void onDataChanged(String data) {
 		// TODO Auto-generated method stub
 		JSONObject jsonObject=null;
+		String checkCode = null;
 		int code = -1;
 		try {
 			jsonObject=new JSONObject(data);

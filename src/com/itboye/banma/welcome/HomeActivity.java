@@ -8,7 +8,6 @@ import com.itboye.banma.R;
 import com.itboye.banma.activities.CenterActivity;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.api.VolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.utils.SharedConfig;
 

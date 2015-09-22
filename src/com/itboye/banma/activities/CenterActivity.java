@@ -10,12 +10,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class CenterActivity extends Activity {
-	ImageView ivBackCenter;//���ذ�ť
-	ImageView ivPersonheadFail;//Ĭ��û�е�½ʱ��ͷ��
-	TextView tvCheckList;//
+public class CenterActivity extends Activity implements OnClickListener{
+	ImageButton itnBackCenter;//
+	ImageView ivPersonheadFail;
+	TextView tvCheckList;//选择按钮
+	ImageView ivBack;//返回按钮
+	private RelativeLayout mailing_address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +36,26 @@ public class CenterActivity extends Activity {
     }
 	private void initId(CenterActivity centerActivity) {
 		// TODO Auto-generated method stub
-		ivBackCenter=(ImageView)findViewById(R.id.btn_back);
+		ivBack=(ImageView)findViewById(R.id.iv_back);
 		ivPersonheadFail=(ImageView)findViewById(R.id.iv_personheadfail);
 		tvCheckList=(TextView)findViewById(R.id.tv_check_list);
+		
+		mailing_address = (RelativeLayout) findViewById(R.id.address);
+		mailing_address.setOnClickListener(this);
+	}
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.address:
+			Intent intent = new Intent(this, MailingAddressActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
+			break;
+
+		default:
+			break;
+		}
 	}
     
 }

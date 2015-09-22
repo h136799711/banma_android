@@ -317,5 +317,7 @@
     <color name="toast_color">#ff2E76B9</color>
     <color name="login_button">#ff775025</color>
     <color name="line">#D3D3D3</color>
+    <color name="choose_eara_item_press_color">#f4f4f4</color>
+    <color name="no_color">#00000000</color>
 
 </resources>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/main_layout"
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:layout_width="327dp"
+        android:layout_width="320dp"
         android:layout_height="50dp"
         android:background="@color/titlebar"
         android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+id/btn_back"
+            android:id="@+id/iv_back"
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -23,15 +23,6 @@
             android:paddingTop="5dp"
             android:scaleType="centerInside"
             android:src="@drawable/top_bar_back" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="个人中心"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/more"
@@ -44,6 +35,17 @@
             android:scaleType="centerInside"
             android:src="@drawable/top_bar_more"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="个人中心"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18" />
+
     </RelativeLayout>
 
 </LinearLayout>

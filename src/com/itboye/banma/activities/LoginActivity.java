@@ -27,8 +27,8 @@ import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.api.UIDataListener;
-import com.itboye.banma.api.VolleyInterface;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.utils.SharedConfig;
 public class LoginActivity extends Activity implements StrUIDataListener {
@@ -106,10 +106,10 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 			//String userId=jsonObject.getString("data");
 			System.out.println("code=" + data.toString());
 			Toast.makeText(LoginActivity.this, "登陆成功",Toast.LENGTH_LONG).show();
-			//获得本程序的shareperference，并放入用户唯一的id,用于以后访问
-//			SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
-//				Editor editor=sharedPreferences.edit();
-//				editor.putString("USER_ONLY_ID", userId);
+			//获得本程序的shareperference，并放入用户唯一的id,用于以后访问		
+		//	SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
+		//	Editor editor=sharedPreferences.edit();
+		//	editor.putString("USER_ONLY_ID", userId);
 		} else {
 			Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" + data.toString(), Toast.LENGTH_LONG)
 			.show();
