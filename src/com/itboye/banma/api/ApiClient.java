@@ -67,6 +67,31 @@ public class ApiClient {
     //    params.put("from", "0");
     //    params.put("type", "4");
         VolleyRequest.StrRequestPost(context, url, "Login",params, networkHelper);
-        VolleyRequest.StrRequestPost(context, url, "getCheckCode",params, networkHelper);
+        //VolleyRequest.StrRequestPost(context, url, "getCheckCode",params, networkHelper);
+	}
+
+	public static void saveAdress(Context mContext, int loginUid, String province, String city, String area, String detailinfo,
+			String contactname, String mobile, String postal_code, StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Address/add?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+loginUid);
+		params.put("country","中国");
+		params.put("province",province);
+		params.put("city",city);
+		params.put("area",area);
+		params.put("detailinfo",detailinfo);
+		params.put("contactname",contactname);
+		params.put("mobile",mobile);
+		params.put("postal_code",postal_code);
+
+		VolleyRequest.StrRequestPost(mContext, url, "saveAdress",params, networkHelper);
+	}
+
+	public static void getAddressList(Context mContext, int loginUid,
+			StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Address/queryNoPaging?access_token="+access_token+"&uid="+loginUid;
+		VolleyRequest.StrRequestGet(mContext, url, "getAddressList", networkHelper);
 	}
 }

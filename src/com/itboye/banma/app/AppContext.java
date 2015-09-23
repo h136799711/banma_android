@@ -2,6 +2,7 @@ package com.itboye.banma.app;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.itboye.banma.activities.AddAddressActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrVolleyInterface;
 
@@ -73,7 +74,15 @@ public class AppContext extends Application {
 		return ni != null && ni.isConnectedOrConnecting();
 	}
 	
-	
+	/**
+	 * 获取token
+	 * @param mContext
+	 * @param grant_type
+	 * @param client_id
+	 * @param client_secret
+	 * @param networkHelper
+	 * @throws Exception
+	 */
 	public void getToken(Context mContext, String grant_type, String client_id,
 			 String client_secret,StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
@@ -84,6 +93,49 @@ public class AppContext extends Application {
 				Log.i(TAG, "readObject(key)");
 				throw e;
 			}
+		}
+	}
+
+	/**
+	 * 保存收货地址
+	 * @return true:网络正常  false：无网络连接
+	 * @throws Exception 
+	 */
+	public Boolean saveAdress(Context mContext, String province, String city, String area, String detailinfo,
+			String contactname, String mobile, String postal_code, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.saveAdress(mContext, loginUid, province, city, area, detailinfo, 
+						contactname, mobile, postal_code, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * 获取收货地址
+	 * @param mContext
+	 * @param networkHelper
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean getAddressList(Context mContext, StrVolleyInterface networkHelper) throws Exception{
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getAddressList(mContext, loginUid, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
 		}
 	}
 }

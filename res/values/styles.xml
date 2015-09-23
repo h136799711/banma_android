@@ -182,5 +182,11 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:background">@drawable/back_button_default_style</item>
     </style>
+    
+    <style name="loading_large" >
+		<item name="android:indeterminateDrawable">@anim/loading_big</item>
+		<item name="android:layout_width">38.5dip</item> 
+		<item name="android:layout_height">38.5dip</item>
+	</style>
 
 </resources>

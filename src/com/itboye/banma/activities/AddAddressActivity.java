@@ -2,6 +2,9 @@ package com.itboye.banma.activities;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import android.app.ProgressDialog;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.itboye.banma.R;
 import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.Area;
 import com.itboye.banma.entity.MailingAdress;
@@ -43,6 +48,8 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 	private View kong;
 	private Button save;
 	private MailingAdress address;
+	private StrVolleyInterface strnetworkHelper;
+	private ProgressDialog dialog;
 
 	private CascadingMenuPopWindow cascadingMenuPopWindow = null;
 	private ArrayList<Area> provinceList;
@@ -52,6 +59,9 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_address);
 		appContext = (AppContext) getApplication();
+		dialog = new ProgressDialog(AddAddressActivity.this);
+		strnetworkHelper = new StrVolleyInterface(AddAddressActivity.this);
+		strnetworkHelper.setStrUIDataListener(AddAddressActivity.this);
 		init();
 	}
 
@@ -123,11 +133,46 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 			showPopMenu();
 			break;
 		case R.id.add_address:
+			dialog.setMessage("正在保存...");
+	        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+	        dialog.show();
+	        
+			if(address == null){       //保存收货地址
+				
+				try {
+					saveAdress(DataStore.AREA_ONE, DataStore.AREA_TWO, DataStore.AREA_THREE, 
+							detailed_address.getText().toString(), name.getText().toString(),
+							telephone.getText().toString(), postcode.getText().toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					dialog.dismiss();
+					Toast.makeText(AddAddressActivity.this, "访问异常", Toast.LENGTH_LONG).show();
+				}
+				
+			}else{       //修改收货地址
+				
+			}
+			
 
 			break;
 		default:
 			break;
 		}
+	}
+	/**
+	 * 保存收货地址
+	 * @return 
+	 * @throws Exception 
+	 */
+	private void saveAdress(String province, String city, String area, String detailinfo,
+			String contactname, String mobile, String postal_code) throws Exception {
+		Boolean stateBoolean = appContext.saveAdress(AddAddressActivity.this, province, city, area, detailinfo, 
+				contactname, mobile, postal_code, strnetworkHelper);
+		if(stateBoolean == false){
+			dialog.dismiss();
+			Toast.makeText(AddAddressActivity.this, "请检查网络连接", Toast.LENGTH_LONG).show();
+		}
+		
 	}
 
 	private void showPopMenu() {
@@ -152,13 +197,29 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-
+		dialog.dismiss();
+		Toast.makeText(AddAddressActivity.this, "访问异常", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onDataChanged(String data) {
-		// TODO Auto-generated method stub
-
+		dialog.dismiss();
+		try {
+			JSONObject jsondata = new JSONObject(data);
+			int code = jsondata.getInt("code");
+			if(code ==0){
+				Toast.makeText(AddAddressActivity.this, "保存地址成功"+data, Toast.LENGTH_LONG).show();
+				finish();
+				overridePendingTransition(R.anim.push_right_in,
+						R.anim.push_right_out);
+			}
+			else{
+				Toast.makeText(AddAddressActivity.this, "保存地址失败"+data, Toast.LENGTH_LONG).show();
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	// 级联菜单选择回调接口
