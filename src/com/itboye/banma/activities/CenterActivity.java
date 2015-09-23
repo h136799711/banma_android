@@ -21,6 +21,7 @@ public class CenterActivity extends Activity implements OnClickListener{
 	TextView tvCheckList;//选择按钮
 	ImageView ivBack;//返回按钮
 	private RelativeLayout mailing_address;
+	private RelativeLayout order_goods;
 	private AppContext appContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,9 @@ public class CenterActivity extends Activity implements OnClickListener{
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		ivPersonheadFail=(ImageView)findViewById(R.id.iv_personheadfail);
 		tvCheckList=(TextView)findViewById(R.id.tv_check_list);
-		
+		order_goods = (RelativeLayout) findViewById(R.id.order_goods);
 		mailing_address = (RelativeLayout) findViewById(R.id.address);
+		order_goods.setOnClickListener(this);
 		mailing_address.setOnClickListener(this);
 	}
 	@Override
@@ -60,6 +62,13 @@ public class CenterActivity extends Activity implements OnClickListener{
 				Toast.makeText(CenterActivity.this, "请先登录",
 						Toast.LENGTH_LONG).show();
 			}
+			
+			break;
+		case R.id.order_goods:
+			Intent intent = new Intent(this, BabyActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
 			
 			break;
 
