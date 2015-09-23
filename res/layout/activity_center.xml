@@ -83,6 +83,7 @@
    <LinearLayout style="@style/PersonalMainLayoutStyle" >
 
         <RelativeLayout
+            android:id="@+id/order_goods"
             style="@style/PersonalTopStyle"
             android:layout_height="31dp" >
 

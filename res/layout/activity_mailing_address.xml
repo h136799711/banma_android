@@ -6,11 +6,48 @@
     android:orientation="vertical" >
 
     <include layout="@layout/top" />
-
+    
     <LinearLayout
+        android:id="@+id/wait_ll"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="111"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/retry_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/base_empty_view" />
+
+        <LinearLayout
+            android:id="@+id/loading_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ProgressBar
+                style="@style/loading_large"
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:src="@drawable/base_bg" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list_Layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:visibility="gone"
         android:orientation="vertical" >
 
         <ListView
@@ -26,8 +63,8 @@
         android:id="@+id/boot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:padding="5dip"
+        android:gravity="bottom"
         android:orientation="horizontal" >
 
         <Button

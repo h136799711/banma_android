@@ -32,7 +32,18 @@ public class VolleyRequest {
 	public static void StrRequestGet(Context mContext, String url, String tag,
 			StrVolleyInterface vif) {
 		AppContext.getHttpQueues().cancelAll(tag);
-		strRequest = new StringRequest(Method.GET, url, vif, vif);
+		strRequest = new StringRequest(Method.GET, url, vif, vif){
+
+			@Override
+			public Map<String, String> getHeaders() throws AuthFailureError {
+				HashMap<String, String> headers = new HashMap<String, String>();
+				headers.put("Accept", "application/json");
+				headers.put("Content-Type", "charset=UTF-8");
+
+				return headers;
+			}
+			
+		};
 		strRequest.setTag(tag);
 		AppContext.getHttpQueues().add(strRequest);
 		AppContext.getHttpQueues().start();
@@ -46,6 +57,13 @@ public class VolleyRequest {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				return params;
 			}
+
+			@Override
+			public Map<String, String> getHeaders() throws AuthFailureError {
+				// TODO Auto-generated method stub
+				return super.getHeaders();
+			}
+			
 		};
 		strRequest.setTag(tag);
 		AppContext.getHttpQueues().add(strRequest);
