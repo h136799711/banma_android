@@ -1,6 +1,7 @@
 package com.itboye.banma.activities;
 
 import com.itboye.banma.R;
+import com.itboye.banma.app.Constant;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +16,8 @@ import android.widget.TextView;
 
 public class CenterActivity extends Activity implements OnClickListener{
 	ImageButton itnBackCenter;//
-	ImageView ivPersonheadFail;
+	ImageView ivPersonheadFail;//未登录头头像
+	ImageView ivPersonhead;//登陆的头像
 	TextView tvCheckList;//选择按钮
 	ImageView ivBack;//返回按钮
 	private RelativeLayout mailing_address;
@@ -36,8 +38,17 @@ public class CenterActivity extends Activity implements OnClickListener{
     }
 	private void initId(CenterActivity centerActivity) {
 		// TODO Auto-generated method stub
+		ivPersonhead=(ImageView)findViewById(R.id.iv_personhead);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		ivPersonheadFail=(ImageView)findViewById(R.id.iv_personheadfail);
+		//判断是否登陆，改变布局，或者可以通过改变组件
+	/*	RelativeLayout RelLoginSuccess=(RelativeLayout) findViewById(R.id.Rel_loginsuccess);
+		RelativeLayout  RelLoginfail=(RelativeLayout)findViewById(R.id.Rel_loginfail);
+		if (!Constant.MY_ACCOUNT.isEmpty()&&!Constant.MY_PASSWORD.isEmpty()) {
+			RelLoginSuccess.setVisibility(View.VISIBLE);
+			RelLoginfail.setVisibility(View.GONE);
+			RelLoginfail.setFocusable(false);
+		}*/
 		tvCheckList=(TextView)findViewById(R.id.tv_check_list);
 		
 		mailing_address = (RelativeLayout) findViewById(R.id.address);
@@ -52,7 +63,9 @@ public class CenterActivity extends Activity implements OnClickListener{
 			overridePendingTransition(R.anim.in_from_right,
 					R.anim.out_to_left);
 			break;
-
+		case R.id.iv_personhead://点击成功头像 跳转
+			startActivity(new Intent(CenterActivity.this,LoginActivity.class));
+			break;
 		default:
 			break;
 		}

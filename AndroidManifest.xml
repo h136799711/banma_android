@@ -38,8 +38,8 @@
                android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
            <activity android:name="com.itboye.banma.welcome.WelcomeActivity"/>
            <activity android:name="com.itboye.banma.welcome.HomeActivity"/>
-           <activity android:name="com.itboye.banma.activities.PasswordActivity"></activity>
-           
+           <activity android:name="com.itboye.banma.activities.PasswordActivity"/>
+             <activity android:name="com.itboye.banma.activities.WebActivity"/>
            
            <service  android:name="com.itboye.banma.service.TokenIntentService"></service>
     </application>

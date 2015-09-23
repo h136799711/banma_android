@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +35,8 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 	Button btnLogin;//登陆按钮
 	EditText etName;//用户账号，一般为手机号
 	EditText etPassword;//用户密码/明文
+   TextView tvForget;//忘记密码
+   TextView tvQuXiao;//取消
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	private Gson gson = new Gson();
@@ -52,6 +55,8 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		
 		tvRegist.setOnClickListener(new RegistListener());
 		btnLogin.setOnClickListener(new LoginListener());
+		tvForget.setOnClickListener(forgetListener);
+		tvQuXiao.setOnClickListener(quxiaoListener );
 	}
 
 	private void initId(LoginActivity loginActivity) {
@@ -67,7 +72,8 @@ public class LoginActivity extends Activity implements StrUIDataListener {
             Toast.makeText(this, "获取密码时产生解密错误!", Toast.LENGTH_SHORT);  
             pass = "";  
         }  
-		
+		 tvQuXiao=(TextView)findViewById(R.id.tv_quxiao);
+        tvForget=(TextView)findViewById(R.id.tv_forget);
 		tvRegist=(TextView)findViewById(R.id.tv_regist);
 		btnLogin=(Button)findViewById(R.id.btn_login);
 		etName=(EditText)findViewById(R.id.et_name);
@@ -79,6 +85,29 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 	}
 	
 	//各种监听
+	
+	//取消 返回键
+	OnClickListener quxiaoListener=new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			finish();
+		}
+	};
+	
+	//忘记密码
+	OnClickListener forgetListener=new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent=new Intent(LoginActivity.this,RegistActivity.class);
+			intent.putExtra("forgetFlag", "forget");
+			startActivity(intent);
+		}
+	};
+	
 	class LoginListener implements View.OnClickListener{
 
 		@Override

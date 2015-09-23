@@ -45,7 +45,7 @@ public class ApiClient {
 	//验证验证码
 	public static void judgeCheckCode(Context context,String username,String checkcode,String type,String userId, StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
-		String url = Constant.URL+"/Message/checkCode?access_token="+access_token+"";
+		String url = Constant.URL+"/Message/checkCode?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
         params.put("username",username);
         params.put("type",type);
@@ -55,13 +55,13 @@ public class ApiClient {
 	}
 	
 	//发送密码，用户完成用手机号的注册
-	public static void finishRegisit(Context context,String password,StrVolleyInterface networkHelper){
+	public static void finishRegisit(Context context,String password,String username, StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/User/register?access_token="+access_token+"";
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		
-        params.put("username","17764590011");
+        params.put("username",username);
         params.put("password",password);
         params.put("from", "0");
         params.put("type", "4");

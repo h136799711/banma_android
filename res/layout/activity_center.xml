@@ -17,7 +17,7 @@
         android:id="@+id/Rel_loginsuccess"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:background="@color/red"
+        android:background="@color/titlebar"
         android:visibility="gone" >
 
         <LinearLayout
@@ -79,7 +79,6 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:focusable="true"
-
         android:focusableInTouchMode="true">
    <LinearLayout style="@style/PersonalMainLayoutStyle" >
 
@@ -140,7 +139,7 @@
         <View style="@style/PersonalLine" />
 
 <RelativeLayout
-            style="@style/PersonalBottomStyle"
+            style="@style/PersonalNormalStyle"
             android:layout_height="30dp" >
 
             <ImageView
@@ -151,7 +150,7 @@
             <TextView
                 style="@style/PersonalTextStyle"
                 android:layout_toRightOf="@id/personal_icon_03"
-                android:text="全部订单" />
+                android:text="个人资料" />
 
             <ImageView
                 style="@style/PersonalRightIconStyle"
@@ -165,7 +164,7 @@
 
         <View style="@style/PersonalLine" />
 
-       <RelativeLayout
+        <RelativeLayout
             style="@style/PersonalBottomStyle"
             android:layout_height="30dp" >
 
@@ -178,9 +177,17 @@
                 style="@style/PersonalTextStyle"
                 android:layout_toRightOf="@id/personal_icon_04"
                 android:text="更多设置" />
+
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+
+            <TextView
+                style="@style/PersonalRightTextStyle"
+                android:layout_toLeftOf="@+id/android_list_index"
+                android:text="查看更多设置" />
         </RelativeLayout>
-            <View style="@style/PersonalLine" />
-       
+        <View style="@style/PersonalLine" />
     </LinearLayout> 
    </com.itboye.banma.view.BounceScrollView>
 </LinearLayout>
