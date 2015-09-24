@@ -1,25 +1,25 @@
 package com.itboye.banma.activities;
 
-import com.itboye.banma.R;
-import com.itboye.banma.app.AppContext;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itboye.banma.R;
+import com.itboye.banma.app.AppContext;
+
 public class CenterActivity extends Activity implements OnClickListener{
-	ImageButton itnBackCenter;//
 	ImageView ivPersonheadFail;//未登录头头像
 	ImageView ivPersonhead;//登陆的头像
 	TextView tvCheckList;//选择按钮
 	ImageView ivBack;//返回按钮
+	TextView tvPersonnamefail;//未登录提示
 	private RelativeLayout mailing_address;
 	private RelativeLayout order_goods;
 	private AppContext appContext;
@@ -29,21 +29,18 @@ public class CenterActivity extends Activity implements OnClickListener{
         setContentView(R.layout.activity_center);
         appContext = (AppContext) getApplication();
        initId(this);
-       ivPersonheadFail.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(CenterActivity.this,LoginActivity.class));
-				
-			}
-	});
     }
 	private void initId(CenterActivity centerActivity) {
 		// TODO Auto-generated method stub
-		ivPersonhead=(ImageView)findViewById(R.id.iv_personhead);
+	//	ivPersonhead=(ImageView)findViewById(R.id.iv_personhead);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		ivPersonheadFail=(ImageView)findViewById(R.id.iv_personheadfail);
+		tvPersonnamefail=(TextView)findViewById(R.id.tv_personnamefail);
+		if (appContext.isLogin()) {
+			tvPersonnamefail.setText("已登陆");
+		}
+
+
 		//判断是否登陆，改变布局，或者可以通过改变组件
 	/*	RelativeLayout RelLoginSuccess=(RelativeLayout) findViewById(R.id.Rel_loginsuccess);
 		RelativeLayout  RelLoginfail=(RelativeLayout)findViewById(R.id.Rel_loginfail);
@@ -57,6 +54,7 @@ public class CenterActivity extends Activity implements OnClickListener{
 		mailing_address = (RelativeLayout) findViewById(R.id.address);
 		order_goods.setOnClickListener(this);
 		mailing_address.setOnClickListener(this);
+		ivPersonheadFail.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View v) {
@@ -80,8 +78,10 @@ public class CenterActivity extends Activity implements OnClickListener{
 					R.anim.out_to_left);
 			
 			break;
-		case R.id.iv_personhead://点击成功头像 跳转
-			startActivity(new Intent(CenterActivity.this,LoginActivity.class));
+		case R.id.iv_personheadfail://点击成功头像 跳转
+		//	if (!appContext.isLogin()) {
+				startActivity(new Intent(CenterActivity.this,LoginActivity.class));
+		//	}
 			break;
 		default:
 			break;

@@ -12,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -65,13 +66,15 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
         String account = sp.getString(Constant.MY_ACCOUNT, "");
         String pass = sp.getString(Constant.MY_PASSWORD, "");  
-        //对密码进行AES解密  
+        Log.v("账号",account);
+        Log.v("密码", pass);
+      /*  //对密码进行AES解密  
         try{  
             pass = AESEncryptor.decrypt("41227677", pass);  
         }catch(Exception ex){  
-            Toast.makeText(this, "获取密码时产生解密错误!", Toast.LENGTH_SHORT);  
+            Toast.makeText(this, "获取密码时产生解密错误!", Toast.LENGTH_LONG).show();
             pass = "";  
-        }  
+        }  */
 		 tvQuXiao=(TextView)findViewById(R.id.tv_quxiao);
         tvForget=(TextView)findViewById(R.id.tv_forget);
 		tvRegist=(TextView)findViewById(R.id.tv_regist);
@@ -114,9 +117,9 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			//登陆请求
-			System.out.println(SharedConfig.GetConfig().getString("USER_ONLY_ID", "-1"));
-			String name=etName.getText().toString();
-			String password=etPassword.getText().toString();
+			SharedPreferences sp = LoginActivity.this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+	        String name = sp.getString(Constant.MY_ACCOUNT, "");
+	        String password = sp.getString(Constant.MY_PASSWORD, "");  
 			ApiClient.Login(LoginActivity.this, name, password, networkHelper);
 			dialog.setMessage("正在登录...");
 	        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -162,16 +165,18 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 			User user = gson.fromJson(content, User.class);
 			appContext.setLogin(true);
 			appContext.setLoginUid(user.getId());
-			
-			//并使用AES加密算法给密码加密。
+			Log.v("用户id", user.getId()+"");
+		    String use = etName.getText().toString();   
+		    String pas = etPassword.getText().toString(); 
+		/*	//并使用AES加密算法给密码加密。
 	        String use = etName.getText().toString().trim();   
 	        String pas = etPassword.getText().toString().trim(); 
-	        try{  
+	       try{  
 	        	pas = AESEncryptor.encrypt("41227677", pas);  
 	        }catch(Exception ex){  
-	            Toast.makeText(this, "给密码加密时产生错误!", Toast.LENGTH_SHORT);
+	            Toast.makeText(this, "给密码加密时产生错误!", Toast.LENGTH_SHORT).show();
 	            pas = "";  
-	        }  
+	        }  */
 	        //获取名字为“MY_PREFERENCES”的参数文件对象。  
 	        SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 	        //使用Editor接口修改SharedPreferences中的值并提交。  

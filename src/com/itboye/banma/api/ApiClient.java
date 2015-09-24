@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.toolbox.StringRequest;
 import com.itboye.banma.app.AppContext;
@@ -103,8 +104,11 @@ public class ApiClient {
 
 	public static void getAddressList(Context mContext, int loginUid,
 			StrVolleyInterface networkHelper) {
+		Log.v("用户Id ", loginUid+"");
 		String access_token=AppContext.getAccess_token();
-		String url = Constant.URL+"/Address/queryNoPaging?access_token="+access_token+"&uid="+loginUid;
-		VolleyRequest.StrRequestGet(mContext, url, "getAddressList", networkHelper);
+		String url = Constant.URL+"/Address/queryNoPaging?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+loginUid);
+		VolleyRequest.StrRequestPost(mContext, url, "getAddressList",params, networkHelper);
 	}
 }

@@ -202,8 +202,10 @@ public class MailingAddressActivity extends Activity implements
 				addresslist = gson.fromJson(addressData,
 						new TypeToken<List<MailingAdress>>() {
 						}.getType());
-				showListView(addresslist);
-				
+				if (addresslist!=null) {
+					showListView(addresslist);
+				}
+						
 			} else {
 				Toast.makeText(MailingAddressActivity.this, "加载失败",
 						Toast.LENGTH_LONG).show();

@@ -21,8 +21,8 @@ import android.util.Log;
 public class AppContext extends Application {
 	final static String TAG = "AppContext.java";
 	
-	private boolean login = false; // 登录状态
-	private int loginUid = 0; // 登录用户的id
+	private static boolean login = false; // 登录状态
+	private static  int loginUid = 0; // 登录用户的id
 	public static String access_token; //访问令牌 
 	public static RequestQueue queues;  //volley请求队列
 

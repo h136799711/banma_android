@@ -31,6 +31,7 @@ private TextView tvUrl;//用户服务条款连接
 private ImageView tvBackRegist;//注册返回按钮
 private String checkcode=null;//验证码内容
 private String forgetFlag=null;//忘记密码intent标记
+private TextView tvRegist;//注册titlebar
 private Intent intent;
 private AppContext appContext;
 private StrVolleyInterface networkHelper;
@@ -43,12 +44,16 @@ private StrVolleyInterface networkHelper;
 			networkHelper = new StrVolleyInterface(this);
 			networkHelper.setStrUIDataListener(this);
 			intent=getIntent();
+			
+		    initId(this);
+		       
 		    forgetFlag=intent.getStringExtra("forgetFlag");
 		    if (forgetFlag==null) {
 				forgetFlag=" ";
+			}else {
+				tvRegist.setText("找回密码");
 			}
-	       initId(this);
-	       
+
 	       tvBackRegist.setOnClickListener(backOnclickListener);
 	       btnNextStep.setOnClickListener(nextClickListener);
 	       btnGetCheckCode.setOnClickListener(checkCodeOnclick);
@@ -65,6 +70,7 @@ private StrVolleyInterface networkHelper;
 		edCheckCode=(EditText)findViewById(R.id.et_check_code);
 		edCheckCode.setText("");
 		edPhoneNumber=(EditText)findViewById(R.id.et_phone_number);
+		tvRegist=(TextView)findViewById(R.id.tv_regist);
 	}
 	
 	//返回按钮

@@ -10,37 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/top"  >
-        </include>
-    <!-- 登陆成功时 -->
-
-    <RelativeLayout
-        android:id="@+id/Rel_loginsuccess"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:background="@color/titlebar"
-        android:visibility="gone" >
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <ImageView
-                android:id="@+id/iv_personhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/person_head" />
-
-            <TextView
-                android:id="@+id/tv_personname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="老王"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </RelativeLayout>
+        </include>  
     <!-- 登陆失败时 -->
 
     <RelativeLayout
