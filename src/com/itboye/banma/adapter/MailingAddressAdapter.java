@@ -2,7 +2,6 @@ package com.itboye.banma.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.itboye.banma.R;
 import com.itboye.banma.activities.AddAddressActivity;
 import com.itboye.banma.entity.MailingAdress;
@@ -33,6 +32,11 @@ public class MailingAddressAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		return list.size();
+	}
+	
+	public void onDateChang(List<MailingAdress> list){
+		this.list = list;
+		this.notifyDataSetChanged();
 	}
 
 	@Override

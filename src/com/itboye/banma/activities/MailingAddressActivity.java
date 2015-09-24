@@ -45,6 +45,7 @@ public class MailingAddressActivity extends Activity implements
 	private Intent intent;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
+	List<MailingAdress> addresslist;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class MailingAddressActivity extends Activity implements
 		appContext = (AppContext) getApplication();
 		strnetworkHelper = new StrVolleyInterface(MailingAddressActivity.this);
 		strnetworkHelper.setStrUIDataListener(MailingAddressActivity.this);
+		
 		init();
 	}
 
@@ -63,6 +65,17 @@ public class MailingAddressActivity extends Activity implements
 					R.anim.push_right_out);
 		}
 		return false;
+	}
+	
+	private void showListView(List<MailingAdress> list) {
+		if (adapter == null) {
+			address_list = (ListView) findViewById(R.id.address_list);
+			adapter = new MailingAddressAdapter(
+					MailingAddressActivity.this, addresslist);
+			address_list.setAdapter(adapter);
+		} else {
+			adapter.onDateChang(list);
+		}
 	}
 
 	private void init() {
@@ -87,7 +100,7 @@ public class MailingAddressActivity extends Activity implements
 
 		back = (ImageView) findViewById(R.id.iv_back);
 		title = (TextView) findViewById(R.id.title);
-		address_list = (ListView) findViewById(R.id.address_list);
+		
 		add_address = (Button) findViewById(R.id.add_address);
 		title.setText(R.string.manage_address);
 		back.setOnClickListener(this);
@@ -101,6 +114,26 @@ public class MailingAddressActivity extends Activity implements
 		load_data();
 
 	}
+	
+	//刷新当前界面
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+		super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000 && resultCode == 1001)
+        {
+        	int result_value = data.getIntExtra("result", 1);
+        	if(result_value == 0){
+        		wait_ll.setVisibility(View.VISIBLE);
+        		retry_img.setVisibility(View.GONE);
+        		loading_ll.setVisibility(View.VISIBLE);
+        		list_Layout.setVisibility(View.GONE);
+        		load_data();
+        	}
+        	
+        }
+		
+    }
 
 	/**
 	 * 加载数据
@@ -128,7 +161,7 @@ public class MailingAddressActivity extends Activity implements
 		switch (v.getId()) {
 		case R.id.add_address:
 			intent = new Intent(this, AddAddressActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, 1000);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.iv_back:
@@ -154,7 +187,7 @@ public class MailingAddressActivity extends Activity implements
 	@Override
 	public void onDataChanged(String data) {
 		Gson gson = new Gson();
-		List<MailingAdress> list = new ArrayList<MailingAdress>();
+		addresslist = new ArrayList<MailingAdress>();
 		JSONObject jsondata;
 		try {
 			jsondata = new JSONObject(data);
@@ -166,12 +199,11 @@ public class MailingAddressActivity extends Activity implements
 				loading_ll.setVisibility(View.GONE);
 				list_Layout.setVisibility(View.VISIBLE);
 				String addressData = jsondata.getString("data");
-				list = gson.fromJson(addressData,
+				addresslist = gson.fromJson(addressData,
 						new TypeToken<List<MailingAdress>>() {
 						}.getType());
-				adapter = new MailingAddressAdapter(
-						MailingAddressActivity.this, list);
-				address_list.setAdapter(adapter);
+				showListView(addresslist);
+				
 			} else {
 				Toast.makeText(MailingAddressActivity.this, "加载失败",
 						Toast.LENGTH_LONG).show();

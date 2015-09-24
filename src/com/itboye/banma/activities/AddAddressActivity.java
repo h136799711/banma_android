@@ -209,6 +209,12 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 			int code = jsondata.getInt("code");
 			if(code ==0){
 				Toast.makeText(AddAddressActivity.this, "保存地址成功"+data, Toast.LENGTH_LONG).show();
+				Intent intent = new Intent();
+                intent.putExtra("result", 0);
+                /*
+                 * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，这样就可以在onActivityResult方法中得到Intent对象，
+                 */
+                setResult(1001, intent);
 				finish();
 				overridePendingTransition(R.anim.push_right_in,
 						R.anim.push_right_out);
