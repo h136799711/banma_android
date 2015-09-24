@@ -56,7 +56,7 @@ public class ApiClient {
 	}
 	
 	//发送密码，用户完成用手机号的注册
-	public static void finishRegisit(Context context,String password,String username, StrVolleyInterface networkHelper){
+	public static void finishRegisit(Context context,String username,String  password, StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/User/register?access_token="+access_token+"";
 		Map<String,String> params = new HashMap<String, String>();

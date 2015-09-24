@@ -118,8 +118,9 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 			// TODO Auto-generated method stub
 			//登陆请求
 			SharedPreferences sp = LoginActivity.this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
-	        String name = sp.getString(Constant.MY_ACCOUNT, "");
-	        String password = sp.getString(Constant.MY_PASSWORD, "");  
+	        String name = LoginActivity.this.etName.getText().toString();// sp.getString(Constant.MY_ACCOUNT, "");
+	        String password = LoginActivity.this.etPassword.getText().toString();// sp.getString(Constant.MY_ACCOUNT, "");
+//	        String password = sp.getString(Constant.MY_PASSWORD, "");  
 			ApiClient.Login(LoginActivity.this, name, password, networkHelper);
 			dialog.setMessage("正在登录...");
 	        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
