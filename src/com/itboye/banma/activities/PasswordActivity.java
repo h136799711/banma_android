@@ -3,20 +3,9 @@ package com.itboye.banma.activities;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.VolleyError;
-import com.itboye.banma.R;
-import com.itboye.banma.api.ApiClient;
-import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.utils.SharedConfig;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +13,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+import com.itboye.banma.R;
+import com.itboye.banma.api.ApiClient;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 
 public class PasswordActivity extends Activity implements StrUIDataListener{
 	EditText etName;//用户名
@@ -32,7 +28,10 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 	Button btnRegist;//注册按钮
 	ImageView ivBack;//返回按钮
 	String username;//用户名，需要传递到其他activity
-	private AppContext appContext;
+	int state;//判断从上个activity传递来的验证码接口状态
+   TextView  tvPassword;//title文字
+	String checkCode;//验证码
+	Intent intent;
 	private StrVolleyInterface networkHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +61,19 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			// TODO Auto-generated method stub
 			String name=etName.getText().toString();
 			String password=etPassword.getText().toString();
-			Intent intent=getIntent();
+			checkCode=intent.getStringExtra("code");
 			username=	intent.getStringExtra("username");
-	     	System.out.println(username);
 			if (name.equals(password)) {
-				System.out.println("密码一致");	
-				ApiClient.finishRegisit(PasswordActivity.this,username, password, networkHelper);
+				switch (state) {
+				case 1:
+					ApiClient.finishRegisit(PasswordActivity.this,username, password, networkHelper);//用户注册来的
+					break;
+				case 2:
+					ApiClient.forgetPassword(PasswordActivity.this, username, password, checkCode, networkHelper);
+					break;
+				default:
+					break;
+				}
 			}	
 			else {
 				Toast.makeText(PasswordActivity.this, "两次密码输入不一致" , Toast.LENGTH_LONG)
@@ -82,6 +88,18 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		etPassword=(EditText)findViewById(R.id.et_password);
 		btnRegist=(Button)findViewById(R.id.btn_regist);
+		tvPassword=(TextView)findViewById(R.id.tv_password);
+		intent=getIntent();
+		state=intent.getIntExtra("Flags", 0);
+		switch (state) {
+		case 2:
+			tvPassword.setText("重设密码");
+			btnRegist.setText("确定");
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -107,22 +125,25 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			e1.printStackTrace();
 		}
 		if (code == 0) {
-			Toast.makeText(PasswordActivity.this, "注册成功或更改密码成功" , Toast.LENGTH_LONG)
-			.show();
+			switch (state) {
+			case 1:
+				Toast.makeText(PasswordActivity.this, "注册成功" , Toast.LENGTH_LONG).show();
+				break;
+			case 2:
+				Toast.makeText(PasswordActivity.this, "密码更新成功" , Toast.LENGTH_LONG).show();
+				break;
+			case 3:
+				break;
+			default:
+				break;
+			}
 			Intent intent=new Intent(PasswordActivity.this,LoginActivity.class);
 			intent.putExtra("username", username);
 			startActivity(intent);
 			finish();
-			System.out.println(userId);
-			//获得本程序的shareperference，并放入用户唯一的id,用于以后访问
-			/*SharedPreferences sharedPreferences=	SharedConfig.GetConfig();
-			Editor editor=sharedPreferences.edit();
-			editor.putString("USER_ONLY_ID", userId);
-			editor.commit();*/
 		} else {
-			Toast.makeText(PasswordActivity.this, "注册失败或更改密码失败:"+userId.toString() ,Toast.LENGTH_LONG)
+			Toast.makeText(PasswordActivity.this, "访问服务器错误:"+userId.toString() ,Toast.LENGTH_LONG)
 			.show();
-			Log.v("注册返回结果", userId.toString());
 		}
 	}
 }

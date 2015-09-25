@@ -2,6 +2,7 @@
 <resources>
     <color name="greendenglu">#50C061</color>
 	<color name="titlebar">#F5355E</color>
+	<color  name="backgroundgray">#EFEFF4</color>
 	<!-- actionbar 位置颜色 -->
 	<color name="main_layout">#F0EFF5</color>
 	<!-- 界面主颜色 -->

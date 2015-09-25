@@ -55,6 +55,21 @@ public class ApiClient {
         VolleyRequest.StrRequestPost(context, url, "judgeCode",params, networkHelper);
 	}
 	
+	//用户忘记密码 更新密码
+	public static void forgetPassword(Context context,String username,String password,String  code, StrVolleyInterface networkHelper){
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/User/updatePsw?access_token="+access_token+"";
+		Map<String,String> params = new HashMap<String, String>();
+		//params.put("access_token", access_token);
+		Log.v("信息", username);
+		Log.v("信息", password);
+		Log.v("信息", code);
+        params.put("username",username);
+        params.put("psw",password);
+        params.put("code", code);
+        VolleyRequest.StrRequestPost(context, url, "forgetPass",params, networkHelper);
+	}
+	
 	//发送密码，用户完成用手机号的注册
 	public static void finishRegisit(Context context,String username,String  password, StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();

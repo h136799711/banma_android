@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/ll_dialog"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <Button 
+        android:id="@+id/btn1"
+        android:layout_height="40dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:background="@color/whitesmoke"
+        android:textSize="@dimen/small_middle_text_size"
+        android:textColor="@color/blue"
+        android:text="拍照"
+        android:gravity="center"/>
+	<View android:layout_width="200dp"
+	    android:layout_height="0.2dp"
+	    android:background="@color/lightgrey"
+	    android:layout_gravity="center"/>
+     <Button 
+         android:id="@+id/btn2"
+        android:layout_height="40dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:background="@color/whitesmoke"
+        android:textSize="@dimen/small_middle_text_size"
+        android:textColor="@color/blue"
+        android:text="从手机中选择"
+        android:gravity="center"/>
+     <View  android:layout_width="40dp" 
+         android:layout_height="5dp"/>
+      <Button 
+          android:id="@+id/btn3"
+        android:layout_height="40dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:background="@color/whitesmoke"
+        android:textSize="@dimen/small_middle_text_size"
+        android:textColor="@color/blue"
+        android:text="取消"
+        android:gravity="center"/>
+
+</LinearLayout>

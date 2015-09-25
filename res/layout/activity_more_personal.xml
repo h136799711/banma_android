@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_layout" >
+    <include
+        android:id="@+id/include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/top"
+        android:visibility="visible" >
+    </include>
+ <com.itboye.banma.view.BounceScrollView
+     	android:layout_below="@+id/include"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+      <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:orientation="vertical">
+<TextView
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/small_middle_text_size"/>
+     <RelativeLayout
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="头像" />
+           
+              <ImageView
+                  android:id="@+id/my_head"
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/ic_launcher" />
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+        <View  style="@style/CenterLine"/>
+         <RelativeLayout
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="用户名" />
+             <TextView  style="@style/more_text_right"
+                android:text="你好"/>
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+   <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_mainheight"
+                android:layout_marginLeft="10dp"
+                android:text="账户设置" 
+                android:gravity="center_vertical"
+                android:textSize="@dimen/small_middle_text_size"/>
+     <RelativeLayout
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="手机" />
+             <TextView  style="@style/more_text_right"
+                android:text="你好"/>
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+        <View  style="@style/CenterLine"/>
+         <RelativeLayout
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="微信" />
+             <TextView  style="@style/more_text_right"
+                android:text="未绑定"/>
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+
+   <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_mainheight"
+                android:layout_marginLeft="10dp"
+                android:text="关于" 
+                android:gravity="center_vertical"
+                android:textSize="@dimen/small_middle_text_size"/>
+     <RelativeLayout
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="欢迎页" />
+
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+        <View  style="@style/CenterLine"/>
+
+         <RelativeLayout
+             android:layout_width="fill_parent"
+             android:layout_height="@dimen/more_item_height"
+             android:background="@color/white" >
+
+             <TextView
+                 android:id="@+id/textView1"
+                 style="@style/PersonalTextStyle"
+                 android:layout_marginLeft="@dimen/more_item_marginlefth"
+                 android:text="当前版本" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignBaseline="@+id/textView1"
+                 android:layout_alignBottom="@+id/textView1"
+                 android:layout_alignParentRight="true"
+                 android:layout_marginRight="17dp"
+                 android:gravity="center"
+                 android:text="1.0.1" />
+         </RelativeLayout>
+        
+         <View  style="@style/CenterLine"/>
+
+         <RelativeLayout
+             android:layout_width="fill_parent"
+             android:layout_height="@dimen/more_item_height"
+             android:background="@color/white" >
+
+             <TextView
+                 style="@style/PersonalTextStyle"
+                 android:layout_marginLeft="@dimen/more_item_marginlefth"
+                 android:text="使用条款与协议" />
+
+             <ImageView
+                 style="@style/PersonalRightIconStyle"
+                 android:src="@drawable/android_list_idex" />
+         </RelativeLayout>
+        
+         <View  style="@style/CenterLine"/>
+         <RelativeLayout
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="关于斑马" />
+
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+
+            
+            <View  style="@style/CenterLine"/>
+         <RelativeLayout
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="联系客服" />
+
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+
+        </LinearLayout>
+        
+   </com.itboye.banma.view.BounceScrollView>
+
+                 <Button 
+        android:layout_width="match_parent"
+       android:layout_height="@dimen/more_item_mainheight"
+       android:layout_alignParentBottom="true"
+       android:text="退出登录"
+       android:textSize="@dimen/small_middle_text_size"
+       android:background="@color/lightskyblue"
+       />
+
+</RelativeLayout>

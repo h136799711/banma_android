@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightgray"
+    android:background="@color/backgroundgray"
     android:orientation="vertical" >
 
     <include
@@ -45,17 +45,17 @@
         
     
 <com.itboye.banma.view.BounceScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:focusable="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="false"
+        android:focusable="false"
         android:focusableInTouchMode="true">
-   <LinearLayout style="@style/PersonalMainLayoutStyle" >
-
+  <LinearLayout style="@style/PersonalMainLayoutStyle">
+      
         <RelativeLayout
             android:id="@+id/order_goods"
             style="@style/PersonalTopStyle"
-            android:layout_height="31dp" >
+            android:layout_height="@dimen/center_item_height"  >
 
             <ImageView
                 android:id="@+id/personal_icon_01"
@@ -76,7 +76,6 @@
             <TextView
                 style="@style/PersonalRightTextStyle"
                 android:id="@+id/tv_check_list"
-                android:layout_toLeftOf="@+id/android_list_index"
                 android:text="查看全部订单" />
         </RelativeLayout>
 
@@ -84,8 +83,8 @@
 
         <RelativeLayout
             android:id="@+id/address"
-            style="@style/PersonalNormalStyle"
-            android:layout_height="31dp" >
+            style="@style/PersonalTopStyle"
+               android:layout_height="@dimen/center_item_height"  >
 
             <ImageView
                 android:id="@+id/personal_icon_02"
@@ -103,46 +102,20 @@
 
             <TextView
                 style="@style/PersonalRightTextStyle"
-                android:layout_toLeftOf="@+id/android_list_index"
                 android:text="管理收获地址" />
         </RelativeLayout>
 
         <View style="@style/PersonalLine" />
 
-<RelativeLayout
-            style="@style/PersonalNormalStyle"
-            android:layout_height="30dp" >
-
-            <ImageView
-                android:id="@+id/personal_icon_03"
-                style="@style/PersonalIconStyle"
-                android:src="@drawable/setting" />
-
-            <TextView
-                style="@style/PersonalTextStyle"
-                android:layout_toRightOf="@id/personal_icon_03"
-                android:text="个人资料" />
-
-            <ImageView
-                style="@style/PersonalRightIconStyle"
-                android:src="@drawable/android_list_idex" />
-
-            <TextView
-                style="@style/PersonalRightTextStyle"
-                android:layout_toLeftOf="@+id/android_list_index"
-                android:text="查看个人资料" />
-        </RelativeLayout>
-
-        <View style="@style/PersonalLine" />
-
-        <RelativeLayout
-            style="@style/PersonalBottomStyle"
-            android:layout_height="30dp" >
+       <RelativeLayout
+            android:id="@+id/rl_more"
+            style="@style/PersonalTopStyle"
+              android:layout_height="@dimen/center_item_height" >
 
             <ImageView
                 android:id="@+id/personal_icon_04"
                 style="@style/PersonalIconStyle"
-                android:src="@drawable/toalorder" />
+                android:src="@drawable/setting" />
 
             <TextView
                 style="@style/PersonalTextStyle"
@@ -155,10 +128,34 @@
 
             <TextView
                 style="@style/PersonalRightTextStyle"
-                android:layout_toLeftOf="@+id/android_list_index"
                 android:text="查看更多设置" />
+        </RelativeLayout>     
+             <View style="@style/PersonalLine" />
+
+        <RelativeLayout
+            android:id="@+id/my_money"
+            style="@style/PersonalTopStyle"
+               android:layout_height="@dimen/center_item_height"  >
+
+            <ImageView
+                android:id="@+id/personal_icon_03"
+                style="@style/PersonalIconStyle"
+                android:src="@drawable/toalorder" />
+
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_toRightOf="@id/personal_icon_03"
+                android:text="我的佣金" />
+
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+
+            <TextView
+                style="@style/PersonalRightTextStyle"
+                android:text="查看我的佣金" />
         </RelativeLayout>
-        <View style="@style/PersonalLine" />
+                
     </LinearLayout> 
    </com.itboye.banma.view.BounceScrollView>
 </LinearLayout>

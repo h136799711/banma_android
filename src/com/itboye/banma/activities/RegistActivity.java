@@ -20,7 +20,6 @@ import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
 
 public class RegistActivity extends Activity implements StrUIDataListener {
 private 	Button btnNextStep;//下一步按钮
@@ -32,15 +31,15 @@ private ImageView tvBackRegist;//注册返回按钮
 private String checkcode=null;//验证码内容
 private String forgetFlag=null;//忘记密码intent标记
 private TextView tvRegist;//注册titlebar
+public  int  Flags;//定义状态常量，用于表示几种验证码校验接口，对应是1 用户注册 2 忘记密码3 旧手机验证
+//4 新手机绑定
+String tempCode=null;//临时存储code
 private Intent intent;
-private AppContext appContext;
 private StrVolleyInterface networkHelper;
 
 	 protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_regist);
-	        
-	    	appContext = (AppContext) getApplication();
 			networkHelper = new StrVolleyInterface(this);
 			networkHelper.setStrUIDataListener(this);
 			intent=getIntent();
@@ -92,10 +91,17 @@ private StrVolleyInterface networkHelper;
 				if (checkcode==null) {
 					Toast.makeText(RegistActivity.this, "请先获取验证码", Toast.LENGTH_LONG).show();
 				}else if (forgetFlag.equals("forget")){
-					ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), checkcode, "2", " ", networkHelper);
+					Flags=2;
+					Intent nextIntent=new Intent(RegistActivity.this,PasswordActivity.class);
+					nextIntent.putExtra("username", edPhoneNumber.getText().toString());
+					nextIntent.putExtra("code",edCheckCode.getText().toString());
+					nextIntent.putExtra("Flags", Flags);
+					startActivity(nextIntent);
+					//ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), checkcode, "2", " ", networkHelper);
 				}
 				else
 				{
+					Flags=1;
 					ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), checkcode, "1", " ", networkHelper);
 				}
 		}
@@ -123,9 +129,11 @@ private OnClickListener urlOnClick =new OnClickListener() {
 				Toast.makeText(RegistActivity.this, "请输入手机号", Toast.LENGTH_LONG).show();
 			}else if  (forgetFlag.equals("forget")){
 				ApiClient.getCheckCode(RegistActivity.this, mobile, "2", networkHelper);
+				System.out.println("2");
 			}
 			else {
 				ApiClient.getCheckCode(RegistActivity.this, mobile, "1", networkHelper);
+				System.out.println("1");
 			}
 		}
 	};
@@ -155,9 +163,11 @@ private OnClickListener urlOnClick =new OnClickListener() {
 			if (checkcode.equals("验证通过!")) {
 				Intent nextIntent=new Intent(RegistActivity.this,PasswordActivity.class);
 				nextIntent.putExtra("username", edPhoneNumber.getText().toString());
+				nextIntent.putExtra("Flags", Flags);
 				startActivity(nextIntent);
 			}else {
 				edCheckCode.setText(checkcode);
+				System.out.println("2");
 			}
 		} else {
 			Toast.makeText(RegistActivity.this, "验证码失败：" +checkcode, Toast.LENGTH_LONG)
