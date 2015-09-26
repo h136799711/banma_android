@@ -33,7 +33,7 @@ public class DBhelper {
 	        while (!cursor.isLast()){ 
 	        	String code=cursor.getString(cursor.getColumnIndex("code")); 
 	        	byte bytes[]=cursor.getBlob(2); 
-		        String name=new String(bytes,"gbk");
+		        String name=new String(bytes,"UTF-8");
 		        Area area=new Area();
 		        area.setName(name);
 		        area.setCode(code);
@@ -43,7 +43,7 @@ public class DBhelper {
 	        }
 	        String code=cursor.getString(cursor.getColumnIndex("code")); 
 	        byte bytes[]=cursor.getBlob(2); 
-	        String name=new String(bytes,"gbk");
+	        String name=new String(bytes,"UTF-8");
 	        Area area=new Area();
 	        area.setName(name);
 	        area.setCode(code);
@@ -71,7 +71,7 @@ public class DBhelper {
 	        while (!cursor.isLast()){ 
 	        	String code=cursor.getString(cursor.getColumnIndex("code")); 
 		        byte bytes[]=cursor.getBlob(2); 
-		        String name=new String(bytes,"gbk");
+		        String name=new String(bytes,"UTF-8");
 		        Area area=new Area();
 		        area.setName(name);
 		        area.setCode(code);
@@ -80,7 +80,7 @@ public class DBhelper {
 	        }
 	        String code=cursor.getString(cursor.getColumnIndex("code")); 
 	        byte bytes[]=cursor.getBlob(2); 
-	        String name=new String(bytes,"gbk");
+	        String name=new String(bytes,"UTF-8");
 	        Area area=new Area();
 	        area.setName(name);
 	        area.setCode(code);
@@ -106,7 +106,7 @@ public class DBhelper {
 					String code = cursor.getString(cursor
 							.getColumnIndex("code"));
 					byte bytes[] = cursor.getBlob(2);
-					String name = new String(bytes, "gbk");
+					String name = new String(bytes, "UTF-8");
 					Area Area = new Area();
 					Area.setName(name);
 					Area.setPcode(code);
@@ -115,7 +115,7 @@ public class DBhelper {
 				}
 				String code = cursor.getString(cursor.getColumnIndex("code"));
 				byte bytes[] = cursor.getBlob(2);
-				String name = new String(bytes, "gbk");
+				String name = new String(bytes, "UTF-8");
 				Area Area = new Area();
 				Area.setName(name);
 				Area.setPcode(code);
