@@ -68,17 +68,6 @@ public class CenterActivity extends Activity implements OnClickListener{
 				overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}else{
-				final  Dialog choose=ChoosePictureDialog.getDialog(CenterActivity.this);
-				choose.show();
-				Window window=choose.getWindow();
-				Button btn3=(Button) window.findViewById(R.id.btn3);
-				btn3.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						choose.dismiss();
-					}
-				});
 				Toast.makeText(CenterActivity.this, "请先登录",
 						Toast.LENGTH_LONG).show();
 			}
