@@ -212,8 +212,7 @@
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
-        </RelativeLayout>
-               
+        </RelativeLayout>       
         </LinearLayout>
    </com.itboye.banma.view.BounceScrollView>
   <Button

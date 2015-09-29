@@ -12,7 +12,7 @@
         android:orientation="horizontal" >
 
      <ImageView
-            android:id="@+id/tv_back"
+            android:id="@+id/iv_back"
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -64,6 +64,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40dip"
         android:layout_margin="10dip"
+        android:password="true"
         android:background="@drawable/bg_edittext"
         android:hint="请输入当前登陆密码"
         android:padding="5dip"
@@ -90,6 +91,7 @@
         android:layout_height="40dip"
         android:layout_below="@+id/et_new_phone_number"
         android:layout_margin="10dip"
+        android:editable="false"
         android:background="@drawable/bg_edittext"
         android:ems="10"
         android:hint="请输入获取的六位验证码"
@@ -122,6 +124,7 @@
         android:background="@drawable/bg_home_but"
         android:text="确认修改"
         android:textColor="@color/white"
+        android:clickable="false"
         android:textSize="14sp" />
 <LinearLayout 
     android:layout_height="wrap_content"

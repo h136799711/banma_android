@@ -30,8 +30,9 @@ public class ApiClient {
         VolleyRequest.StrRequestPost(mContext, url, "getToken",params, networkHelper);
 		
 	} 
+	
 	//绑定新手机
-	 static void changePhone(Context mContext, String uid, String code,String mobile,
+	public  static void changePhone(Context mContext, String uid, String code,String mobile,
 			String password, StrVolleyInterface networkHelper) {
 		 String access_token=AppContext.getAccess_token();
 			String url = Constant.URL+"/User/changePhone?access_token="+access_token+"";
