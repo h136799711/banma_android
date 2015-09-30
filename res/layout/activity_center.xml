@@ -51,12 +51,10 @@
         android:focusable="false"
         android:focusableInTouchMode="true">
   <LinearLayout style="@style/PersonalMainLayoutStyle">
-      
         <RelativeLayout
             android:id="@+id/order_goods"
             style="@style/PersonalTopStyle"
             android:layout_height="@dimen/center_item_height"  >
-
             <ImageView
                 android:id="@+id/personal_icon_01"
                 style="@style/PersonalIconStyle"
@@ -155,7 +153,6 @@
                 style="@style/PersonalRightTextStyle"
                 android:text="查看我的佣金" />
         </RelativeLayout>
-                
     </LinearLayout> 
    </com.itboye.banma.view.BounceScrollView>
 </LinearLayout>

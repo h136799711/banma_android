@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/main_layout">
+    <include
+        android:id="@+id/include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/top"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/tv_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="25dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:text="斑马"
+        android:textSize="@dimen/small_middle_text_size" />
+
+      <Button
+        android:id="@+id/btn_xiugai"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_home_but"
+        android:text="确认修改"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+</LinearLayout>

@@ -11,6 +11,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -26,6 +27,26 @@ public class AppContext extends Application {
 	private static  int loginUid = 0; // 登录用户的id
 	public static String access_token; //访问令牌 
 	public static RequestQueue queues;  //volley请求队列
+	public static String pathHeadImage;//头像存储路径
+	public static  boolean hasHead=false;//是否已经设置头像
+	
+	
+
+	public static boolean isHasHead() {
+		return hasHead;
+	}
+
+	public static void setHasHead(boolean hasHead) {
+		AppContext.hasHead = hasHead;
+	}
+
+	public static String getPathHeadImage() {
+		return pathHeadImage;
+	}
+
+	public static void setPathHeadImage(String pathHeadImage) {
+		AppContext.pathHeadImage = pathHeadImage;
+	}
 
 	@Override
 	public void onCreate() {

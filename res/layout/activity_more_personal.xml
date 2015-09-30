@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/rl_person_main"
     android:layout_height="match_parent"
     android:background="@color/main_layout" >
     <include
@@ -21,13 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" 
             android:orientation="vertical">
-<TextView
+        <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/small_middle_text_size"/>
      <RelativeLayout
+         	android:id="@+id/rl_head"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
             android:background="@color/white" >
@@ -37,9 +39,9 @@
                 android:text="头像" />
            
               <ImageView
-                  android:id="@+id/my_head"
-                style="@style/PersonalRightIconStyle"
-                android:src="@drawable/ic_launcher" />
+                  android:id="@+id/iv_head"
+                 style="@style/PersonalRightIconStyle"
+                 android:src="@null" />
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
@@ -47,6 +49,7 @@
         <View  style="@style/CenterLine"/>
          <RelativeLayout
       		android:layout_width="fill_parent"
+      		android:id="@+id/rl_username"
             android:layout_height="@dimen/more_item_height"
             android:background="@color/white" >
             <TextView
@@ -54,7 +57,8 @@
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
                 android:text="用户名" />
              <TextView  style="@style/more_text_right"
-                android:text="你好"/>
+                 android:id="@+id/tv_username"
+                android:text=""/>
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
@@ -75,7 +79,8 @@
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
                 android:text="手机" />
              <TextView  style="@style/more_text_right"
-                android:text="你好"/>
+                 android:id="@+id/tv_phone_number"
+                android:text=""/>
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
@@ -90,12 +95,13 @@
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
                 android:text="微信" />
              <TextView  style="@style/more_text_right"
-                android:text="未绑定"/>
+                 android:id="@+id/tv_bangding"
+                android:text=""
+                android:textColor="@color/lightblue"/>
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
         </RelativeLayout>
-
    <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/more_item_mainheight"
@@ -104,6 +110,7 @@
                 android:gravity="center_vertical"
                 android:textSize="@dimen/small_middle_text_size"/>
      <RelativeLayout
+         android:id="@+id/rl_welcome"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
             android:background="@color/white" >
@@ -139,11 +146,13 @@
                  android:layout_marginRight="17dp"
                  android:gravity="center"
                  android:text="1.0.1" />
+
          </RelativeLayout>
         
          <View  style="@style/CenterLine"/>
 
          <RelativeLayout
+             android:id="@+id/rl_tiaokuan"
              android:layout_width="fill_parent"
              android:layout_height="@dimen/more_item_height"
              android:background="@color/white" >
@@ -160,6 +169,7 @@
         
          <View  style="@style/CenterLine"/>
          <RelativeLayout
+             android:id="@+id/rl_aboutbanma"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
             android:background="@color/white" >
@@ -172,36 +182,46 @@
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
+
         </RelativeLayout>
 
             
             <View  style="@style/CenterLine"/>
          <RelativeLayout
+             android:id="@+id/rl_call_server"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
             android:background="@color/white" >
 
             <TextView
+                android:id="@+id/textview2"
                 style="@style/PersonalTextStyle"
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
                 android:text="联系客服" />
-
+            
+             <EditText
+                 style="@style/more_text_right"
+                 android:id="@+id/tv_telephone"
+                 android:layout_alignBaseline="@+id/textview2"
+                 android:layout_alignBottom="@+id/textview2"
+                 android:layout_alignParentRight="true"
+                 android:gravity="center"
+                 android:background="@null"
+                 android:focusable="false"
+                 android:text="8208208" />
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
-        </RelativeLayout>
-
+        </RelativeLayout>       
         </LinearLayout>
-        
    </com.itboye.banma.view.BounceScrollView>
-
-                 <Button 
-        android:layout_width="match_parent"
-       android:layout_height="@dimen/more_item_mainheight"
-       android:layout_alignParentBottom="true"
-       android:text="退出登录"
-       android:textSize="@dimen/small_middle_text_size"
-       android:background="@color/lightskyblue"
-       />
-
+  <Button
+              		   android:id="@+id/btn_exit"
+             		   android:layout_width="match_parent"
+               		   android:layout_height="@dimen/more_item_mainheight"
+              		    android:layout_alignParentBottom="true"
+             		    android:layout_alignParentLeft="true"
+            		    android:background="@color/lightskyblue"
+            		    android:text="退出登录"
+             		    android:textSize="@dimen/small_middle_text_size" /> 
 </RelativeLayout>

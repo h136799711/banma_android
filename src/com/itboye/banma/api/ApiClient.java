@@ -31,6 +31,21 @@ public class ApiClient {
         VolleyRequest.StrRequestPost(mContext, url, "getToken",params, networkHelper);
 		
 	} 
+	
+	//绑定新手机
+	public  static void changePhone(Context mContext, String uid, String code,String mobile,
+			String password, StrVolleyInterface networkHelper) {
+		 String access_token=AppContext.getAccess_token();
+			String url = Constant.URL+"/User/changePhone?access_token="+access_token+"";
+		Map<String,String> params = new HashMap<String, String>();
+        params.put("uid",uid);
+        params.put("code",code);
+        params.put("mobile", mobile);
+        params.put("password", password);
+        VolleyRequest.StrRequestPost(mContext, url, "changPhone",params, networkHelper);
+		
+	} 
+	
 	//获取验证码
 	
 	public static void getCheckCode(Context context,String mobile,String type,StrVolleyInterface networkHelper){

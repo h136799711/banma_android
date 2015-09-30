@@ -10,7 +10,8 @@ public class Constant {
 	public static final String MY_ACCOUNT = "MY_ACCOUNT";            //用户账号
     public static final String MY_PASSWORD = "MY_PASSWORD";			//用户密码
     public static final String MY_USERID="MY_USERID";//当前登陆用户的id
-    
+    public static final String My_Head="My_Head";//我的头像
+   
     public static int arrayList_cart_id=0;
 	public static ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
     public static float Allprice_cart=0;

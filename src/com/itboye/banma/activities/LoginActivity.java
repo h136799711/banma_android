@@ -189,6 +189,7 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 	        editor.putString(Constant.MY_USERID, user.getId()+"");
 	        editor.commit();
 	        dialog.dismiss();
+	        sp.getString(Constant.MY_ACCOUNT, "");
 	        Toast.makeText(LoginActivity.this, "登陆成功",Toast.LENGTH_LONG).show();
 	        finish();
 	        overridePendingTransition(R.anim.push_right_in,

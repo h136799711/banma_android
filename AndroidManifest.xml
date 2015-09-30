@@ -7,13 +7,16 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="18" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-<uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.CALL_PHONE"/>
     <application
         android:name="com.itboye.banma.app.AppContext"
         android:allowBackup="true"
@@ -42,6 +45,8 @@
            <activity android:name="com.itboye.banma.activities.PasswordActivity"/>
              <activity android:name="com.itboye.banma.activities.WebActivity"/>
            <activity android:name="com.itboye.banma.activities.MorePersonal"></activity>
+           <activity android:name="com.itboye.banma.activities.NickName"></activity>
+           <activity android:name="com.itboye.banma.activities.NewPhoneActivity"></activity>
            
            <service  android:name="com.itboye.banma.service.TokenIntentService"></service>
     </application>
