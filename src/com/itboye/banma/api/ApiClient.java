@@ -9,6 +9,7 @@ import android.util.Log;
 import com.android.volley.toolbox.StringRequest;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
+import com.itboye.banma.entity.Area;
 
 /**
  * API客户端接口：用于访问网络数据
@@ -137,20 +138,23 @@ public class ApiClient {
         //VolleyRequest.StrRequestPost(context, url, "getCheckCode",params, networkHelper);
 	}
 
-	public static void saveAdress(Context mContext, int loginUid, String province, String city, String area, String detailinfo,
+	public static void saveAdress(Context mContext, int loginUid, Area province, Area city, Area area, String detailinfo,
 			String contactname, String mobile, String postal_code, StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Address/add?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("uid",""+loginUid);
-		params.put("country","中国");
-		params.put("province",province);
-		params.put("city",city);
-		params.put("area",area);
+		params.put("country","1017");
+		params.put("provinceid",province.getCode());
+		params.put("cityid",city.getCode());
+		params.put("areaid",area.getCode());
 		params.put("detailinfo",detailinfo);
 		params.put("contactname",contactname);
 		params.put("mobile",mobile);
 		params.put("postal_code",postal_code);
+		params.put("province",province.getName());
+		params.put("city",city.getName());
+		params.put("area",area.getName());
 
 		VolleyRequest.StrRequestPost(mContext, url, "saveAdress",params, networkHelper);
 	}
@@ -163,5 +167,46 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("uid",""+loginUid);
 		VolleyRequest.StrRequestPost(mContext, url, "getAddressList",params, networkHelper);
+	}
+
+	public static void updateAdress(Context mContext, int loginUid, Area province, Area city, Area area, String detailinfo,
+			String contactname, String mobile, String postal_code, int id, StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Address/update?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+loginUid);
+		params.put("country","1017");
+		params.put("provinceid",province.getCode());
+		params.put("cityid",city.getCode());
+		params.put("areaid",area.getCode());
+		params.put("detailinfo",detailinfo);
+		params.put("contactname",contactname);
+		params.put("mobile",mobile);
+		params.put("postal_code",postal_code);
+		params.put("province",province.getName());
+		params.put("city",city.getName());
+		params.put("area",area.getName());
+		params.put("id",""+id);
+
+		VolleyRequest.StrRequestPost(mContext, url, "updateAdress",params, networkHelper);
+	}
+
+	public static void deleteAdress(Context mContext, int loginUid, int id,
+			StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Address/delete?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("id",""+id);
+		VolleyRequest.StrRequestPost(mContext, url, "deleteAdress",params, networkHelper);
+		
+	}
+
+	public static void getProductDetail(Context mContext, int id,
+			StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Product/detail?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("pid",""+id);
+		VolleyRequest.StrRequestPost(mContext, url, "getProductDetail",params, networkHelper);
 	}
 }

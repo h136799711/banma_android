@@ -32,9 +32,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 	private OnItemClickListener listener;
 	private final int ADDORREDUCE=1;
 	private Context context;
-	/**����ѡ�����ɫ������*/
 	private String str_color="";
-	/**����ѡ������͵�����*/
 	private String str_type="";
 	
 	
@@ -76,23 +74,23 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 	
 	
 	public interface OnItemClickListener{
-		/** ���õ��ȷ�ϰ�ťʱ�����ӿ� */
+		/** 购买点击监听 */
 		public void onClickOKPop();
 	}
 
-	/**���ü���*/
+	/**绑定监听*/
 	public void setOnItemClickListener(OnItemClickListener listener){
 		this.listener=listener;
 	}
 	
 	
-	// ��popWindow��ʧʱ��Ӧ
+	// popWindow销毁方法
 	@Override
 	public void onDismiss() {
 		
 	}
 	
-	/**������ʾ��λ��*/  
+	/**初始化popupWindow*/  
 	public void showAsDropDown(View parent){
 		popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
 		popupWindow.setFocusable(false);
@@ -100,7 +98,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 		popupWindow.update();
 	}
 	
-	/**��������*/
+	/**关闭popupWindow*/
 	public void dissmiss(){
 		listener.onClickOKPop();
 		popupWindow.dismiss();
@@ -209,7 +207,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 			break;
 		}
 	}
-	/**���湺�ﳵ������*/
+	/**保存数据*/
 	private void setSaveData(){
 		SharedPreferences sp=context.getSharedPreferences("SAVE_CART", Context.MODE_PRIVATE);
 		Editor editor=sp.edit();

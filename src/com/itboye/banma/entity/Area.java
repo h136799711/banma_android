@@ -26,6 +26,13 @@ public class Area {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Area(String code, String name, String pcode) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.pcode = pcode;
+	}
 	@Override
 	public String toString() {
 		return "Area [code=" + code + ", name=" + name + ", pcode=" + pcode

@@ -9,6 +9,7 @@ import com.itboye.banma.utils.CascadingMenuViewOnSelectListener;
 import com.itboye.banma.utils.DBhelper;
 import com.itboye.banma.utils.DataStore;
 
+import android.R.integer;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -78,15 +79,14 @@ public class CascadingMenuView extends LinearLayout {
 		thirdMenuListView = (ListView) findViewById(R.id.listView3);
 		// setBackgroundDrawable(getResources().getDrawable(
 		// R.drawable.choosearea_bg_left));
-		DataStore.AREA_ONE = "北京市";
-		DataStore.AREA_TWO = "北京市";
-		DataStore.AREA_THREE = "东城区";
-
+		firstPosition = countPostion(menuItem, DataStore.AREA_PROVINCE.getCode());
 		// 初始化一级主菜单
 		firstMenuListViewAdapter = new MenuItemAdapter(context, menuItem,
 				R.drawable.choose_item_selected,
 				R.drawable.choose_eara_item_selector);
 		firstMenuListViewAdapter.setTextSize(17);
+		//firstPosition = menuItem.indexOf(DataStore.AREA_PROVINCE);
+		
 		firstMenuListViewAdapter.setSelectedPositionNoNotify(firstPosition,
 				menuItem);
 		firstMenuListView.setAdapter(firstMenuListViewAdapter);
@@ -102,7 +102,7 @@ public class CascadingMenuView extends LinearLayout {
 						if (secondItem != null) {
 							Log.i("wer", "" + secondItem.size());
 						}
-						DataStore.AREA_ONE = menuItem.get(position).getName();
+						DataStore.AREA_PROVINCE = menuItem.get(position);
 						// 通知适配器刷新
 						secondMenuListViewAdapter.notifyDataSetChanged();
 						secondMenuListViewAdapter.setSelectedPositionNoNotify(
@@ -111,7 +111,7 @@ public class CascadingMenuView extends LinearLayout {
 						thirdItem.clear();
 						thirdItem = getThirdItem(secondItem.get(0)
 								.getCode());
-						DataStore.AREA_TWO = secondItem.get(0).getName();
+						DataStore.AREA_CITY = secondItem.get(0);
 						// 通知适配器刷新
 						thirdMenuListViewAdapter.notifyDataSetChanged();
 						thirdMenuListViewAdapter.setSelectedPositionNoNotify(0,
@@ -122,6 +122,7 @@ public class CascadingMenuView extends LinearLayout {
 
 		secondItem = getSecondItem(menuItem.get(firstPosition)
 				.getCode());
+		secondPosition = countPostion(secondItem, DataStore.AREA_CITY.getCode());
 		// Log.i("wer", menuItem.get(firstPosition));
 		Log.i("wer", secondItem.get(secondPosition).toString());
 		thirdItem = getThirdItem(secondItem.get(secondPosition)
@@ -130,6 +131,7 @@ public class CascadingMenuView extends LinearLayout {
 				R.drawable.choose_item_selected,
 				R.drawable.choose_eara_item_selector);
 		secondMenuListViewAdapter.setTextSize(15);
+		
 		secondMenuListViewAdapter.setSelectedPositionNoNotify(secondPosition,
 				secondItem);
 		secondMenuListView.setAdapter(secondMenuListViewAdapter);
@@ -143,7 +145,7 @@ public class CascadingMenuView extends LinearLayout {
 						thirdItem.clear();
 						thirdItem = getThirdItem(secondItem.get(position).getCode());
 						BaseAdapter thirdItemMenuListViewAdapter;
-						DataStore.AREA_TWO = secondItem.get(position).getName();
+						DataStore.AREA_CITY = secondItem.get(position);
 						// 通知适配器刷新
 						thirdMenuListViewAdapter.notifyDataSetChanged();
 						thirdMenuListViewAdapter.setSelectedPositionNoNotify(0,
@@ -154,10 +156,14 @@ public class CascadingMenuView extends LinearLayout {
 		// 初始化三级主菜单
 		thirdItem = getThirdItem(secondItem.get(secondPosition)
 				.getCode());
+		thirdPosition = countPostion(thirdItem, DataStore.AREA_DISTRICT.getCode());
 		thirdMenuListViewAdapter = new MenuItemAdapter(context, thirdItem,
 				R.drawable.choose_item_right,
 				R.drawable.choose_plate_item_selector);
 		thirdMenuListViewAdapter.setTextSize(13);
+		
+		//thirdPosition = thirdItem.indexOf(DataStore.AREA_DISTRICT);
+		
 		thirdMenuListViewAdapter.setSelectedPositionNoNotify(thirdPosition,
 				thirdItem);
 		thirdMenuListView.setAdapter(thirdMenuListViewAdapter);
@@ -168,7 +174,7 @@ public class CascadingMenuView extends LinearLayout {
 					public void onItemClick(View view, final int position) {
 						Area menuItem = thirdItem.get(position);
 						if (mOnSelectListener != null) {
-							DataStore.AREA_THREE = menuItem.getName();
+							DataStore.AREA_DISTRICT = menuItem;
 							mOnSelectListener.getValue(menuItem);
 						}
 						Log.e(TAG, menuItem.toString());
@@ -176,6 +182,15 @@ public class CascadingMenuView extends LinearLayout {
 				});
 		// 设置默认选择
 		setDefaultSelect();
+	}
+
+	private int countPostion(ArrayList<Area> list, String code) {
+		for(int i=0; i<list.size(); i++){
+			if(list.get(i).getCode().equals(code)){
+				return i;
+			}
+		}
+		return 0;
 	}
 
 	public ArrayList<Area> getSecondItem(String pcode) {

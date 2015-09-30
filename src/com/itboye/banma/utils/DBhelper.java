@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.itboye.banma.entity.Area;
 
+import android.R.integer;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,24 @@ public class DBhelper {
 		super();
 		this.context = context;
 		dbm = new DBManager(context);
+	}
+	
+	public int getPostion(String code, String DBname){
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		int postion = -1;
+		try {    
+	        String sql = "select * from "+DBname+" where code='"+code+"'";  
+	        Cursor cursor = db.rawQuery(sql,null); 
+	        if (cursor.moveToFirst()) {
+	        	postion = cursor.getInt(cursor.getColumnIndex("id"))-1;
+			}
+		} catch (Exception e) {  
+			return -1;
+		} 
+		dbm.closeDatabase();
+		db.close();	
+		return postion;
 	}
 
 	public ArrayList<Area> getCity(String pcode) {
@@ -107,19 +126,21 @@ public class DBhelper {
 							.getColumnIndex("code"));
 					byte bytes[] = cursor.getBlob(2);
 					String name = new String(bytes, "UTF-8");
-					Area Area = new Area();
-					Area.setName(name);
-					Area.setPcode(code);
-					list.add(Area);
+					Area area = new Area();
+					area.setName(name);
+					area.setCode(code);
+					area.setPcode(pcode);
+					list.add(area);
 					cursor.moveToNext();
 				}
 				String code = cursor.getString(cursor.getColumnIndex("code"));
 				byte bytes[] = cursor.getBlob(2);
 				String name = new String(bytes, "UTF-8");
-				Area Area = new Area();
-				Area.setName(name);
-				Area.setPcode(code);
-				list.add(Area);
+				Area area = new Area();
+				area.setName(name);
+		        area.setCode(code);
+		        area.setPcode(pcode);
+				list.add(area);
 			}
 	        
 	    } catch (Exception e) { 
