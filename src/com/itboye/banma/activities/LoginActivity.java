@@ -117,12 +117,8 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			//登陆请求
-			SharedPreferences sp = LoginActivity.this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 	        String name = LoginActivity.this.etName.getText().toString();
 	        String password = LoginActivity.this.etPassword.getText().toString();
-//	         sp.getString(Constant.MY_ACCOUNT, "");
-//	         sp.getString(Constant.MY_ACCOUNT, "");
-//             String password = sp.getString(Constant.MY_PASSWORD, "");  
 			ApiClient.Login(LoginActivity.this, name, password, networkHelper);
 			dialog.setMessage("正在登录...");
 	        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -187,10 +183,11 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 	        editor.putString(Constant.MY_ACCOUNT, use);  
 	        editor.putString(Constant.MY_PASSWORD,pas);  
 	        editor.putString(Constant.MY_USERID, user.getId()+"");
+	        editor.putBoolean(Constant.IS_LOGIN, true);
 	        editor.commit();
 	        dialog.dismiss();
 	        sp.getString(Constant.MY_ACCOUNT, "");
-	        Toast.makeText(LoginActivity.this, "登陆成功",Toast.LENGTH_LONG).show();
+	        System.out.println(data.toString());
 	        finish();
 	        overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
@@ -208,7 +205,6 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 
         @Override
         public void afterTextChanged(Editable arg0) {
-
         }
 
         @Override

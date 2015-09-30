@@ -4,8 +4,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,14 +32,14 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 	private Button btnGetCode;//获取验证码按钮
 	private Button btnSub;//确认修改
 	private ImageView ivBack;//返回按钮
-	
+	SharedPreferences sp;
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_newphone);networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
 		initId();
-		
+		sp=  this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		btnGetCode.setOnClickListener(this);
 		btnSub.setOnClickListener(this);
 		ivBack.setOnClickListener(this);
@@ -72,22 +75,18 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 			}			
 			break;
 		case R.id.btn_sub:
-			SharedPreferences sp=  this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+		
 			if (mobile.length()!=11) {
 				Toast.makeText(NewPhoneActivity.this, "请输入正确地新手机号", Toast.LENGTH_SHORT).show();
 			}else if (checdcode.length()!=6) {
 				Toast.makeText(NewPhoneActivity.this, "请先获取验证码", Toast.LENGTH_SHORT).show();
 			} else {
-				ApiClient.judgeCheckCode(NewPhoneActivity.this, sp.getString(Constant.MY_ACCOUNT, "")
-						, etCheckCode.getText().toString()," 4", 		sp.getString(Constant.MY_USERID, ""),networkHelper);
-			}
-			if (btnSub.isClickable()) {
 				ApiClient.changePhone(this, sp.getString(Constant.MY_USERID, ""), etCheckCode.getText().toString(),
-						mobile, etOldPass.getText().toString(), networkHelper);
+						etNewNumber.getText().toString(), etOldPass.getText().toString(), networkHelper);
 			}
 		break;
 		case R.id.iv_back:
-			finish();
+			NewPhoneActivity.this.finish();
 			break;
 
 		default:
@@ -119,15 +118,22 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 			if (content.length()==6) {//获取的是验证码
 				etCheckCode.setText(content);
 				System.out.println("获取验证码成功");
-			}else if(content.equals("验证通过")){
-				btnSub.setClickable(true);
-				System.out.println("验证通过");
-			}else if (code==1) {//这里判断绑定成功后做的事
-				
+			}else {
+				//保存登陆绑定的手机号
+				Editor editor=sp.edit();
+				editor.putString(Constant.MY_BANGDING, etNewNumber.getText().toString());
+				editor.commit();
+				//修改显示绑定的手机号
+				Intent intent=getIntent();
+				intent.putExtra("newPhone", etNewNumber.getText().toString());
+				Log.v("新手机号", etNewNumber.getText().toString());
+				NewPhoneActivity.this.setResult(1,intent);
+				Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
+				finish();
 			}
 		}
 		else {
-			Toast.makeText(this, "请检查手机号和密码", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "请检查手机号和密码:"+content, Toast.LENGTH_SHORT).show();
 		}
 	}
 }

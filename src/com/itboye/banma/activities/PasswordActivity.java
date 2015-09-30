@@ -63,6 +63,8 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			String password=etPassword.getText().toString();
 			checkCode=intent.getStringExtra("code");
 			username=	intent.getStringExtra("username");
+			System.out.println(username);
+			System.out.println(password);
 			if (name.equals(password)) {
 				switch (state) {
 				case 1:
@@ -91,6 +93,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 		tvPassword=(TextView)findViewById(R.id.tv_password);
 		intent=getIntent();
 		state=intent.getIntExtra("Flags", 0);
+		System.out.println("state:"+state);
 		switch (state) {
 		case 2:
 			tvPassword.setText("重设密码");
@@ -121,6 +124,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			jsonObject=new JSONObject(data);
 			userId=jsonObject.getString("data");
 			code=jsonObject.getInt("code");
+			System.out.println("code:"+code);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}

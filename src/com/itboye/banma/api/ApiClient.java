@@ -66,7 +66,7 @@ public class ApiClient {
         params.put("username",username);
         params.put("type",type);
         params.put("code", checkcode);
-     //   params.put("uid", userId);
+       params.put("uid", userId);
         VolleyRequest.StrRequestPost(context, url, "judgeCode",params, networkHelper);
 	}
 	
@@ -76,9 +76,9 @@ public class ApiClient {
 		String url = Constant.URL+"/User/updatePsw?access_token="+access_token+"";
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
-		Log.v("信息", username);
-		Log.v("信息", password);
-		Log.v("信息", code);
+		Log.v("用户名", username);
+		Log.v("原密码", password);
+		Log.v("验证码", code);
         params.put("username",username);
         params.put("psw",password);
         params.put("code", code);
@@ -88,17 +88,40 @@ public class ApiClient {
 	//发送密码，用户完成用手机号的注册
 	public static void finishRegisit(Context context,String username,String  password, StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
-		String url = Constant.URL+"/User/register?access_token="+access_token+"";
+		String url = Constant.URL+"/User/register?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
-		
-        params.put("username",username);
+		System.out.println(username);
+		System.out.println(password);
+        params.put("username",username);  
         params.put("password",password);
         params.put("from", "0");
         params.put("type", "4");
         VolleyRequest.StrRequestPost(context, url, "finishRegisit",params, networkHelper);
 	}
+
 	
+	
+	//用户信息修改
+		public static void modifyPersonal(Context context,String uid,String  sex, String nickname,
+				String realname,String idnumber,String qq,String head,String birthday,String email,
+				String moble ,StrVolleyInterface networkHelper){
+			String access_token=AppContext.getAccess_token();
+			String url = Constant.URL+"/User/update?access_token="+access_token;
+			Map<String,String> params = new HashMap<String, String>();
+			//params.put("access_token", access_token);
+	        params.put("uid",uid);  
+	        params.put("sex",sex);
+	        params.put("nickname", nickname);
+	        params.put("realname", realname);
+	        params.put("idnumber",idnumber);  //身份证号
+	        params.put("qq",qq);
+	        params.put("head",head);  
+	        params.put("birthday",birthday);
+	        params.put("email", email);
+	        params.put("moble", moble);
+	        VolleyRequest.StrRequestPost(context, url, "modifyPersonal",params, networkHelper);
+		}
 	//通过账号和密码，完成用户登陆
 	public static void Login(Context context,String name,String password,StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
