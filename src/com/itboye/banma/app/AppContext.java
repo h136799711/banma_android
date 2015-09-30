@@ -5,6 +5,7 @@ import com.android.volley.toolbox.Volley;
 import com.itboye.banma.activities.AddAddressActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.entity.Area;
 
 import android.app.Application;
 import android.content.Context;
@@ -101,7 +102,7 @@ public class AppContext extends Application {
 	 * @return true:网络正常  false：无网络连接
 	 * @throws Exception 
 	 */
-	public Boolean saveAdress(Context mContext, String province, String city, String area, String detailinfo,
+	public Boolean saveAdress(Context mContext, Area province, Area city, Area area, String detailinfo,
 			String contactname, String mobile, String postal_code, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
@@ -137,5 +138,65 @@ public class AppContext extends Application {
 		}else{
 			return false;
 		}
+	}
+	
+	/**
+	 * 修改收货地址
+	 * @param id 
+	 * @return
+	 * @throws Exception 
+	 */
+
+	public Boolean updateAdress(Context mContext, Area province, Area city, Area area, String detailinfo,
+			String contactname, String mobile, String postal_code, int id, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.updateAdress(mContext, loginUid, province, city, area, detailinfo, 
+						contactname, mobile, postal_code, id, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+
+	/**
+	 * 删除地址
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean deleteAdress(Context mContext, int id, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.deleteAdress(mContext, loginUid, id, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	/**
+	 * 获取商品详情
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean getProductDetail(Context mContext, int id, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getProductDetail(mContext, id, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
 	}
 }

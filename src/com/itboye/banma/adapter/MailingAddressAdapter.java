@@ -58,10 +58,17 @@ public class MailingAddressAdapter extends BaseAdapter {
 			view = LayoutInflater.from(context).inflate(R.layout.address_item,
 					parent, false);
 		}
+		TextView adr_default = BaseViewHolder.get(view, R.id.adr_default);
 		TextView name = BaseViewHolder.get(view, R.id.adr_name);
 		TextView phone = BaseViewHolder.get(view, R.id.adr_phone);
 		TextView addressDetail = BaseViewHolder.get(view, R.id.adr_address);
 
+		if(address.getDefault_address() == 1){
+			adr_default.setVisibility(View.VISIBLE);
+		}else{
+			adr_default.setVisibility(View.GONE);
+		}
+		
 		name.setText(address.getContactname());
 		phone.setText(address.getMobile());
 		addressDetail.setText(address.getProvince()+address.getCity()+address.getArea()
@@ -73,7 +80,7 @@ public class MailingAddressAdapter extends BaseAdapter {
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("address", address);
 				intent.putExtras(bundle);
-				context.startActivity(intent);
+				((Activity) context).startActivityForResult(intent, 1000);
 				((Activity) context).overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}

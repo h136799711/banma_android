@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class MailingAddressActivity extends Activity implements
 	private Intent intent;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
-	List<MailingAdress> addresslist;
+	private List<MailingAdress> addresslist;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

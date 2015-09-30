@@ -2,11 +2,22 @@ package com.itboye.banma.activities;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.internal.Primitives;
 import com.itboye.banma.R;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.entity.ProductDetail;
 import com.itboye.banma.view.BabyPopWindow;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -32,11 +43,16 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class BabyActivity extends FragmentActivity implements OnItemClickListener, OnClickListener {
+public class BabyActivity extends FragmentActivity implements OnItemClickListener, OnClickListener, StrUIDataListener {
 
 	NfcAdapter nfcAdapter;
+	private AppContext appContext;
+	private Boolean YesOrNo; // 是否连接网络
+	private StrVolleyInterface strnetworkHelper;
+	private ProductDetail productDetail;
 
 	private HackyViewPager viewPager;
 	private ArrayList<View> allListView;
@@ -44,6 +60,8 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private ListView listView;
 	private ImageView iv_baby_collection;
 	private BabyPopWindow popWindow;
+	private TextView title;
+	private ImageView pic_image;
 	private LinearLayout all_choice_layout = null;
 	boolean isClickBuy = false;
 	private static boolean isCollection=false; 
@@ -54,23 +72,45 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_babydetail_a);
-		//�õ�������ղ���Ϣ
+		appContext = (AppContext) getApplication();
+		//是否被收藏
 		getSaveCollection();
 		initView();
+		iniData();
 		popWindow = new BabyPopWindow(this);
 		popWindow.setOnItemClickListener(this);
 	}
 
+	/**
+	 * 加载数据
+	 */
+	private void iniData() {
+		strnetworkHelper = new StrVolleyInterface(BabyActivity.this);
+		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
+		try {
+			YesOrNo = appContext.getProductDetail(BabyActivity.this, 2, strnetworkHelper);
+			if(!YesOrNo){   //如果没联网
+				Toast.makeText(BabyActivity.this, "请检查网络连接", Toast.LENGTH_SHORT)
+				.show();
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+	}
+
 	@SuppressLint("NewApi")
 	private void initView() {
-		// ��ȡĬ�ϵ�NFC������
+		//获取设备NFC
 		nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 		if (nfcAdapter == null) {
-			Toast.makeText(this, "商品详情", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "设备不支持NFC！", Toast.LENGTH_SHORT).show();
 		}
 		((ImageView) findViewById(R.id.iv_back)).setOnClickListener(this);
 		((ImageView) findViewById(R.id.put_in)).setOnClickListener(this);
 		((ImageView) findViewById(R.id.buy_now)).setOnClickListener(this);
+		title = (TextView) findViewById(R.id.title);
 		iv_baby_collection=(ImageView) findViewById(R.id.iv_baby_collection);
 		iv_baby_collection.setOnClickListener(this);
 		all_choice_layout = (LinearLayout) findViewById(R.id.all_choice_layout);
@@ -82,7 +122,6 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				//��������èŮ�·�������
 				Uri uri = Uri.parse("http://yecaoly.taobao.com"); 
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
 				startActivity(intent);
@@ -91,7 +130,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		initViewPager();
 		
 		if (isCollection) {
-			//����Ѿ��ղأ�����ʾ�ղغ��Ч��
+			//图标设置为已收藏
 			iv_baby_collection.setImageResource(R.drawable.second_2_collection);
 		}
 	}
@@ -100,18 +139,18 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.iv_back:
-			//����
+			//返回
 			finish();
 			break;
 		case R.id.iv_baby_collection:
-			//�ղ�
+			//收藏
 			if (isCollection) {
-				//��ʾ�Ƿ�ȡ���ղ�
+				//取消收藏
 				cancelCollection();
 			}else {
 				isCollection=true;
 				setSaveCollection();
-				//����Ѿ��ղأ�����ʾ�ղغ��Ч��
+				//收藏宝贝
 				iv_baby_collection.setImageResource(R.drawable.second_2_collection);
 				Toast.makeText(this, "收藏成功", Toast.LENGTH_SHORT).show();
 			}
@@ -143,9 +182,9 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 		for (int i = 0; i < resId.length; i++) {
 			View view = LayoutInflater.from(this).inflate(R.layout.pic_item, null);
-			ImageView imageView = (ImageView) view.findViewById(R.id.pic_item);
-			imageView.setImageResource(resId[i]);
-			imageView.setOnClickListener(new OnClickListener() {
+			pic_image = (ImageView) view.findViewById(R.id.pic_item);
+			pic_image.setImageResource(resId[i]);
+			pic_image.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
 					//��ս���鿴��ͼ����
@@ -206,21 +245,22 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	}
 
-	//���������ȷ�ϰ�ť����Ӧ
+	//购买按钮监听
 	@Override
 	public void onClickOKPop() {
 		setBackgroundBlack(all_choice_layout, 1);
 
 		if (isClickBuy) {
-			//���֮ǰ�ǵ��������������ô����ת�������������
+			//跳转到购买页面
 			/*Intent intent = new Intent(BabyActivity.this, BuynowActivity.class);
 			startActivity(intent);*/
 		}else {
-			Toast.makeText(this, "查看商品", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, "添加购物车", Toast.LENGTH_SHORT).show();
+			
 		}
 	}
 	
-	/** ���Ʊ����䰵 0�䰵 1���� */
+	/** 把背景变成暗色 */
 	public void setBackgroundBlack(View view, int what) {
 		switch (what) {
 		case 0:
@@ -232,20 +272,20 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		}
 	}
 
-	/**�����Ƿ�����ղ�*/
+	/**保存收藏状态*/
 	private void setSaveCollection(){
 		SharedPreferences sp=getSharedPreferences("SAVECOLLECTION", Context.MODE_PRIVATE);
 		Editor editor=sp.edit();
 		editor.putBoolean("isCollection", isCollection);
 		editor.commit();
 	}
-	/**�õ�������Ƿ�����ղر��*/
+	/**获取收藏状态*/
 	private void getSaveCollection(){
 		SharedPreferences sp=getSharedPreferences("SAVECOLLECTION", Context.MODE_PRIVATE);
 		isCollection=sp.getBoolean("isCollection", false);
 		
 	}
-	/**ȡ���ղ�*/
+	/**取消收藏*/
 	private  void cancelCollection(){
 		AlertDialog.Builder dialog=new AlertDialog.Builder(this);
 		dialog.setTitle("取消收藏");
@@ -253,7 +293,6 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
 				isCollection=false;
-				//���ȡ���ղأ�����ʾȡ���ղغ��Ч��
 				iv_baby_collection.setImageResource(R.drawable.second_2);
 				setSaveCollection();
 			}
@@ -275,6 +314,37 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void onErrorHappened(VolleyError error) {
+		Toast.makeText(BabyActivity.this, "网络异常"+error, Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onDataChanged(String data) {
+		int code = -1;
+		String detail = null;
+		Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
+		try {
+			JSONObject jsonObject = new JSONObject(data);
+			code = jsonObject.getInt("code");
+			detail = jsonObject.getString("data");
+			if(code == 0){
+				Gson gson = new Gson();
+				productDetail = gson.fromJson(detail, ProductDetail.class);
+				title.setText(productDetail.getName());
+				System.out.println("data*****="+detail);
+				System.out.println("商品详情*****="+productDetail.toString());
+			}
+			
+			
+			
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

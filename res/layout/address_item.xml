@@ -23,6 +23,17 @@
             android:orientation="horizontal"
             android:paddingBottom="3dip"
             android:paddingTop="3dip" >
+            
+            <TextView
+                android:id="@+id/adr_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dip"
+                android:singleLine="true"
+                android:text="[默认]"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_14"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/adr_name"
@@ -32,7 +43,7 @@
                 android:singleLine="true"
                 android:text="姓名"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14" />
+                android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/adr_phone"
@@ -44,7 +55,7 @@
                 android:gravity="right"
                 android:text="电话"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14" />
+                android:textSize="@dimen/text_size_16" />
         </LinearLayout>
 
         <TextView
@@ -52,7 +63,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dip"
-            android:singleLine="true"
             android:text="地址"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_14" />
