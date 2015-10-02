@@ -58,7 +58,7 @@ public class AppContext extends Application {
 		return login;
 	}
 
-	public void setLogin(boolean login) {
+	public void  setLogin(boolean login) {
 		this.login = login;
 	}
 

@@ -125,11 +125,11 @@ private OnClickListener urlOnClick =new OnClickListener() {
 		public void onClick(View v) {
 				// TODO Auto-generated method stub
 			String mobile=edPhoneNumber.getText().toString();
-			if (mobile.equals("")) {
+			if (mobile.length()!=11) {
 				Toast.makeText(RegistActivity.this, "请输入手机号", Toast.LENGTH_LONG).show();
 			}else if  (forgetFlag.equals("forget")){
 				ApiClient.getCheckCode(RegistActivity.this, mobile, "2", networkHelper);
-				System.out.println("2");
+				System.out.println("forget");
 			}
 			else {
 				ApiClient.getCheckCode(RegistActivity.this, mobile, "1", networkHelper);

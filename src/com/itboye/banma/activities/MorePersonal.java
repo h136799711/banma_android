@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +26,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,6 +48,8 @@ public class MorePersonal extends Activity implements OnClickListener{
 	private static final int PHOTO_REQUEST_CAMERA = 1;// 拍照
 	private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
 	private static final int PHOTO_REQUEST_CUT = 3;// 结果
+	private static final int FROM_NEWPHONE=4;//从newphone取得的结果
+	private static final int FROM_NICK=0;//从nick中获得的
 	static RequestQueue mSingleQueue;
 	
 	private AppContext appContext;
@@ -59,7 +63,9 @@ public class MorePersonal extends Activity implements OnClickListener{
 	private RelativeLayout rlTiaoKuan;//条款界面
 	private RelativeLayout rlAboutBanMa;//关于斑马
 	private RelativeLayout rlCallServer;//呼叫客服
+	private RelativeLayout rlPhoneNumber;//用户手机号布局
 	private TextView tvTelephone;//拨打电话
+	private Button btExit;//退出登陆按钮
 	
 	/* 头像名称 */
 	private static final String PHOTO_FILE_NAME = "image.jpg";
@@ -81,6 +87,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 		mSingleQueue=AppContext.queues;
 		appContext=(AppContext) getApplication();
 		initID();
+		initData();
 		rlHead.setOnClickListener(this);
 		ivBack.setOnClickListener(this);
 		rlUserName.setOnClickListener(this);
@@ -89,6 +96,8 @@ public class MorePersonal extends Activity implements OnClickListener{
 		rlAboutBanMa.setOnClickListener(this);
 		rlCallServer.setOnClickListener(this);
 		tvPhoneNumber.setOnClickListener(this);
+		btExit.setOnClickListener(this);
+		rlPhoneNumber.setOnClickListener(this);
 	}
 	
 	
@@ -106,16 +115,9 @@ public class MorePersonal extends Activity implements OnClickListener{
 		ivHead=(ImageView)findViewById(R.id.iv_head);
 		tvUserName=(TextView)findViewById(R.id.tv_username);
 		tvPhoneNumber=(TextView)findViewById(R.id.tv_phone_number);
-		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
-		if (appContext.isLogin()) {
-		String number=sp.getString(Constant.MY_ACCOUNT, "");
-		System.out.println(number);
-		if (number!="") {
-			//隐藏中间几位
-				String newString=number.substring(0,3)+"****"+number.substring(7, 11);
-		     	tvPhoneNumber.setText(newString);
-		    }
-		}
+		btExit=(Button)findViewById(R.id.btn_exit);
+		rlPhoneNumber=(RelativeLayout)findViewById(R.id.rl_phone_number_);
+
 //		else {
 //			rlHead.setFocusable(false);
 //			rlHead.setClickable(false);
@@ -124,6 +126,34 @@ public class MorePersonal extends Activity implements OnClickListener{
 //			rlPersonalMian.setClickable(false);
 //			tvWeiXin.setClickable(false);
 //		}
+	}
+	
+	@SuppressLint("ResourceAsColor")
+	private void initData(){
+		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
+		if (appContext.isLogin()) {
+		/*String number=sp.getString(Constant.MY_ACCOUNT, "");
+		if (number!="") {
+			//隐藏中间几位
+				String newString=number.substring(0,3)+"****"+number.substring(7, 11);
+		     	tvPhoneNumber.setText(newString);
+		    }*/
+			String number=sp.getString(Constant.MY_BANGDING, "");
+			if (sp.getString(Constant.MY_BANGDING, "")!="") {
+				String newString=number.substring(0,3)+"****"+number.substring(7, 11);
+				tvPhoneNumber.setText(newString);
+			}else  {
+				String oldNumber=sp.getString(Constant.MY_ACCOUNT, "");
+				String newString=oldNumber.substring(0,3)+"****"+oldNumber.substring(7, 11);
+				tvPhoneNumber.setText(newString);
+			}
+			if (sp.getString(Constant.WEIXIN, "")!="") {
+				//显示已绑定状态
+			}else {
+				tvWeiXin.setText("未绑定");
+				tvWeiXin.setTextColor(R.color.lightblue);
+			}
+		}
 	}
 	
 	@Override
@@ -142,7 +172,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 			break;
 		case R.id.rl_username:
 			if (appContext.isLogin()) {
-				startActivityForResult(new Intent(MorePersonal.this,NickName.class),0);
+				startActivityForResult(new Intent(MorePersonal.this,NickName.class),FROM_NICK);
 			}
 			break;
 		case R.id.rl_welcome:
@@ -165,11 +195,15 @@ public class MorePersonal extends Activity implements OnClickListener{
 		             Uri.parse("tel:" + tvTelephone.getText().toString())); 
 			startActivity(phoneIntent);
 			break;
-		case  R.id.tv_phone_number:
+		case  R.id.rl_phone_number_:
 			Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
 			newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
-			startActivityForResult(newIntent, 1);//请求码
+			startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
 		break;
+		case R.id.btn_exit:
+			sp.edit().clear().commit();//清空所有sp中的数据
+			appContext.setLogin(false);
+			break;
 			
 		default:
 			break;
@@ -223,24 +257,36 @@ public class MorePersonal extends Activity implements OnClickListener{
 				Toast.makeText(MorePersonal.this, "未找到存储卡，无法存储照片！", Toast.LENGTH_LONG).show();
 			}
 
-		} else if (requestCode == PHOTO_REQUEST_CUT) {
+		} 
+		else if(requestCode==FROM_NICK) {
+			if (data!=null) {
+				Bundle tempdata=data.getExtras();
+				String nickName=tempdata.getString("nickName");
+				tvUserName.setText(nickName);
+			}
+		}
+		else if(requestCode==FROM_NEWPHONE) {
+			if (data!=null) {
+				Bundle tempdata=data.getExtras();
+				String phone=tempdata.getString("newPhone");
+				String newString=phone.substring(0,3)+"****"+phone.substring(7, 11);
+		     	tvPhoneNumber.setText(newString);
+			}
+		}else if (requestCode == PHOTO_REQUEST_CUT) {
 			try {
-				bitmap=	 data.getParcelableExtra("data");
-				//讲bitmap保存到指定文件中
-				saveHeadImage(bitmap);
-			 //  tempFile.delete();
-			 //上传文件中的文件
-			   upLoadImage();
+				if (data!=null) {
+					bitmap=	 data.getParcelableExtra("data");
+					//讲bitmap保存到指定文件中
+					saveHeadImage(bitmap);
+				 //  tempFile.delete();
+				 //上传文件中的文件
+				   upLoadImage();
+				}
 			} catch (Exception e) {
 					e.printStackTrace();
 				}
 		}
-		else if(resultCode==0&&requestCode==0) {
-			if (data!=null) {
-				String nickName=data.getStringExtra("nickName");
-				tvUserName.setText(nickName);
-			}
-		}
+		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -336,7 +382,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 				if (code==0) {
 					SharedPreferences sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
 					Editor editor=sp.edit();
-					editor.putBoolean(Constant.My_Head, true);//如果设置成功，改变头像状态
+					editor.putBoolean(Constant.MY_HEAD, true);//如果设置成功，改变头像状态
 					AppContext.setHasHead(true);//设置静态变量 头像已经添加
 					editor.commit();
 				}

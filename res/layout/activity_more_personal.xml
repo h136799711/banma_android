@@ -11,16 +11,14 @@
         layout="@layout/top"
         android:visibility="visible" >
     </include>
- <com.itboye.banma.view.BounceScrollView
-     	android:layout_below="@+id/include"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+    <com.itboye.banma.view.BounceScrollView 
+        android:layout_below="@+id/include"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:fillViewport="true">
       <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" 
+            android:layout_height="wrap_content" 
             android:orientation="vertical">
         <TextView
                 android:layout_width="fill_parent"
@@ -71,6 +69,7 @@
                 android:gravity="center_vertical"
                 android:textSize="@dimen/small_middle_text_size"/>
      <RelativeLayout
+         	android:id="@+id/rl_phone_number_"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
             android:background="@color/white" >
@@ -213,15 +212,17 @@
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
         </RelativeLayout>       
-        </LinearLayout>
-   </com.itboye.banma.view.BounceScrollView>
-  <Button
-              		   android:id="@+id/btn_exit"
-             		   android:layout_width="match_parent"
-               		   android:layout_height="@dimen/more_item_mainheight"
-              		    android:layout_alignParentBottom="true"
-             		    android:layout_alignParentLeft="true"
-            		    android:background="@color/lightskyblue"
-            		    android:text="退出登录"
-             		    android:textSize="@dimen/small_middle_text_size" /> 
+        <View android:layout_height="@dimen/more_item_mainheight"
+            android:layout_width="fill_parent"/>
+ </LinearLayout>
+</com.itboye.banma.view.BounceScrollView>
+ 		 <Button
+                android:id="@+id/btn_exit"
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/more_item_mainheight"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentLeft="true"
+               android:background="@color/lightskyblue"
+               android:text="退出登录"
+             android:textSize="@dimen/small_middle_text_size" /> 
 </RelativeLayout>
