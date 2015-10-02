@@ -23,8 +23,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
             android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:text="￥100.00   库存750"
             android:textColor="@color/red"
             android:textSize="18sp" />
@@ -40,9 +40,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="260dp" 
-        android:layout_marginTop="10dp"
-        >
+        android:layout_height="260dp"
+        android:layout_marginTop="10dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,126 +49,152 @@
             android:background="@color/main_layout"
             android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="类型" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line" />
-
             <LinearLayout
+                android:id="@+id/one_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:background="@color/main_layout"
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
-                    android:id="@+id/pop_choice_16g"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/yuanjiao"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/black"
-                    android:text="16G 港版" />
+                    android:padding="15dp"
+                    android:text="颜色" />
 
-                <TextView
-                    android:id="@+id/pop_choice_32g"
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/yuanjiao"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/black"
-                    android:paddingTop="10dp"
-                    android:text="32G 港版" />
+                    android:orientation="horizontal" >
+
+                    <com.itboye.banma.view.MyGridView
+                        android:id="@+id/gridview_one"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:horizontalSpacing="0.5dip"
+                        android:listSelector="@null"
+                        android:numColumns="3"
+                        android:scrollbars="none"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="0.5dip" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/two_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:background="@color/main_layout"
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
-                    android:id="@+id/pop_choice_16m"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/yuanjiao"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/black"
-                    android:text="16G 美版" />
+                    android:padding="15dp"
+                    android:text="型号" />
 
-                <TextView
-                    android:id="@+id/pop_choice_32m"
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/yuanjiao"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/black"
-                    android:text="32G 美版" />
+                    android:orientation="horizontal" >
+
+                    <com.itboye.banma.view.MyGridView
+                        android:id="@+id/gridview_two"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:horizontalSpacing="0.5dip"
+                        android:listSelector="@null"
+                        android:numColumns="3"
+                        android:scrollbars="none"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="0.5dip" />
+                </LinearLayout>
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/three_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="颜色" />
+                android:background="@color/main_layout"
+                android:orientation="vertical"
+                android:visibility="gone" >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="尺寸" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <com.itboye.banma.view.MyGridView
+                        android:id="@+id/gridview_three"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:horizontalSpacing="0.5dip"
+                        android:listSelector="@null"
+                        android:numColumns="3"
+                        android:scrollbars="none"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="0.5dip" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/four_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:background="@color/main_layout"
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <TextView
-                    android:id="@+id/pop_choice_black"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/yuanjiao"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/black"
-                    android:text="黑  色" />
+                    android:padding="15dp"
+                    android:text="备用" />
 
-                <TextView
-                    android:id="@+id/pop_choice_white"
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/yuanjiao"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/black"
-                    android:text="白  色" />
+                    android:orientation="horizontal" >
+
+                    <com.itboye.banma.view.MyGridView
+                        android:id="@+id/gridview_four"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:horizontalSpacing="0.5dip"
+                        android:listSelector="@null"
+                        android:numColumns="3"
+                        android:scrollbars="none"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="0.5dip" />
+                </LinearLayout>
             </LinearLayout>
 
             <View
@@ -184,67 +209,67 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:padding="15dp"
                     android:text="购买数量" />
+
                 <TextView
                     android:id="@+id/pop_reduce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/yuanjiao"
-                    android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:paddingLeft="12dp"
-                    android:textColor="@color/black"
                     android:paddingRight="12dp"
-                    android:text="一" />
+                    android:paddingTop="10dp"
+                    android:text="一"
+                    android:textColor="@color/black" />
+
                 <TextView
                     android:id="@+id/pop_num"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:gravity="center"
                     android:background="@drawable/yuanjiao"
-                    android:textColor="@color/black"
-                    android:text="1" />
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="1"
+                    android:textColor="@color/black" />
+
                 <TextView
                     android:id="@+id/pop_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                     android:paddingTop="10dp"
+                    android:background="@drawable/yuanjiao"
                     android:paddingBottom="10dp"
                     android:paddingLeft="13dp"
                     android:paddingRight="13dp"
-                    android:textColor="@color/black"
-                    android:background="@drawable/yuanjiao"
-                    android:text="+" />
+                    android:paddingTop="10dp"
+                    android:text="+"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line" />
-         
         </LinearLayout>
     </ScrollView>
 
-    
-    <TextView 
+    <TextView
         android:id="@+id/pop_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_home_but"
+        android:paddingBottom="10dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
         android:text="确定"
-        android:textColor="@color/white"
-        android:background="@drawable/bg_home_but"
-        />
-    
+        android:textColor="@color/white" />
+
 </LinearLayout>

@@ -8,6 +8,7 @@ public class ProductDetail {
 	private int uid;					//用户ID
 	private String name;				//商品名称
 	private String main_img;			//商品主图
+	private Double weight;				//商品重量 （克）
 	private String buy_limit;				//限购
 	private String delivery_type;			//运费类型(  )
 	private String template_id;			//邮费模板ID
@@ -21,22 +22,22 @@ public class ProductDetail {
 	private String loc_city;			//城市
 	private String loc_address;			//地区
 	private String has_sku;				//是否多规格
-	private float ori_price;			//原价
-	private float price;				//现价
+	private Double ori_price;			//原价
+	private Double price;				//现价
 	private int quantity;				//商品库存
 	private int cate_id;				//商品分类
 	private String createtime;			//创建时间
 	private String updatetime;			//更新时间
 	private int onshelf;				//是否上架0否 1是
-	private int status;					//商品状态
-	private int storeid;				//店铺ID
+	private String status;					//商品状态
+	private String storeid;				//店铺ID
 	private String properties;			//商品属性
 	private String img;					//商品图片
 	//private Object sku_info;			//
-	private String detail;					//商品详情
-	private float weight;				//商品重量 （克）
-	private String icon_url;				//多规格颜色对应的图片
+	private String[] detail;					//商品详情
 	
+	private String icon_url;				//多规格颜色对应的图片
+
 	
 	public int getId() {
 		return id;
@@ -146,16 +147,16 @@ public class ProductDetail {
 	public void setHas_sku(String has_sku) {
 		this.has_sku = has_sku;
 	}
-	public float getOri_price() {
+	public Double getOri_price() {
 		return ori_price;
 	}
-	public void setOri_price(float ori_price) {
+	public void setOri_price(Double ori_price) {
 		this.ori_price = ori_price;
 	}
-	public float getPrice() {
+	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 	public int getQuantity() {
@@ -188,16 +189,16 @@ public class ProductDetail {
 	public void setOnshelf(int onshelf) {
 		this.onshelf = onshelf;
 	}
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
-	public int getStoreid() {
+	public String getStoreid() {
 		return storeid;
 	}
-	public void setStoreid(int storeid) {
+	public void setStoreid(String storeid) {
 		this.storeid = storeid;
 	}
 	public String getProperties() {
@@ -212,16 +213,16 @@ public class ProductDetail {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public String getDetail() {
+	public String[] getDetail() {
 		return detail;
 	}
-	public void setDetail(String detail) {
+	public void setDetail(String[] detail) {
 		this.detail = detail;
 	}
-	public float getWeight() {
+	public Double getWeight() {
 		return weight;
 	}
-	public void setWeight(float weight) {
+	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
 	public String getIcon_url() {
