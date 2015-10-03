@@ -13,10 +13,14 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 import com.google.gson.internal.Primitives;
 import com.itboye.banma.R;
+import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.ProductDetail;
+import com.itboye.banma.fragment.BabyCommentFragment;
+import com.itboye.banma.fragment.BabyDetailFragment;
+import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.view.BabyPopWindow;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
@@ -35,9 +39,12 @@ import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -52,6 +59,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 public class BabyActivity extends FragmentActivity implements OnItemClickListener, OnClickListener, StrUIDataListener {
 
@@ -87,6 +95,15 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private ImageView[] indicators = null;
 	private LinearLayout indicatorLayout;
 	private String[] imageList;
+	private ViewPager viewPagerPage;
+	protected TextView one_title;
+	protected TextView two_title;
+	protected TextView three_title;
+	private ViewPagerFragmentAdapter myAdapter;
+	private MyListener listener = new MyListener();
+	private BabyDetailFragment detailFragment;
+	private BabyParameterFragment parameterFragment;
+	private BabyCommentFragment commentFragment;
 	
 	
 	@Override
@@ -159,6 +176,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		customs_duties = (TextView) findViewById(R.id.customs_duties);
 		sales_area = (TextView) findViewById(R.id.sales_area);
 		all_choice_layout = (LinearLayout) findViewById(R.id.all_choice_layout);
+		
 		/*listView = (ListView) findViewById(R.id.listView_Detail);
 		listView.setFocusable(false);
 		listView.setSelector(new ColorDrawable(Color.TRANSPARENT));*/
@@ -253,6 +271,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		}
 
 		viewPager = (HackyViewPager) findViewById(R.id.iv_baby);
+		viewPager.setOffscreenPageLimit(3);  
 		ViewPagerAdapter adapter = new ViewPagerAdapter();
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			
@@ -405,12 +424,155 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		}
 		customs_duties.setText("免关税");
 		sales_area.setText(productDetail.getLoc_province()+productDetail.getLoc_city());
-		
+	
+		initDetailPager();
 		wait_ll.setVisibility(View.GONE);
 		retry_img.setVisibility(View.GONE);
 		loading_ll.setVisibility(View.GONE);
 		baby_detail.setVisibility(View.VISIBLE);
 		button_lay.setVisibility(View.VISIBLE);
+	}
+	
+	private void initDetailPager() {
+		one_title = (TextView) findViewById(R.id.one_title);
+		two_title = (TextView) findViewById(R.id.two_title);
+		three_title = (TextView) findViewById(R.id.three_title);
+		myAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager());
+		viewPagerPage = (ViewPager) findViewById(R.id.viewPager);
+		detailFragment = new BabyDetailFragment(productDetail.getDetail());
+		parameterFragment = new BabyParameterFragment();
+		commentFragment = new BabyCommentFragment();
+		myAdapter.addFragment(detailFragment);
+		myAdapter.addFragment(parameterFragment);
+		
+		myAdapter.addFragment(commentFragment);
+		viewPagerPage.setOffscreenPageLimit(3);
+		viewPagerPage.setOnPageChangeListener(listener);
+		viewPagerPage.setAdapter(myAdapter);
+		one_title.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				viewPagerPage.setCurrentItem(0);
+			}
+		});
+
+		two_title.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				viewPagerPage.setCurrentItem(1);
+			}
+		});
+
+		three_title.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				viewPagerPage.setCurrentItem(2);
+			}
+		});
+		// 模拟网络请求完成之后重置ViewPager高度
+		new myAsyncTask().execute();
+		//resetViewPagerHeight(0);
+	}
+
+	/**
+	 * 重新设置viewPager高度
+	 * 
+	 * @param position
+	 */
+	public void resetViewPagerHeight(int position) {
+		View child = viewPagerPage.getChildAt(position);
+		if (child != null) {
+			child.measure(0, 0);
+			int h = child.getMeasuredHeight();
+			LinearLayout.LayoutParams params = (LayoutParams) viewPagerPage
+					.getLayoutParams();
+			params.height = h + 50;
+			viewPagerPage.setLayoutParams(params);
+		}
+	}
+	
+	public class MyListener implements OnPageChangeListener {
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+
+		}
+
+		@Override
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
+
+		}
+
+		@Override
+		public void onPageSelected(int position) {
+			changTextColor(position);
+			// 页面切换后重置ViewPager高度
+			resetViewPagerHeight(position);
+			switch (position) {
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			}
+		}
+	}
+	/**
+	 * 改变title颜色
+	 * 
+	 * @param arg0
+	 */
+	private void changTextColor(int arg0) {
+		one_title.setTextColor(this.getResources().getColor(R.color.black));
+		two_title.setTextColor(this.getResources().getColor(R.color.black));
+		three_title.setTextColor(this.getResources().getColor(R.color.black));
+		one_title.setBackgroundColor(this.getResources().getColor(R.color.white));
+		two_title.setBackgroundColor(this.getResources().getColor(R.color.white));
+		three_title.setBackgroundColor(this.getResources().getColor(R.color.white));
+		switch (arg0) {
+		case 0:
+			one_title.setTextColor(this.getResources().getColor(
+					R.color.white));
+			one_title.setBackgroundColor(this.getResources().getColor(R.color.red));
+			break;
+		case 1:
+			two_title.setTextColor(this.getResources().getColor(
+					R.color.white));
+			two_title.setBackgroundColor(this.getResources().getColor(R.color.red));
+			break;
+		case 2:
+			three_title.setTextColor(this.getResources().getColor(
+					R.color.white));
+			three_title.setBackgroundColor(this.getResources().getColor(R.color.red));
+			break;
+		}
+		
+	}
+	
+	public class myAsyncTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			resetViewPagerHeight(0);
+		}
+
 	}
 
 }
