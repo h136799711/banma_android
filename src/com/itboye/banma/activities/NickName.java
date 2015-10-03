@@ -55,6 +55,7 @@ public class NickName extends Activity implements StrUIDataListener {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				ApiClient.modifyPersonal(NickName.this,appContext.getLoginUid()+"", "" , "", "", "", "", "", "", "", "", networkHelper);
 				dialog.setMessage("正在修改个人信息");
 		        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				dialog.show();
@@ -90,11 +91,12 @@ public class NickName extends Activity implements StrUIDataListener {
 		if (code == 0) {
 				dialog.dismiss();
 				Toast.makeText(NickName.this, content.toString(), Toast.LENGTH_SHORT).show();
-				ApiClient.modifyPersonal(NickName.this,appContext.getLoginUid()+"", "" , "", "", "", "", "", "", "", "", networkHelper);
 				Intent intent=getIntent();
 				intent.putExtra("nickName", tvNickName.getText().toString());
 				NickName.this.setResult(0,intent);
 				finish();
-	     	}
+	     	}else {
+	     		Toast.makeText(NickName.this, "修改失败", Toast.LENGTH_SHORT).show();
+			}
 		}
 }

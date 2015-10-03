@@ -141,6 +141,7 @@
                 android:textSize="12sp" />
 
             <ImageView
+                android:id="@+id/iv_weixin"
                 android:layout_width="52dp"
                 android:layout_height="41dp"
                 android:layout_gravity="center_horizontal"

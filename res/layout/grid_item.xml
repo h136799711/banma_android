@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="0.0dip"
+    android:background="#00000000" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip" >
+
+        <TextView
+            android:id="@+id/tv_item"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+			android:gravity="center"
+            android:background="@drawable/yuanjiao"
+            android:text="16G 港版"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+</RelativeLayout>

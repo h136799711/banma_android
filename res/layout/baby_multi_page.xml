@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:background="@drawable/baby_boder"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/one_title"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="0.5dip"
+            android:layout_marginBottom="0.5dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="图文详情"
+            android:textColor="@color/white"
+            android:background="@color/red"
+            android:textSize="@dimen/text_size_15" />
+        <View
+        	android:layout_width="0.5dip"
+        	android:layout_height="fill_parent"
+        	android:background="@color/gray" />
+        <TextView
+            android:id="@+id/two_title"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="0.5dip"
+            android:layout_marginBottom="0.5dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="产品参数"
+            android:textSize="@dimen/text_size_15" />
+         <View
+        	android:layout_width="0.5dip"
+        	android:layout_height="fill_parent"
+        	android:background="@color/gray" />
+        <TextView
+            android:id="@+id/three_title"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="0.5dip"
+            android:layout_marginBottom="0.5dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="累计评论"
+            android:textSize="@dimen/text_size_15" />
+    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

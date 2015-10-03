@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,13 +32,14 @@ import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
 import com.itboye.banma.util.AESEncryptor;
 import com.itboye.banma.utils.SharedConfig;
-public class LoginActivity extends Activity implements StrUIDataListener {
+public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
 	EditText etName;//用户账号，一般为手机号
 	EditText etPassword;//用户密码/明文
    TextView tvForget;//忘记密码
    TextView tvQuXiao;//取消
+   private ImageView ivWeixin;//微信登陆
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	private Gson gson = new Gson();
@@ -58,6 +60,7 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		btnLogin.setOnClickListener(new LoginListener());
 		tvForget.setOnClickListener(forgetListener);
 		tvQuXiao.setOnClickListener(quxiaoListener );
+		ivWeixin.setOnClickListener(this);
 	}
 
 	private void initId(LoginActivity loginActivity) {
@@ -75,6 +78,7 @@ public class LoginActivity extends Activity implements StrUIDataListener {
             Toast.makeText(this, "获取密码时产生解密错误!", Toast.LENGTH_LONG).show();
             pass = "";  
         }  */
+        ivWeixin=(ImageView) findViewById(R.id.iv_weixin);
 		 tvQuXiao=(TextView)findViewById(R.id.tv_quxiao);
         tvForget=(TextView)findViewById(R.id.tv_forget);
 		tvRegist=(TextView)findViewById(R.id.tv_regist);
@@ -87,6 +91,12 @@ public class LoginActivity extends Activity implements StrUIDataListener {
 		etPassword.setText(pass);
 	}
 	
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
 	//各种监听
 	
 	//取消 返回键
@@ -232,4 +242,7 @@ public class LoginActivity extends Activity implements StrUIDataListener {
         }
 
     }
+
+
+
 }

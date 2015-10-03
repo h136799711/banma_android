@@ -45,6 +45,29 @@ public class ApiClient {
         VolleyRequest.StrRequestPost(mContext, url, "changPhone",params, networkHelper);
 		
 	} 
+
+	//购物车添加
+			public static void addCart(Context context,String uid,String  store_id, String p_id,
+					String sku_id,String sku_desc,String icon_url,String count,String name,String express,
+					String price ,String ori_price,String psku_id, StrVolleyInterface networkHelper){
+				String access_token=AppContext.getAccess_token();
+				String url = Constant.URL+"/ShoppingCart/add?access_token="+access_token;
+				Map<String,String> params = new HashMap<String, String>();
+				//params.put("access_token", access_token);
+		        params.put("uid",uid);  
+		        params.put("store_id",store_id);
+		        params.put("p_id", p_id);
+		        params.put("sku_id", sku_id);
+		        params.put("sku_desc",sku_desc); 
+		        params.put("icon_url",icon_url);
+		        params.put("count",count);  
+		        params.put("name",name);
+		        params.put("express", express);
+		        params.put("price", price);
+		        params.put("ori_price", ori_price);
+		        params.put("psku_id", psku_id);
+		        VolleyRequest.StrRequestPost(context, url, "addCart",params, networkHelper);
+			}
 	
 	//获取验证码
 	

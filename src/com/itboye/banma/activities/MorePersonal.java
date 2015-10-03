@@ -1,6 +1,8 @@
 package com.itboye.banma.activities;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +10,6 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,11 +18,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Color;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +55,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 	private AppContext appContext;
 	private TextView tvUserName;//用户昵称
 	private TextView tvPhoneNumber;//用户手机号
-	private RelativeLayout rlPersonalMian;//该界面的总布局控制
+	//private RelativeLayout rlPersonalMian;//该界面的总布局控制
 	private ImageView ivBack;//返回按钮
 	private TextView tvWeiXin;//微信
 	private RelativeLayout rlUserName;//用户名布局
@@ -110,7 +110,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 		rlUserName=(RelativeLayout)findViewById(R.id.rl_username);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		tvWeiXin=(TextView)findViewById(R.id.tv_bangding);
-		rlPersonalMian=(RelativeLayout)findViewById(R.id.rl_person_main);
+	//	rlPersonalMian=(RelativeLayout)findViewById(R.id.rl_person_main);
 		rlHead=(RelativeLayout)findViewById(R.id.rl_head);
 		ivHead=(ImageView)findViewById(R.id.iv_head);
 		tvUserName=(TextView)findViewById(R.id.tv_username);
@@ -203,6 +203,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 		case R.id.btn_exit:
 			sp.edit().clear().commit();//清空所有sp中的数据
 			appContext.setLogin(false);
+			finish();
 			break;
 			
 		default:
@@ -310,8 +311,8 @@ public class MorePersonal extends Activity implements OnClickListener{
 	private void upLoadImage() {
 		// TODO Auto-generated method stub
 		Map<String, File> files = new HashMap<String, File>();
-		files.put("avatar", new File(Environment.getExternalStorageDirectory(),"image.png"));
-		System.out.println("找到图片");
+		files.put("avatar", new File("/storage/emulated/0/image.png"));
+		ivHead.setImageBitmap(getLoacalBitmap("/storage/emulated/0/image.png"));
 		SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		String  id=sp.getString(Constant.MY_USERID, -1+"");
 		Map<String, String> params = new HashMap<String, String>();
@@ -321,10 +322,19 @@ public class MorePersonal extends Activity implements OnClickListener{
 
 		String uri =Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
 		addPutUploadFileRequest(
-				uri,
-				files, params, mResonseListenerString, mErrorListener, null);
+				uri,files, params, mResonseListenerString, mErrorListener, null);
 	}
+	
+	public static Bitmap getLoacalBitmap(String url) {
+        try {
+             FileInputStream fis = new FileInputStream(url);
+             return BitmapFactory.decodeStream(fis);  ///把流转化为Bitmap图片        
 
+          } catch (FileNotFoundException e) {
+             e.printStackTrace();
+             return null;
+        }
+	}
 
 	/**
 	 * 剪切图片

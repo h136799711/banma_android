@@ -2,6 +2,11 @@ package com.itboye.banma.view;
 
 import java.util.HashMap;
 
+
+import com.itboye.banma.R;
+import com.itboye.banma.adapter.MyGridAdapter;
+import com.itboye.banma.app.Constant;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -153,8 +158,10 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 			break;
 
 		default:
+			
 			break;
 		}
+	}
 		/** 保存数据 */
 		private void setSaveData() {
 			SharedPreferences sp = context.getSharedPreferences("SAVE_CART",
