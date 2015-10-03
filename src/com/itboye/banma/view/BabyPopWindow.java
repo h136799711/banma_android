@@ -1,10 +1,14 @@
 package com.itboye.banma.view;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.itboye.banma.R;
 import com.itboye.banma.adapter.MyGridAdapter;
 import com.itboye.banma.app.Constant;
+import com.itboye.banma.entity.ProductDetail.Sku_info;
+import com.itboye.banma.entity.SkuInfo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -28,20 +32,27 @@ import android.widget.TextView;
 @SuppressLint("CommitPrefEdits")
 public class BabyPopWindow implements OnDismissListener, OnClickListener {
 	private TextView pop_add, pop_reduce, pop_num, pop_ok;
-	private LinearLayout oneLayout, twoLayout;
+	private LinearLayout oneLayout, twoLayout,threeLayout;
+	private TextView tex_one,tex_two,tex_three;
 	private ImageView pop_del;
 	private MyGridView gridviewOne;
 	private MyGridView gridviewTwo;
+	private MyGridView gridviewThree;
 	private PopupWindow popupWindow;
 	private OnItemClickListener listener;
 	private final int ADDORREDUCE = 1;
 	private Context context;
 	private String str_color = "";
 	private String str_type = "";
+	private Map<String, SkuInfo> skuInfo;
+	private List<Sku_info> sku_info;
+	View view;
 
-	public BabyPopWindow(Context context) {
+	public BabyPopWindow(Context context, List<Sku_info> sku_info, Map<String, SkuInfo> skuInfo) {
 		this.context = context;
-		View view = LayoutInflater.from(context).inflate(
+		this.skuInfo = skuInfo;
+		this.sku_info = sku_info;
+		view = LayoutInflater.from(context).inflate(
 				R.layout.adapter_popwindow, null);
 
 		pop_add = (TextView) view.findViewById(R.id.pop_add);
@@ -49,15 +60,68 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 		pop_num = (TextView) view.findViewById(R.id.pop_num);
 		pop_ok = (TextView) view.findViewById(R.id.pop_ok);
 		pop_del = (ImageView) view.findViewById(R.id.pop_del);
-		oneLayout = (LinearLayout) view.findViewById(R.id.one_layout);
-		twoLayout = (LinearLayout) view.findViewById(R.id.two_layout);
-		oneLayout.setVisibility(View.VISIBLE);
-		twoLayout.setVisibility(View.VISIBLE);
-		gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
-		gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
-		gridviewOne.setAdapter(new MyGridAdapter(context));
-		gridviewTwo.setAdapter(new MyGridAdapter(context));
+		tex_one = (TextView) view.findViewById(R.id.tex_one);
+		tex_two = (TextView) view.findViewById(R.id.tex_two);
+		tex_three = (TextView) view.findViewById(R.id.tex_three);
+		switch (skuInfo.size()) {
+		case 0:
+			init();
+			break;
+		case 1:
+			oneLayout = (LinearLayout) view.findViewById(R.id.one_layout);
+			twoLayout = (LinearLayout) view.findViewById(R.id.two_layout);
+			threeLayout = (LinearLayout) view.findViewById(R.id.three_layout);
+			oneLayout.setVisibility(View.VISIBLE);
+			twoLayout.setVisibility(View.GONE);
+			threeLayout.setVisibility(View.GONE);
+			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
+			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId())));
+			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
+			init();
+			break;
+		case 2:
+			oneLayout = (LinearLayout) view.findViewById(R.id.one_layout);
+			twoLayout = (LinearLayout) view.findViewById(R.id.two_layout);
+			threeLayout = (LinearLayout) view.findViewById(R.id.three_layout);
+			oneLayout.setVisibility(View.VISIBLE);
+			twoLayout.setVisibility(View.VISIBLE);
+			threeLayout.setVisibility(View.GONE);
+			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
+			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
+			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId())));
+			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1), skuInfo.get(sku_info.get(1).getId())));
+			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
+			tex_two.setText(skuInfo.get(sku_info.get(1).getId()).getName());
+			init();
+	
+			break;
+		case 3:
+			oneLayout = (LinearLayout) view.findViewById(R.id.one_layout);
+			twoLayout = (LinearLayout) view.findViewById(R.id.two_layout);
+			threeLayout = (LinearLayout) view.findViewById(R.id.three_layout);
+			oneLayout.setVisibility(View.VISIBLE);
+			twoLayout.setVisibility(View.VISIBLE);
+			threeLayout.setVisibility(View.VISIBLE);
+			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
+			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
+			gridviewThree = (MyGridView) view.findViewById(R.id.gridview_three);
+			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId())));
+			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1), skuInfo.get(sku_info.get(1).getId())));
+			gridviewThree.setAdapter(new MyGridAdapter(context, sku_info.get(2), skuInfo.get(sku_info.get(2).getId())));
+			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
+			tex_two.setText(skuInfo.get(sku_info.get(1).getId()).getName());
+			tex_three.setText(skuInfo.get(sku_info.get(2).getId()).getName());
+			init();
+			break;
 
+		default:
+			init();
+			break;
+		}
+		
+	}
+
+	private void init() {
 		pop_add.setOnClickListener(this);
 		pop_reduce.setOnClickListener(this);
 		pop_ok.setOnClickListener(this);
@@ -68,6 +132,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 		popupWindow.setAnimationStyle(R.style.popWindow_anim_style);
 		popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		popupWindow.setOnDismissListener(this);
+		
 	}
 
 	public interface OnItemClickListener {

@@ -2,8 +2,12 @@ package com.itboye.banma.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.itboye.banma.R;
+import com.itboye.banma.entity.ProductDetail.Sku_info;
+import com.itboye.banma.entity.SkuInfo;
+import com.itboye.banma.entity.SkuInfo.MapValue;
 import com.itboye.banma.util.BaseViewHolder;
 
 import android.R.integer;
@@ -22,18 +26,23 @@ import android.widget.TextView;
 public class MyGridAdapter extends BaseAdapter {
 	private Context mContext;
 	private int state = -1;
-
-	public String[] img_text = { "型号000", "型号111", "型号222", "型号333", "型号444", "型号555",
-			"型号666"};
-	public MyGridAdapter(Context mContext) {
+	private SkuInfo skuInfo;
+	private Map<String, MapValue> value;
+	private Sku_info sku_info;
+	/*public String[] img_text = { "型号000", "型号111", "型号222", "型号333", "型号444", "型号555",
+			"型号666"};*/
+	public MyGridAdapter(Context mContext, Sku_info sku_info, SkuInfo skuInfo) {
 		super();
 		this.mContext = mContext;
+		this.skuInfo = skuInfo;
+		this.sku_info = sku_info;
+		value = skuInfo.getValue();
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return img_text.length;
+		return value.size();
 	}
 
 	@Override
@@ -61,13 +70,14 @@ public class MyGridAdapter extends BaseAdapter {
 		int height = wm.getDefaultDisplay().getHeight();
 		
 		LayoutParams params = convertView.getLayoutParams();  
-	    params.height=width/6;  
+	    params.height=width/8;  
 	    //params.width =(width-3)/4;
 	    //System.out.println("height="+height+"width="+width);
 		convertView.setLayoutParams(params);
 		
 		final TextView tv = BaseViewHolder.get(convertView, R.id.tv_item);
-		tv.setText(img_text[position]);
+		tv.setText(value.get(sku_info.getVid()[position]).getValue());
+		//tv.setText(position+"");
 		tv.setBackgroundResource(R.drawable.yuanjiao);
 		if(position == state){
 			tv.setBackgroundResource(R.drawable.yuanjiao_choice);

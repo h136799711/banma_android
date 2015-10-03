@@ -1,5 +1,12 @@
 package com.itboye.banma.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import android.R.integer;
+import android.widget.ListView;
+
 import com.itboye.banma.R.string;
 
 public class ProductDetail {
@@ -33,11 +40,12 @@ public class ProductDetail {
 	private String storeid;				//店铺ID
 	private String properties;			//商品属性
 	private String img;					//商品图片
-	//private Object sku_info;			//
 	private String[] detail;					//商品详情
 	
 	private String icon_url;				//多规格颜色对应的图片
-
+	private Map<String, SkuInfo> skuInfo;   //商品型号
+	//private List<Sku_info> sku_info = new ArrayList<ProductDetail.Sku_info>();			//
+	String sku_info;
 	
 	public int getId() {
 		return id;
@@ -231,6 +239,26 @@ public class ProductDetail {
 	public void setIcon_url(String icon_url) {
 		this.icon_url = icon_url;
 	}
+	
+	public Map<String, SkuInfo> getSkuInfo() {
+		return skuInfo;
+	}
+	public void setSkuInfo(Map<String, SkuInfo> skuInfo) {
+		this.skuInfo = skuInfo;
+	}
+	
+	public String getSku_info() {
+		return sku_info;
+	}
+	public void setSku_info(String sku_info) {
+		this.sku_info = sku_info;
+	}
+	/*public List<Sku_info> getSku_info() {
+		return sku_info;
+	}
+	public void setSku_info(List<Sku_info> sku_info) {
+		this.sku_info = sku_info;
+	}*/
 	@Override
 	public String toString() {
 		return "ProductDetail [id=" + id + ", product_code=" + product_code
@@ -253,6 +281,22 @@ public class ProductDetail {
 				+ "]";
 	}
 	
-	
+	final public class Sku_info{
+		String id;
+		String[] vid;
+		public String getId() {
+			return id;
+		}
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String[] getVid() {
+			return vid;
+		}
+		public void setVid(String[] vid) {
+			this.vid = vid;
+		}
+		
+	}
 
 }

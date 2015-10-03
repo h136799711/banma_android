@@ -51,6 +51,9 @@ public class VolleyRequest {
 
 	public static void StrRequestPost(Context mContext, String url, String tag,
 			final Map<String, String> params, StrVolleyInterface vif) {
+		
+		JSONObject jsonObject = new JSONObject(params);
+		System.out.println("Map转化成JSON="+jsonObject);
 
 		strRequest = new StringRequest(Method.POST, url, vif, vif){
 			@Override

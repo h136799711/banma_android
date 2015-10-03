@@ -1,7 +1,9 @@
 package com.itboye.banma.activities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,12 +14,15 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 import com.google.gson.internal.Primitives;
+import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
 import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.ProductDetail;
+import com.itboye.banma.entity.ProductDetail.Sku_info;
+import com.itboye.banma.entity.SkuInfo;
 import com.itboye.banma.fragment.BabyCommentFragment;
 import com.itboye.banma.fragment.BabyDetailFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
@@ -104,6 +109,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private BabyDetailFragment detailFragment;
 	private BabyParameterFragment parameterFragment;
 	private BabyCommentFragment commentFragment;
+	private List<Sku_info> sku_info;  //商品类型参数
 	
 	
 	@Override
@@ -113,8 +119,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		appContext = (AppContext) getApplication();
 		initView();
 		iniData();
-		popWindow = new BabyPopWindow(this);
-		popWindow.setOnItemClickListener(this);
+		
 	}
 
 	/**
@@ -380,6 +385,8 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	@Override
 	public void onDataChanged(String data) {
+		Gson gson = new Gson();
+
 		int code = -1;
 		String detail = null;
 		Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
@@ -389,9 +396,13 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			detail = jsonObject.getString("data");
 			System.out.println("data*****="+detail);
 			if(code == 0){
-				Gson gson = new Gson();
+				
 				productDetail = gson.fromJson(detail, ProductDetail.class);
 				imageList=productDetail.getImg().split(",");
+				sku_info = new ArrayList<ProductDetail.Sku_info>();
+				//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
+				sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
+						}.getType());
 				
 				updatePages();
 				
@@ -424,7 +435,8 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		}
 		customs_duties.setText("免关税");
 		sales_area.setText(productDetail.getLoc_province()+productDetail.getLoc_city());
-	
+		popWindow = new BabyPopWindow(this, sku_info, productDetail.getSkuInfo());
+		popWindow.setOnItemClickListener(this);
 		initDetailPager();
 		wait_ll.setVisibility(View.GONE);
 		retry_img.setVisibility(View.GONE);
@@ -492,7 +504,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			int h = child.getMeasuredHeight();
 			LinearLayout.LayoutParams params = (LayoutParams) viewPagerPage
 					.getLayoutParams();
-			params.height = h + 50;
+			params.height = h + 250;
 			viewPagerPage.setLayoutParams(params);
 		}
 	}

@@ -25,6 +25,11 @@ public class ViewPagerFragmentAdapter extends FragmentPagerAdapter {
 		// TODO Auto-generated method stub
 		return fragments.size();
 	}
+	
+	@Override  
+	public int getItemPosition(Object object) {  
+	    return POSITION_NONE;  
+	} 
 
 	public List<Fragment> getFragments() {
 		return fragments;
