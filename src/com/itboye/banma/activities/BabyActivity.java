@@ -1,19 +1,39 @@
 package com.itboye.banma.activities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.nfc.NfcAdapter;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
-import com.google.gson.internal.Primitives;
 import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
 import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
@@ -23,7 +43,6 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.ProductDetail;
 import com.itboye.banma.entity.ProductDetail.Sku_info;
-import com.itboye.banma.entity.SkuInfo;
 import com.itboye.banma.fragment.BabyCommentFragment;
 import com.itboye.banma.fragment.BabyDetailFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
@@ -32,42 +51,6 @@ import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.view.BabyPopWindow;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
-
-import android.R.integer;
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.nfc.NfcAdapter;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
 
 public class BabyActivity extends FragmentActivity implements OnItemClickListener, OnClickListener, StrUIDataListener {
 
@@ -115,6 +98,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private BabyParameterFragment parameterFragment;
 	private BabyCommentFragment commentFragment;
 	private boolean addCart=false;//返回的是否是添加购物车信息
+	private List<Sku_info> sku_info;  //商品类型参数
 	
 	
 	@Override
@@ -428,6 +412,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 				//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
 				sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
 						}.getType());
+				
 				updatePages();
 				System.out.println("商品详情*****="+productDetail.toString());
 			}
