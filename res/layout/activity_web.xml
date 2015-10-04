@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@color/white" >
     <RelativeLayout
+        android:id="@+id/rl_temp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/titlebar"
-        android:orientation="horizontal" >
+        android:background="@color/titlebar" >
 
      <ImageView
             android:id="@+id/iv_back_web"
@@ -32,8 +32,20 @@
              android:textSize="15sp"
             />
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/loading_large"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
+
+
+    <!--  <include  layout="@layout/view_delay" />-->
+
     <WebView 
+         android:layout_below="@+id/rl_temp"
         android:id="@+id/wv_show"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-</LinearLayout>
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

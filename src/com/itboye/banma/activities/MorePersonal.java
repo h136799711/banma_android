@@ -321,8 +321,8 @@ public class MorePersonal extends Activity implements OnClickListener{
 		params.put("type","avatar");
 
 		String uri =Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
-		addPutUploadFileRequest(
-				uri,files, params, mResonseListenerString, mErrorListener, null);
+	//	addPutUploadFileRequest(
+		//		uri,files, params, mResonseListenerString, mErrorListener, null);
 	}
 	
 	public static Bitmap getLoacalBitmap(String url) {
@@ -365,6 +365,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 			return false;
 		}
 	}	
+	
 	
 	Listener<JSONObject> mResonseListener = new Listener<JSONObject>() {
 
@@ -417,7 +418,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 		}
 	};
 
-	public static void addPutUploadFileRequest(final String url,
+	/*public static void addPutUploadFileRequest(final String url,
 			final Map<String, File> files, final Map<String, String> params,
 			final Listener<String> responseListener, final ErrorListener errorListener,
 			final Object tag) {
@@ -441,5 +442,5 @@ public class MorePersonal extends Activity implements OnClickListener{
 		};
 
 		mSingleQueue.add(multiPartRequest);
-	}
+	}*/
 }

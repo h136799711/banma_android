@@ -97,8 +97,9 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private StrVolleyInterface networkHelper;
 	private BabyParameterFragment parameterFragment;
 	private BabyCommentFragment commentFragment;
-	private boolean addCart=false;//返回的是否是添加购物车信息
 	private List<Sku_info> sku_info;  //商品类型参数
+	private int state;//定义几种状态用于表示volley传回的数据来自于哪里，购物车请求以上对应1
+								//商品详情请求为2，立即购买对应3
 	
 	
 	@Override
@@ -121,6 +122,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
 		try {
 			YesOrNo = appContext.getProductDetail(BabyActivity.this, 1, strnetworkHelper);
+			state=2;
 			if(!YesOrNo){   //如果没联网
 				Toast.makeText(BabyActivity.this, "请检查网络连接", Toast.LENGTH_SHORT)
 				.show();
@@ -224,6 +226,10 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			popWindow.showAsDropDown(view);
 			break;
 			case R.id.more:
+				state=1;
+				ApiClient.addCart(BabyActivity.this, productDetail.getUid()+"", productDetail.getStoreid()+"",
+						"1", "", "", productDetail.getIcon_url()+"", "1", productDetail.getName()+"", productDetail.getExpress()+"",
+						productDetail.getPrice()+"", productDetail.getOri_price()+"","", networkHelper);
 				startActivity(new Intent(BabyActivity.this,ShoppingCartActivity.class));
 				overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
@@ -341,16 +347,17 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		setBackgroundBlack(all_choice_layout, 1);
 
 		if (isClickBuy) {
+			state=3;
 			//跳转到购买页面
 			/*Intent intent = new Intent(BabyActivity.this, BuynowActivity.class);
 			startActivity(intent);*/
 		}else {
 			//请求添加购物车
 				//SharedPreferences sp=getSharedPreferences("", mode),从sp取出popwindow的数据
-				addCart=true;
-				ApiClient.addCart(BabyActivity.this, productDetail.getUid()+"", productDetail.getStoreid()+"",
-						"1", "", "", productDetail.getIcon_url()+"", "1", productDetail.getName()+"", productDetail.getExpress()+"",
-						productDetail.getPrice()+"", productDetail.getOri_price()+"","", networkHelper);
+//			state=1;
+//				ApiClient.addCart(BabyActivity.this, productDetail.getUid()+"", productDetail.getStoreid()+"",
+//						"1", "", "", productDetail.getIcon_url()+"", "1", productDetail.getName()+"", productDetail.getExpress()+"",
+//						productDetail.getPrice()+"", productDetail.getOri_price()+"","", networkHelper);
 		}
 	}
 	
@@ -392,38 +399,58 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	@Override
 	public void onDataChanged(String data) {
-		Gson gson = new Gson();
-
-		int code = -1;
-		String detail = null;
-		JSONObject jsonObject1;
-		Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
-		try {
-			 jsonObject1=new JSONObject(data);
-			JSONObject jsonObject = new JSONObject(data);
-			code = jsonObject.getInt("code");
-			detail = jsonObject.getString("data");
-			System.out.println("data*****="+detail);
-			if(code == 0){
-				
-				productDetail = gson.fromJson(detail, ProductDetail.class);
-				imageList=productDetail.getImg().split(",");
-				sku_info = new ArrayList<ProductDetail.Sku_info>();
-				//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
-				sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
-						}.getType());
-				
-				updatePages();
-				System.out.println("商品详情*****="+productDetail.toString());
+		System.out.println("数据变化");
+		switch (state) {
+		case 2:
+			Gson gson = new Gson();
+			int code = -1;
+			String detail = null;
+			Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
+			try {
+				JSONObject jsonObject = new JSONObject(data);
+				code = jsonObject.getInt("code");
+				detail = jsonObject.getString("data");
+				System.out.println("data*****="+detail);
+				if(code == 0){
+					
+					productDetail = gson.fromJson(detail, ProductDetail.class);
+					imageList=productDetail.getImg().split(",");
+					sku_info = new ArrayList<ProductDetail.Sku_info>();
+					//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
+					sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
+							}.getType());
+					
+					updatePages();
+					System.out.println("商品详情*****="+productDetail.toString());
+				}} catch (JSONException e) {
+				e.printStackTrace();
 			}
-			if(code==0&&addCart) {
-				Log.v("添加购物车",jsonObject1.getString("data"));
-				Toast.makeText(this, "添加购物车成功", Toast.LENGTH_SHORT).show();
-			}									
-		} catch (JSONException e) {
-			e.printStackTrace();
+			break;
+		case 1://来自购物车
+			int code1=-1;
+			JSONObject jsonObject1 = null;
+			String data1 = null;
+			try {System.out.println(data);
+				jsonObject1=new JSONObject(data);
+				 data1=jsonObject1.getString("data");
+				code1=jsonObject1.getInt("code");
+				if (code1==0) {
+					Toast.makeText(BabyActivity.this, "添加购物车"+jsonObject1.getString("data"), Toast.LENGTH_SHORT).show();
+				}
+				else {
+					System.out.println("数据变化3");
+					Log.v("购物车添加失败：", data1+"");
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("数据变化4");
+				Log.v("exception", e.getMessage());
+				Log.v("购物车添加失败：",data1="");
+			}
+			break;
+		default:
+			break;
 		}
-		
 	}
 
 	/**

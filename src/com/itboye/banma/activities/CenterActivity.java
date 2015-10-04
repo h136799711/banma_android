@@ -48,7 +48,7 @@ public class CenterActivity extends Activity implements OnClickListener{
 			tvPersonnamefail.setText("老刘");
 		}
 		ivShaoMa=(ImageView)findViewById(R.id.iv_shaoma);
-		rlMoney=(RelativeLayout)findViewById(R.id.rl_money);
+	   rlMoney=(RelativeLayout)findViewById(R.id.rl_money);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		tvCheckList=(TextView)findViewById(R.id.tv_check_list);
 		order_goods = (RelativeLayout) findViewById(R.id.order_goods);
@@ -98,12 +98,13 @@ public class CenterActivity extends Activity implements OnClickListener{
 				startActivity(new Intent(CenterActivity.this,MorePersonal.class));
 				overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
+				break;
 		//	}
-		case R.id.rl_money:
-			startActivity(new Intent(CenterActivity.this,ShoppingCartActivity.class));
-			overridePendingTransition(R.anim.in_from_right,
-					R.anim.out_to_left);
-			break;
+//	case R.id.rl_money:
+//		startActivity(new Intent(CenterActivity.this,ShoppingCartActivity.class));
+//			overridePendingTransition(R.anim.in_from_right,
+//				R.anim.out_to_left);
+//		break;
 			
 		case R.id.iv_shaoma:
 			startActivity(new Intent(CenterActivity.this,CaptureActivity.class));

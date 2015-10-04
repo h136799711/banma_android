@@ -100,7 +100,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 		kong = findViewById(R.id.kong);
 		save = (Button) findViewById(R.id.add_address);
 
-		more.setVisibility(View.VISIBLE);
+		more.setVisibility(View.GONE);
 		back.setOnClickListener(this);
 		save.setOnClickListener(this);
 		downtown.setOnClickListener(this);
