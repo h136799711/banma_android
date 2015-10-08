@@ -15,8 +15,10 @@ public class Constant {
     public static final String MY_HEAD="MY_HEAD";//我的头像
     public static final String MY_BANGDING="MY_BANGDING";//绑定的手机号
     public static final String 	IS_LOGIN="IS_LOGIN";//是否登陆
-    public static final String WEIXIN="WEIXIN";//微信是否绑定	
-   
+    public static final String WEIXIN="WEIXIN";//微信是否绑定
+    
+    public static final String[] SKU_INFO = {"","","","","",""};
+
     public static int arrayList_cart_id=0;
 	public static ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
     public static float Allprice_cart=0;

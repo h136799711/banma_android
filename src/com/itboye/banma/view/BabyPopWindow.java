@@ -3,14 +3,19 @@ package com.itboye.banma.view;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.itboye.banma.R;
 import com.itboye.banma.adapter.MyGridAdapter;
+import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.ProductDetail.Sku_info;
 import com.itboye.banma.entity.SkuInfo;
+import com.itboye.banma.entity.SkuStandard;
+import com.itboye.banma.util.BaseViewHolder;
+import com.itboye.banma.utils.BitmapCache;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,6 +42,9 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 	private TextView pop_add, pop_reduce, pop_num, pop_ok;
 	private LinearLayout oneLayout, twoLayout,threeLayout;
 	private TextView tex_one,tex_two,tex_three;
+	private ImageView pow_pic;
+	private TextView pow_price;
+	private TextView pow_quantity;
 	private ImageView pop_del;
 	private MyGridView gridviewOne;
 	private MyGridView gridviewTwo;
@@ -49,15 +57,26 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 	private String str_type = "";
 	private Map<String, SkuInfo> skuInfo;
 	private List<Sku_info> sku_info;
+	List<SkuStandard> skuList;
+	private String url;
+	Double price;
+	int quantity;
 	View view;
 
-	public BabyPopWindow(Context context, List<Sku_info> sku_info, Map<String, SkuInfo> skuInfo) {
+	public BabyPopWindow(Context context, List<Sku_info> sku_info, Map<String, SkuInfo> skuInfo, 
+			String url, Double price, int quantity, List<SkuStandard> skuList) {
 		this.context = context;
 		this.skuInfo = skuInfo;
 		this.sku_info = sku_info;
-		view = LayoutInflater.from(context).inflate(
-				R.layout.adapter_popwindow, null);
+		this.skuList = skuList;
+		this.url = url;
+		this.price = price;
+		this.quantity = quantity;
+		view = LayoutInflater.from(context).inflate(R.layout.adapter_popwindow, null);
 
+		pow_pic = (ImageView) view.findViewById(R.id.pow_pic);
+		pow_price = (TextView) view.findViewById(R.id.pow_price);
+		pow_quantity = (TextView) view.findViewById(R.id.pow_stock);
 		pop_add = (TextView) view.findViewById(R.id.pop_add);
 		pop_reduce = (TextView) view.findViewById(R.id.pop_reduce);
 		pop_num = (TextView) view.findViewById(R.id.pop_num);
@@ -66,6 +85,14 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 		tex_one = (TextView) view.findViewById(R.id.tex_one);
 		tex_two = (TextView) view.findViewById(R.id.tex_two);
 		tex_three = (TextView) view.findViewById(R.id.tex_three);
+
+		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
+		ImageListener listener = ImageLoader.getImageListener(pow_pic,  
+				R.drawable.image_loading, R.drawable.image_load_fail); 
+		imageLoader.get(url, listener, 100, 100);
+		pow_price.setText("￥"+price);
+		pow_quantity.setText("库存"+quantity);
+		
 		switch (skuInfo.size()) {
 		case 0:
 			init();
@@ -78,7 +105,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 			twoLayout.setVisibility(View.GONE);
 			threeLayout.setVisibility(View.GONE);
 			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
-			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId())));
+			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId()),0));
 			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
 			init();
 			break;
@@ -91,8 +118,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 			threeLayout.setVisibility(View.GONE);
 			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
 			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
-			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId())));
-			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1), skuInfo.get(sku_info.get(1).getId())));
+			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId()),0));
+			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1), skuInfo.get(sku_info.get(1).getId()),1));
 			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
 			tex_two.setText(skuInfo.get(sku_info.get(1).getId()).getName());
 			init();
@@ -108,9 +135,9 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
 			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
 			gridviewThree = (MyGridView) view.findViewById(R.id.gridview_three);
-			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId())));
-			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1), skuInfo.get(sku_info.get(1).getId())));
-			gridviewThree.setAdapter(new MyGridAdapter(context, sku_info.get(2), skuInfo.get(sku_info.get(2).getId())));
+			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0), skuInfo.get(sku_info.get(0).getId()),0));
+			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1), skuInfo.get(sku_info.get(1).getId()),1));
+			gridviewThree.setAdapter(new MyGridAdapter(context, sku_info.get(2), skuInfo.get(sku_info.get(2).getId()),2));
 			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
 			tex_two.setText(skuInfo.get(sku_info.get(1).getId()).getName());
 			tex_three.setText(skuInfo.get(sku_info.get(2).getId()).getName());
@@ -139,8 +166,11 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 	}
 
 	public interface OnItemClickListener {
-		/** 购买点击监听 */
-		public void onClickOKPop();
+		/** 购买点击监听 
+		 * @param skuStandard */
+		public void onClickOKPop(SkuStandard skuStandard);
+
+		public void onClickDissmissPop();
 	}
 
 	/** 绑定监听 */
@@ -164,7 +194,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 
 	/** 关闭popupWindow */
 	public void dissmiss() {
-		listener.onClickOKPop();
+		listener.onClickDissmissPop();
+		
 		popupWindow.dismiss();
 	}
 
@@ -177,13 +208,13 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 		switch (v.getId()) {
 
 		case R.id.pop_add:
-			if (!pop_num.getText().toString().equals("750")) {
+			if (!pop_num.getText().toString().equals("50")) {
 
 				String num_add = Integer.valueOf(pop_num.getText().toString())
 						+ ADDORREDUCE + "";
 				pop_num.setText(num_add);
 			} else {
-				Toast.makeText(context, "不能超过750", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "不能超过50", Toast.LENGTH_SHORT).show();
 			}
 
 			break;
@@ -197,18 +228,36 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 			}
 			break;
 		case R.id.pop_del:
-			listener.onClickOKPop();
+			//listener.onClickOKPop();
 			dissmiss();
 
 			break;
 		case R.id.pop_ok:
-			listener.onClickOKPop();
-			if (str_color.equals("")) {
-				Toast.makeText(context, "请选择颜色", Toast.LENGTH_SHORT).show();
-			} else if (str_type.equals("")) {
-				Toast.makeText(context, "请选择种类", Toast.LENGTH_SHORT).show();
-			} else {
-				HashMap<String, Object> allHashMap = new HashMap<String, Object>();
+			int skuPosition = -1;
+			int sku_id = -1;
+			String standard = null;
+			for(int j=0; j< skuInfo.size(); j++) {
+				if(standard == null){
+					standard = Constant.SKU_INFO[j];
+				}else{
+					standard = standard + Constant.SKU_INFO[j];
+				}
+				
+			};
+			for(int k=0; k<skuList.size(); k++){
+				if(skuList.get(k).getSku_id().equals(standard)){
+					skuPosition = k;
+					sku_id = skuList.get(k).getId();
+					Toast.makeText(context, "所选择规格："+skuList.get(k).getSku(), Toast.LENGTH_SHORT).show();
+					break;
+				}
+			}
+			if(sku_id == -1){
+				Toast.makeText(context, "请选择规格", Toast.LENGTH_SHORT).show();
+			}else {
+				skuList.get(skuPosition).setProduct_code(pop_num.getText().toString());
+				listener.onClickOKPop(skuList.get(skuPosition));
+				/*HashMap<String, Object> allHashMap = new HashMap<String, Object>();
 
 				allHashMap.put("color", str_color);
 				allHashMap.put("type", str_type);
@@ -216,7 +265,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener {
 				allHashMap.put("id", Constant.arrayList_cart_id += 1);
 
 				Constant.arrayList_cart.add(allHashMap);
-				setSaveData();
+				setSaveData();*/
 				dissmiss();
 
 			}

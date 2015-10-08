@@ -2,9 +2,30 @@ package com.itboye.banma.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.itboye.banma.R;
+import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.app.Constant;
+import com.itboye.banma.entity.ProductDetail;
+import com.itboye.banma.entity.SkuStandard;
+import com.itboye.banma.entity.ProductDetail.Sku_info;
+import com.itboye.banma.fragment.BabyCommentFragment;
+import com.itboye.banma.fragment.BabyDetailFragment;
+import com.itboye.banma.fragment.BabyParameterFragment;
+import com.itboye.banma.utils.BitmapCache;
+import com.itboye.banma.view.BabyPopWindow;
+import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
+import com.itboye.banma.view.HackyViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,7 +37,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,32 +45,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.itboye.banma.R;
-import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
-import com.itboye.banma.api.ApiClient;
-import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.entity.ProductDetail;
-import com.itboye.banma.entity.ProductDetail.Sku_info;
-import com.itboye.banma.fragment.BabyCommentFragment;
-import com.itboye.banma.fragment.BabyDetailFragment;
-import com.itboye.banma.fragment.BabyParameterFragment;
-import com.itboye.banma.shoppingcart.ShoppingCartActivity;
-import com.itboye.banma.utils.BitmapCache;
-import com.itboye.banma.view.BabyPopWindow;
-import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
-import com.itboye.banma.view.HackyViewPager;
+import android.widget.LinearLayout.LayoutParams;
 
 public class BabyActivity extends FragmentActivity implements OnItemClickListener, OnClickListener, StrUIDataListener {
 
@@ -90,16 +88,12 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	protected TextView one_title;
 	protected TextView two_title;
 	protected TextView three_title;
-	private ImageView ivCart;//购物车
 	private ViewPagerFragmentAdapter myAdapter;
 	private MyListener listener = new MyListener();
 	private BabyDetailFragment detailFragment;
-	private StrVolleyInterface networkHelper;
 	private BabyParameterFragment parameterFragment;
 	private BabyCommentFragment commentFragment;
 	private List<Sku_info> sku_info;  //商品类型参数
-	private int state;//定义几种状态用于表示volley传回的数据来自于哪里，购物车请求以上对应1
-								//商品详情请求为2，立即购买对应3
 	
 	
 	@Override
@@ -107,8 +101,6 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_babydetail_a);
 		appContext = (AppContext) getApplication();
-		networkHelper = new StrVolleyInterface(this);
-		networkHelper.setStrUIDataListener(this);
 		initView();
 		iniData();
 		
@@ -118,11 +110,13 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	 * 加载数据
 	 */
 	private void iniData() {
+		for(int i=0; i<Constant.SKU_INFO.length; i++){
+			Constant.SKU_INFO[i] = "";
+		}
 		strnetworkHelper = new StrVolleyInterface(BabyActivity.this);
 		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
 		try {
 			YesOrNo = appContext.getProductDetail(BabyActivity.this, 1, strnetworkHelper);
-			state=2;
 			if(!YesOrNo){   //如果没联网
 				Toast.makeText(BabyActivity.this, "请检查网络连接", Toast.LENGTH_SHORT)
 				.show();
@@ -162,11 +156,6 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 					}
 				});
 		((ImageView) findViewById(R.id.iv_back)).setOnClickListener(this);
-		
-		ivCart=(ImageView)findViewById(R.id.more);
-		ivCart.setVisibility(View.VISIBLE);
-		ivCart.setOnClickListener(this);
-		
 		put_in = (Button) findViewById(R.id.put_in);
 		put_in.setOnClickListener(this);
 		buy_now = (Button) findViewById(R.id.buy_now);
@@ -212,6 +201,8 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		case R.id.iv_back:
 			//返回
 			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 			break;
 		case R.id.put_in:
 			//加入购物ﳵ
@@ -225,17 +216,6 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			setBackgroundBlack(all_choice_layout, 0);
 			popWindow.showAsDropDown(view);
 			break;
-			case R.id.more:
-				state=1;
-				ApiClient.addCart(BabyActivity.this, productDetail.getUid()+"", productDetail.getStoreid()+"",
-						"1", "", "", productDetail.getIcon_url()+"", "1", productDetail.getName()+"", productDetail.getExpress()+"",
-						productDetail.getPrice()+"", productDetail.getOri_price()+"","", networkHelper);
-				startActivity(new Intent(BabyActivity.this,ShoppingCartActivity.class));
-				overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
-				break;
-         	default:
-				break;
 		}
 	}
 	
@@ -343,21 +323,21 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	//购买按钮监听
 	@Override
-	public void onClickOKPop() {
+	public void onClickOKPop(SkuStandard skuStandard) {
 		setBackgroundBlack(all_choice_layout, 1);
-
 		if (isClickBuy) {
-			state=3;
-			//跳转到购买页面
-			/*Intent intent = new Intent(BabyActivity.this, BuynowActivity.class);
-			startActivity(intent);*/
+			//跳转到订单确认页面
+			Intent intent = new Intent(BabyActivity.this, ConfirmOrderActivity.class);
+			intent.putExtra("SkuStandard", skuStandard);
+			intent.putExtra("main_img",productDetail.getMain_img());
+			intent.putExtra("name",productDetail.getName());
+			intent.putExtra("price",productDetail.getPrice());
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
 		}else {
-			//请求添加购物车
-				//SharedPreferences sp=getSharedPreferences("", mode),从sp取出popwindow的数据
-//			state=1;
-//				ApiClient.addCart(BabyActivity.this, productDetail.getUid()+"", productDetail.getStoreid()+"",
-//						"1", "", "", productDetail.getIcon_url()+"", "1", productDetail.getName()+"", productDetail.getExpress()+"",
-//						productDetail.getPrice()+"", productDetail.getOri_price()+"","", networkHelper);
+			Toast.makeText(this, "添加购物车", Toast.LENGTH_SHORT).show();
+			
 		}
 	}
 	
@@ -399,58 +379,37 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	@Override
 	public void onDataChanged(String data) {
-		System.out.println("数据变化");
-		switch (state) {
-		case 2:
-			Gson gson = new Gson();
-			int code = -1;
-			String detail = null;
-			Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
-			try {
-				JSONObject jsonObject = new JSONObject(data);
-				code = jsonObject.getInt("code");
-				detail = jsonObject.getString("data");
-				System.out.println("data*****="+detail);
-				if(code == 0){
-					
-					productDetail = gson.fromJson(detail, ProductDetail.class);
-					imageList=productDetail.getImg().split(",");
-					sku_info = new ArrayList<ProductDetail.Sku_info>();
-					//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
-					sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
-							}.getType());
-					
-					updatePages();
-					System.out.println("商品详情*****="+productDetail.toString());
-				}} catch (JSONException e) {
-				e.printStackTrace();
+		Gson gson = new Gson();
+
+		int code = -1;
+		String detail = null;
+		Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
+		try {
+			JSONObject jsonObject = new JSONObject(data);
+			code = jsonObject.getInt("code");
+			detail = jsonObject.getString("data");
+			System.out.println("data*****="+detail);
+			if(code == 0){
+				
+				productDetail = gson.fromJson(detail, ProductDetail.class);
+				imageList=productDetail.getImg().split(",");
+				sku_info = new ArrayList<ProductDetail.Sku_info>();
+				//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
+				sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
+						}.getType());
+				
+				updatePages();
+				
+				System.out.println("商品详情*****="+productDetail.toString());
 			}
-			break;
-		case 1://来自购物车
-			int code1=-1;
-			JSONObject jsonObject1 = null;
-			String data1 = null;
-			try {System.out.println(data);
-				jsonObject1=new JSONObject(data);
-				 data1=jsonObject1.getString("data");
-				code1=jsonObject1.getInt("code");
-				if (code1==0) {
-					Toast.makeText(BabyActivity.this, "添加购物车"+jsonObject1.getString("data"), Toast.LENGTH_SHORT).show();
-				}
-				else {
-					System.out.println("数据变化3");
-					Log.v("购物车添加失败：", data1+"");
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-				System.out.println("数据变化4");
-				Log.v("exception", e.getMessage());
-				Log.v("购物车添加失败：",data1="");
-			}
-			break;
-		default:
-			break;
+			
+			
+			
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
+		
 	}
 
 	/**
@@ -470,7 +429,8 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		}
 		customs_duties.setText("免关税");
 		sales_area.setText(productDetail.getLoc_province()+productDetail.getLoc_city());
-		popWindow = new BabyPopWindow(this, sku_info, productDetail.getSkuInfo());
+		popWindow = new BabyPopWindow(this, sku_info, productDetail.getSkuInfo(), 
+				productDetail.getMain_img(), productDetail.getPrice(), productDetail.getQuantity(), productDetail.getSkuList());
 		popWindow.setOnItemClickListener(this);
 		initDetailPager();
 		wait_ll.setVisibility(View.GONE);
@@ -588,17 +548,17 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		case 0:
 			one_title.setTextColor(this.getResources().getColor(
 					R.color.white));
-			one_title.setBackgroundColor(this.getResources().getColor(R.color.red));
+			one_title.setBackgroundColor(this.getResources().getColor(R.color.slategray));
 			break;
 		case 1:
 			two_title.setTextColor(this.getResources().getColor(
 					R.color.white));
-			two_title.setBackgroundColor(this.getResources().getColor(R.color.red));
+			two_title.setBackgroundColor(this.getResources().getColor(R.color.slategray));
 			break;
 		case 2:
 			three_title.setTextColor(this.getResources().getColor(
 					R.color.white));
-			three_title.setBackgroundColor(this.getResources().getColor(R.color.red));
+			three_title.setBackgroundColor(this.getResources().getColor(R.color.slategray));
 			break;
 		}
 		
@@ -620,6 +580,11 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			resetViewPagerHeight(0);
 		}
 
+	}
+
+	@Override
+	public void onClickDissmissPop() {
+		setBackgroundBlack(all_choice_layout, 1);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itboye.banma.R;
+import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.ProductDetail.Sku_info;
 import com.itboye.banma.entity.SkuInfo;
 import com.itboye.banma.entity.SkuInfo.MapValue;
@@ -26,16 +27,18 @@ import android.widget.TextView;
 public class MyGridAdapter extends BaseAdapter {
 	private Context mContext;
 	private int state = -1;
+	private int i;
 	private SkuInfo skuInfo;
 	private Map<String, MapValue> value;
 	private Sku_info sku_info;
 	/*public String[] img_text = { "型号000", "型号111", "型号222", "型号333", "型号444", "型号555",
 			"型号666"};*/
-	public MyGridAdapter(Context mContext, Sku_info sku_info, SkuInfo skuInfo) {
+	public MyGridAdapter(Context mContext, Sku_info sku_info, SkuInfo skuInfo, int i) {
 		super();
 		this.mContext = mContext;
 		this.skuInfo = skuInfo;
 		this.sku_info = sku_info;
+		this.i = i;
 		value = skuInfo.getValue();
 	}
 
@@ -87,6 +90,7 @@ public class MyGridAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				notifyDataSetChanged();
 				state = position;
+				Constant.SKU_INFO[i] = skuInfo.getKey() + ":" + value.get(sku_info.getVid()[position]).getKey()+";";
 				//tv.setBackgroundResource(R.drawable.yuanjiao_choice);
 			}
 		});

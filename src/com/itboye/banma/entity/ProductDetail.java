@@ -1,13 +1,7 @@
 package com.itboye.banma.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import android.R.integer;
-import android.widget.ListView;
-
-import com.itboye.banma.R.string;
 
 public class ProductDetail {
 	private int id;                     //商品ID
@@ -41,6 +35,7 @@ public class ProductDetail {
 	private String properties;			//商品属性
 	private String img;					//商品图片
 	private String[] detail;					//商品详情
+	private List<SkuStandard> skuList;
 	
 	private String icon_url;				//多规格颜色对应的图片
 	private Map<String, SkuInfo> skuInfo;   //商品型号
@@ -252,6 +247,13 @@ public class ProductDetail {
 	}
 	public void setSku_info(String sku_info) {
 		this.sku_info = sku_info;
+	}
+
+	public List<SkuStandard> getSkuList() {
+		return skuList;
+	}
+	public void setSkuList(List<SkuStandard> skuList) {
+		this.skuList = skuList;
 	}
 	/*public List<Sku_info> getSku_info() {
 		return sku_info;
