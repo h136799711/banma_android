@@ -220,4 +220,23 @@ public class AppContext extends Application {
 			return false;
 		}	
 	}
+	
+	/**
+	 * 获取购物车列表
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean getCartListByPage(Context mContext, int Uid, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getCartListByPage(mContext, Uid, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
 }

@@ -24,7 +24,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/top_bar_back" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/more"
             android:layout_width="30dp"
             android:layout_height="30dp"

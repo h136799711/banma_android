@@ -84,6 +84,8 @@ private StrVolleyInterface networkHelper;
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 		}
 	};
 	

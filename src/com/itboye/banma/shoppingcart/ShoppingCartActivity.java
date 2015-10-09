@@ -1,5 +1,12 @@
 package com.itboye.banma.shoppingcart;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +19,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.android.volley.VolleyError;
+import com.google.gson.JsonArray;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.CenterActivity;
+import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface; 
 import com.itboye.banma.app.AppContext;
@@ -36,16 +46,36 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 	private Adapter_ListView_cart adapter;
 	private String str_del = "结算(0)";
 	private boolean[] is_choice;
+	private int RequestState=-1;//区分不同的请求返回 1.购物车删除。2.购物车修改。3.购物车分页查询
+												//4.单个查询。5.数量查询6.批量添加接口
+	private boolean Is_Internet;//是否联网
+	private  ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
 
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shopcart);
-		is_choice=new boolean[Constant.arrayList_cart.size()];
-		initView();
+		is_choice=new boolean[arrayList_cart.size()];
 		appContext = (AppContext) getApplication();
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
+		initData();
+		initView();
+
+	}
+
+	private void initData() {
+		// TODO Auto-generated method stub
+		try {
+			RequestState=4;
+			//Is_Internet=appContext.getCartListByPage(ShoppingCartActivity.this, appContext.getLoginUid(), networkHelper);
+			ApiClient.getCartListByPage(this, appContext.getLoginUid(), networkHelper);
+				Toast.makeText(ShoppingCartActivity.this, "请检查网络是否连接",Toast.LENGTH_SHORT).show();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void initView() {
@@ -74,13 +104,13 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 				int isChoice_all = 0;
 				if (arg1) {
 					// 设置全选
-					for (int i = 0; i < Constant.arrayList_cart.size(); i++) {
+					for (int i = 0; i < arrayList_cart.size(); i++) {
 						// 如果选中了全选，那么就将列表的每一行都选中
 						((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).setChecked(true);
 					}
 				} else {
 					// 设置全部取消
-					for (int i = 0; i < Constant.arrayList_cart.size(); i++) {
+					for (int i = 0; i < arrayList_cart.size(); i++) {
 						// 判断列表每一行是否处于选中状态，如果处于选中状态，则计数+1
 						if (((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).isChecked()) {
 							// 计算出列表选中状态的数量
@@ -88,9 +118,9 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 						}
 					}
 					// 判断列表选中数是否等于列表的总数，如果等于，那么就需要执行全部取消操作
-					if (isChoice_all == Constant.arrayList_cart.size()) {
+					if (isChoice_all == arrayList_cart.size()) {
 						// 如果没有选中了全选，那么就将列表的每一行都不选
-						for (int i = 0; i < Constant.arrayList_cart.size(); i++) {
+						for (int i = 0; i < arrayList_cart.size(); i++) {
 							// 列表每一行都取消
 							((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).setChecked(false);
 						}
@@ -104,8 +134,8 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 		ll_cart = (LinearLayout) this.findViewById(R.id.ll_cart);
 		listView_cart = (ListView) this.findViewById(R.id.listView_cart);
 		// 如果购物车中有数据，那么就显示数据，否则显示默认界面
-		if (Constant.arrayList_cart != null && Constant.arrayList_cart.size() != 0) {
-			adapter = new Adapter_ListView_cart(ShoppingCartActivity.this, Constant.arrayList_cart);
+		if (arrayList_cart != null && arrayList_cart.size() != 0) {
+			adapter = new Adapter_ListView_cart(ShoppingCartActivity.this, arrayList_cart);
 			adapter.setOnCheckedChanged(this);
 			listView_cart.setAdapter(adapter);
 			ll_cart.setVisibility(View.GONE);
@@ -145,18 +175,18 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 	public void getChoiceData(int position, boolean isChoice) {
 		//得到点击的哪一行
 		if (isChoice) {
-			if (Constant.arrayList_cart.size()!=0) {
+			if (arrayList_cart.size()!=0) {
 				//49表示商品的价格，这里偷了下懒，没有去动态获取商品价格
-				Constant.Allprice_cart += Float.valueOf(Constant.arrayList_cart.get(position).get("num").toString())*49;
+				Constant.Allprice_cart += Float.valueOf(arrayList_cart.get(position).get("num").toString())*49;
 			}
 		} else {
-			if (Constant.arrayList_cart.size()!=0) {
-				Constant.Allprice_cart -= Float.valueOf(Constant.arrayList_cart.get(position).get("num").toString())*49;
+			if (arrayList_cart.size()!=0) {
+				Constant.Allprice_cart -= Float.valueOf(arrayList_cart.get(position).get("num").toString())*49;
 			}
 		}
 		// 记录列表处于选中状态的数量
 		int num_choice = 0;
-		for (int i = 0; i < Constant.arrayList_cart.size(); i++) {
+		for (int i = 0; i < arrayList_cart.size(); i++) {
 			// 判断列表中每一行的选中状态，如果是选中，计数加1
 			if (null!=listView_cart.getChildAt(i)&&((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).isChecked()) {
 				// 列表处于选中状态的数量+1
@@ -165,7 +195,7 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 			}
 		}
 		// 判断列表中的CheckBox是否全部选择
-		if (num_choice == Constant.arrayList_cart.size()) {
+		if (num_choice == arrayList_cart.size()) {
 			// 如果选中的状态数量=列表的总数量，那么就将全选设置为选中
 			cb_cart_all.setChecked(true);
 		} else {
@@ -188,6 +218,44 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 	@Override
 	public void onDataChanged(String data) {
 		// TODO Auto-generated method stub
+		int code=-1;
+		JSONObject jsonObject = null;
+		try {
+			System.out.println(1);
+			 jsonObject=new JSONObject(data);
+			code=jsonObject.getInt("code");
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		switch (RequestState) {
+		case 4:
+			try {				
+				if (code==0) {
+					System.out.println(3);
+//					JSONArray jsonArray=new JSONArray(jsonObject.getString("data"));
+//					for (int i = 0; i < jsonArray.length(); i++) {
+//						JSONObject temp=(JSONObject) jsonArray.get(i);
+//						arrayList_cart.get(i).put("name", temp.getString("name"));
+//						arrayList_cart.get(i).put("count", temp.getString("count"));
+//						arrayList_cart.get(i).put("price",temp.getString("price"));
+//						arrayList_cart.get(i).put("sku_id", temp.getString("sku_id"));
+//						arrayList_cart.get(i).put("psku_id", temp.getString("psku_id"));
+//						arrayList_cart.get(i).put("sku_desc", temp.getString("sku_desc"));
+//					}
+//					Toast.makeText(this, jsonArray.toString(), Toast.LENGTH_SHORT).show();
+					System.out.println(jsonObject.get("data"));
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
+			}
+			break;
+
+		default:
+			break;
+		}
 		
 	}
 
@@ -197,6 +265,8 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 		switch (v.getId() ){
 		case R.id.iv_back:
 			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 			break;
 
 		default:

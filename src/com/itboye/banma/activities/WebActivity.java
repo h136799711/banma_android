@@ -66,6 +66,8 @@ public class WebActivity  extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finish();;//结束当前webview Activity
+				overridePendingTransition(R.anim.push_right_in,
+						R.anim.push_right_out);
 			}
 		});
     }

@@ -169,6 +169,8 @@ public class MorePersonal extends Activity implements OnClickListener{
 			break;
 		case R.id.iv_back:
 			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 			break;
 		case R.id.rl_username:
 			if (appContext.isLogin()) {

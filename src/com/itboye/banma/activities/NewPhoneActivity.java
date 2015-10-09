@@ -87,6 +87,8 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 		break;
 		case R.id.iv_back:
 			NewPhoneActivity.this.finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 			break;
 
 		default:

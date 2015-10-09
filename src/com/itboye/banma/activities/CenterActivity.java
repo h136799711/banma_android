@@ -92,6 +92,8 @@ public class CenterActivity extends Activity implements OnClickListener{
 			
 		case R.id.iv_back:
 			CenterActivity.this.finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 			break;
 		case R.id.rl_more:
 		//	if (appContext.isLogin()) {

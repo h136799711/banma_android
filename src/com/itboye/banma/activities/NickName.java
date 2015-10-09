@@ -47,6 +47,8 @@ public class NickName extends Activity implements StrUIDataListener {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finish();
+				overridePendingTransition(R.anim.push_right_in,
+						R.anim.push_right_out);
 			}
 		});
 		
@@ -95,6 +97,8 @@ public class NickName extends Activity implements StrUIDataListener {
 				intent.putExtra("nickName", tvNickName.getText().toString());
 				NickName.this.setResult(0,intent);
 				finish();
+				overridePendingTransition(R.anim.push_right_in,
+						R.anim.push_right_out);
 	     	}else {
 	     		Toast.makeText(NickName.this, "修改失败", Toast.LENGTH_SHORT).show();
 			}

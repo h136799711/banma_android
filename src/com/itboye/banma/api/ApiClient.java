@@ -54,18 +54,18 @@ public class ApiClient {
 				String url = Constant.URL+"/ShoppingCart/add?access_token="+access_token;
 				Map<String,String> params = new HashMap<String, String>();
 				//params.put("access_token", access_token);
-		        params.put("uid",uid);  
-		        params.put("store_id",store_id);
-		        params.put("p_id", p_id);
-		        params.put("sku_id", sku_id);
-		        params.put("sku_desc",sku_desc); 
-		        params.put("icon_url",icon_url);
-		        params.put("count",count);  
-		        params.put("name",name);
-		        params.put("express", express);
-		        params.put("price", price);
-		        params.put("ori_price", ori_price);
-		        params.put("psku_id", psku_id);
+		        params.put("uid",uid+"");  
+		        params.put("store_id",store_id+"");
+		        params.put("p_id", p_id+"");
+		        params.put("sku_id", sku_id+"");
+		        params.put("sku_desc",sku_desc+""); 
+		        params.put("icon_url",icon_url+"");
+		        params.put("count",count+"");  
+		        params.put("name",name+"");
+		        params.put("express", express+"");
+		        params.put("price", price+"");
+		        params.put("ori_price", ori_price+"");
+		        params.put("psku_id", psku_id+"");
 		        VolleyRequest.StrRequestPost(context, url, "addCart",params, networkHelper);
 			}
 	
@@ -231,5 +231,15 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("pid",""+id);
 		VolleyRequest.StrRequestPost(mContext, url, "getProductDetail",params, networkHelper);
+	}
+//获得购物车数据
+	public static void getCartListByPage(Context mContext, int uid,
+			StrVolleyInterface networkHelper) {
+		// TODO Auto-generated method stub
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/ShoppingCart/query?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+uid);
+		VolleyRequest.StrRequestPost(mContext, url, "getCardListByPage",params, networkHelper);
 	}
 }

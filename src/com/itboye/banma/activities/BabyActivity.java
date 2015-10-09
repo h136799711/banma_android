@@ -2,32 +2,14 @@ package com.itboye.banma.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.itboye.banma.R;
-import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
-import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.app.Constant;
-import com.itboye.banma.entity.ProductDetail;
-import com.itboye.banma.entity.SkuStandard;
-import com.itboye.banma.entity.ProductDetail.Sku_info;
-import com.itboye.banma.fragment.BabyCommentFragment;
-import com.itboye.banma.fragment.BabyDetailFragment;
-import com.itboye.banma.fragment.BabyParameterFragment;
-import com.itboye.banma.utils.BitmapCache;
-import com.itboye.banma.view.BabyPopWindow;
-import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
-import com.itboye.banma.view.HackyViewPager;
-
+import android.R.integer;
+import android.R.string;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.nfc.NfcAdapter;
@@ -43,12 +25,37 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
+
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.itboye.banma.R;
+import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
+import com.itboye.banma.api.ApiClient;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.app.Constant;
+import com.itboye.banma.entity.ProductDetail;
+import com.itboye.banma.entity.ProductDetail.Sku_info;
+import com.itboye.banma.entity.SkuStandard;
+import com.itboye.banma.fragment.BabyCommentFragment;
+import com.itboye.banma.fragment.BabyDetailFragment;
+import com.itboye.banma.fragment.BabyParameterFragment;
+import com.itboye.banma.shoppingcart.ShoppingCartActivity;
+import com.itboye.banma.utils.BitmapCache;
+import com.itboye.banma.view.BabyPopWindow;
+import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
+import com.itboye.banma.view.HackyViewPager;
 
 public class BabyActivity extends FragmentActivity implements OnItemClickListener, OnClickListener, StrUIDataListener {
 
@@ -78,6 +85,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private ImageView retry_img;
 	private LinearLayout baby_detail;
 	private LinearLayout button_lay;
+	private ImageButton ib_more;
 	private LinearLayout all_choice_layout = null;
 	boolean isClickBuy = false;
 	private int position=0;
@@ -94,6 +102,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private BabyParameterFragment parameterFragment;
 	private BabyCommentFragment commentFragment;
 	private List<Sku_info> sku_info;  //商品类型参数
+	private int  requestState=0;//判断哪个请求返回的结果 1表示加入购物车请求
 	
 	
 	@Override
@@ -127,7 +136,6 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 				button_lay.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 		
@@ -155,6 +163,10 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 						}
 					}
 				});
+	     ib_more=(ImageButton)findViewById(R.id.more);
+	     ib_more.setOnClickListener(this);
+	     ib_more.setVisibility(View.VISIBLE);
+	     
 		((ImageView) findViewById(R.id.iv_back)).setOnClickListener(this);
 		put_in = (Button) findViewById(R.id.put_in);
 		put_in.setOnClickListener(this);
@@ -203,6 +215,17 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
+			break;
+		case R.id.more:
+			//点击购物车
+		//	if (appContext.isLogin()) {
+				startActivity(new Intent(BabyActivity.this,ShoppingCartActivity.class));
+				overridePendingTransition(R.anim.push_left_in,
+						R.anim.push_left_out);
+		//	}else {
+		//		Toast.makeText(BabyActivity.this, "请先登录", Toast.LENGTH_LONG).show();
+	//		}
+		
 			break;
 		case R.id.put_in:
 			//加入购物ﳵ
@@ -336,8 +359,26 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			overridePendingTransition(R.anim.in_from_right,
 					R.anim.out_to_left);
 		}else {
-			Toast.makeText(this, "添加购物车", Toast.LENGTH_SHORT).show();
+//			Gson gson=new Gson();
+//			String s=gson.toJson(skuStandard);
+//			System.out.println(s);
+//			System.out.println(productDetail.getMain_img());
+//			System.out.println(productDetail.getName());
+//			System.out.println(productDetail.getPrice());
 			
+			if (appContext.isLogin()) {
+				requestState=1;
+				ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()+"", productDetail.getStoreid()+"", 
+						productDetail.getId()+"", skuStandard.getSku_id()+"", skuStandard.getSku(), skuStandard.getIcon_url(), 
+						skuStandard.getProduct_code(), productDetail.getName(), productDetail.getExpress(), productDetail.getPrice()+"",
+						productDetail.getOri_price()+"", skuStandard.getId()+"", strnetworkHelper);
+			}
+			else {
+				Toast.makeText(BabyActivity.this, "请先登录", Toast.LENGTH_LONG).show();
+				startActivity(new Intent(BabyActivity.this,LoginActivity.class));
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}
 		}
 	}
 	
@@ -379,37 +420,48 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	@Override
 	public void onDataChanged(String data) {
-		Gson gson = new Gson();
-
-		int code = -1;
-		String detail = null;
-		Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
-		try {
-			JSONObject jsonObject = new JSONObject(data);
-			code = jsonObject.getInt("code");
-			detail = jsonObject.getString("data");
-			System.out.println("data*****="+detail);
-			if(code == 0){
-				
-				productDetail = gson.fromJson(detail, ProductDetail.class);
-				imageList=productDetail.getImg().split(",");
-				sku_info = new ArrayList<ProductDetail.Sku_info>();
-				//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
-				sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
-						}.getType());
-				
-				updatePages();
-				
-				System.out.println("商品详情*****="+productDetail.toString());
-			}
-			
-			
-			
-			
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 		
+		if (requestState==1) {
+			int code1=-1;
+			try {
+				JSONObject jsonObject=new JSONObject(data);
+				code1=jsonObject.getInt("code");
+				if (code1==0) {
+					Toast.makeText(this, "添加购物车成功", Toast.LENGTH_SHORT).show();
+					System.out.println(jsonObject.getString("data")+"成功了");
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
+			}
+		}else {
+			Gson gson = new Gson();
+			int code = -1;
+			String detail = null;
+			Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
+			try {
+				JSONObject jsonObject = new JSONObject(data);
+				code = jsonObject.getInt("code");
+				detail = jsonObject.getString("data");
+				System.out.println("data*****="+detail);
+				if(code == 0){
+					
+					productDetail = gson.fromJson(detail, ProductDetail.class);
+					imageList=productDetail.getImg().split(",");
+					sku_info = new ArrayList<ProductDetail.Sku_info>();
+					//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
+					sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
+							}.getType());
+					
+					updatePages();
+					
+					System.out.println("商品详情*****="+productDetail.toString());
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
