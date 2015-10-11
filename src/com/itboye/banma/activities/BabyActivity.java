@@ -423,6 +423,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		
 		if (requestState==1) {
 			int code1=-1;
+			requestState=0;
 			try {
 				JSONObject jsonObject=new JSONObject(data);
 				code1=jsonObject.getInt("code");

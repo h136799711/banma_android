@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name="noties">温馨提示：根据海关规定需要验证物品收件人的身份证信息，错误信息将导致包裹被卡关，请务......</string>
     <string name="app_name">斑马</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

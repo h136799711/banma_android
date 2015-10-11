@@ -23,7 +23,7 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 
 public class NickName extends Activity implements StrUIDataListener {
-	private TextView tvNickName;//昵称
+	private TextView tvNickName;//昵称t
 	private Button btnXiuGai;//修改按钮
 	private TextView tvTitle;//top中textview
 	private ImageView ivBack;
@@ -57,7 +57,7 @@ public class NickName extends Activity implements StrUIDataListener {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				ApiClient.modifyPersonal(NickName.this,appContext.getLoginUid()+"", "" , "", "", "", "", "", "", "", "", networkHelper);
+				ApiClient.modifyPersonal(NickName.this,appContext.getLoginUid()+"", "",tvNickName.getText().toString(), "", "", "", "", "", "", "", networkHelper);
 				dialog.setMessage("正在修改个人信息");
 		        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 				dialog.show();
@@ -70,6 +70,9 @@ public class NickName extends Activity implements StrUIDataListener {
 		tvTitle=(TextView)findViewById(R.id.title);
 		tvTitle.setText("昵称修改");
 		tvNickName=(TextView)findViewById(R.id.tv_nickname);
+		Intent intent=getIntent();
+		String name=intent.getStringExtra("nickname");
+		tvNickName.setText(name);
 		btnXiuGai=(Button)findViewById(R.id.btn_xiugai);
 	}
 	@Override

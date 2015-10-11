@@ -36,7 +36,8 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_newphone);networkHelper = new StrVolleyInterface(this);
+		setContentView(R.layout.activity_newphone);
+		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
 		initId();
 		sp=  this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  

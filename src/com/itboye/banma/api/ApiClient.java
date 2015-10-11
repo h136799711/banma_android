@@ -98,6 +98,7 @@ public class ApiClient {
 	public static void forgetPassword(Context context,String username,String password,String  code, StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/User/updatePsw?access_token="+access_token+"";
+		System.out.println(url);
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		Log.v("用户名", username);

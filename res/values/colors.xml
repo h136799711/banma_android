@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color  name="mingpianbackground">#FF4466</color>
     <color name="greendenglu">#50C061</color>
 	<color name="titlebar">#F5355E</color>
 	<color  name="backgroundgray">#EFEFF4</color>
 	<!-- actionbar 位置颜色 -->
-	<color name="main_layout">#F0EFF5</color>
+	<color name="main_layout">#EFEFF4</color>
 	<!-- 界面主颜色 -->
     <color name="white">#ffffff</color>
     <!-- 白色 -->

@@ -7,6 +7,7 @@ package com.itboye.banma.entity;
 public class User {
 	private int id;
 	private String username;
+	private String password;
 	private String email;
 	private String mobile;
 	private String realname;
@@ -22,6 +23,13 @@ public class User {
 	private String reg_time;
 	private String last_login_ip;
 	private String qq;
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public int getId() {
 		return id;
 	}

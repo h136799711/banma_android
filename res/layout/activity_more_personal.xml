@@ -16,10 +16,12 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:fillViewport="true">
+
       <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:orientation="vertical">
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical" >
+
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
@@ -50,7 +52,6 @@
              android:layout_marginRight="-10dp"
              android:layout_centerVertical="true"
              android:layout_alignParentRight="true"    />
-
      </RelativeLayout>
 
         <View  style="@style/CenterLine"/>
@@ -105,7 +106,25 @@
              <TextView  style="@style/more_text_right"
                  android:id="@+id/tv_bangding"
                 android:text=""
-                android:textColor="@color/lightblue"/>
+                android:textColor="@color/blue"/>
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
+         <View  style="@style/CenterLine"/>
+         <RelativeLayout
+             android:id="@+id/rl_shengfenzheng"
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="实名认证" />
+             <TextView  style="@style/more_text_right"
+                 android:id="@+id/tv_renzhen"
+                android:text=""
+                android:textColor="@color/blue"/>
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
@@ -231,7 +250,7 @@
                android:layout_height="@dimen/more_item_mainheight"
                android:layout_alignParentBottom="true"
                android:layout_alignParentLeft="true"
-               android:background="@color/lightskyblue"
+               android:background="@color/mingpianbackground"
                android:text="退出登录"
              android:textSize="@dimen/small_middle_text_size" /> 
 </RelativeLayout>

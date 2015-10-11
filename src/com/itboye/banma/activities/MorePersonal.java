@@ -38,23 +38,28 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.itboye.banma.R;
+import com.itboye.banma.api.ApiClient;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.util.ChoosePictureDialog;
 import com.itboye.banma.utils.MultiPartStringRequest;
 import com.itboye.banma.welcome.WelcomeActivity;
 
-public class MorePersonal extends Activity implements OnClickListener{
+public class MorePersonal extends Activity implements OnClickListener,StrUIDataListener{
 	private static final int PHOTO_REQUEST_CAMERA = 1;// 拍照
 	private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
 	private static final int PHOTO_REQUEST_CUT = 3;// 结果
 	private static final int FROM_NEWPHONE=4;//从newphone取得的结果
 	private static final int FROM_NICK=0;//从nick中获得的
 	static RequestQueue mSingleQueue;
-	
 	private AppContext appContext;
+	
+	private StrVolleyInterface networkHelper;
 	private TextView tvUserName;//用户昵称
 	private TextView tvPhoneNumber;//用户手机号
+	private TextView tvRenZhen;//实名认证
 	//private RelativeLayout rlPersonalMian;//该界面的总布局控制
 	private ImageView ivBack;//返回按钮
 	private TextView tvWeiXin;//微信
@@ -66,6 +71,9 @@ public class MorePersonal extends Activity implements OnClickListener{
 	private RelativeLayout rlPhoneNumber;//用户手机号布局
 	private TextView tvTelephone;//拨打电话
 	private Button btExit;//退出登陆按钮
+	private RelativeLayout rlPersonMain;//总布局
+	private RelativeLayout rlShengFenZheng;//绑定身份证
+	private int FLAG=0;//区分返回请求数据
 	
 	/* 头像名称 */
 	private static final String PHOTO_FILE_NAME = "image.jpg";
@@ -86,6 +94,8 @@ public class MorePersonal extends Activity implements OnClickListener{
 		//mSingleQueue = Volley.newRequestQueue(this, new MultiPartStack());
 		mSingleQueue=AppContext.queues;
 		appContext=(AppContext) getApplication();
+		networkHelper = new StrVolleyInterface(this);
+		networkHelper.setStrUIDataListener(this);
 		initID();
 		initData();
 		rlHead.setOnClickListener(this);
@@ -98,10 +108,16 @@ public class MorePersonal extends Activity implements OnClickListener{
 		tvPhoneNumber.setOnClickListener(this);
 		btExit.setOnClickListener(this);
 		rlPhoneNumber.setOnClickListener(this);
+		rlPersonMain.setOnClickListener(this);
+		tvRenZhen.setOnClickListener(this);;
+		rlShengFenZheng.setOnClickListener(this);
 	}
 	
 	
 	private void initID(){
+		rlShengFenZheng=(RelativeLayout)findViewById(R.id.rl_shengfenzheng);
+		tvRenZhen=(TextView)findViewById(R.id.tv_renzhen);
+		rlPersonMain=(RelativeLayout)findViewById(R.id.rl_person_main);
 		tvTelephone=(TextView)findViewById(R.id.tv_telephone);
 		rlCallServer=(RelativeLayout)findViewById(R.id.rl_call_server);
 		rlAboutBanMa=(RelativeLayout)findViewById(R.id.rl_aboutbanma);
@@ -132,27 +148,11 @@ public class MorePersonal extends Activity implements OnClickListener{
 	private void initData(){
 		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
 		if (appContext.isLogin()) {
-		/*String number=sp.getString(Constant.MY_ACCOUNT, "");
-		if (number!="") {
-			//隐藏中间几位
-				String newString=number.substring(0,3)+"****"+number.substring(7, 11);
-		     	tvPhoneNumber.setText(newString);
-		    }*/
-			String number=sp.getString(Constant.MY_BANGDING, "");
-			if (sp.getString(Constant.MY_BANGDING, "")!="") {
-				String newString=number.substring(0,3)+"****"+number.substring(7, 11);
-				tvPhoneNumber.setText(newString);
-			}else  {
-				String oldNumber=sp.getString(Constant.MY_ACCOUNT, "");
-				String newString=oldNumber.substring(0,3)+"****"+oldNumber.substring(7, 11);
-				tvPhoneNumber.setText(newString);
-			}
-			if (sp.getString(Constant.WEIXIN, "")!="") {
-				//显示已绑定状态
-			}else {
-				tvWeiXin.setText("未绑定");
-				tvWeiXin.setTextColor(R.color.lightblue);
-			}
+			String number=sp.getString(Constant.MY_ACCOUNT, "");
+			String psw=sp.getString(Constant.MY_PASSWORD, "");
+			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
+																															//请求用户头像数据
+			
 		}
 	}
 	
@@ -174,38 +174,65 @@ public class MorePersonal extends Activity implements OnClickListener{
 			break;
 		case R.id.rl_username:
 			if (appContext.isLogin()) {
-				startActivityForResult(new Intent(MorePersonal.this,NickName.class),FROM_NICK);
+				Intent intent=new Intent(MorePersonal.this,NickName.class);
+				intent.putExtra("nickname", tvUserName.getText());
+				startActivityForResult(intent,FROM_NICK);
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
 			}
 			break;
 		case R.id.rl_welcome:
 			startActivity(new Intent(MorePersonal.this,WelcomeActivity.class));
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
 			break;
 		case R.id.rl_tiaokuan:
 			String url="http://banma.itboye.com/Public/html/copyright.html";
 			Intent intent=new Intent(MorePersonal.this,WebActivity.class);
 			intent.putExtra("Url", url);
 			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
 			break;
 		case R.id.rl_aboutbanma:
 			String url1="http://banma.itboye.com/Public/html/about.html";
 			Intent intent1=new Intent(MorePersonal.this,WebActivity.class);
 			intent1.putExtra("Url", url1);
 			startActivity(intent1);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
 			break;
 		case R.id.rl_call_server:
 			 Intent phoneIntent = new Intent("android.intent.action.CALL", 
 		             Uri.parse("tel:" + tvTelephone.getText().toString())); 
 			startActivity(phoneIntent);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
 			break;
 		case  R.id.rl_phone_number_:
-			Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
-			newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
-			startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
+			if (appContext.isLogin()) {
+				Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
+				newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
+				startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}
 		break;
+		
 		case R.id.btn_exit:
 			sp.edit().clear().commit();//清空所有sp中的数据
 			appContext.setLogin(false);
 			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
+			break;
+			
+		case R.id.rl_shengfenzheng:
+			if (appContext.isLogin()) {
+				startActivity(new Intent(MorePersonal.this,ShengFenActivity.class));
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}		
 			break;
 			
 		default:
@@ -323,8 +350,8 @@ public class MorePersonal extends Activity implements OnClickListener{
 		params.put("type","avatar");
 
 		String uri =Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
-	//	addPutUploadFileRequest(
-		//		uri,files, params, mResonseListenerString, mErrorListener, null);
+	    addPutUploadFileRequest(
+				uri,files, params, mResonseListenerString, mErrorListener, null);
 	}
 	
 	public static Bitmap getLoacalBitmap(String url) {
@@ -420,7 +447,7 @@ public class MorePersonal extends Activity implements OnClickListener{
 		}
 	};
 
-	/*public static void addPutUploadFileRequest(final String url,
+	public static void addPutUploadFileRequest(final String url,
 			final Map<String, File> files, final Map<String, String> params,
 			final Listener<String> responseListener, final ErrorListener errorListener,
 			final Object tag) {
@@ -444,5 +471,73 @@ public class MorePersonal extends Activity implements OnClickListener{
 		};
 
 		mSingleQueue.add(multiPartRequest);
-	}*/
+	}
+
+
+	@Override
+	public void onErrorHappened(VolleyError error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onDataChanged(String data) {
+		// TODO Auto-generated method stub
+		JSONObject jsonObject=null;
+		int code = -1;
+		String content = null;
+		JSONObject jsonObject2=null;
+		String nickname = null;
+		String phoneNumber=null;
+		String weiXin=null;
+		String renZheng=null;
+		try {
+			jsonObject = new JSONObject(data);
+			code = jsonObject.getInt("code");
+			content = jsonObject.getString("data");
+			jsonObject2=new JSONObject(content);
+			nickname=jsonObject2.getString("nickname");
+			phoneNumber=jsonObject2.getString("mobile");
+			weiXin=jsonObject2.getString("weixin_bind");
+			renZheng=jsonObject2.getString("idnumber");
+			System.out.println(phoneNumber);
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		if (code == 0) {
+				Log.v("登陆数据",content);
+				if (appContext.isLogin()) {
+					tvUserName.setText(nickname);
+					
+					String newString=phoneNumber.substring(0,3)+"****"+phoneNumber.substring(7, 11);
+					tvPhoneNumber.setText(newString);
+					
+					if (weiXin.equals("0")) {
+						tvWeiXin.setText("未绑定");
+					}else {
+						tvWeiXin.setText("已绑定");
+					}
+					if (renZheng.equals("")) {
+						tvRenZhen.setText("未认证");
+					}else {
+						tvRenZhen.setText("已认证");
+					}
+				}
+	     	}else {
+	     		Toast.makeText(MorePersonal.this, "查询数据失败", Toast.LENGTH_SHORT).show();
+			}
+		}
+	@Override 
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
+		if (appContext.isLogin()) {
+			String number=sp.getString(Constant.MY_ACCOUNT, "");
+			String psw=sp.getString(Constant.MY_PASSWORD, "");
+			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
+																															//请求用户头像数据
+		}
+	}
 }

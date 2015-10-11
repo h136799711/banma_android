@@ -27,6 +27,7 @@ public class AppContext extends Application {
 	private static  int loginUid = 0; // 登录用户的id
 	public static String access_token; //访问令牌 
 	public static RequestQueue queues;  //volley请求队列
+	public String password;//登陆密码
 	public static String pathHeadImage;//头像存储路径
 	public static  boolean hasHead=false;//是否已经设置头像
 	
@@ -70,7 +71,13 @@ public class AppContext extends Application {
 		this.loginUid = loginUid;
 	}
 
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public static RequestQueue getHttpQueues() {
 		return queues;

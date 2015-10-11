@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_layout"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/rl_padding"
+        android:layout_marginRight="@dimen/rl_padding"
+        android:layout_marginTop="10dp"
+        android:text="@string/noties"
+        android:textSize="@dimen/text_size_12" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="@dimen/rl_padding"
+        android:layout_marginRight="@dimen/rl_padding"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.06"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/et_padding"
+            android:layout_marginRight="@dimen/et_padding"
+            android:layout_marginTop="30dp"
+            android:text="你的姓名"
+            android:textColor="@color/tomato"
+            android:textSize="@dimen/text_size_16" />
+
+        <EditText
+            android:id="@+id/et_true_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView1"
+            android:layout_marginLeft="@dimen/et_padding"
+            android:layout_marginRight="@dimen/et_padding"
+            android:layout_marginTop="5dp"
+            android:hint="请输入您的真实姓名"
+            android:textSize="@dimen/text_size_13" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_true_name"
+            android:layout_marginLeft="@dimen/et_padding"
+            android:layout_marginRight="@dimen/et_padding"
+            android:layout_marginTop="5dp"
+            android:text="身份证号"
+            android:textColor="@color/tomato"
+            android:textSize="@dimen/text_size_16" />
+
+        <EditText
+            android:id="@+id/et_shenfen_number"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:layout_marginLeft="@dimen/et_padding"
+            android:layout_marginRight="@dimen/et_padding"
+            android:layout_marginTop="5dp"
+            android:hint="请输入真实身份证号"
+            android:textSize="@dimen/text_size_13" />
+
+        <Button
+            android:id="@+id/btn_sub_shenfen"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/et_shenfen_number"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_home_but"
+            android:clickable="false"
+            android:text="提交信息"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14" />
+    </RelativeLayout>
+
+</LinearLayout>

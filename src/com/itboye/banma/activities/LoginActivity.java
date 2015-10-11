@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -30,8 +29,6 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
-import com.itboye.banma.util.AESEncryptor;
-import com.itboye.banma.utils.SharedConfig;
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
@@ -176,6 +173,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			User user = gson.fromJson(content, User.class);
 			appContext.setLogin(true);
 			appContext.setLoginUid(user.getId());
+			appContext.setPassword(user.getPassword());
 			Log.v("用户id", user.getId()+"");
 		    String use = etName.getText().toString();   
 		    String pas = etPassword.getText().toString(); 

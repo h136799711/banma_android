@@ -109,7 +109,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
 		Log.v("注册接口",error.toString());
-		Toast.makeText(PasswordActivity.this, "验证密码请求发生异常，请重新尝试" , Toast.LENGTH_LONG)
+		Toast.makeText(PasswordActivity.this, "验证密码请求发生异常，请重新尝试"+error.toString() , Toast.LENGTH_LONG)
 		.show();
 	}
 
@@ -132,9 +132,11 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			switch (state) {
 			case 1:
 				Toast.makeText(PasswordActivity.this, "注册成功" , Toast.LENGTH_LONG).show();
+				state=0;
 				break;
 			case 2:
 				Toast.makeText(PasswordActivity.this, "密码更新成功" , Toast.LENGTH_LONG).show();
+				state=0;
 				break;
 			case 3:
 				break;

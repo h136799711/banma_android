@@ -33,7 +33,7 @@ private String checkcode=null;//验证码内容
 private String forgetFlag=null;//忘记密码intent标记
 private TextView tvRegist;//注册titlebar
 private LinearLayout llTiaoKuan;//条款总布局
-public  int  Flags;//定义状态常量，用于表示几种验证码校验接口，对应是1 用户注册 2 忘记密码3 旧手机验证
+public  int  Flags=0;//定义状态常量，用于表示几种验证码校验接口，对应是1 用户注册 2 忘记密码3 旧手机验证
 //4 新手机绑定
 String tempCode=null;//临时存储code
 private Intent intent;
@@ -171,6 +171,7 @@ private OnClickListener urlOnClick =new OnClickListener() {
 				Intent nextIntent=new Intent(RegistActivity.this,PasswordActivity.class);
 				nextIntent.putExtra("username", edPhoneNumber.getText().toString());
 				nextIntent.putExtra("Flags", Flags);
+				Flags=0;
 				startActivity(nextIntent);
 			}else {
 				edCheckCode.setText(checkcode);
