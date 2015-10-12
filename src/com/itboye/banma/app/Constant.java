@@ -18,6 +18,8 @@ public class Constant {
     public static final String WEIXIN="WEIXIN";//微信是否绑定
     
     public static final String[] SKU_INFO = {"","","","","",""};
+    public static int SKU_ALLNUM = 0;  //规格总种类
+    public static int SKU_NUM = 0;   //所选规格数
 
     public static int arrayList_cart_id=0;
 	public static ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();

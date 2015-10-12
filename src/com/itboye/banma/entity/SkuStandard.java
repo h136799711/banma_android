@@ -16,6 +16,7 @@ public class SkuStandard implements Serializable {
 	private String product_id;
 	private String icon_url;
 	private String sku;				//规格
+	private String num = "1";         //购买数量
 	public int getId() {
 		return id;
 	}
@@ -75,6 +76,12 @@ public class SkuStandard implements Serializable {
 	}
 	public void setSku(String sku) {
 		this.sku = sku;
+	}
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
 	}
 	
 	

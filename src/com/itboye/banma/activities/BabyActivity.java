@@ -57,7 +57,8 @@ import com.itboye.banma.view.BabyPopWindow;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
 
-public class BabyActivity extends FragmentActivity implements OnItemClickListener, OnClickListener, StrUIDataListener {
+public class BabyActivity extends FragmentActivity implements
+		OnItemClickListener, OnClickListener, StrUIDataListener {
 
 	NfcAdapter nfcAdapter;
 	private AppContext appContext;
@@ -88,7 +89,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private ImageButton ib_more;
 	private LinearLayout all_choice_layout = null;
 	boolean isClickBuy = false;
-	private int position=0;
+	private int position = 0;
 	private ImageView[] indicators = null;
 	private LinearLayout indicatorLayout;
 	private String[] imageList;
@@ -101,10 +102,9 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private BabyDetailFragment detailFragment;
 	private BabyParameterFragment parameterFragment;
 	private BabyCommentFragment commentFragment;
-	private List<Sku_info> sku_info;  //商品类型参数
-	private int  requestState=0;//判断哪个请求返回的结果 1表示加入购物车请求
-	
-	
+	private List<Sku_info> sku_info; // 商品类型参数
+	private int requestState = 0;// 判断哪个请求返回的结果 1表示加入购物车请求
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,23 +112,26 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		appContext = (AppContext) getApplication();
 		initView();
 		iniData();
-		
+
 	}
 
 	/**
 	 * 加载数据
 	 */
 	private void iniData() {
-		for(int i=0; i<Constant.SKU_INFO.length; i++){
+		for (int i = 0; i < Constant.SKU_INFO.length; i++) {
 			Constant.SKU_INFO[i] = "";
 		}
+		Constant.SKU_ALLNUM = 0;
+		Constant.SKU_NUM = 0;
 		strnetworkHelper = new StrVolleyInterface(BabyActivity.this);
 		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
 		try {
-			YesOrNo = appContext.getProductDetail(BabyActivity.this, 1, strnetworkHelper);
-			if(!YesOrNo){   //如果没联网
+			YesOrNo = appContext.getProductDetail(BabyActivity.this, 1,
+					strnetworkHelper);
+			if (!YesOrNo) { // 如果没联网
 				Toast.makeText(BabyActivity.this, "请检查网络连接", Toast.LENGTH_SHORT)
-				.show();
+						.show();
 				wait_ll.setVisibility(View.VISIBLE);
 				retry_img.setVisibility(View.VISIBLE);
 				loading_ll.setVisibility(View.GONE);
@@ -138,7 +141,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@SuppressLint("NewApi")
@@ -146,27 +149,27 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		baby_detail = (LinearLayout) findViewById(R.id.baby_detail);
 		button_lay = (LinearLayout) findViewById(R.id.button_lay);
 		// 旋转等待页
-				wait_ll = (LinearLayout) findViewById(R.id.wait_ll);
-				retry_img = (ImageView) findViewById(R.id.retry_img);
-				loading_ll = (LinearLayout) findViewById(R.id.loading_ll);
-				wait_ll.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (retry_img.getVisibility() == View.VISIBLE) {
-							wait_ll.setVisibility(View.VISIBLE);
-							retry_img.setVisibility(View.GONE);
-							loading_ll.setVisibility(View.VISIBLE);
-							baby_detail.setVisibility(View.GONE);
-							button_lay.setVisibility(View.GONE);
-							iniData();
-							
-						}
-					}
-				});
-	     ib_more=(ImageButton)findViewById(R.id.more);
-	     ib_more.setOnClickListener(this);
-	     ib_more.setVisibility(View.VISIBLE);
-	     
+		wait_ll = (LinearLayout) findViewById(R.id.wait_ll);
+		retry_img = (ImageView) findViewById(R.id.retry_img);
+		loading_ll = (LinearLayout) findViewById(R.id.loading_ll);
+		wait_ll.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (retry_img.getVisibility() == View.VISIBLE) {
+					wait_ll.setVisibility(View.VISIBLE);
+					retry_img.setVisibility(View.GONE);
+					loading_ll.setVisibility(View.VISIBLE);
+					baby_detail.setVisibility(View.GONE);
+					button_lay.setVisibility(View.GONE);
+					iniData();
+
+				}
+			}
+		});
+		ib_more = (ImageButton) findViewById(R.id.more);
+		ib_more.setOnClickListener(this);
+		ib_more.setVisibility(View.VISIBLE);
+
 		((ImageView) findViewById(R.id.iv_back)).setOnClickListener(this);
 		put_in = (Button) findViewById(R.id.put_in);
 		put_in.setOnClickListener(this);
@@ -180,73 +183,73 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		customs_duties = (TextView) findViewById(R.id.customs_duties);
 		sales_area = (TextView) findViewById(R.id.sales_area);
 		all_choice_layout = (LinearLayout) findViewById(R.id.all_choice_layout);
-		
-		/*listView = (ListView) findViewById(R.id.listView_Detail);
-		listView.setFocusable(false);
-		listView.setSelector(new ColorDrawable(Color.TRANSPARENT));*/
-		title.setText("商品详情");
-		/*listView.setAdapter(new Adapter_ListView_detail(this));
-		listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				Uri uri = Uri.parse("http://yecaoly.taobao.com"); 
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
-				startActivity(intent);
-			}
-		});*/
-		
-		
+		/*
+		 * listView = (ListView) findViewById(R.id.listView_Detail);
+		 * listView.setFocusable(false); listView.setSelector(new
+		 * ColorDrawable(Color.TRANSPARENT));
+		 */
+		title.setText("商品详情");
+		/*
+		 * listView.setAdapter(new Adapter_ListView_detail(this));
+		 * listView.setOnItemClickListener(new
+		 * android.widget.AdapterView.OnItemClickListener() {
+		 * 
+		 * @Override public void onItemClick(AdapterView<?> arg0, View arg1, int
+		 * arg2, long arg3) { Uri uri = Uri.parse("http://yecaoly.taobao.com");
+		 * Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		 * startActivity(intent); } });
+		 */
+
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.GONE);
 		loading_ll.setVisibility(View.VISIBLE);
 		baby_detail.setVisibility(View.GONE);
 		button_lay.setVisibility(View.GONE);
-		
-		
-		//initViewPager();
+
+		// initViewPager();
 	}
-	
+
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.iv_back:
-			//返回
+			// 返回
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
 			break;
 		case R.id.more:
-			//点击购物车
-		//	if (appContext.isLogin()) {
-				startActivity(new Intent(BabyActivity.this,ShoppingCartActivity.class));
-				overridePendingTransition(R.anim.push_left_in,
-						R.anim.push_left_out);
-		//	}else {
-		//		Toast.makeText(BabyActivity.this, "请先登录", Toast.LENGTH_LONG).show();
-	//		}
-		
+			// 点击购物车
+			// if (appContext.isLogin()) {
+			startActivity(new Intent(BabyActivity.this,
+					ShoppingCartActivity.class));
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+			// }else {
+			// Toast.makeText(BabyActivity.this, "请先登录",
+			// Toast.LENGTH_LONG).show();
+			// }
+
 			break;
 		case R.id.put_in:
-			//加入购物ﳵ
+			// 加入购物ﳵ
 			isClickBuy = false;
 			setBackgroundBlack(all_choice_layout, 0);
 			popWindow.showAsDropDown(view);
 			break;
 		case R.id.buy_now:
-			//点击购买
+			// 点击购买
 			isClickBuy = true;
 			setBackgroundBlack(all_choice_layout, 0);
 			popWindow.showAsDropDown(view);
 			break;
 		}
 	}
-	
-	
 
 	private void initViewPager() {
-		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
-		
+		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+				new BitmapCache());
+
 		if (allListView != null) {
 			allListView.clear();
 			allListView = null;
@@ -254,27 +257,30 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		indicatorLayout = (LinearLayout) findViewById(R.id.indicator);
 		allListView = new ArrayList<View>();
 		indicators = new ImageView[imageList.length];
-		
-		
-		
+
 		for (int i = 0; i < imageList.length; i++) {
-		
-			View view = LayoutInflater.from(this).inflate(R.layout.pic_item, null);
+
+			View view = LayoutInflater.from(this).inflate(R.layout.pic_item,
+					null);
 			pic_image = (NetworkImageView) view.findViewById(R.id.pic_item);
-			//pic_image.setDefaultImageResId(R.drawable.base_map);  //加载中显示的图片
-			pic_image.setErrorImageResId(R.drawable.image_load_fail);  //加载失败显示的图片
+			// pic_image.setDefaultImageResId(R.drawable.base_map); //加载中显示的图片
+			pic_image.setErrorImageResId(R.drawable.image_load_fail); // 加载失败显示的图片
 			pic_image.setImageUrl(imageList[i], imageLoader);
-			
-			/*ImageListener listener = ImageLoader.getImageListener(pic_image,  
-			        0, R.drawable.e); 
-			imageLoader.get(imageList[i], listener, 150, 150);*/
+
+			/*
+			 * ImageListener listener = ImageLoader.getImageListener(pic_image,
+			 * 0, R.drawable.e); imageLoader.get(imageList[i], listener, 150,
+			 * 150);
+			 */
 			pic_image.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					//��ս���鿴��ͼ����
-					/*Intent intent = new Intent(BabyActivity.this, ShowBigPictrue.class);
-					intent.putExtra("position", position);
-					startActivity(intent);*/
+					// ��ս���鿴��ͼ����
+					/*
+					 * Intent intent = new Intent(BabyActivity.this,
+					 * ShowBigPictrue.class); intent.putExtra("position",
+					 * position); startActivity(intent);
+					 */
 				}
 			});
 			allListView.add(view);
@@ -288,30 +294,31 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		}
 
 		viewPager = (HackyViewPager) findViewById(R.id.iv_baby);
-		viewPager.setOffscreenPageLimit(3);  
+		viewPager.setOffscreenPageLimit(3);
 		ViewPagerAdapter adapter = new ViewPagerAdapter();
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
-			
+
 			@Override
 			public void onPageSelected(int arg0) {
-				position=arg0;
+				position = arg0;
 				for (int i = 0; i < indicators.length; i++) {
 					indicators[i]
 							.setBackgroundResource(R.drawable.indicators_default);
 					if (arg0 == i) {
-						indicators[arg0].setBackgroundResource(R.drawable.indicators_now);
+						indicators[arg0]
+								.setBackgroundResource(R.drawable.indicators_now);
 					}
 				}
 			}
-			
+
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				
+
 			}
-			
+
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
-				
+
 			}
 		});
 		viewPager.setAdapter(adapter);
@@ -344,44 +351,49 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	}
 
-	//购买按钮监听
+	// 购买按钮监听
 	@Override
 	public void onClickOKPop(SkuStandard skuStandard) {
 		setBackgroundBlack(all_choice_layout, 1);
 		if (isClickBuy) {
-			//跳转到订单确认页面
-			Intent intent = new Intent(BabyActivity.this, ConfirmOrderActivity.class);
+			// 跳转到订单确认页面
+			Intent intent = new Intent(BabyActivity.this,
+					ConfirmOrderActivity.class);
 			intent.putExtra("SkuStandard", skuStandard);
-			intent.putExtra("main_img",productDetail.getMain_img());
-			intent.putExtra("name",productDetail.getName());
-			intent.putExtra("price",productDetail.getPrice());
+			intent.putExtra("main_img", productDetail.getMain_img());
+			intent.putExtra("name", productDetail.getName());
+			intent.putExtra("price", productDetail.getPrice());
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right,
-					R.anim.out_to_left);
-		}else {
-//			Gson gson=new Gson();
-//			String s=gson.toJson(skuStandard);
-//			System.out.println(s);
-//			System.out.println(productDetail.getMain_img());
-//			System.out.println(productDetail.getName());
-//			System.out.println(productDetail.getPrice());
-			
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+		} else {
+			// Gson gson=new Gson();
+			// String s=gson.toJson(skuStandard);
+			// System.out.println(s);
+			// System.out.println(productDetail.getMain_img());
+			// System.out.println(productDetail.getName());
+			// System.out.println(productDetail.getPrice());
+
 			if (appContext.isLogin()) {
-				requestState=1;
-				ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()+"", productDetail.getStoreid()+"", 
-						productDetail.getId()+"", skuStandard.getSku_id()+"", skuStandard.getSku(), skuStandard.getIcon_url(), 
-						skuStandard.getProduct_code(), productDetail.getName(), productDetail.getExpress(), productDetail.getPrice()+"",
-						productDetail.getOri_price()+"", skuStandard.getId()+"", strnetworkHelper);
-			}
-			else {
-				Toast.makeText(BabyActivity.this, "请先登录", Toast.LENGTH_LONG).show();
-				startActivity(new Intent(BabyActivity.this,LoginActivity.class));
+				requestState = 1;
+				ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()
+						+ "", productDetail.getStoreid() + "",
+						productDetail.getId() + "", skuStandard.getSku_id()
+								+ "", skuStandard.getSku(),
+						skuStandard.getIcon_url(),
+						skuStandard.getProduct_code(), productDetail.getName(),
+						productDetail.getExpress(), productDetail.getPrice()
+								+ "", productDetail.getOri_price() + "",
+						skuStandard.getId() + "", strnetworkHelper);
+			} else {
+				Toast.makeText(BabyActivity.this, "请先登录", Toast.LENGTH_LONG)
+						.show();
+				startActivity(new Intent(BabyActivity.this, LoginActivity.class));
 				overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}
 		}
 	}
-	
+
 	/** 把背景变成暗色 */
 	public void setBackgroundBlack(View view, int what) {
 		switch (what) {
@@ -393,13 +405,13 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			break;
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if(popWindow.isOrNot()){
+			if (popWindow.isOrNot()) {
 				popWindow.dissmiss();
-			}else{
+			} else {
 				finish();
 				overridePendingTransition(R.anim.push_right_in,
 						R.anim.push_right_out);
@@ -410,7 +422,8 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(BabyActivity.this, "网络异常"+error, Toast.LENGTH_SHORT).show();
+		Toast.makeText(BabyActivity.this, "网络异常" + error, Toast.LENGTH_SHORT)
+				.show();
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
 		loading_ll.setVisibility(View.GONE);
@@ -420,44 +433,47 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 
 	@Override
 	public void onDataChanged(String data) {
-		
-		if (requestState==1) {
-			int code1=-1;
-			requestState=0;
+
+		if (requestState == 1) {
+			int code1 = -1;
+			requestState = 0;
 			try {
-				JSONObject jsonObject=new JSONObject(data);
-				code1=jsonObject.getInt("code");
-				if (code1==0) {
+				JSONObject jsonObject = new JSONObject(data);
+				code1 = jsonObject.getInt("code");
+				if (code1 == 0) {
 					Toast.makeText(this, "添加购物车成功", Toast.LENGTH_SHORT).show();
-					System.out.println(jsonObject.getString("data")+"成功了");
+					System.out.println(jsonObject.getString("data") + "成功了");
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
 				Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
 			}
-		}else {
+		} else {
 			Gson gson = new Gson();
 			int code = -1;
 			String detail = null;
-			Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
+			Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT)
+					.show();
 			try {
 				JSONObject jsonObject = new JSONObject(data);
 				code = jsonObject.getInt("code");
 				detail = jsonObject.getString("data");
-				System.out.println("data*****="+detail);
-				if(code == 0){
-					
+				System.out.println("data*****=" + detail);
+				if (code == 0) {
+
 					productDetail = gson.fromJson(detail, ProductDetail.class);
-					imageList=productDetail.getImg().split(",");
+					imageList = productDetail.getImg().split(",");
 					sku_info = new ArrayList<ProductDetail.Sku_info>();
-					//String ssString = "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
-					sku_info = gson.fromJson(productDetail.getSku_info(),new TypeToken<List<Sku_info>>() {
+					// String ssString =
+					// "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
+					sku_info = gson.fromJson(productDetail.getSku_info(),
+							new TypeToken<List<Sku_info>>() {
 							}.getType());
-					
+
 					updatePages();
-					
-					System.out.println("商品详情*****="+productDetail.toString());
+
+					System.out.println("商品详情*****=" + productDetail.toString());
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -471,19 +487,23 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 	private void updatePages() {
 		initViewPager();
 		baby_name.setText(productDetail.getName());
-		ori_price.setText("￥"+productDetail.getOri_price());
-		price.setText("￥"+productDetail.getPrice());
-		ori_price.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
-		//是否包邮
-		if(productDetail.getAttrext_ispostfree()==1){
+		ori_price.setText("￥" + productDetail.getOri_price());
+		price.setText("￥" + productDetail.getPrice());
+		ori_price.getPaint().setFlags(
+				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+		// 是否包邮
+		if (productDetail.getAttrext_ispostfree() == 1) {
 			freight.setText("免运费");
-		}else{
-			freight.setText("￥"+productDetail.getExpress());
+		} else {
+			freight.setText("￥" + productDetail.getExpress());
 		}
 		customs_duties.setText("免关税");
-		sales_area.setText(productDetail.getLoc_province()+productDetail.getLoc_city());
-		popWindow = new BabyPopWindow(this, sku_info, productDetail.getSkuInfo(), 
-				productDetail.getMain_img(), productDetail.getPrice(), productDetail.getQuantity(), productDetail.getSkuList());
+		sales_area.setText(productDetail.getLoc_province()
+				+ productDetail.getLoc_city());
+		popWindow = new BabyPopWindow(this, sku_info,
+				productDetail.getSkuInfo(), productDetail.getMain_img(),
+				productDetail.getPrice(), productDetail.getOri_price(),
+				productDetail.getQuantity(), productDetail.getSkuList());
 		popWindow.setOnItemClickListener(this);
 		initDetailPager();
 		wait_ll.setVisibility(View.GONE);
@@ -492,7 +512,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		baby_detail.setVisibility(View.VISIBLE);
 		button_lay.setVisibility(View.VISIBLE);
 	}
-	
+
 	private void initDetailPager() {
 		one_title = (TextView) findViewById(R.id.one_title);
 		two_title = (TextView) findViewById(R.id.two_title);
@@ -504,7 +524,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		commentFragment = new BabyCommentFragment();
 		myAdapter.addFragment(detailFragment);
 		myAdapter.addFragment(parameterFragment);
-		
+
 		myAdapter.addFragment(commentFragment);
 		viewPagerPage.setOffscreenPageLimit(3);
 		viewPagerPage.setOnPageChangeListener(listener);
@@ -537,7 +557,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		});
 		// 模拟网络请求完成之后重置ViewPager高度
 		new myAsyncTask().execute();
-		//resetViewPagerHeight(0);
+		// resetViewPagerHeight(0);
 	}
 
 	/**
@@ -556,7 +576,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			viewPagerPage.setLayoutParams(params);
 		}
 	}
-	
+
 	public class MyListener implements OnPageChangeListener {
 
 		@Override
@@ -585,6 +605,7 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 			}
 		}
 	}
+
 	/**
 	 * 改变title颜色
 	 * 
@@ -594,29 +615,33 @@ public class BabyActivity extends FragmentActivity implements OnItemClickListene
 		one_title.setTextColor(this.getResources().getColor(R.color.black));
 		two_title.setTextColor(this.getResources().getColor(R.color.black));
 		three_title.setTextColor(this.getResources().getColor(R.color.black));
-		one_title.setBackgroundColor(this.getResources().getColor(R.color.white));
-		two_title.setBackgroundColor(this.getResources().getColor(R.color.white));
-		three_title.setBackgroundColor(this.getResources().getColor(R.color.white));
+		one_title.setBackgroundColor(this.getResources()
+				.getColor(R.color.white));
+		two_title.setBackgroundColor(this.getResources()
+				.getColor(R.color.white));
+		three_title.setBackgroundColor(this.getResources().getColor(
+				R.color.white));
 		switch (arg0) {
 		case 0:
-			one_title.setTextColor(this.getResources().getColor(
-					R.color.white));
-			one_title.setBackgroundColor(this.getResources().getColor(R.color.slategray));
+			one_title.setTextColor(this.getResources().getColor(R.color.white));
+			one_title.setBackgroundColor(this.getResources().getColor(
+					R.color.slategray));
 			break;
 		case 1:
-			two_title.setTextColor(this.getResources().getColor(
-					R.color.white));
-			two_title.setBackgroundColor(this.getResources().getColor(R.color.slategray));
+			two_title.setTextColor(this.getResources().getColor(R.color.white));
+			two_title.setBackgroundColor(this.getResources().getColor(
+					R.color.slategray));
 			break;
 		case 2:
-			three_title.setTextColor(this.getResources().getColor(
-					R.color.white));
-			three_title.setBackgroundColor(this.getResources().getColor(R.color.slategray));
+			three_title.setTextColor(this.getResources()
+					.getColor(R.color.white));
+			three_title.setBackgroundColor(this.getResources().getColor(
+					R.color.slategray));
 			break;
 		}
-		
+
 	}
-	
+
 	public class myAsyncTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {

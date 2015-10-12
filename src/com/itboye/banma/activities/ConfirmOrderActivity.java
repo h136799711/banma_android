@@ -55,7 +55,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener{
 		main_img = intent.getStringExtra("main_img");
 		name = intent.getStringExtra("name");
 		price = intent.getDoubleExtra("price", 100.0);
-		priceAll = price * Integer.parseInt(skuStandard.getProduct_code());
+		priceAll = price * Integer.parseInt(skuStandard.getNum());
 		System.out.println("SkuStandard"+skuStandard);
 	}
 
@@ -84,9 +84,9 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener{
 		order_name.setText(name);
 		order_standard.setText(skuStandard.getSku());
 		order_price.setText(""+price);
-		//order_number.setText("×"+skuStandard.getProduct_code());
-		pop_num.setText(skuStandard.getProduct_code());
-		all_num.setText(skuStandard.getProduct_code());
+		//order_number.setText("×"+skuStandard.getNum());
+		pop_num.setText(skuStandard.getNum());
+		all_num.setText(skuStandard.getNum());
 		all_price.setText(""+priceAll);
 		order_all_price.setText(""+priceAll);
 		top_title.setText(string.confirm_order);
@@ -106,9 +106,9 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener{
 				String num_add = Integer.valueOf(pop_num.getText().toString())
 						+ ADDORREDUCE + "";
 				priceAll = Integer.parseInt(num_add) * price;
-				skuStandard.setProduct_code(num_add);
+				skuStandard.setNum(num_add);
 				pop_num.setText(num_add);
-				all_num.setText(skuStandard.getProduct_code());
+				all_num.setText(skuStandard.getNum());
 				all_price.setText(""+priceAll);
 				order_all_price.setText(""+priceAll);
 			} else {
@@ -120,9 +120,9 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener{
 				String num_reduce = Integer.valueOf(pop_num.getText()
 						.toString()) - ADDORREDUCE + "";
 				priceAll = Integer.parseInt(num_reduce) * price;
-				skuStandard.setProduct_code(num_reduce);
+				skuStandard.setNum(num_reduce);
 				pop_num.setText(num_reduce);
-				all_num.setText(skuStandard.getProduct_code());
+				all_num.setText(skuStandard.getNum());
 				all_price.setText(""+priceAll);
 				order_all_price.setText(""+priceAll);
 			} else {

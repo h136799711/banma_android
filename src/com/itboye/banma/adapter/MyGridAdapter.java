@@ -10,6 +10,7 @@ import com.itboye.banma.entity.ProductDetail.Sku_info;
 import com.itboye.banma.entity.SkuInfo;
 import com.itboye.banma.entity.SkuInfo.MapValue;
 import com.itboye.banma.util.BaseViewHolder;
+import com.itboye.banma.utils.ChooseStandardInterface;
 
 import android.R.integer;
 import android.content.Context;
@@ -27,18 +28,20 @@ import android.widget.TextView;
 public class MyGridAdapter extends BaseAdapter {
 	private Context mContext;
 	private int state = -1;
-	private int i;
+	private int i; //区分第几个Grid
 	private SkuInfo skuInfo;
 	private Map<String, MapValue> value;
 	private Sku_info sku_info;
+	private ChooseStandardInterface ch;
 	/*public String[] img_text = { "型号000", "型号111", "型号222", "型号333", "型号444", "型号555",
 			"型号666"};*/
-	public MyGridAdapter(Context mContext, Sku_info sku_info, SkuInfo skuInfo, int i) {
+	public MyGridAdapter(Context mContext, Sku_info sku_info, SkuInfo skuInfo, int i, ChooseStandardInterface ch) {
 		super();
 		this.mContext = mContext;
 		this.skuInfo = skuInfo;
 		this.sku_info = sku_info;
 		this.i = i;
+		this.ch = ch;
 		value = skuInfo.getValue();
 	}
 
@@ -92,6 +95,10 @@ public class MyGridAdapter extends BaseAdapter {
 				state = position;
 				Constant.SKU_INFO[i] = skuInfo.getKey() + ":" + value.get(sku_info.getVid()[position]).getKey()+";";
 				//tv.setBackgroundResource(R.drawable.yuanjiao_choice);
+				Constant.SKU_NUM++;
+				if(Constant.SKU_NUM >= Constant.SKU_ALLNUM){
+					ch.changeview();
+				}
 			}
 		});
 		
