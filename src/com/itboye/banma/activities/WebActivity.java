@@ -42,6 +42,10 @@ public class WebActivity  extends Activity{
 			tvTitle.setText("关于斑马");
 			url="http://banma.itboye.com/Public/html/about.html";
 		}
+        if (reslut.equals("http://banma.itboye.com/Public/html/copyright.html")) {
+			tvTitle.setText("服务条款");
+			url="http://banma.itboye.com/Public/html/copyright.html";
+		}
         if (reslut.equals("FanYong")) {
 			tvTitle.setText("我的返佣");
 			 url="http://banma.itboye.com/index.php/Home/User/rebate?uid="+appContext.getLoginUid()+""
@@ -59,9 +63,9 @@ public class WebActivity  extends Activity{
 		}
         
         
-        
         wvShow.setHorizontalScrollBarEnabled(false);
         wvShow.setHorizontalScrollbarOverlay(false);  
+        wvShow.loadUrl(url);
         wvShow.setWebViewClient(new WebViewClient(){
         	@Override
         	public void onPageFinished(WebView view, String url) {
@@ -71,7 +75,7 @@ public class WebActivity  extends Activity{
                 dialog.setVisibility(View.GONE);
         	}
         });
-        wvShow.loadUrl(url);
+    
 //        wvShow.setWebChromeClient(new WebChromeClient(){
 //        	@Override
 //       	 public void onProgressChanged(WebView view, int newProgress) {
@@ -85,7 +89,6 @@ public class WebActivity  extends Activity{
 //            }
 //        });
 
-   
         ivBackWeb.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

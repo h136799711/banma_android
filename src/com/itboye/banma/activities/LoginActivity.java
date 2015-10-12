@@ -174,6 +174,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			appContext.setLogin(true);
 			appContext.setLoginUid(user.getId());
 			appContext.setPassword(user.getPassword());
+			System.out.println(appContext.getPassword());
 			Log.v("用户id", user.getId()+"");
 		    String use = etName.getText().toString();   
 		    String pas = etPassword.getText().toString(); 

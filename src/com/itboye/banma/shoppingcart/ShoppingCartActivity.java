@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onCheckedChanged;
+import com.itboye.banma.view.MyListView;
 
 public class ShoppingCartActivity  extends Activity implements StrUIDataListener,onCheckedChanged,OnClickListener{
 	private AppContext appContext;
@@ -41,7 +43,7 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 	private ImageView ivBack;//返回按钮
 	private TextView tv_goShop, tv_cart_Allprice, tv_cart_buy_Ordel;
 	private LinearLayout ll_cart;
-	private ListView listView_cart;
+	private MyListView listView_cart;
 	private CheckBox cb_cart_all;
 	private Adapter_ListView_cart adapter;
 	private String str_del = "结算(0)";
@@ -49,13 +51,13 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 	private int RequestState=-1;//区分不同的请求返回 1.购物车删除。2.购物车修改。3.购物车分页查询
 												//4.单个查询。5.数量查询6.批量添加接口
 	private boolean Is_Internet;//是否联网
+	private int AllCount=0;//购物车总价格
 	private  ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
 
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shopcart);
-		is_choice=new boolean[arrayList_cart.size()];
 		appContext = (AppContext) getApplication();
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
@@ -70,7 +72,7 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 			RequestState=4;
 			//Is_Internet=appContext.getCartListByPage(ShoppingCartActivity.this, appContext.getLoginUid(), networkHelper);
 			ApiClient.getCartListByPage(this, appContext.getLoginUid(), networkHelper);
-				Toast.makeText(ShoppingCartActivity.this, "请检查网络是否连接",Toast.LENGTH_SHORT).show();
+				//Toast.makeText(ShoppingCartActivity.this, "请检查网络是否连接",Toast.LENGTH_SHORT).show();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -87,8 +89,76 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 		tv_cart_buy_Ordel = (TextView) this.findViewById(R.id.tv_cart_buy_or_del);
 		tv_cart_buy_Ordel.setText(str_del);
 		cb_cart_all = (CheckBox) this.findViewById(R.id.cb_cart_all);
+		ll_cart = (LinearLayout) this.findViewById(R.id.ll_cart);
+		listView_cart = (MyListView) this.findViewById(R.id.listView_cart);
+	}
 
-		  cb_cart_all.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+	@Override
+	public void onErrorHappened(VolleyError error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDataChanged(String data) {
+		// TODO Auto-generated method stub
+		int code=-1;
+		JSONObject jsonObject = null;
+		try {
+			 jsonObject=new JSONObject(data);
+			code=jsonObject.getInt("code");
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		switch (RequestState) {
+		case 4:
+			try {				
+				if (code==0) {
+					JSONArray jsonArray=new JSONArray(jsonObject.getString("data"));
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONObject temp=(JSONObject) jsonArray.get(i);
+						HashMap< String , Object> hashMap=new HashMap<String, Object>();
+		
+						hashMap.put("name", temp.getString("name"));
+						hashMap.put("count", temp.getString("count"));
+						hashMap.put("price",temp.getString("price"));
+					//	arrayList_cart.get(i).put("sku_id", temp.getString("sku_id"));
+					//	arrayList_cart.get(i).put("psku_id", temp.getString("psku_id"));
+						hashMap.put("sku_desc", temp.getString("sku_desc"));
+						hashMap.put("icon_url", temp.getString("icon_url"));
+						arrayList_cart.add(hashMap);				
+					}
+					updateView();//数据请求成功时刷新页面
+					System.out.println(jsonObject.get("data"));
+				}
+			
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
+			}
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+	private void updateView() {
+		// TODO Auto-generated method stub
+		// 如果购物车中有数据，那么就显示数据，否则显示默认界面
+		is_choice=new boolean[arrayList_cart.size()];
+		if (arrayList_cart != null && arrayList_cart.size() != 0) {
+			adapter = new Adapter_ListView_cart(ShoppingCartActivity.this, arrayList_cart);
+			adapter.setOnCheckedChanged(this);
+			listView_cart.setAdapter(adapter);
+			ll_cart.setVisibility(View.GONE);
+		} else {
+			ll_cart.setVisibility(View.VISIBLE);
+		}
+		cb_cart_all.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 				/*
@@ -102,11 +172,13 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 
 				// 记录列表每一行的选中状态数量
 				int isChoice_all = 0;
+				System.out.println(listView_cart.getChildCount()+"数量");
 				if (arg1) {
 					// 设置全选
 					for (int i = 0; i < arrayList_cart.size(); i++) {
 						// 如果选中了全选，那么就将列表的每一行都选中
 						((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).setChecked(true);
+						
 					}
 				} else {
 					// 设置全部取消
@@ -128,20 +200,7 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 				}
 			}
 		});
-		
-		
 
-		ll_cart = (LinearLayout) this.findViewById(R.id.ll_cart);
-		listView_cart = (ListView) this.findViewById(R.id.listView_cart);
-		// 如果购物车中有数据，那么就显示数据，否则显示默认界面
-		if (arrayList_cart != null && arrayList_cart.size() != 0) {
-			adapter = new Adapter_ListView_cart(ShoppingCartActivity.this, arrayList_cart);
-			adapter.setOnCheckedChanged(this);
-			listView_cart.setAdapter(adapter);
-			ll_cart.setVisibility(View.GONE);
-		} else {
-			ll_cart.setVisibility(View.VISIBLE);
-		}
 
 		listView_cart.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -177,11 +236,13 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 		if (isChoice) {
 			if (arrayList_cart.size()!=0) {
 				//49表示商品的价格，这里偷了下懒，没有去动态获取商品价格
-				Constant.Allprice_cart += Float.valueOf(arrayList_cart.get(position).get("num").toString())*49;
+				AllCount += Float.valueOf(arrayList_cart.get(position).get("count").toString())*
+						Float.valueOf(arrayList_cart.get(position).get("price").toString());
 			}
 		} else {
 			if (arrayList_cart.size()!=0) {
-				Constant.Allprice_cart -= Float.valueOf(arrayList_cart.get(position).get("num").toString())*49;
+				AllCount -= Float.valueOf(arrayList_cart.get(position).get("count").toString())*
+						Float.valueOf(arrayList_cart.get(position).get("price").toString());
 			}
 		}
 		// 记录列表处于选中状态的数量
@@ -203,60 +264,8 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 			cb_cart_all.setChecked(false);
 		}
 
-		tv_cart_Allprice.setText("合计：￥"+Constant.Allprice_cart + "");
-
+		tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
 		System.out.println("选择的位置--->"+position);
-		
-	}
-
-	@Override
-	public void onErrorHappened(VolleyError error) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDataChanged(String data) {
-		// TODO Auto-generated method stub
-		int code=-1;
-		JSONObject jsonObject = null;
-		try {
-			System.out.println(1);
-			 jsonObject=new JSONObject(data);
-			code=jsonObject.getInt("code");
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		switch (RequestState) {
-		case 4:
-			try {				
-				if (code==0) {
-					System.out.println(3);
-//					JSONArray jsonArray=new JSONArray(jsonObject.getString("data"));
-//					for (int i = 0; i < jsonArray.length(); i++) {
-//						JSONObject temp=(JSONObject) jsonArray.get(i);
-//						arrayList_cart.get(i).put("name", temp.getString("name"));
-//						arrayList_cart.get(i).put("count", temp.getString("count"));
-//						arrayList_cart.get(i).put("price",temp.getString("price"));
-//						arrayList_cart.get(i).put("sku_id", temp.getString("sku_id"));
-//						arrayList_cart.get(i).put("psku_id", temp.getString("psku_id"));
-//						arrayList_cart.get(i).put("sku_desc", temp.getString("sku_desc"));
-//					}
-//					Toast.makeText(this, jsonArray.toString(), Toast.LENGTH_SHORT).show();
-					System.out.println(jsonObject.get("data"));
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-				Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
-			}
-			break;
-
-		default:
-			break;
-		}
-		
 	}
 
 	@Override

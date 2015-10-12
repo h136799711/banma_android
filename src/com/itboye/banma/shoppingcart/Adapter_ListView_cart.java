@@ -2,17 +2,25 @@ package com.itboye.banma.shoppingcart;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.android.volley.toolbox.NetworkImageView;
 import com.itboye.banma.R;
+import com.itboye.banma.app.AppContext;
 
 public class Adapter_ListView_cart extends BaseAdapter {
 	private Context context;
@@ -52,17 +60,21 @@ public class Adapter_ListView_cart extends BaseAdapter {
 		if (currentView == null) {
 			holderView = new HolderView();
 			currentView = LayoutInflater.from(context).inflate(R.layout.adapter_listview_cart, null);
+			holderView.tv_name=(TextView)currentView.findViewById(R.id.tv_name);
 			holderView.tv_num = (TextView) currentView.findViewById(R.id.tv_num);
+			holderView.tv_price=(TextView)currentView.findViewById(R.id.tv_price);
 			holderView.tv_type_color = (TextView) currentView.findViewById(R.id.tv_type_color);
+			holderView.iv_icon=(ImageView)currentView.findViewById(R.id.iv_icon_url);
 			holderView.cb_choice = (CheckBox) currentView.findViewById(R.id.cb_choice);
 			currentView.setTag(holderView);
 		} else {
 			holderView = (HolderView) currentView.getTag();
 		}
 		if (arrayList.size() != 0) {
-			holderView.tv_num.setText("x" + arrayList.get(position).get("num"));
-			holderView.tv_type_color.setText("类型" + arrayList.get(position).get("type").toString() + "    颜色" + arrayList.get(position).get("color").toString());
-			
+			holderView.tv_num.setText("x" + arrayList.get(position).get("count"));
+			holderView.tv_type_color.setText(arrayList.get(position).get("sku_desc")+"");
+			holderView.tv_price.setText(arrayList.get(position).get("price")+"");
+			holderView.tv_name.setText(arrayList.get(position).get("name")+"");
 			holderView.cb_choice.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton arg0, boolean choice) {
@@ -75,9 +87,11 @@ public class Adapter_ListView_cart extends BaseAdapter {
 		return currentView;
 	}
 
-	public class HolderView {
-
+	public class HolderView { 
+		private ImageView iv_icon;
+		private TextView tv_name;
 		private TextView tv_type_color;
+		private TextView tv_price;
 		private TextView tv_num;
 		private CheckBox cb_choice;
 
@@ -90,5 +104,4 @@ public class Adapter_ListView_cart extends BaseAdapter {
 	public void setOnCheckedChanged(onCheckedChanged listener){
 		this.listener=listener;
 	}
-
 }

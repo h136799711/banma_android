@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,7 +124,9 @@ public class BabyActivity extends FragmentActivity implements
 			Constant.SKU_INFO[i] = "";
 		}
 		Constant.SKU_ALLNUM = 0;
-		Constant.SKU_NUM = 0;
+		//for(int i=0; i<Constant.SKU_NUM.length; i++){
+	//		Constant.SKU_NUM[i] = 0;
+	//	}
 		strnetworkHelper = new StrVolleyInterface(BabyActivity.this);
 		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
 		try {
@@ -356,6 +359,7 @@ public class BabyActivity extends FragmentActivity implements
 	public void onClickOKPop(SkuStandard skuStandard) {
 		setBackgroundBlack(all_choice_layout, 1);
 		if (isClickBuy) {
+			if (appContext.isLogin()) {
 			// 跳转到订单确认页面
 			Intent intent = new Intent(BabyActivity.this,
 					ConfirmOrderActivity.class);
@@ -365,6 +369,12 @@ public class BabyActivity extends FragmentActivity implements
 			intent.putExtra("price", productDetail.getPrice());
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			}else{
+				Intent intent = new Intent(BabyActivity.this,
+						LoginActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			}
 		} else {
 			// Gson gson=new Gson();
 			// String s=gson.toJson(skuStandard);
@@ -379,8 +389,9 @@ public class BabyActivity extends FragmentActivity implements
 						+ "", productDetail.getStoreid() + "",
 						productDetail.getId() + "", skuStandard.getSku_id()
 								+ "", skuStandard.getSku(),
-						skuStandard.getIcon_url(),
-						skuStandard.getProduct_code(), productDetail.getName(),
+					//	skuStandard.getIcon_url(),
+						productDetail.getMain_img(),
+						skuStandard.getNum(), productDetail.getName(),
 						productDetail.getExpress(), productDetail.getPrice()
 								+ "", productDetail.getOri_price() + "",
 						skuStandard.getId() + "", strnetworkHelper);
@@ -423,17 +434,21 @@ public class BabyActivity extends FragmentActivity implements
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		Toast.makeText(BabyActivity.this, "网络异常" + error, Toast.LENGTH_SHORT)
-				.show();
-		wait_ll.setVisibility(View.VISIBLE);
-		retry_img.setVisibility(View.VISIBLE);
-		loading_ll.setVisibility(View.GONE);
-		baby_detail.setVisibility(View.GONE);
-		button_lay.setVisibility(View.GONE);
+		.show();
+       Log.e("LOGIN-ERROR", error.getMessage(), error);
+       byte[] htmlBodyBytes = error.networkResponse.data;
+       Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
+		if (requestState!=1) {
+			wait_ll.setVisibility(View.VISIBLE);
+			retry_img.setVisibility(View.VISIBLE);
+			loading_ll.setVisibility(View.GONE);
+			baby_detail.setVisibility(View.GONE);
+			button_lay.setVisibility(View.GONE);
+		}	
 	}
 
 	@Override
 	public void onDataChanged(String data) {
-
 		if (requestState == 1) {
 			int code1 = -1;
 			requestState = 0;
@@ -444,6 +459,10 @@ public class BabyActivity extends FragmentActivity implements
 					Toast.makeText(this, "添加购物车成功", Toast.LENGTH_SHORT).show();
 					System.out.println(jsonObject.getString("data") + "成功了");
 				}
+				else {
+					System.out.println(jsonObject.getString("data") + "失败了");
+				}
+					
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();

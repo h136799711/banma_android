@@ -62,7 +62,7 @@ public class ApiClient {
 		        params.put("icon_url",icon_url+"");
 		        params.put("count",count+"");  
 		        params.put("name",name+"");
-		        params.put("express", express+"");
+		        params.put("express", express+"0");
 		        params.put("price", price+"");
 		        params.put("ori_price", ori_price+"");
 		        params.put("psku_id", psku_id+"");
@@ -222,6 +222,17 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("id",""+id);
 		VolleyRequest.StrRequestPost(mContext, url, "deleteAdress",params, networkHelper);
+		
+	}
+	
+	public static void setDefaultAddress(Context mContext, int id,
+			int loginUid, StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Address/setDefaultAddress?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+loginUid);
+		params.put("id",""+id);
+		VolleyRequest.StrRequestPost(mContext, url, "setDefaultAddress",params, networkHelper);
 		
 	}
 

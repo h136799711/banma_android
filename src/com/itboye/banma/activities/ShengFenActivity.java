@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -31,6 +33,8 @@ public class ShengFenActivity extends Activity implements OnClickListener,StrUID
 	private EditText etTrueName;//真实姓名
 	private EditText etShenfenNumber;//身份证号
 	private Button btnSubShenfen;//提交
+	private ImageView ivBack;
+	private TextView tvTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +44,13 @@ public class ShengFenActivity extends Activity implements OnClickListener,StrUID
 		networkHelper.setStrUIDataListener(this);
        initId(this);
        btnSubShenfen.setOnClickListener(this);
+       ivBack.setOnClickListener(this);
     }
 	private void initId(ShengFenActivity shengFenActivity) {
 		// TODO Auto-generated method stub
+		tvTitle=(TextView)findViewById(R.id.title);
+		tvTitle.setText("身份证信息填写");
+		ivBack=(ImageView)findViewById(R.id.iv_back);
 		etShenfenNumber=(EditText)findViewById(R.id.et_shenfen_number);
 		etTrueName=(EditText)findViewById(R.id.et_true_name);
 		btnSubShenfen=(Button)findViewById(R.id.btn_sub_shenfen);
@@ -82,6 +90,11 @@ public class ShengFenActivity extends Activity implements OnClickListener,StrUID
 		case R.id.btn_sub_shenfen:
 			ApiClient.modifyPersonal(ShengFenActivity.this, appContext.getLoginUid()+"","" , "",etTrueName.getText().toString(), 
 					etShenfenNumber.getText().toString(), "", "", "", "", "", networkHelper);
+			break;
+		case R.id.iv_back:
+			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 			break;
 
 		default:

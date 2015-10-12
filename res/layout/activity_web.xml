@@ -41,9 +41,8 @@
 
 
     <!--  <include  layout="@layout/view_delay" />-->
-
     <WebView 
-         android:layout_below="@+id/rl_temp"
+        android:layout_below="@+id/rl_temp"
         android:id="@+id/wv_show"
         android:visibility="gone"
         android:layout_width="wrap_content"
