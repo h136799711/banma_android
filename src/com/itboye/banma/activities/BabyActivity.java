@@ -123,7 +123,9 @@ public class BabyActivity extends FragmentActivity implements
 			Constant.SKU_INFO[i] = "";
 		}
 		Constant.SKU_ALLNUM = 0;
-		Constant.SKU_NUM = 0;
+		for(int i=0; i<Constant.SKU_NUM.length; i++){
+			Constant.SKU_NUM[i] = 0;
+		}
 		strnetworkHelper = new StrVolleyInterface(BabyActivity.this);
 		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
 		try {
@@ -356,6 +358,7 @@ public class BabyActivity extends FragmentActivity implements
 	public void onClickOKPop(SkuStandard skuStandard) {
 		setBackgroundBlack(all_choice_layout, 1);
 		if (isClickBuy) {
+			if (appContext.isLogin()) {
 			// 跳转到订单确认页面
 			Intent intent = new Intent(BabyActivity.this,
 					ConfirmOrderActivity.class);
@@ -365,6 +368,12 @@ public class BabyActivity extends FragmentActivity implements
 			intent.putExtra("price", productDetail.getPrice());
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			}else{
+				Intent intent = new Intent(BabyActivity.this,
+						LoginActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			}
 		} else {
 			// Gson gson=new Gson();
 			// String s=gson.toJson(skuStandard);

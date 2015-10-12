@@ -31,7 +31,7 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.MailingAdress;
 
-public class MailingAddressActivity extends Activity implements
+public class SelectOrderAddressActivity extends Activity implements
 		StrUIDataListener, OnClickListener {
 	private AppContext appContext;
 	private ImageView back;
@@ -47,14 +47,14 @@ public class MailingAddressActivity extends Activity implements
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
 	private List<MailingAdress> addresslist;
-	private int state = 1;  //表明地址是否被修改，1 没被修改  0已经修改
+	private int addressId;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_mailing_address);
+		setContentView(R.layout.activity_order_address);
 		appContext = (AppContext) getApplication();
-		strnetworkHelper = new StrVolleyInterface(MailingAddressActivity.this);
-		strnetworkHelper.setStrUIDataListener(MailingAddressActivity.this);
+		strnetworkHelper = new StrVolleyInterface(SelectOrderAddressActivity.this);
+		strnetworkHelper.setStrUIDataListener(SelectOrderAddressActivity.this);
 		
 		init();
 	}
@@ -62,13 +62,6 @@ public class MailingAddressActivity extends Activity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent = new Intent();
-			intent.putExtra("state", state);
-			/*
-			 * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，
-			 * 这样就可以在onActivityResult方法中得到Intent对象，
-			 */
-			setResult(3001, intent);
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
@@ -80,7 +73,7 @@ public class MailingAddressActivity extends Activity implements
 		if (adapter == null) {
 			address_list = (ListView) findViewById(R.id.address_list);
 			adapter = new MailingAddressAdapter(
-					MailingAddressActivity.this, addresslist,0);
+					SelectOrderAddressActivity.this, addresslist,addressId);
 			address_list.setAdapter(adapter);
 		} else {
 			adapter.onDateChang(list);
@@ -88,6 +81,8 @@ public class MailingAddressActivity extends Activity implements
 	}
 
 	private void init() {
+		Intent intent = getIntent();
+		addressId = intent.getIntExtra("addressId", 0);
 		list_Layout = (LinearLayout) findViewById(R.id.list_Layout);
 		// 旋转等待页
 		wait_ll = (LinearLayout) findViewById(R.id.wait_ll);
@@ -111,7 +106,7 @@ public class MailingAddressActivity extends Activity implements
 		title = (TextView) findViewById(R.id.title);
 		
 		add_address = (Button) findViewById(R.id.add_address);
-		title.setText(R.string.manage_address);
+		title.setText(R.string.select_address);
 		back.setOnClickListener(this);
 		add_address.setOnClickListener(this);
 
@@ -129,15 +124,14 @@ public class MailingAddressActivity extends Activity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
 		super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000 && resultCode == 1001)
+        if(requestCode == 3000 && resultCode == 3001)
         {
-        	int result_value = data.getIntExtra("result", 1);
-        	if(result_value == 0){
+        	int state = data.getIntExtra("state", 1);
+        	if(state == 0){
         		wait_ll.setVisibility(View.VISIBLE);
         		retry_img.setVisibility(View.GONE);
         		loading_ll.setVisibility(View.VISIBLE);
         		list_Layout.setVisibility(View.GONE);
-        		state = 0;
         		load_data();
         	}
         	
@@ -150,14 +144,14 @@ public class MailingAddressActivity extends Activity implements
 	 */
 	public void load_data() {
 		try {
-			YesOrNo = appContext.getAddressList(MailingAddressActivity.this,
+			YesOrNo = appContext.getAddressList(SelectOrderAddressActivity.this,
 					strnetworkHelper);
 			if(!YesOrNo){   //如果没联网
 				wait_ll.setVisibility(View.VISIBLE);
 				retry_img.setVisibility(View.VISIBLE);
 				loading_ll.setVisibility(View.GONE);
 				list_Layout.setVisibility(View.GONE);
-				Toast.makeText(MailingAddressActivity.this, "请检查网络连接", Toast.LENGTH_LONG)
+				Toast.makeText(SelectOrderAddressActivity.this, "请检查网络连接", Toast.LENGTH_LONG)
 				.show();
 			}
 		} catch (Exception e) {
@@ -170,18 +164,11 @@ public class MailingAddressActivity extends Activity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.add_address:
-			intent = new Intent(this, AddAddressActivity.class);
-			startActivityForResult(intent, 1000);
+			intent = new Intent(this, MailingAddressActivity.class);
+			startActivityForResult(intent, 3000);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.iv_back:
-			Intent intent = new Intent();
-			intent.putExtra("state", state);
-			/*
-			 * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，
-			 * 这样就可以在onActivityResult方法中得到Intent对象，
-			 */
-			setResult(3001, intent);
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
@@ -193,7 +180,7 @@ public class MailingAddressActivity extends Activity implements
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(MailingAddressActivity.this, "加载失败", Toast.LENGTH_LONG)
+		Toast.makeText(SelectOrderAddressActivity.this, "加载失败", Toast.LENGTH_LONG)
 				.show();
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
@@ -224,7 +211,7 @@ public class MailingAddressActivity extends Activity implements
 				}
 						
 			} else {
-				Toast.makeText(MailingAddressActivity.this, "加载失败",
+				Toast.makeText(SelectOrderAddressActivity.this, "加载失败",
 						Toast.LENGTH_LONG).show();
 				wait_ll.setVisibility(View.VISIBLE);
 				retry_img.setVisibility(View.VISIBLE);

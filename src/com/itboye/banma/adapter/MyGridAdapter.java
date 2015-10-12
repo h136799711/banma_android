@@ -95,8 +95,12 @@ public class MyGridAdapter extends BaseAdapter {
 				state = position;
 				Constant.SKU_INFO[i] = skuInfo.getKey() + ":" + value.get(sku_info.getVid()[position]).getKey()+";";
 				//tv.setBackgroundResource(R.drawable.yuanjiao_choice);
-				Constant.SKU_NUM++;
-				if(Constant.SKU_NUM >= Constant.SKU_ALLNUM){
+				Constant.SKU_NUM[i] = 1;
+				int sum = 0;
+				for(int k=0; k<Constant.SKU_ALLNUM; k++){
+					sum = sum + Constant.SKU_NUM[k];
+				}
+				if(sum >= Constant.SKU_ALLNUM){
 					ch.changeview();
 				}
 			}

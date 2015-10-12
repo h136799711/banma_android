@@ -210,6 +210,24 @@ public class AppContext extends Application {
 		}	
 	}
 	/**
+	 * 设置默认收货地址
+	 * @param id
+	 * @throws Exception 
+	 */
+	public Boolean setDefaultAddress(Context mContext, int id, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.setDefaultAddress(mContext, id, loginUid, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	/**
 	 * 获取商品详情
 	 * @return
 	 * @throws Exception 

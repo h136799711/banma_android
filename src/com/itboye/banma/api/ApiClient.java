@@ -224,6 +224,17 @@ public class ApiClient {
 		VolleyRequest.StrRequestPost(mContext, url, "deleteAdress",params, networkHelper);
 		
 	}
+	
+	public static void setDefaultAddress(Context mContext, int id,
+			int loginUid, StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Address/setDefaultAddress?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+loginUid);
+		params.put("id",""+id);
+		VolleyRequest.StrRequestPost(mContext, url, "setDefaultAddress",params, networkHelper);
+		
+	}
 
 	public static void getProductDetail(Context mContext, int id,
 			StrVolleyInterface networkHelper) {
