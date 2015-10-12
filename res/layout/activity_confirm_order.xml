@@ -95,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="2dip"
                             android:singleLine="true"
-                            android:text="姓名"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_16" />
 
@@ -107,7 +107,7 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:singleLine="true"
-                            android:text="电话"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_16" />
                     </LinearLayout>
@@ -117,7 +117,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dip"
-                        android:text="地址"
+                        android:text=""
                         android:textColor="@color/gray"
                         android:textSize="@dimen/text_size_14" />
                 </LinearLayout>
@@ -393,7 +393,7 @@
 
         <Button
             android:id="@+id/registered"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:background="@color/red"
             android:gravity="center"

@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.JsonArray;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.CenterActivity;
+import com.itboye.banma.activities.ConfirmOrderActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface; 
@@ -277,6 +278,10 @@ public class ShoppingCartActivity  extends Activity implements StrUIDataListener
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
 			break;
+		case R.id.tv_cart_buy_or_del:
+			Intent  intent=new Intent(ShoppingCartActivity.this,ConfirmOrderActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 		default:
 			break;

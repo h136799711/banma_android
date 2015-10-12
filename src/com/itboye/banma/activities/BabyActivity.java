@@ -124,9 +124,15 @@ public class BabyActivity extends FragmentActivity implements
 			Constant.SKU_INFO[i] = "";
 		}
 		Constant.SKU_ALLNUM = 0;
+
 		//for(int i=0; i<Constant.SKU_NUM.length; i++){
 	//		Constant.SKU_NUM[i] = 0;
 	//	}
+
+		for(int i=0; i<Constant.SKU_NUM.length; i++){
+			Constant.SKU_NUM[i] = 0;
+		}
+
 		strnetworkHelper = new StrVolleyInterface(BabyActivity.this);
 		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
 		try {

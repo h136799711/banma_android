@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="manage_address">地址管理</string>
+    <string name="select_address">选择地址</string>
     <string name="add_address">添加地址</string>
     <string name="alter_address">修改地址</string>
     <string name="name">姓名</string>
@@ -25,4 +26,5 @@
 	<string name="ok">确定</string>
 	<string name="delete_address_or_not">是否删除收货地址？</string>
 	<string name="confirm_order">订单确认</string>
+	<string name="default_address">设为默认地址</string>
 </resources>

@@ -203,6 +203,50 @@
                     android:textColor="@color/gray"
                     android:textSize="16dip" />
             </LinearLayout>
+             <View
+                android:id="@+id/default_address_line"
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="7dip"
+                android:layout_marginRight="7dip"
+                android:background="@color/lightgray"
+                android:paddingLeft="10dip"
+                android:visibility="gone"
+                 />
+
+            <LinearLayout
+                android:id="@+id/default_address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="8dip"
+                android:paddingLeft="5dip"
+                android:paddingTop="8dip"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="@string/default_address"
+                    android:textColor="@color/black"
+                    android:textSize="15dip" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dip" >
+
+                    <CheckBox
+                        android:id="@+id/default_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/checkbox_gv" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
