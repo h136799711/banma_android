@@ -59,7 +59,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 	private TextView adr_phone;
 	private TextView adr_address;
 	private LinearLayout select_adress_layout;
-	private MailingAdress address;
+	private MailingAdress address = null;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
 
@@ -180,7 +180,12 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		case R.id.select_adress_layout:
 			Intent intent = new Intent();
 			intent = new Intent(this, SelectOrderAddressActivity.class);
-			intent.putExtra("addressId", address.getId());
+			if(address == null){
+				intent.putExtra("addressId", -1);
+			}else{
+				intent.putExtra("addressId", address.getId());
+			}
+			
 			startActivityForResult(intent, 2000);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
@@ -240,7 +245,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 				addresslist = gson.fromJson(addressData,
 						new TypeToken<List<MailingAdress>>() {
 						}.getType());
-				if (addresslist != null) {
+				if (addresslist.size() > 0) {
 					// showListView(addresslist);
 					address = addresslist.get(0);
 					adr_name.setText(address.getContactname());
@@ -250,10 +255,19 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 							+ address.getDetailinfo());
 
 				}
+				else {
+					Toast.makeText(ConfirmOrderActivity.this, "请添加地址",
+							Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent();
+					intent = new Intent(this, SelectOrderAddressActivity.class);
+					intent.putExtra("addressId", -1);
+					startActivityForResult(intent, 2000);
+					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				}
 
 			} else {
-				Toast.makeText(ConfirmOrderActivity.this, "加载失败",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(ConfirmOrderActivity.this, "地址加载异常",
+						Toast.LENGTH_SHORT).show();
 			}
 
 		} catch (JSONException e) {

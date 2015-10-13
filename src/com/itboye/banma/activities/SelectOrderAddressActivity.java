@@ -62,11 +62,31 @@ public class SelectOrderAddressActivity extends Activity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			finish();
-			overridePendingTransition(R.anim.push_right_in,
-					R.anim.push_right_out);
+			finishActivity();
 		}
 		return false;
+	}
+	
+	public void finishActivity(){
+		MailingAdress address = null;
+		Intent intent = new Intent();
+		
+		Bundle bundle = new Bundle();
+		if(addresslist!=null && addresslist.size()>0){
+			address = getAdressById(addressId);
+			if(address == null){
+				address = addresslist.get(0);
+			}
+			intent.putExtra("result", 0);
+		}else{
+			intent.putExtra("result", 1);
+		}
+		bundle.putSerializable("address", address);
+		intent.putExtras(bundle);
+		setResult(2001, intent);
+		finish();
+		overridePendingTransition(
+				R.anim.push_right_in, R.anim.push_right_out);
 	}
 	
 	private void showListView(List<MailingAdress> list) {
@@ -119,6 +139,19 @@ public class SelectOrderAddressActivity extends Activity implements
 
 	}
 	
+	//得到对应ID的地址对象
+	public MailingAdress getAdressById(int id){
+		MailingAdress ad = null;
+		int i=0;
+		for(i=0; i<addresslist.size(); i++){
+			if(addresslist.get(i).getId() == id){
+				ad = addresslist.get(i);
+				break;
+			}
+		}
+		return ad;
+	}
+	
 	//刷新当前界面
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -169,9 +202,7 @@ public class SelectOrderAddressActivity extends Activity implements
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.iv_back:
-			finish();
-			overridePendingTransition(R.anim.push_right_in,
-					R.anim.push_right_out);
+			finishActivity();
 			break;
 		default:
 			break;
@@ -206,8 +237,12 @@ public class SelectOrderAddressActivity extends Activity implements
 				addresslist = gson.fromJson(addressData,
 						new TypeToken<List<MailingAdress>>() {
 						}.getType());
-				if (addresslist!=null) {
+				if (addresslist.size() > 0) {
 					showListView(addresslist);
+				}else{
+					intent = new Intent(this, MailingAddressActivity.class);
+					startActivityForResult(intent, 3000);
+					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				}
 						
 			} else {
