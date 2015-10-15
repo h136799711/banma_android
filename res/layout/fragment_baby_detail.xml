@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <com.itboye.banma.view.MyListView
         android:id="@+id/detail_image_list"
@@ -10,11 +10,15 @@
         android:layout_height="match_parent"
         android:cacheColorHint="#00000000"
         android:divider="#00000000"
-        android:dividerHeight="0px"
-       >
-
-        </com.itboye.banma.view.MyListView>
-
+        android:dividerHeight="0px" >
+    </com.itboye.banma.view.MyListView>
     
-    
+    <ImageView 
+        android:id="@+id/con_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/iconfont_kongbaiwu"
+        android:visibility="gone"
+        />
+
 </LinearLayout>

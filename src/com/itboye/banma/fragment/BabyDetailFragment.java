@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class BabyDetailFragment extends Fragment{
@@ -28,8 +29,14 @@ public class BabyDetailFragment extends Fragment{
     }
 	private void initView() {
 		detailListView = (MyListView) chatView.findViewById(R.id.detail_image_list);
-		adapter = new BabyDetailAdapter(getActivity(), details);
-		detailListView.setAdapter(adapter);
+		if(details != null){
+			adapter = new BabyDetailAdapter(getActivity(), details);
+			detailListView.setAdapter(adapter);
+		}else{
+			detailListView.setVisibility(View.GONE);
+			ImageView imageView = (ImageView) chatView.findViewById(R.id.con_image);
+			imageView.setVisibility(View.VISIBLE);
+		}
 		
 	}
 
