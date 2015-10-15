@@ -3,6 +3,7 @@ package com.itboye.banma.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.R.string;
 import android.content.Context;
 import android.util.Log;
 
@@ -31,7 +32,21 @@ public class ApiClient {
         VolleyRequest.StrRequestPost(mContext, url, "getToken",params, networkHelper);
 		
 	} 
-	
+	//购物车修改接口
+		public  static void modifyCart(Context mContext, String id, String count,String express,
+				String p_id,String psku_id, StrVolleyInterface networkHelper) {
+			 String access_token=AppContext.getAccess_token();
+				String url = Constant.URL+"/ShoppingCart/update?access_token="+access_token+"";
+			Map<String,String> params = new HashMap<String, String>();
+	        params.put("id",id);
+	        params.put("count",count);
+	        params.put("express", express);
+	        params.put("p_id", p_id);
+	        params.put("psku_id", psku_id);
+	        VolleyRequest.StrRequestPost(mContext, url, "modifyCart",params, networkHelper);
+			
+		} 
+		
 	//绑定新手机
 	public  static void changePhone(Context mContext, String uid, String code,String mobile,
 			String password, StrVolleyInterface networkHelper) {
@@ -45,7 +60,16 @@ public class ApiClient {
         VolleyRequest.StrRequestPost(mContext, url, "changPhone",params, networkHelper);
 		
 	} 
-
+	//购物车删除单个商品
+	public static void deleteCart(Context context,String id, StrVolleyInterface networkHelper){
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/ShoppingCart/delete?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		//params.put("access_token", access_token);
+        params.put("id",id+"");  
+        VolleyRequest.StrRequestPost(context, url, "deleteCart",params, networkHelper);
+	}
+	
 	//购物车添加
 			public static void addCart(Context context,String uid,String  store_id, String p_id,
 					String sku_id,String sku_desc,String icon_url,String count,String name,String express,
@@ -121,7 +145,7 @@ public class ApiClient {
         params.put("username",username);  
         params.put("password",password);
         params.put("from", "0");
-        params.put("type", "4");
+        params.put("type", "1");
         VolleyRequest.StrRequestPost(context, url, "finishRegisit",params, networkHelper);
 	}
 
@@ -244,6 +268,7 @@ public class ApiClient {
 		params.put("pid",""+id);
 		VolleyRequest.StrRequestPost(mContext, url, "getProductDetail",params, networkHelper);
 	}
+	
 //获得购物车数据
 	public static void getCartListByPage(Context mContext, int uid,
 			StrVolleyInterface networkHelper) {

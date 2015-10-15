@@ -21,20 +21,23 @@
         <ImageView
             android:id="@+id/iv_icon_url"
             android:layout_width="75dp"
-            android:layout_height="match_parent"
+            android:layout_height="100dp"
             android:layout_margin="5dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_loading" />
+            android:src="@drawable/image_load_fail"
+            />
 
         <LinearLayout
+            android:id="@+id/ll_cart_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="visible" >
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="时尚女衣  尽在恋上猫女衣坊 http//yecaoly.taobao.com"
@@ -74,6 +77,81 @@
                 android:textSize="13sp" />
 
         </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
+    <LinearLayout 
+     	android:id="@+id/ll_add_reduce"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">"
+    <LinearLayout
+                 	android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                     >
+                    <TextView
+                        android:layout_marginLeft="25dp"
+                        android:id="@+id/tv_pop_reduce"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/yuanjiao"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:paddingTop="10dp"
+                        android:text="一"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tv_pop_num"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/number_bg"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="1"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tv_pop_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/yuanjiao"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:paddingTop="10dp"
+                        android:text="+"
+                        android:textColor="@color/black" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="25dp"
+                  android:layout_marginTop="10dp"
+                  android:orientation="horizontal" >
+
+                  <TextView
+                      android:id="@+id/tv_guige"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="颜色：大小：型号"
+                      android:textColor="@color/gray"
+                      android:textSize="@dimen/text_size_12" />
+
+                  <ImageView
+                      android:id="@+id/iv_xiala"
+                      android:layout_marginLeft="10dp"
+                      android:layout_width="30dp"
+                      android:layout_height="18dp"
+                      android:src="@drawable/xiala" />
+              </LinearLayout>
+
+           </LinearLayout>   
+  </LinearLayout>
 </LinearLayout>

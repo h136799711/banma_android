@@ -205,7 +205,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		} else {
 			dialog.dismiss();
 			appContext.setLogin(false);
-			Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" + data.toString(), Toast.LENGTH_LONG)
+			Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" + content.toString(), Toast.LENGTH_LONG)
 			.show();
 			System.out.println("code=" + data.toString());
 		}

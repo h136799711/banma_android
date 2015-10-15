@@ -28,7 +28,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 	Button btnRegist;//注册按钮
 	ImageView ivBack;//返回按钮
 	String username;//用户名，需要传递到其他activity
-	int state;//判断从上个activity传递来的验证码接口状态
+	private int state;//判断从上个activity传递来的验证码接口状态
    TextView  tvPassword;//title文字
 	String checkCode;//验证码
 	Intent intent;
@@ -109,6 +109,9 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
 		Log.v("注册接口",error.toString());
+	    Log.e("LOGIN-ERROR", error.getMessage(), error);
+	    byte[] htmlBodyBytes = error.networkResponse.data;
+	    Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
 		Toast.makeText(PasswordActivity.this, "验证密码请求发生异常，请重新尝试"+error.toString() , Toast.LENGTH_LONG)
 		.show();
 	}
