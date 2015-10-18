@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.itboye.banma.R;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.utils.BitmapCache;
@@ -28,6 +29,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	private onCheckedChanged listener;
 	private onAddChanged addListener;
 	private onReduceChanged reduceListener;
+	private onGuiGeChanged guiListener;
 
 	public Adapter_ListView_cart(Context context, ArrayList<HashMap<String, Object>> arrayList) {
 		this.imageLoader= new ImageLoader(AppContext.getHttpQueues(),
@@ -54,7 +56,6 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	public long getItemId(int arg0) {
 		return 0;
 	}
-
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(final int position, View currentView, ViewGroup arg2) {
@@ -93,6 +94,20 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 //				holderView.iv_icon.setErrorImageResId(R.drawable.ic_launcher);  
 //				holderView.iv_icon.setImageUrl(arrayList.get(position).get("icon_url").toString(), imageLoader);  
 //		}
+			holderView.iv_xiala.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					guiListener.guiGeChanged(position);
+				}
+			});
+
+			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+					new BitmapCache());
+			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
+					R.drawable.image_loading, R.drawable.image_load_fail);
+			imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1, 75, 75);
 			holderView.cb_choice.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton arg0, boolean choice) {
@@ -146,6 +161,10 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	public interface  onAddChanged {
 		public void addCount(int position);
 	}
+	
+	public interface onGuiGeChanged{
+		public void guiGeChanged(int position);
+	}
 	public interface  onReduceChanged {
 		public void reduceCount(int position);
 	}
@@ -153,6 +172,9 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	public interface onCheckedChanged{
 		
 		public void getChoiceData(int position,boolean isChoice);
+	}
+	public void setGuiChanged(onGuiGeChanged guige){
+		this.guiListener=guige;
 	}
 	public void setOnRedChanged(onReduceChanged reduceChanged){
 		this.reduceListener=reduceChanged;

@@ -2,6 +2,7 @@ package com.itboye.banma.shoppingcart;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,54 +15,63 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
-import com.itboye.banma.activities.CenterActivity;
 import com.itboye.banma.activities.ConfirmOrderActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface; 
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
-import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.CartList;
+import com.itboye.banma.entity.ProductDetail;
+import com.itboye.banma.entity.ProductDetail.Sku_info;
+import com.itboye.banma.entity.SkuStandard;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onAddChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onCheckedChanged;
+import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onGuiGeChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onReduceChanged;
+import com.itboye.banma.view.BabyPopWindow;
+import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.MyListView;
 
 public class ShoppingCartActivity  extends Activity implements StrUIDataListener,onCheckedChanged,
-OnClickListener,onAddChanged,onReduceChanged{
+OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	
 	private ImageView ivBack;//返回按钮
 	private TextView tv_goShop, tv_cart_Allprice, tv_cart_buy_Ordel;
 	private LinearLayout ll_cart;
-	private MyListView listView_cart;
+	private ListView listView_cart;
 	private CheckBox cb_cart_all;
 	private Adapter_ListView_cart adapter;
 	private String str_del = "结算(0)";
 	private TextView tv_title_right;//编辑按钮
 	private boolean[] is_choice;
-	private CartList[] cartList;//多页查询购物车实体
+	private SkuStandard[] skuStandards;
+	//private CartList[] cartList=new CartList[10];//多页查询购物车实体
 	private int EditState=1;//标示编辑状态,1标示编辑，2标示完成
 	private int RequestState=-1;//区分不同的请求返回 1.购物车删除。2.购物车修改。3.购物车分页查询
-												//4.单个查询。5.数量查询6.批量添加接口
+												//4.单个查询。5.数量查询6.批量添加接口7.请求商品详情，显示popwindow
 	private boolean Is_Internet;//是否联网
 	private int AllCount=0;//购物车总价格
+	
+	private ProductDetail productDetail;
+	private List<Sku_info> sku_info; // 商品类型参数
+	private BabyPopWindow popWindow;
+	private LinearLayout all_choice_layout;//pop的背景边框
+	
 	private  ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
 
 	public void onCreate(Bundle savedInstanceState)
@@ -92,6 +102,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 
 	private void initView() {
 		// TODO Auto-generated method stub
+		all_choice_layout=(LinearLayout)findViewById(R.id.all_choice_layout);
 		tv_title_right=(TextView)findViewById(R.id.tv_title_right);
 		tv_title_right.setOnClickListener(this);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
@@ -102,7 +113,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 		tv_cart_buy_Ordel.setText(str_del);
 		cb_cart_all = (CheckBox) this.findViewById(R.id.cb_cart_all);
 		ll_cart = (LinearLayout) this.findViewById(R.id.ll_cart);
-		listView_cart = (MyListView) this.findViewById(R.id.listView_cart);
+		listView_cart = (ListView) this.findViewById(R.id.listView_cart);
 	}
 
 	@Override
@@ -133,35 +144,73 @@ OnClickListener,onAddChanged,onReduceChanged{
 				// TODO: handle exception
 				e.printStackTrace();
 			}
+			break;
+		case 7:
+			Gson gson = new Gson();
+			String detail = null;
+			Toast.makeText(ShoppingCartActivity.this, "获取成功", Toast.LENGTH_SHORT)
+					.show();
+			try {
+				detail = jsonObject.getString("data");
+				System.out.println("data*****=" + detail);
+				if (code == 0) {
+
+					productDetail = gson.fromJson(detail, ProductDetail.class);
+			//		imageList = productDetail.getImg().split(",");
+					sku_info = new ArrayList<ProductDetail.Sku_info>();
+					// String ssString =
+					// "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
+					sku_info = gson.fromJson(productDetail.getSku_info(),
+							new TypeToken<List<Sku_info>>() {
+							}.getType());
+
+					updatePages();
+
+					System.out.println("商品详情*****=" + productDetail.toString());
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			break;
 		case 4:
 			try {				
 				if (code==0) {
 					JSONArray jsonArray=new JSONArray(jsonObject.getString("data"));
 					for (int i = 0; i < jsonArray.length(); i++) {
-						JSONObject temp=(JSONObject) jsonArray.get(i);
+					JSONObject temp=(JSONObject) jsonArray.get(i);
+//						System.out.println(temp.toString());
+//						try {
+//							Gson gson2=new Gson();
+//						    CartList tempcart=gson2.fromJson(temp.toString(), CartList.class);
+//						    cartList[i]=tempcart;
+//						} catch (Exception e) {
+//							// TODO: handle exception
+//							e.printStackTrace();
+//						}
 						
-					//	Gson gson=new Gson();
-					//    cartList[i]=gson.fromJson(temp.toString(), CartList.class);
-						
-						HashMap< String , Object> hashMap=new HashMap<String, Object>();
-						hashMap.put("id", temp.getString("id"));
+
+					    HashMap< String , Object> hashMap=new HashMap<String, Object>();
+						hashMap.put("id", temp.getInt("id"));
 						hashMap.put("name", temp.getString("name"));
 						hashMap.put("count", temp.getInt("count"));
 						hashMap.put("price",temp.getString("price"));
+						hashMap.put("ori_price",temp.getDouble("ori_price"));
 						hashMap.put("express", temp.getString("express"));
 						hashMap.put("sku_id", temp.getString("sku_id"));
 						hashMap.put("psku_id", temp.getString("psku_id"));
 						hashMap.put("sku_desc", temp.getString("sku_desc"));
 						hashMap.put("icon_url", temp.getString("icon_url"));
-						arrayList_cart.add(hashMap);				
+						hashMap.put("p_id", temp.getInt("p_id"));
+						arrayList_cart.add(hashMap);			
+						System.out.println(temp.getDouble("ori_price"));
 					}
 					updateView();//数据请求成功时刷新页面
 					System.out.println(jsonObject.get("data"));
-				}
-			
+				}				
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
+				
 			//	Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
 			}
 			break;
@@ -182,7 +231,32 @@ OnClickListener,onAddChanged,onReduceChanged{
 		}
 		
 	}
+	
+	private void updatePages() {
+		// TODO Auto-generated method stub
+		/**
+		 * 请求数据成功 修改页面
+		 */
 
+			popWindow = new BabyPopWindow(this, sku_info,
+					productDetail.getSkuInfo(), productDetail.getMain_img(),
+					productDetail.getPrice(), productDetail.getOri_price(),
+					productDetail.getQuantity(), productDetail.getSkuList());
+			popWindow.setOnItemClickListener(this);
+			setBackgroundBlack(all_choice_layout, 0);
+			popWindow.showAsDropDown(getWindow().getDecorView().findViewById(android.R.id.content));
+	}
+	/** 把背景变成暗色 */
+	public void setBackgroundBlack(View view, int what) {
+		switch (what) {
+		case 0:
+			view.setVisibility(View.VISIBLE);
+			break;
+		case 1:
+			view.setVisibility(View.GONE);
+			break;
+		}
+	}
 	private void updateView() {
 		// TODO Auto-generated method stub
 		// 如果购物车中有数据，那么就显示数据，否则显示默认界面
@@ -192,6 +266,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			adapter.setOnCheckedChanged(this);
 			adapter.setOnAddChanged(this);
 			adapter.setOnRedChanged(this);
+			adapter.setGuiChanged(this);
 			listView_cart.setAdapter(adapter);
 			ll_cart.setVisibility(View.GONE);
 		} else {
@@ -374,9 +449,38 @@ OnClickListener,onAddChanged,onReduceChanged{
 				is_choice=new boolean[arrayList_cart.size()];
 				System.out.println("此时的长度---->"+is_choice.length);
 			}else {
+				skuStandards=new SkuStandard[is_choice_copy.length];
 				//执行结算操作
 			//	Toast.makeText(getActivity(), "暂时无法结算", Toast.LENGTH_SHORT).show();
+				int j=0;
+				for (int i = 0; i<is_choice_copy.length; i++) {
+					if (is_choice_copy[i]) {
+						//讲该货物包装成数据
+						SkuStandard tempSku=new SkuStandard();
+						int id=(Integer) arrayList_cart.get(i).get("id");
+						//int uid=(Integer) arrayList_cart.get(i).get("uid");
+						double ori_price=(Double.parseDouble(arrayList_cart.get(i).get("ori_price").toString()));
+						double price=(Double.parseDouble(arrayList_cart.get(i).get("price").toString()));			
+						tempSku.setId(id);
+						tempSku.setOri_price(ori_price);
+						tempSku.setPrice(price);
+						tempSku.setNum(arrayList_cart.get(i).get("count").toString());
+						tempSku.setCreatetime("unkown");
+						tempSku.setIcon_url(arrayList_cart.get(i).get("icon_url").toString());
+						tempSku.setProduct_code(arrayList_cart.get(i).get("name").toString());
+						tempSku.setQuantity(1000);
+						tempSku.setSku(arrayList_cart.get(i).get("name").toString());
+						tempSku.setSku_id(arrayList_cart.get(i).get("sku_id").toString());
+						tempSku.setProduct_id(arrayList_cart.get(i).get("p_id").toString());
+						skuStandards[j]=tempSku;
+						j+=1;
+					}
+				}	
 				Intent  intent=new Intent(ShoppingCartActivity.this,ConfirmOrderActivity.class);
+				intent.putExtra("SkuStandard", skuStandards[0]);
+				intent.putExtra("main_img", skuStandards[0].getIcon_url());
+				intent.putExtra("name", skuStandards[0].getSku());
+				intent.putExtra("price", skuStandards[0].getPrice());
 				startActivity(intent);
 				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			}
@@ -425,5 +529,26 @@ OnClickListener,onAddChanged,onReduceChanged{
 				arrayList_cart.get(position).get("express")+"",
 				arrayList_cart.get(position).get("sku_id")+"",arrayList_cart.get(position).get("psku_id")+"",networkHelper);
 		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void guiGeChanged(int position) {
+		// TODO Auto-generated method stub
+		int tempid=(Integer) arrayList_cart.get(position).get("p_id");
+		ApiClient.getProductDetail(ShoppingCartActivity.this, tempid, networkHelper);
+		RequestState=7;
+		System.out.println("下拉显示");
+	}
+
+	@Override
+	public void onClickOKPop(SkuStandard skuStandard) {
+		// TODO Auto-generated method stub
+		System.out.println("点击了好的");
+	}
+
+	@Override
+	public void onClickDissmissPop() {
+		// TODO Auto-generated method stub
+		
 	}
 }
