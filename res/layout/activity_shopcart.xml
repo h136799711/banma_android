@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:text="编辑"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_18" />
+            android:textSize="@dimen/text_size_16" />
 
         <TextView
             android:id="@+id/title"
@@ -50,13 +50,5 @@
 	    android:layout_height="1dp"
 	    android:background="@color/lightgray"/>
     <include layout="@layout/cart_all_f" />
-  <LinearLayout
-        android:id="@+id/all_choice_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#90000000"
-        android:orientation="horizontal"
-        android:visibility="gone" >
- </LinearLayout>
 
 </LinearLayout>

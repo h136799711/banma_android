@@ -139,7 +139,10 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 			try {
 				if (code==0) {
 					Log.v("修改购物车", jsonObject.toString());
+				}else {
+					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
 				}
+				
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
@@ -476,13 +479,15 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 						j+=1;
 					}
 				}	
-				Intent  intent=new Intent(ShoppingCartActivity.this,ConfirmOrderActivity.class);
-				intent.putExtra("SkuStandard", skuStandards[0]);
-				intent.putExtra("main_img", skuStandards[0].getIcon_url());
-				intent.putExtra("name", skuStandards[0].getSku());
-				intent.putExtra("price", skuStandards[0].getPrice());
-				startActivity(intent);
-				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+				if (skuStandards[0]!=null) {
+					Intent  intent=new Intent(ShoppingCartActivity.this,ConfirmOrderActivity.class);
+					intent.putExtra("SkuStandard", skuStandards[0]);
+					intent.putExtra("main_img", skuStandards[0].getIcon_url());
+					intent.putExtra("name", skuStandards[0].getSku());
+					intent.putExtra("price", skuStandards[0].getPrice());
+					startActivity(intent);
+					overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+				}
 			}
 		default:
 			break;

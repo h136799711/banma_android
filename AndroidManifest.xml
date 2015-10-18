@@ -56,6 +56,7 @@
            <activity android:name="com.itboye.banma.shoppingcart.ShoppingCartActivity"></activity>
            <activity  android:name="com.itboye.banma.util.CaptureActivity"></activity>
            <activity  android:name="com.itboye.banma.activities.ShengFenActivity"></activity>
+           <activity android:name="com.itboye.banma.activities.OrderActivity"></activity>
            
            <service  android:name="com.itboye.banma.service.TokenIntentService"></service>
     </application>

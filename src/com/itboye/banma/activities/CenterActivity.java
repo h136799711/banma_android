@@ -88,6 +88,18 @@ public class CenterActivity extends Activity implements OnClickListener,StrUIDat
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.rl_money:
+			if (appContext.isLogin()) {
+				Intent intent = new Intent(this, OrderActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}else{
+				Toast.makeText(CenterActivity.this, "请先登录",
+						Toast.LENGTH_LONG).show();
+			}
+			break;
+			
 		case R.id.address:
 			if(appContext.isLogin()){   //判断登陆
 				Intent intent = new Intent(this, MailingAddressActivity.class);

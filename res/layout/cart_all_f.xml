@@ -70,20 +70,31 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
                 android:orientation="horizontal" >
 
                 <CheckBox
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/cb_cart_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"            
-                    android:text="全选"
-                    android:textColor="@color/black" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"  
+                    android:button="@null"
+                    android:background="@drawable/checkall"  />
+                <TextView
+                    android:layout_gravity="center_vertical"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:layout_marginLeft="10dp"
+                     android:text="全选"
+                     android:textSize="@dimen/text_size_14"
+                     android:textColor="@color/black"/>
+
 
                 <TextView
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/tv_cart_Allprice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -94,12 +105,12 @@
                     android:textColor="@color/red" />
 
                 <TextView
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/tv_cart_buy_or_del"
                     android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/red"
+                    android:layout_height="40dp"
                     android:gravity="center"
+                    android:background="@color/red"
                     android:padding="10dp"
                     android:text="结算(0)"
                     android:textColor="@color/white" />
