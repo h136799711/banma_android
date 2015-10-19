@@ -21,6 +21,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,8 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	
+	private LinearLayout ll_cart_bottom;//底部显示
+	private RelativeLayout rl_cart;
 	private ImageView ivBack;//返回按钮
 	private TextView tv_goShop, tv_cart_Allprice, tv_cart_buy_Ordel;
 	private LinearLayout ll_cart;
@@ -71,6 +74,7 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 	private List<Sku_info> sku_info; // 商品类型参数
 	private BabyPopWindow popWindow;
 	private LinearLayout all_choice_layout;//pop的背景边框
+//	private int addPosition,reducePosition,flagPosition=0;//用于保存adpapter传出来的位置信息和网络返回请求信息,1表示减少来的
 	
 	private  ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
 
@@ -102,12 +106,14 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 
 	private void initView() {
 		// TODO Auto-generated method stub
+		ll_cart_bottom=(LinearLayout)findViewById(R.id.ll_cart_bottom);
 		all_choice_layout=(LinearLayout)findViewById(R.id.all_choice_layout);
 		tv_title_right=(TextView)findViewById(R.id.tv_title_right);
+		rl_cart=(RelativeLayout)findViewById(R.id.rl_cart);
 		tv_title_right.setOnClickListener(this);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		ivBack.setOnClickListener(this);
-		tv_goShop = (TextView) this.findViewById(R.id.tv_goShop);
+		//tv_goShop = (TextView) this.findViewById(R.id.tv_goShop);
 		tv_cart_Allprice = (TextView) this.findViewById(R.id.tv_cart_Allprice);
 		tv_cart_buy_Ordel = (TextView) this.findViewById(R.id.tv_cart_buy_or_del);
 		tv_cart_buy_Ordel.setText(str_del);
@@ -138,7 +144,21 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 		case 2:
 			try {
 				if (code==0) {
-					Log.v("修改购物车", jsonObject.toString());
+//					if (flagPosition==1) {
+//						int temp=(Integer) arrayList_cart.get(reducePosition).get("count");
+//						if (temp>1) {
+//							arrayList_cart.get(reducePosition).put("count", temp-1);
+//						}else {
+//							Toast.makeText(this, "不能再少了", Toast.LENGTH_SHORT).show();; 
+//						}	
+//					}	
+//					if (flagPosition==2) {
+//						int temp=(Integer) arrayList_cart.get(addPosition).get("count");
+//						arrayList_cart.get(addPosition).put("count", temp+1);
+//					}
+					Toast.makeText(this, "修改购物车成功", Toast.LENGTH_SHORT).show();
+				//	Log.v("修改购物车", jsonObject.toString());
+					adapter.notifyDataSetChanged();
 				}else {
 					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
 				}
@@ -179,39 +199,42 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 			try {				
 				if (code==0) {
 					JSONArray jsonArray=new JSONArray(jsonObject.getString("data"));
-					for (int i = 0; i < jsonArray.length(); i++) {
-					JSONObject temp=(JSONObject) jsonArray.get(i);
-//						System.out.println(temp.toString());
-//						try {
-//							Gson gson2=new Gson();
-//						    CartList tempcart=gson2.fromJson(temp.toString(), CartList.class);
-//						    cartList[i]=tempcart;
-//						} catch (Exception e) {
-//							// TODO: handle exception
-//							e.printStackTrace();
-//						}
-						
+					if (jsonArray!=null) {
+						for (int i = 0; i < jsonArray.length(); i++) {
+							JSONObject temp=(JSONObject) jsonArray.get(i);
+//								System.out.println(temp.toString());
+//								try {
+//									Gson gson2=new Gson();
+//								    CartList tempcart=gson2.fromJson(temp.toString(), CartList.class);
+//								    cartList[i]=tempcart;
+//								} catch (Exception e) {
+//									// TODO: handle exception
+//									e.printStackTrace();
+//								}
+								
 
-					    HashMap< String , Object> hashMap=new HashMap<String, Object>();
-						hashMap.put("id", temp.getInt("id"));
-						hashMap.put("name", temp.getString("name"));
-						hashMap.put("count", temp.getInt("count"));
-						hashMap.put("price",temp.getString("price"));
-						hashMap.put("ori_price",temp.getDouble("ori_price"));
-						hashMap.put("express", temp.getString("express"));
-						hashMap.put("sku_id", temp.getString("sku_id"));
-						hashMap.put("psku_id", temp.getString("psku_id"));
-						hashMap.put("sku_desc", temp.getString("sku_desc"));
-						hashMap.put("icon_url", temp.getString("icon_url"));
-						hashMap.put("p_id", temp.getInt("p_id"));
-						arrayList_cart.add(hashMap);			
-						System.out.println(temp.getDouble("ori_price"));
+							    HashMap< String , Object> hashMap=new HashMap<String, Object>();
+								hashMap.put("id", temp.getInt("id"));
+								hashMap.put("name", temp.getString("name"));
+								hashMap.put("count", temp.getInt("count"));
+								hashMap.put("price",temp.getString("price"));
+								hashMap.put("ori_price",temp.getDouble("ori_price"));
+								hashMap.put("express", temp.getString("express"));
+								hashMap.put("sku_id", temp.getString("sku_id"));
+								hashMap.put("psku_id", temp.getString("psku_id"));
+								hashMap.put("sku_desc", temp.getString("sku_desc"));
+								hashMap.put("icon_url", temp.getString("icon_url"));
+								hashMap.put("p_id", temp.getInt("p_id"));
+								arrayList_cart.add(hashMap);			
+								System.out.println(temp.getDouble("ori_price"));
+							}
 					}
 					updateView();//数据请求成功时刷新页面
 					System.out.println(jsonObject.get("data"));
 				}				
 			} catch (Exception e) {
 				// TODO: handle exception
+				updateView();//数据请求成功时刷新页面
 				e.printStackTrace();
 				
 			//	Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
@@ -264,15 +287,18 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 		// TODO Auto-generated method stub
 		// 如果购物车中有数据，那么就显示数据，否则显示默认界面
 		is_choice=new boolean[arrayList_cart.size()];
-		if (arrayList_cart != null && arrayList_cart.size() != 0) {
+		System.out.println(arrayList_cart.size()+"数量");
+		if ( arrayList_cart.size() != 0) {
 			adapter = new Adapter_ListView_cart(ShoppingCartActivity.this, arrayList_cart);
 			adapter.setOnCheckedChanged(this);
 			adapter.setOnAddChanged(this);
 			adapter.setOnRedChanged(this);
 			adapter.setGuiChanged(this);
 			listView_cart.setAdapter(adapter);
+			ll_cart_bottom.setVisibility(View.VISIBLE);
 			ll_cart.setVisibility(View.GONE);
 		} else {
+			rl_cart.setVisibility(View.GONE);
 			ll_cart.setVisibility(View.VISIBLE);
 		}
 		cb_cart_all.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -330,7 +356,7 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 		
 		
 		tv_cart_buy_Ordel.setOnClickListener(this);
-		tv_goShop.setOnClickListener(this);
+	//	tv_goShop.setOnClickListener(this);
 	}
 
 
@@ -510,18 +536,22 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 	@Override
 	public void addCount(int position) {
 		// TODO Auto-generated method stub
+//		flagPosition=2;
+//		addPosition=position;
+		RequestState=2;
 		int temp=(Integer) arrayList_cart.get(position).get("count");
 		arrayList_cart.get(position).put("count", temp+1);
-		RequestState=2;
 		ApiClient.modifyCart(ShoppingCartActivity.this,arrayList_cart.get(position).get("id")+"", arrayList_cart.get(position).get("count")+"", 
 				arrayList_cart.get(position).get("express")+"",
 				arrayList_cart.get(position).get("sku_id")+"",arrayList_cart.get(position).get("psku_id")+"",networkHelper);
-		adapter.notifyDataSetChanged();
+//		adapter.notifyDataSetChanged();
 	}
 
 	@Override
 	public void reduceCount(int position) {
 		// TODO Auto-generated method stub
+//		reducePosition=position;
+//		flagPosition=1;
 		int temp=(Integer) arrayList_cart.get(position).get("count");
 		if (temp>1) {
 			arrayList_cart.get(position).put("count", temp-1);
@@ -533,7 +563,7 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 		ApiClient.modifyCart(ShoppingCartActivity.this,arrayList_cart.get(position).get("id")+"", arrayList_cart.get(position).get("count")+"", 
 				arrayList_cart.get(position).get("express")+"",
 				arrayList_cart.get(position).get("sku_id")+"",arrayList_cart.get(position).get("psku_id")+"",networkHelper);
-		adapter.notifyDataSetChanged();
+//		adapter.notifyDataSetChanged();
 	}
 
 	@Override

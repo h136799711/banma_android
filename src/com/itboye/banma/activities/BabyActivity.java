@@ -390,17 +390,22 @@ public class BabyActivity extends FragmentActivity implements
 			// System.out.println(productDetail.getPrice());
 
 			if (appContext.isLogin()) {
-				requestState = 1;
-				ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()
-						+ "", productDetail.getStoreid() + "",
-						productDetail.getId() + "", skuStandard.getSku_id()
-								+ "", skuStandard.getSku(),
-					//	skuStandard.getIcon_url(),
-						productDetail.getMain_img(),
-						skuStandard.getNum(), productDetail.getName(),
-						productDetail.getExpress(), productDetail.getPrice()
-								+ "", productDetail.getOri_price() + "",
-						skuStandard.getId() + "", strnetworkHelper);
+				if (skuStandard.getQuantity()>Integer.parseInt(skuStandard.getNum())){
+					requestState = 1;
+					ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()
+							+ "", productDetail.getStoreid() + "",
+							productDetail.getId() + "", skuStandard.getSku_id()
+									+ "", skuStandard.getSku(),
+						//	skuStandard.getIcon_url(),
+							productDetail.getMain_img(),
+							skuStandard.getNum(), productDetail.getName(),
+							productDetail.getExpress(), productDetail.getPrice()
+									+ "", productDetail.getOri_price() + "",
+							skuStandard.getId() + "", strnetworkHelper);
+				}else {
+					Toast.makeText(BabyActivity.this, "库存不足", Toast.LENGTH_LONG)
+					.show();
+				}
 			} else {
 				Toast.makeText(BabyActivity.this, "请先登录", Toast.LENGTH_LONG)
 						.show();
