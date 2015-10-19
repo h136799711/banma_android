@@ -141,8 +141,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 				Toast.makeText(PasswordActivity.this, "密码更新成功" , Toast.LENGTH_LONG).show();
 				state=0;
 				break;
-			case 3:
-				break;
+
 			default:
 				break;
 			}

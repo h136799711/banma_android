@@ -570,7 +570,7 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 	public void guiGeChanged(int position) {
 		// TODO Auto-generated method stub
 		int tempid=(Integer) arrayList_cart.get(position).get("p_id");
-		ApiClient.getProductDetail(ShoppingCartActivity.this, tempid, networkHelper);
+		//ApiClient.getProductDetail(ShoppingCartActivity.this, tempid, networkHelper);
 		RequestState=7;
 		System.out.println("下拉显示");
 	}

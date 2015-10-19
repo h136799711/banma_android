@@ -1,5 +1,7 @@
 package com.itboye.banma.activities;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +31,8 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
@@ -41,6 +45,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private StrVolleyInterface networkHelper;
 	private Gson gson = new Gson();
 	private ProgressDialog dialog;
+	
+	private IWXAPI api;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -58,6 +64,10 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		tvForget.setOnClickListener(forgetListener);
 		tvQuXiao.setOnClickListener(quxiaoListener );
 		ivWeixin.setOnClickListener(this);
+		//注册到微信
+		api=WXAPIFactory.createWXAPI(this, AppContext.APP_ID,true);
+		api.registerApp(AppContext.APP_ID);
+		
 	}
 
 	private void initId(LoginActivity loginActivity) {
@@ -92,7 +102,14 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		switch (v.getId()) {
+		case R.id.iv_weixin:
+			
+			break;
+
+		default:
+			break;
+		}
 	}
 	//各种监听
 	
