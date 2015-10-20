@@ -21,11 +21,15 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itboye.banma.adapter.OrderListAdapter;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
@@ -37,21 +41,14 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		StrUIDataListener {
 	private final int ADDORREDUCE = 1;
 	private AppContext appContext;
-	private SkuStandard skuStandard;
-	private String main_img;
-	private String name;
-	private Double price;
 	private Double priceAll;
+	private int numAll;
 	private ImageView top_back;
 	private TextView top_title;
-	private ImageView order_pic;
-	private TextView order_name;
-	private TextView order_standard;
-	private TextView order_price;
-	private TextView order_number;
-	private TextView pop_add;
+	private ListView orderListView;
+	/*private TextView pop_add;
 	private TextView pop_reduce;
-	private TextView pop_num;
+	private TextView pop_num;*/
 	private TextView all_num;
 	private TextView all_price;
 	private TextView order_all_price;
@@ -62,6 +59,8 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 	private MailingAdress address = null;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
+	private List<SkuStandard> list = new ArrayList<SkuStandard>();
+	private int state = -1;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,54 +69,51 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		initView();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initData() {
 		appContext = (AppContext) getApplication();
 		strnetworkHelper = new StrVolleyInterface(ConfirmOrderActivity.this);
 		strnetworkHelper.setStrUIDataListener(ConfirmOrderActivity.this);
 		Intent intent = getIntent();
-		skuStandard = (SkuStandard) intent.getSerializableExtra("SkuStandard");
-		main_img = intent.getStringExtra("main_img");
-		name = intent.getStringExtra("name");
-		// price = intent.getDoubleExtra("price", 100.0);
-		price = skuStandard.getPrice();
-		priceAll = price * Integer.parseInt(skuStandard.getNum());
-		System.out.println("SkuStandard" + skuStandard);
+		list = (List<SkuStandard>) intent.getSerializableExtra("SkuStandardList");
+		/*state = intent.getIntExtra("state", -1);
+		if(state == 0){
+			//表示是购买页面传过来的，显示数量添加按钮
+		}*/
+		priceAll = 0.0;
+		numAll = 0;
+		for(int i=0; i<list.size(); i++){
+			priceAll += list.get(i).getPrice() * Integer.valueOf(list.get(i).getNum());
+			numAll += Integer.parseInt(list.get(i).getNum());
+		}
+		
 	}
 
 	private void initView() {
 		select_adress_layout = (LinearLayout) findViewById(R.id.select_adress_layout);
+		orderListView = (ListView) findViewById(R.id.order_list);
 		top_back = (ImageView) findViewById(R.id.iv_back);
 		top_title = (TextView) findViewById(R.id.title);
 		adr_name = (TextView) findViewById(R.id.adr_name);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
 		adr_address = (TextView) findViewById(R.id.adr_address);
-		order_pic = (ImageView) findViewById(R.id.order_pic);
-		order_name = (TextView) findViewById(R.id.order_name);
-		order_standard = (TextView) findViewById(R.id.order_standard);
-		order_price = (TextView) findViewById(R.id.order_price);
-		order_number = (TextView) findViewById(R.id.order_number);
-		pop_add = (TextView) findViewById(R.id.pop_add);
+		/*pop_add = (TextView) findViewById(R.id.pop_add);
 		pop_reduce = (TextView) findViewById(R.id.pop_reduce);
-		pop_num = (TextView) findViewById(R.id.pop_num);
+		pop_num = (TextView) findViewById(R.id.pop_num);*/
 		all_num = (TextView) findViewById(R.id.all_num);
 		all_price = (TextView) findViewById(R.id.all_price);
 		order_all_price = (TextView) findViewById(R.id.order_all_price);
 		select_adress_layout.setOnClickListener(this);
 		top_back.setOnClickListener(this);
-		pop_add.setOnClickListener(this);
-		pop_reduce.setOnClickListener(this);
-
-		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-				new BitmapCache());
-		ImageListener listener = ImageLoader.getImageListener(order_pic,
-				R.drawable.image_loading, R.drawable.image_load_fail);
-		imageLoader.get(main_img, listener, 0, 0);
-		order_name.setText(name);
-		order_standard.setText(skuStandard.getSku());
-		order_price.setText("￥" + skuStandard.getPrice());
-		// order_number.setText("×"+skuStandard.getNum());
-		pop_num.setText(skuStandard.getNum());
-		all_num.setText(skuStandard.getNum());
+		/*pop_add.setOnClickListener(this);
+		pop_reduce.setOnClickListener(this);*/
+		
+		OrderListAdapter adapter = new OrderListAdapter(ConfirmOrderActivity.this, list);
+		orderListView.setAdapter(adapter);
+        setListViewHeightBasedOnChildren(orderListView);
+		
+		/*pop_num.setText(""+numAll);*/
+		all_num.setText(""+numAll);
 		all_price.setText("￥" + priceAll);
 		order_all_price.setText("￥" + priceAll);
 		top_title.setText(string.confirm_order);
@@ -158,6 +154,52 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		}
 
 	}
+	
+	/*
+	 * 动态设置ListView组建的高度
+	 * 
+	 * */
+	public void setListViewHeightBasedOnChildren(ListView listView) {
+	      
+	      ListAdapter listAdapter = listView.getAdapter();
+	      
+	      if (listAdapter == null) {
+	      
+	       return;
+	      
+	      }
+	      
+	      int totalHeight = 0;
+	      
+	      for (int i = 0; i < listAdapter.getCount(); i++) {
+	      
+	       View listItem = listAdapter.getView(i, null, listView);
+	      
+	       listItem.measure(0, 0);
+	      
+	       totalHeight += listItem.getMeasuredHeight();
+	      
+	      }
+	      
+	      ViewGroup.LayoutParams params = listView.getLayoutParams();
+	      
+	      params.height = totalHeight
+	      
+	        + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+	      
+	      // params.height += 5;// if without this statement,the listview will be
+	      
+	      // a
+	      
+	      // little short
+	      
+	      // listView.getDividerHeight()获取子项间分隔符占用的高度
+	      
+	      // params.height最后得到整个ListView完整显示需要的高度
+	      
+	      listView.setLayoutParams(params);
+	      
+	    }
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -189,7 +231,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 			startActivityForResult(intent, 2000);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
-		case R.id.pop_add:
+		/*case R.id.pop_add:
 			if (!pop_num.getText().toString().equals("50")) {
 
 				String num_add = Integer.valueOf(pop_num.getText().toString())
@@ -219,7 +261,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 				Toast.makeText(ConfirmOrderActivity.this, "已经是最小数量",
 						Toast.LENGTH_SHORT).show();
 			}
-			break;
+			break;*/
 		default:
 			break;
 		}

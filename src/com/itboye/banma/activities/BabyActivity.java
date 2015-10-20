@@ -1,5 +1,6 @@
 package com.itboye.banma.activities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -367,12 +368,16 @@ public class BabyActivity extends FragmentActivity implements
 		if (isClickBuy) {
 			if (appContext.isLogin()) {
 			// 跳转到订单确认页面
+			List<SkuStandard> list = new ArrayList<SkuStandard>();
+			list.add(skuStandard);
+			list.add(skuStandard);
+			list.add(skuStandard);
+			
 			Intent intent = new Intent(BabyActivity.this,
 					ConfirmOrderActivity.class);
-			intent.putExtra("SkuStandard", skuStandard);
-			intent.putExtra("main_img", productDetail.getMain_img());
-			intent.putExtra("name", productDetail.getName());
-			intent.putExtra("price", productDetail.getPrice());
+			intent.putExtra("SkuStandardList", (Serializable)list);
+			/*intent.putExtra("state", 0);*/
+			
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}else{
@@ -530,7 +535,7 @@ public class BabyActivity extends FragmentActivity implements
 		customs_duties.setText("免关税");
 		sales_area.setText(productDetail.getLoc_province()
 				+ productDetail.getLoc_city());
-		popWindow = new BabyPopWindow(this, sku_info,
+		popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
 				productDetail.getSkuInfo(), productDetail.getMain_img(),
 				productDetail.getPrice(), productDetail.getOri_price(),
 				productDetail.getQuantity(), productDetail.getSkuList());

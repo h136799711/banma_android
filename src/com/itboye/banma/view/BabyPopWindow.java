@@ -67,6 +67,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	List<SkuStandard> skuList;
 	private String url;
 	private Double price;
+	private String name;
 	private Double ori_price;
 	private int quantity;
 	private View view;
@@ -74,13 +75,14 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private int sku_id = -1;  //记录所选规格ID
 	private ChooseStandardInterface ch;
 
-	public BabyPopWindow(Context context, List<Sku_info> sku_info,
+	public BabyPopWindow(Context context, List<Sku_info> sku_info, String name,
 			Map<String, SkuInfo> skuInfo, String url, Double price, Double ori_price,
 			int quantity, List<SkuStandard> skuList) {
 		this.context = context;
 		this.skuInfo = skuInfo;
 		this.sku_info = sku_info;
 		this.skuList = skuList;
+		this.name = name;
 		this.url = url;
 		this.price = price;
 		this.ori_price = ori_price;
@@ -271,6 +273,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			} else {
 				skuList.get(skuPosition).setNum(
 						pop_num.getText().toString());
+				skuList.get(skuPosition).setName(name);
 				listener.onClickOKPop(skuList.get(skuPosition));
 				
 				dissmiss();

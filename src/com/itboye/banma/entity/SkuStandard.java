@@ -12,11 +12,12 @@ public class SkuStandard implements Serializable {
 	private Double price;				//现价
 	private int quantity;				//商品库存
 	private String product_code;		//商品编号
-	private String createtime;
-	private String product_id;
-	private String icon_url;
+	private String createtime;			//创建时间
+	private String product_id;			//商品ID
+	private String icon_url;			//图片
 	private String sku;				//规格
 	private String num = "1";         //购买数量
+	private String name; 			//商品名称
 	public int getId() {
 		return id;
 	}
@@ -82,6 +83,12 @@ public class SkuStandard implements Serializable {
 	}
 	public void setNum(String num) {
 		this.num = num;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
