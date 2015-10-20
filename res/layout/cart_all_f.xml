@@ -56,9 +56,9 @@
             android:layout_height="match_parent" >
 
             <ScrollView
+                android:id="@+id/sv_temp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp" >
+                android:layout_height="wrap_content"  >
 
                 <com.itboye.banma.view.MyListView
                     android:id="@+id/listView_cart"
@@ -68,11 +68,112 @@
                     android:cacheColorHint="#00000000" >
                 </com.itboye.banma.view.MyListView>
             </ScrollView>
+            
+    <LinearLayout 
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/sv_temp"
+        android:id="@+id/ll_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <View 
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp" 
+                android:background="@color/lightgray"/>
+         <RelativeLayout 
+             android:id="@+id/rl_sum"
+             android:layout_width="match_parent"
+             android:gravity="center"
+             android:layout_height="45dp"
+             android:weightSum="1"
+             android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_wuliu"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="物流费用"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+              
+                <TextView
+                 android:id="@+id/tv_weight"
+                 android:layout_toRightOf="@+id/tv_wuliu"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总重量为0.0千克"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/gray"
+                android:layout_marginLeft="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_express"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:text="¥0.0"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14" />
+
+      </RelativeLayout>
+      
+         <View 
+                android:layout_width="match_parent"
+                android:layout_height="1dp" 
+                android:background="@color/lightgray"/>
+         <RelativeLayout 
+             android:layout_width="match_parent"
+             android:gravity="center"
+             android:layout_height="40dp"
+             android:weightSum="1"
+             android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_rax"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关税"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+              
+                <TextView
+                 android:layout_toRightOf="@+id/tv_rax"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/lightgray"
+                android:layout_marginLeft="20dp"/>
+
+                <TextView
+                    android:id="@+id/tv_guansui"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:text="¥0.0"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14" />
+			  
+      </RelativeLayout>    
+      <View 
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" 
+                android:background="@color/lightgray"/>   
+    </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_cart_bottom"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
                 android:visibility="gone"

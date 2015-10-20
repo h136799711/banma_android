@@ -29,7 +29,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	private onCheckedChanged listener;
 	private onAddChanged addListener;
 	private onReduceChanged reduceListener;
-	private onGuiGeChanged guiListener;
+//	private onGuiGeChanged guiListener;
 
 	public Adapter_ListView_cart(Context context, ArrayList<HashMap<String, Object>> arrayList) {
 		this.imageLoader= new ImageLoader(AppContext.getHttpQueues(),
@@ -66,13 +66,13 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			holderView.tv_name=(TextView)currentView.findViewById(R.id.tv_name);
 			holderView.tv_num = (TextView) currentView.findViewById(R.id.tv_num);
 			holderView.tv_price=(TextView)currentView.findViewById(R.id.tv_price);
-			holderView.iv_xiala=(ImageView)currentView.findViewById(R.id.iv_xiala);
+			//holderView.iv_xiala=(ImageView)currentView.findViewById(R.id.iv_xiala);
 			holderView.tv_type_color = (TextView) currentView.findViewById(R.id.tv_type_color);
 			holderView.iv_icon=(ImageView)currentView.findViewById(R.id.iv_icon_url);
 			holderView.tv_pop_num=(TextView)currentView.findViewById(R.id.tv_pop_num);
 			holderView.tv_pop_red=(TextView)currentView.findViewById(R.id.tv_pop_reduce);
 			holderView.tv_pop_add=(TextView)currentView.findViewById(R.id.tv_pop_add);
-			holderView.tv_guige=(TextView)currentView.findViewById(R.id.tv_guige);
+			//holderView.tv_guige=(TextView)currentView.findViewById(R.id.tv_guige);
 			holderView.cb_choice = (CheckBox) currentView.findViewById(R.id.cb_choice);
 			currentView.setTag(holderView);
 		} else {
@@ -94,27 +94,33 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 //				holderView.iv_icon.setErrorImageResId(R.drawable.ic_launcher);  
 //				holderView.iv_icon.setImageUrl(arrayList.get(position).get("icon_url").toString(), imageLoader);  
 //		}
-			holderView.iv_xiala.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					guiListener.guiGeChanged(position);
-				}
-			});
+//			holderView.iv_xiala.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					guiListener.guiGeChanged(position);
+//				}
+//			});
 
 			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 					new BitmapCache());
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);
-			imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1, 75, 75);
+			try {
+				imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,75,75);
+			} catch (Exception e) {
+				// TODO: handle exception
+				holderView.iv_icon.setImageResource(R.drawable.image_load_fail);
+			}
+		
 			holderView.cb_choice.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton arg0, boolean choice) {
 					listener.getChoiceData(position, choice);
 				}
 			});
-			holderView.tv_guige.setText(arrayList.get(position).get("sku_desc")+"");
+		//	holderView.tv_guige.setText(arrayList.get(position).get("sku_desc")+"");
 			holderView.tv_pop_num.setText( arrayList.get(position).get("count")+"");
 			holderView.tv_pop_red.setOnClickListener(new OnClickListener() {
 				
@@ -162,9 +168,9 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 		public void addCount(int position);
 	}
 	
-	public interface onGuiGeChanged{
-		public void guiGeChanged(int position);
-	}
+//	public interface onGuiGeChanged{
+//		public void guiGeChanged(int position);
+//	}
 	public interface  onReduceChanged {
 		public void reduceCount(int position);
 	}
@@ -173,9 +179,9 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 		
 		public void getChoiceData(int position,boolean isChoice);
 	}
-	public void setGuiChanged(onGuiGeChanged guige){
-		this.guiListener=guige;
-	}
+//	public void setGuiChanged(onGuiGeChanged guige){
+//		this.guiListener=guige;
+//	}
 	public void setOnRedChanged(onReduceChanged reduceChanged){
 		this.reduceListener=reduceChanged;
 	}
