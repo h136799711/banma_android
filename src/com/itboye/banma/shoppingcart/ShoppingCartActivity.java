@@ -47,7 +47,7 @@ import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.MyListView;
 
 public class ShoppingCartActivity  extends Activity implements StrUIDataListener,onCheckedChanged,
-OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
+OnClickListener,onAddChanged,onReduceChanged{
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	
@@ -168,33 +168,33 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 				e.printStackTrace();
 			}
 			break;
-		case 7:
-			Gson gson = new Gson();
-			String detail = null;
-			Toast.makeText(ShoppingCartActivity.this, "获取成功", Toast.LENGTH_SHORT)
-					.show();
-			try {
-				detail = jsonObject.getString("data");
-				System.out.println("data*****=" + detail);
-				if (code == 0) {
-
-					productDetail = gson.fromJson(detail, ProductDetail.class);
-			//		imageList = productDetail.getImg().split(",");
-					sku_info = new ArrayList<ProductDetail.Sku_info>();
-					// String ssString =
-					// "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
-					sku_info = gson.fromJson(productDetail.getSku_info(),
-							new TypeToken<List<Sku_info>>() {
-							}.getType());
-
-					updatePages();
-
-					System.out.println("商品详情*****=" + productDetail.toString());
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			break;
+//		case 7:
+//			Gson gson = new Gson();
+//			String detail = null;
+//			Toast.makeText(ShoppingCartActivity.this, "获取成功", Toast.LENGTH_SHORT)
+//					.show();
+//			try {
+//				detail = jsonObject.getString("data");
+//				System.out.println("data*****=" + detail);
+//				if (code == 0) {
+//
+//					productDetail = gson.fromJson(detail, ProductDetail.class);
+//			//		imageList = productDetail.getImg().split(",");
+//					sku_info = new ArrayList<ProductDetail.Sku_info>();
+//					// String ssString =
+//					// "[{\"id\":\"1\",\"vid\":[\"1\",\"2\",\"3\"]},{\"id\":\"2\",\"vid\":[\"6\"]},{\"id\":\"3\",\"vid\":[\"9\"]}]";
+//					sku_info = gson.fromJson(productDetail.getSku_info(),
+//							new TypeToken<List<Sku_info>>() {
+//							}.getType());
+//
+//					updatePages();
+//
+//					System.out.println("商品详情*****=" + productDetail.toString());
+//				}
+//			} catch (JSONException e) {
+//				e.printStackTrace();
+//			}
+//			break;
 		case 4:
 			try {				
 				if (code==0) {
@@ -258,20 +258,20 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 		
 	}
 	
-	private void updatePages() {
-		// TODO Auto-generated method stub
-		/**
-		 * 请求数据成功 修改页面
-		 */
-
-			popWindow = new BabyPopWindow(this, sku_info,
-					productDetail.getSkuInfo(), productDetail.getMain_img(),
-					productDetail.getPrice(), productDetail.getOri_price(),
-					productDetail.getQuantity(), productDetail.getSkuList());
-			popWindow.setOnItemClickListener(this);
-			setBackgroundBlack(all_choice_layout, 0);
-			popWindow.showAsDropDown(getWindow().getDecorView().findViewById(android.R.id.content));
-	}
+//	private void updatePages() {
+//		// TODO Auto-generated method stub
+//		/**
+//		 * 请求数据成功 修改页面
+//		 */
+//
+//			popWindow = new BabyPopWindow(this, sku_info,
+//					productDetail.getSkuInfo(), productDetail.getMain_img(),
+//					productDetail.getPrice(), productDetail.getOri_price(),
+//					productDetail.getQuantity(), productDetail.getSkuList());
+//			popWindow.setOnItemClickListener(this);
+//			setBackgroundBlack(all_choice_layout, 0);
+//			popWindow.showAsDropDown(getWindow().getDecorView().findViewById(android.R.id.content));
+//	}
 	/** 把背景变成暗色 */
 	public void setBackgroundBlack(View view, int what) {
 		switch (what) {
@@ -293,7 +293,7 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 			adapter.setOnCheckedChanged(this);
 			adapter.setOnAddChanged(this);
 			adapter.setOnRedChanged(this);
-			adapter.setGuiChanged(this);
+			//adapter.setGuiChanged(this);
 			listView_cart.setAdapter(adapter);
 			ll_cart_bottom.setVisibility(View.VISIBLE);
 			ll_cart.setVisibility(View.GONE);
@@ -566,24 +566,12 @@ OnClickListener,onAddChanged,onReduceChanged,onGuiGeChanged,OnItemClickListener{
 //		adapter.notifyDataSetChanged();
 	}
 
-	@Override
-	public void guiGeChanged(int position) {
-		// TODO Auto-generated method stub
-		int tempid=(Integer) arrayList_cart.get(position).get("p_id");
-		//ApiClient.getProductDetail(ShoppingCartActivity.this, tempid, networkHelper);
-		RequestState=7;
-		System.out.println("下拉显示");
-	}
-
-	@Override
-	public void onClickOKPop(SkuStandard skuStandard) {
-		// TODO Auto-generated method stub
-		System.out.println("点击了好的");
-	}
-
-	@Override
-	public void onClickDissmissPop() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void guiGeChanged(int position) {
+//		// TODO Auto-generated method stub
+//		int tempid=(Integer) arrayList_cart.get(position).get("p_id");
+//		//ApiClient.getProductDetail(ShoppingCartActivity.this, tempid, networkHelper);
+//		RequestState=7;
+//		System.out.println("下拉显示");
+//	}
 }
