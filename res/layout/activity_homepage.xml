@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res/com.hangdian.chanxue"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/z_background"
+    android:orientation="vertical" >
+
+    <com.itboye.banma.view.NoScrollViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </com.itboye.banma.view.NoScrollViewPager>
+    
+    <View 
+       	android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:background="@color/bg_color"
+        />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/tab_one"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="3dip"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/ic_tab_one"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:src="@drawable/banma_home_select" >
+            </ImageView>
+            <TextView
+                android:id="@+id/tex_tab_one"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="5dip"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/tab_text_sel"
+                android:text="首页"
+                >
+            </TextView>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/tab_two"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="3dip"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/ic_tab_two"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:src="@drawable/banma_order_normal" >
+            </ImageView>
+            <TextView
+                android:id="@+id/tex_tab_two"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/tab_text"
+                android:text="订单"
+                >
+            </TextView>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/tab_three"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="3dip"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/ic_tab_three"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:src="@drawable/banma_mine_normal" >
+            </ImageView>
+            <TextView
+                android:id="@+id/tex_tab_three"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/tab_text"
+                android:text="我的"
+                >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

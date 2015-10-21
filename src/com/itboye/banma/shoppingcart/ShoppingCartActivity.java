@@ -398,6 +398,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			if (arrayList_cart.size()!=0) {
 				AllCount += Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				AllCount+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 				weight+=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
 				System.out.println("总重量为"+weight);
 				express+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
@@ -407,6 +408,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			if (arrayList_cart.size()!=0) {
 				AllCount -= Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				AllCount+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 				weight-=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
 				express-=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 			}

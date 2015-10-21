@@ -3,6 +3,7 @@ package com.itboye.banma.welcome;
 import java.util.ArrayList;
 
 import com.itboye.banma.R;
+import com.itboye.banma.activities.HomePageActivity;
 import com.itboye.banma.utils.SharedConfig;
 
 import android.os.Bundle;
@@ -73,7 +74,7 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener,
 			editor.putBoolean("First", false);
 			editor.commit();
 			
-			startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+			startActivity(new Intent(WelcomeActivity.this, HomePageActivity.class));
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			this.finish();
 		}

@@ -41,7 +41,7 @@ public class OrderActivity extends Activity{
         		super.onPageFinished(view, url);
         		view.setVisibility(View.VISIBLE);
         		System.out.println("进来了");
-                dialog.setVisibility(View.GONE);
+                //dialog.setVisibility(View.GONE);
         	}
         });
     

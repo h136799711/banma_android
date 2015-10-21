@@ -41,6 +41,7 @@
            <activity android:name="com.itboye.banma.activities.RegistActivity"/>
            <activity android:name="com.itboye.banma.activities.RegsitedActivity"/>
            <activity android:name="com.itboye.banma.activities.SelectOrderAddressActivity"/>
+           <activity android:name="com.itboye.banma.activities.HomePageActivity"/>
            <activity android:name="com.itboye.banma.activities.MailingAddressActivity"
                android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
            <activity android:name="com.itboye.banma.activities.AddAddressActivity"

@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fcf="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    
+    android:orientation="vertical" >
+
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="5dip"
+        />
+    
+    <com.itboye.banma.view.FancyCoverFlow
+        android:id="@+id/fancyCoverFlow"
+        android:layout_width="match_parent"
+        android:layout_height="80dip"
+        fcf:maxRotation="100"
+        fcf:unselectedAlpha="0.2"
+        fcf:unselectedSaturation="0.0"
+        fcf:unselectedScale="0.9"
+        fcf:scaleDownGravity="0.5"
+        />
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+  
+</LinearLayout>
