@@ -370,8 +370,6 @@ public class BabyActivity extends FragmentActivity implements
 			// 跳转到订单确认页面
 			List<SkuStandard> list = new ArrayList<SkuStandard>();
 			list.add(skuStandard);
-			list.add(skuStandard);
-			list.add(skuStandard);
 			
 			Intent intent = new Intent(BabyActivity.this,
 					ConfirmOrderActivity.class);

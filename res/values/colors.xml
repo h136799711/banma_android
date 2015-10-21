@@ -4,6 +4,9 @@
     <color name="greendenglu">#50C061</color>
 	<color name="titlebar">#F5355E</color>
 	<color  name="backgroundgray">#EFEFF4</color>
+	<color name="tab_text_sel">#ffd81e06</color>
+    <color name="tab_text">#ff999999</color>
+    <color name="bg_color">#808080</color>
 	<!-- actionbar 位置颜色 -->
 	<color name="main_layout">#EFEFF4</color>
 	<!-- 界面主颜色 -->
