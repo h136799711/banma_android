@@ -1,5 +1,6 @@
 package com.itboye.banma.shoppingcart;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,25 +27,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.ConfirmOrderActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
-import com.itboye.banma.entity.CartList;
 import com.itboye.banma.entity.ProductDetail;
 import com.itboye.banma.entity.ProductDetail.Sku_info;
 import com.itboye.banma.entity.SkuStandard;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onAddChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onCheckedChanged;
-import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onGuiGeChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onReduceChanged;
 import com.itboye.banma.view.BabyPopWindow;
-import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
-import com.itboye.banma.view.MyListView;
 
 public class ShoppingCartActivity  extends Activity implements StrUIDataListener,onCheckedChanged,
 OnClickListener,onAddChanged,onReduceChanged{
@@ -69,6 +64,13 @@ OnClickListener,onAddChanged,onReduceChanged{
 												//4.单个查询。5.数量查询6.批量添加接口7.请求商品详情，显示popwindow
 	private boolean Is_Internet;//是否联网
 	private int AllCount=0;//购物车总价格
+	private LinearLayout ll_other;//list列表下面的
+	private float weight=(float) 0.0;//总量 
+	private float raxtate=(float) 0.0;//税率
+	private float express= (float) 0.0;//运费
+	private TextView tv_weight,tv_guansui,tv_express;
+	
+	private List<SkuStandard> list;
 	
 	private ProductDetail productDetail;
 	private List<Sku_info> sku_info; // 商品类型参数
@@ -106,6 +108,10 @@ OnClickListener,onAddChanged,onReduceChanged{
 
 	private void initView() {
 		// TODO Auto-generated method stub
+		tv_guansui=(TextView)findViewById(R.id.tv_guansui);
+		tv_express=(TextView)findViewById(R.id.tv_express);
+		tv_weight=(TextView)findViewById(R.id.tv_weight);
+		ll_other=(LinearLayout)findViewById(R.id.ll_other);
 		ll_cart_bottom=(LinearLayout)findViewById(R.id.ll_cart_bottom);
 		all_choice_layout=(LinearLayout)findViewById(R.id.all_choice_layout);
 		tv_title_right=(TextView)findViewById(R.id.tv_title_right);
@@ -225,6 +231,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 								hashMap.put("sku_desc", temp.getString("sku_desc"));
 								hashMap.put("icon_url", temp.getString("icon_url"));
 								hashMap.put("p_id", temp.getInt("p_id"));
+								hashMap.put("weight", temp.getString("weight"));
+								hashMap.put("taxrate", temp.getString("taxrate"));
 								arrayList_cart.add(hashMap);			
 								System.out.println(temp.getDouble("ori_price"));
 							}
@@ -296,8 +304,10 @@ OnClickListener,onAddChanged,onReduceChanged{
 			//adapter.setGuiChanged(this);
 			listView_cart.setAdapter(adapter);
 			ll_cart_bottom.setVisibility(View.VISIBLE);
+			ll_other.setVisibility(View.VISIBLE);
 			ll_cart.setVisibility(View.GONE);
 		} else {
+			ll_other.setVisibility(View.GONE);
 			rl_cart.setVisibility(View.GONE);
 			ll_cart.setVisibility(View.VISIBLE);
 		}
@@ -321,8 +331,12 @@ OnClickListener,onAddChanged,onReduceChanged{
 					for (int i = 0; i < arrayList_cart.size(); i++) {
 						// 如果选中了全选，那么就将列表的每一行都选中
 						((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).setChecked(true);
-						
+					//	weight+=Float.parseFloat((String) arrayList_cart.get(i).get("weight"));
+						//express+=Float.parseFloat((String) arrayList_cart.get(i).get("express"));
 					}
+			//		tv_express.setText("总运费为"+express);
+				//	tv_weight.setText("总重量为"+weight);
+					
 				} else {
 					// 设置全部取消
 					for (int i = 0; i < arrayList_cart.size(); i++) {
@@ -330,8 +344,12 @@ OnClickListener,onAddChanged,onReduceChanged{
 						if (((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).isChecked()) {
 							// 计算出列表选中状态的数量
 							isChoice_all += 1;
+						//	weight-=Float.parseFloat((String) arrayList_cart.get(i).get("weight"));
+						//	express-=Float.parseFloat((String) arrayList_cart.get(i).get("express"));
 						}
 					}
+			//		tv_express.setText("总运费为"+express);
+				//	tv_weight.setText("总重量为"+weight);
 					// 判断列表选中数是否等于列表的总数，如果等于，那么就需要执行全部取消操作
 					if (isChoice_all == arrayList_cart.size()) {
 						// 如果没有选中了全选，那么就将列表的每一行都不选
@@ -380,11 +398,17 @@ OnClickListener,onAddChanged,onReduceChanged{
 			if (arrayList_cart.size()!=0) {
 				AllCount += Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				weight+=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
+				System.out.println("总重量为"+weight);
+				express+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
+				System.out.println("运费"+express);
 			}
 		} else {
 			if (arrayList_cart.size()!=0) {
 				AllCount -= Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				weight-=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
+				express-=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 			}
 		}
 		// 记录列表处于选中状态的数量
@@ -408,7 +432,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 			// 如果选中的状态数量！=列表的总数量，那么就将全选设置为取消
 			cb_cart_all.setChecked(false);
 		}
-
+		tv_express.setText(""+express);
+		tv_weight.setText("总重量为"+weight);
 		tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
 		System.out.println("选择的位置--->"+position);
 	}
@@ -427,10 +452,10 @@ OnClickListener,onAddChanged,onReduceChanged{
 				tv_cart_buy_Ordel.setText("删除");
 				EditState=2;
 				
-				for (int i = 0; i < arrayList_cart.size(); i++) {
-					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_add_reduce)).setVisibility(View.VISIBLE);
-					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_cart_detail)).setVisibility(View.GONE);
-				}
+//				for (int i = 0; i < arrayList_cart.size(); i++) {
+//					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_add_reduce)).setVisibility(View.VISIBLE);
+//					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_cart_detail)).setVisibility(View.GONE);
+//				}
 			}else {//正在显示完成按钮
 				EditState=1;
 				for (int i = 0; i < arrayList_cart.size(); i++) {
@@ -441,10 +466,10 @@ OnClickListener,onAddChanged,onReduceChanged{
 				tv_title_right.setText("编辑");
 				tv_cart_buy_Ordel.setText("结算");
 				
-				for (int i = 0; i < arrayList_cart.size(); i++) {
-					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_add_reduce)).setVisibility(View.GONE);
-					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_cart_detail)).setVisibility(View.VISIBLE);
-				}
+//				for (int i = 0; i < arrayList_cart.size(); i++) {
+//					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_add_reduce)).setVisibility(View.GONE);
+//					((LinearLayout) (listView_cart.getChildAt(i)).findViewById(R.id.ll_cart_detail)).setVisibility(View.VISIBLE);
+//				}
 			}
 			break;
 		case R.id.iv_back:
@@ -478,39 +503,65 @@ OnClickListener,onAddChanged,onReduceChanged{
 				is_choice=new boolean[arrayList_cart.size()];
 				System.out.println("此时的长度---->"+is_choice.length);
 			}else {
-				skuStandards=new SkuStandard[is_choice_copy.length];
 				//执行结算操作
 			//	Toast.makeText(getActivity(), "暂时无法结算", Toast.LENGTH_SHORT).show();
+				list= new ArrayList<SkuStandard>();
 				int j=0;
 				for (int i = 0; i<is_choice_copy.length; i++) {
 					if (is_choice_copy[i]) {
 						//讲该货物包装成数据
-						SkuStandard tempSku=new SkuStandard();
+						SkuStandard tempSku=new SkuStandard();	
+//						private int id;
+//						private String sku_id;             //规格ID1
+//						private Double ori_price;			//原价1
+//						private Double price;				//现价1
+//						private int quantity;				//商品库存1
+//						private String product_code;		//商品编号1
+//						private String createtime;			//创建时间1
+//						private String product_id;			//商品ID1
+//						private String icon_url;			//图片1
+//						private String sku;				//规格1
+//						private String num = "1";         //购买数量1
+//						private String name; 			//商品名称
+//						hashMap.put("id", temp.getInt("id"));
+//						hashMap.put("name", temp.getString("name"));
+//						hashMap.put("count", temp.getInt("count"));
+//						hashMap.put("price",temp.getString("price"));
+//						hashMap.put("ori_price",temp.getDouble("ori_price"));
+//						hashMap.put("express", temp.getString("express"));
+//						hashMap.put("sku_id", temp.getString("sku_id"));
+//						hashMap.put("psku_id", temp.getString("psku_id"));
+//						hashMap.put("sku_desc", temp.getString("sku_desc"));
+//						hashMap.put("icon_url", temp.getString("icon_url"));
+//						hashMap.put("p_id", temp.getInt("p_id"));
+//						hashMap.put("weight", temp.getString("weight"));
+//						hashMap.put("taxrate", temp.getString("taxrate"));
 						int id=(Integer) arrayList_cart.get(i).get("id");
 						//int uid=(Integer) arrayList_cart.get(i).get("uid");
 						double ori_price=(Double.parseDouble(arrayList_cart.get(i).get("ori_price").toString()));
 						double price=(Double.parseDouble(arrayList_cart.get(i).get("price").toString()));			
+						tempSku.setName(arrayList_cart.get(i).get("name").toString());
 						tempSku.setId(id);
 						tempSku.setOri_price(ori_price);
 						tempSku.setPrice(price);
 						tempSku.setNum(arrayList_cart.get(i).get("count").toString());
 						tempSku.setCreatetime("unkown");
 						tempSku.setIcon_url(arrayList_cart.get(i).get("icon_url").toString());
-						tempSku.setProduct_code(arrayList_cart.get(i).get("name").toString());
+						tempSku.setProduct_code(arrayList_cart.get(i).get("p_id").toString());
 						tempSku.setQuantity(1000);
-						tempSku.setSku(arrayList_cart.get(i).get("name").toString());
+						tempSku.setSku(arrayList_cart.get(i).get("sku_desc").toString());
 						tempSku.setSku_id(arrayList_cart.get(i).get("sku_id").toString());
 						tempSku.setProduct_id(arrayList_cart.get(i).get("p_id").toString());
-						skuStandards[j]=tempSku;
-						j+=1;
+						list.add(tempSku);
+					//	j+=1;
 					}
 				}	
-				if (skuStandards[0]!=null) {
+				if (list!=null) {
 					Intent  intent=new Intent(ShoppingCartActivity.this,ConfirmOrderActivity.class);
-					intent.putExtra("SkuStandard", skuStandards[0]);
-					intent.putExtra("main_img", skuStandards[0].getIcon_url());
-					intent.putExtra("name", skuStandards[0].getSku());
-					intent.putExtra("price", skuStandards[0].getPrice());
+					intent.putExtra("SkuStandardList", (Serializable)list);
+//					intent.putExtra("main_img", skuStandards[0].getIcon_url());
+//					intent.putExtra("name", skuStandards[0].getSku());
+//					intent.putExtra("price", skuStandards[0].getPrice());
 					startActivity(intent);
 					overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 				}
