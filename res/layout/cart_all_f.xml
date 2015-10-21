@@ -59,7 +59,7 @@
                 android:id="@+id/sv_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" 
-                android:layout_marginBottom="150dp" >
+                android:layout_marginBottom="130dp" >
 
                 <com.itboye.banma.view.MyListView
                     android:id="@+id/listView_cart"
@@ -78,13 +78,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:visibility="gone"
                 android:background="@color/main_layout"
                 android:orientation="vertical" >             
      <LinearLayout 
         android:id="@+id/ll_other"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:orientation="vertical">
         <View 
                 android:layout_width="match_parent"

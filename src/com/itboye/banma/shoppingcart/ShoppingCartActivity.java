@@ -304,11 +304,11 @@ OnClickListener,onAddChanged,onReduceChanged{
 			//adapter.setGuiChanged(this);
 			listView_cart.setAdapter(adapter);
 			ll_cart_bottom.setVisibility(View.VISIBLE);
-			ll_other.setVisibility(View.VISIBLE);
+			rl_cart.setVisibility(View.VISIBLE);
 			ll_cart.setVisibility(View.GONE);
 		} else {
-			ll_other.setVisibility(View.GONE);
 			rl_cart.setVisibility(View.GONE);
+			ll_cart_bottom.setVisibility(View.GONE);
 			ll_cart.setVisibility(View.VISIBLE);
 		}
 		cb_cart_all.setOnCheckedChangeListener(new OnCheckedChangeListener() {

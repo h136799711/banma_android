@@ -22,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -61,6 +62,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 	private StrVolleyInterface strnetworkHelper;
 	private List<SkuStandard> list = new ArrayList<SkuStandard>();
 	private int state = -1;
+	private Button btn_regisited;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +92,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 	}
 
 	private void initView() {
+		btn_regisited=(Button)findViewById(R.id.registered);
 		select_adress_layout = (LinearLayout) findViewById(R.id.select_adress_layout);
 		orderListView = (ListView) findViewById(R.id.order_list);
 		top_back = (ImageView) findViewById(R.id.iv_back);
@@ -230,6 +233,10 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 			
 			startActivityForResult(intent, 2000);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			break;
+		case R.id.registered:
+			//完成订单提交，成功后启动支付宝付款
+			
 			break;
 		/*case R.id.pop_add:
 			if (!pop_num.getText().toString().equals("50")) {
