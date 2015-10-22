@@ -304,11 +304,11 @@ OnClickListener,onAddChanged,onReduceChanged{
 			//adapter.setGuiChanged(this);
 			listView_cart.setAdapter(adapter);
 			ll_cart_bottom.setVisibility(View.VISIBLE);
-			ll_other.setVisibility(View.VISIBLE);
+			rl_cart.setVisibility(View.VISIBLE);
 			ll_cart.setVisibility(View.GONE);
 		} else {
-			ll_other.setVisibility(View.GONE);
 			rl_cart.setVisibility(View.GONE);
+			ll_cart_bottom.setVisibility(View.GONE);
 			ll_cart.setVisibility(View.VISIBLE);
 		}
 		cb_cart_all.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -398,6 +398,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			if (arrayList_cart.size()!=0) {
 				AllCount += Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				AllCount+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 				weight+=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
 				System.out.println("总重量为"+weight);
 				express+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
@@ -407,6 +408,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			if (arrayList_cart.size()!=0) {
 				AllCount -= Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				AllCount+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 				weight-=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
 				express-=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 			}

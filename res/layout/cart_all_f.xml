@@ -58,7 +58,8 @@
             <ScrollView
                 android:id="@+id/sv_temp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"  >
+                android:layout_height="wrap_content" 
+                android:layout_marginBottom="130dp" >
 
                 <com.itboye.banma.view.MyListView
                     android:id="@+id/listView_cart"
@@ -69,13 +70,21 @@
                 </com.itboye.banma.view.MyListView>
             </ScrollView>
             
-    <LinearLayout 
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/sv_temp"
+
+
+ <LinearLayout
+                android:id="@+id/ll_cart_bottom"
+                android:weightSum="10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                android:background="@color/main_layout"
+                android:orientation="vertical" >             
+     <LinearLayout 
         android:id="@+id/ll_other"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:orientation="vertical">
         <View 
                 android:layout_width="match_parent"
@@ -169,14 +178,9 @@
                 android:layout_height="0.5dp" 
                 android:background="@color/lightgray"/>   
     </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/ll_cart_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/white"
-                android:visibility="gone"
                 android:orientation="horizontal" >
 
                 <CheckBox
@@ -205,7 +209,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:paddingRight="10dp"
-                    android:text="合计：￥0.0"
+                    android:text="合计(含运费)：￥0.0"
                     android:textColor="@color/red" />
 
                 <TextView
@@ -219,6 +223,7 @@
                     android:text="结算(0)"
                     android:textColor="@color/white" />
             </LinearLayout>
+          </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 

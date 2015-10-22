@@ -32,6 +32,30 @@ public class ApiClient {
         VolleyRequest.StrRequestPost(mContext, url, "getToken",params, networkHelper);
 		
 	} 
+	//订单添加
+	public static void addOrder(Context context,String uid,String  cartids, String idcode,
+			String note,String contactname,String mobile,String country,String province,String city,
+			String area ,String wxno,String detailinfo, String from,StrVolleyInterface networkHelper){
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/ShoppingCart/add?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		//params.put("access_token", access_token);
+        params.put("uid",uid+"");  
+        params.put("cartids",cartids+"");
+        params.put("idcode", idcode+"");
+        params.put("note", note+"");
+        params.put("contactname",contactname+""); 
+        params.put("mobile",mobile+"");
+        params.put("country",country+"");  
+        params.put("province",province+"");
+        params.put("city", city+"");
+        params.put("area", area+"");
+        params.put("wxno", wxno+"");
+        params.put("detailinfo", detailinfo+"");
+        params.put("from", 2+"");
+        VolleyRequest.StrRequestPost(context, url, "addCart",params, networkHelper);
+	}
+	
 	//购物车修改接口
 		public  static void modifyCart(Context mContext, String id, String count,String express,
 				String p_id,String psku_id, StrVolleyInterface networkHelper) {
