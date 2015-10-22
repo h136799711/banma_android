@@ -71,13 +71,13 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private Double ori_price;
 	private int quantity;
 	private View view;
-	private int skuPosition = 0; //记录所选规格在列表位置
-	private int sku_id = -1;  //记录所选规格ID
+	private int skuPosition = 0; // 记录所选规格在列表位置
+	private int sku_id = -1; // 记录所选规格ID
 	private ChooseStandardInterface ch;
 
 	public BabyPopWindow(Context context, List<Sku_info> sku_info, String name,
-			Map<String, SkuInfo> skuInfo, String url, Double price, Double ori_price,
-			int quantity, List<SkuStandard> skuList) {
+			Map<String, SkuInfo> skuInfo, String url, Double price,
+			Double ori_price, int quantity, List<SkuStandard> skuList) {
 		this.context = context;
 		this.skuInfo = skuInfo;
 		this.sku_info = sku_info;
@@ -104,7 +104,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		tex_one = (TextView) view.findViewById(R.id.tex_one);
 		tex_two = (TextView) view.findViewById(R.id.tex_two);
 		tex_three = (TextView) view.findViewById(R.id.tex_three);
-		standardView =  (TextView) view.findViewById(R.id.standard);
+		standardView = (TextView) view.findViewById(R.id.standard);
 
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 				new BitmapCache());
@@ -113,10 +113,16 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		imageLoader.get(url, listener, 100, 100);
 		pow_price.setText("￥" + price);
 		pow_ori_price.setText("￥" + ori_price);
-		pow_ori_price.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
+		pow_ori_price.getPaint().setFlags(
+				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 		pow_quantity.setText("库存" + quantity);
-		Constant.SKU_ALLNUM = skuInfo.size();
-		switch (skuInfo.size()) {
+
+		if (skuInfo != null) {
+			Constant.SKU_ALLNUM = skuInfo.size();
+		} else {
+			Constant.SKU_ALLNUM = 0;
+		}
+		switch (Constant.SKU_ALLNUM) {
 		case 0:
 			init();
 			break;
@@ -179,7 +185,6 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			init();
 			break;
 		}
-
 	}
 
 	private void init() {
@@ -267,15 +272,14 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 
 			break;
 		case R.id.pop_ok:
-			
+
 			if (sku_id == -1) {
 				Toast.makeText(context, "请选择规格", Toast.LENGTH_SHORT).show();
 			} else {
-				skuList.get(skuPosition).setNum(
-						pop_num.getText().toString());
+				skuList.get(skuPosition).setNum(pop_num.getText().toString());
 				skuList.get(skuPosition).setName(name);
 				listener.onClickOKPop(skuList.get(skuPosition));
-				
+
 				dissmiss();
 
 			}
@@ -318,20 +322,22 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 				standard = standard + Constant.SKU_INFO[j];
 			}
 
-		};
+		}
+		;
 		for (int k = 0; k < skuList.size(); k++) {
 			if (skuList.get(k).getSku_id().equals(standard)) {
 				skuPosition = k;
 				sku_id = skuList.get(k).getId();
-				
+
 				break;
 			}
 		}
 		standardView.setText(skuList.get(skuPosition).getSku());
 		pow_quantity.setText("库存" + skuList.get(skuPosition).getQuantity());
-		pow_price.setText("￥"+skuList.get(skuPosition).getPrice());
+		pow_price.setText("￥" + skuList.get(skuPosition).getPrice());
 		pow_ori_price.setText("￥" + skuList.get(skuPosition).getOri_price());
-		pow_ori_price.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
+		pow_ori_price.getPaint().setFlags(
+				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 	}
 
 }

@@ -16,34 +16,39 @@
  */
 
 package com.itboye.banma.adapter;
+import java.util.List;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.BabyActivity;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.entity.ProductItem;
+import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.view.FancyCoverFlow;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 public class FancyCoverFlowSampleAdapter extends FancyCoverFlowAdapter {
+    private Context mContext;
+    List<ProductItem> productlist;
+   
+    public FancyCoverFlowSampleAdapter(Context context, List<ProductItem> productlist) {
+		this.mContext = context;
+		this.productlist = productlist;
+	}
 
-    // =============================================================================
-    // Private members
-    // =============================================================================
-
-    private int[] images = {R.drawable.guide_image1, R.drawable.guide_image2, R.drawable.guide_image3,
-			R.drawable.picture_1, R.drawable.picture_2, R.drawable.picture_3, R.drawable.picture_4, R.drawable.picture_5};
-
-    // =============================================================================
-    // Supertype overrides
-    // =============================================================================
-
-    @Override
+	@Override
     public int getCount() {
-        return images.length;
-    }
-
-    @Override
-    public Integer getItem(int i) {
-        return images[i];
+        return productlist.size();
     }
 
     @Override
@@ -53,18 +58,34 @@ public class FancyCoverFlowSampleAdapter extends FancyCoverFlowAdapter {
 
     @Override
     public View getCoverFlowItem(int i, View reuseableView, ViewGroup viewGroup) {
-        ImageView imageView = null;
+    	ImageView imageView = null;
 
         if (reuseableView != null) {
             imageView = (ImageView) reuseableView;
         } else {
             imageView = new ImageView(viewGroup.getContext());
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            imageView.setLayoutParams(new FancyCoverFlow.LayoutParams(150, 200));
+            imageView.setLayoutParams(new FancyCoverFlow.LayoutParams(140, 190));
 
         }
+        ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
+		ImageListener listener = ImageLoader.getImageListener(imageView,  
+				R.drawable.image_loading, R.drawable.image_load_fail); 
+		
+		imageLoader.get(productlist.get(i).getMain_img(), listener, 280, 380);
 
-        imageView.setImageResource(this.getItem(i));
+       /* ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
+		imageView.setDefaultImageResId(R.drawable.image_loading);  //加载中显示的图片
+		imageView.setErrorImageResId(R.drawable.image_load_fail);  //加载失败显示的图片
+		imageView.setImageUrl(productlist.get(i).getMain_img(), imageLoader);*/
+        //imageView.setImageResource(this.getItem(i));
+        
         return imageView;
     }
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

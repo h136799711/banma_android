@@ -106,6 +106,7 @@ public class BabyActivity extends FragmentActivity implements
 	private BabyCommentFragment commentFragment;
 	private List<Sku_info> sku_info; // 商品类型参数
 	private int requestState = 0;// 判断哪个请求返回的结果 1表示加入购物车请求
+	private int pid;  //商品ID
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,10 @@ public class BabyActivity extends FragmentActivity implements
 	 * 加载数据
 	 */
 	private void iniData() {
+		
+		Intent intent = getIntent();
+		pid = intent.getIntExtra("PID", 1);
+		
 		for (int i = 0; i < Constant.SKU_INFO.length; i++) {
 			Constant.SKU_INFO[i] = "";
 		}
@@ -137,7 +142,7 @@ public class BabyActivity extends FragmentActivity implements
 		strnetworkHelper = new StrVolleyInterface(BabyActivity.this);
 		strnetworkHelper.setStrUIDataListener(BabyActivity.this);
 		try {
-			YesOrNo = appContext.getProductDetail(BabyActivity.this, 1,
+			YesOrNo = appContext.getProductDetail(BabyActivity.this, pid,
 					strnetworkHelper);
 			if (!YesOrNo) { // 如果没联网
 				Toast.makeText(BabyActivity.this, "请检查网络连接", Toast.LENGTH_SHORT)

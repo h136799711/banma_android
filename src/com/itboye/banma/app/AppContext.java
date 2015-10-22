@@ -7,6 +7,7 @@ import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.entity.Area;
 
+import android.R.integer;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -227,6 +228,26 @@ public class AppContext extends Application {
 			return false;
 		}	
 	}
+	
+	/**
+	 * 获取商品列表
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean getProductList(Context mContext, int pageNo, int pageSize, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getProductList(mContext, pageNo, pageSize, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	
 	/**
 	 * 获取商品详情
 	 * @return
