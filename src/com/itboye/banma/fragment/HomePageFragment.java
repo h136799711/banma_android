@@ -154,8 +154,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	 */
 	private void initData() {
 		try {
-			/*YesOrNo = appContext.getProductList(getActivity(), 1,
-					Constant.PAGE_SIZE, networkHelper);*/
+			YesOrNo = appContext.getProductList(getActivity(), 1,
+					Constant.PAGE_SIZE, networkHelper);
 			if (!YesOrNo) { // 如果没联网
 				/*
 				 * wait_ll.setVisibility(View.VISIBLE);

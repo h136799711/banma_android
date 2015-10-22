@@ -293,6 +293,16 @@ public class ApiClient {
 		VolleyRequest.StrRequestPost(mContext, url, "getProductDetail",params, networkHelper);
 	}
 	
+	public static void getProductList(Context mContext, int pageNo, 
+			int pageSize, StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Product/query?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("pageNo",""+pageNo);
+		params.put("pageSize",""+pageSize);
+		VolleyRequest.StrRequestPost(mContext, url, "getProductList",params, networkHelper);
+	}
+	
 //获得购物车数据
 	public static void getCartListByPage(Context mContext, int uid,
 			StrVolleyInterface networkHelper) {
