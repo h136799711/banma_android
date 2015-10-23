@@ -313,8 +313,8 @@ public class AppContext extends Application {
 			StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
-				/*ApiClient.ordersAdd(mContext, uid, cartids, idcode, note, contactname,
-						mobile, country, province, city, area, wxno, detailinfo, from, networkHelper);*/
+				ApiClient.ordersAdd(mContext, uid, cartids, idcode, note, contactname,
+						mobile, country, province, city, area, wxno, detailinfo, from, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;

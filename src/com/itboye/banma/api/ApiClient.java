@@ -326,4 +326,25 @@ public class ApiClient {
 		params.put("uid",""+uid);
 		VolleyRequest.StrRequestPost(mContext, url, "getCardListByPage",params, networkHelper);
 	}
+	
+	public static void ordersAdd(Context mContext, int uid, int cartids,
+			String idcode, String note, String contactname, String mobile,
+			String country, String province, String city, String area,
+			String wxno, String detailinfo, int from,
+			StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Orders/add?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+uid);
+		params.put("cartids",""+cartids);
+		params.put("contactname",contactname);
+		params.put("mobile",mobile);
+		params.put("country",country);
+		params.put("province",province);
+		params.put("city",city);
+		params.put("area",area);
+		params.put("detailinfo",detailinfo);
+		params.put("from",""+from);
+		VolleyRequest.StrRequestPost(mContext, url, "ordersAdd",params, networkHelper);
+	}
 }
