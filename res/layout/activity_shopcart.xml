@@ -49,6 +49,7 @@
 	<View android:layout_width="fill_parent"
 	    android:layout_height="1dp"
 	    android:background="@color/lightgray"/>
-    <include layout="@layout/cart_all_f" />
+
+	<include layout="@layout/cart_all_f" />
 
 </LinearLayout>

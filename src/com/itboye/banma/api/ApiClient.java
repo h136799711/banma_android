@@ -1,10 +1,11 @@
 package com.itboye.banma.api;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.R.string;
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.toolbox.StringRequest;
@@ -150,8 +151,20 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		Log.v("用户名", username);
-		Log.v("原密码", password);
+		
 		Log.v("验证码", code);
+			byte[] encode;
+			try {
+			 encode = Base64.encode(password.getBytes(UTF_8), Base64.NO_WRAP);
+			 password = new String(encode);  
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+	       
+	        Log.v("密码","base 64 encode = " + password);  
+	
+		Log.v("原密码", password);
         params.put("username",username);
         params.put("psw",password);
         params.put("code", code);
@@ -169,7 +182,7 @@ public class ApiClient {
         params.put("username",username);  
         params.put("password",password);
         params.put("from", "0");
-        params.put("type", "1");
+        params.put("type", "3");
         VolleyRequest.StrRequestPost(context, url, "finishRegisit",params, networkHelper);
 	}
 
