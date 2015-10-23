@@ -25,5 +25,5 @@ public class Constant {
 	public static ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
     public static float Allprice_cart=0;
     
-    public static int PAGE_SIZE = 10;  //分页显示条数
+    public static int PAGE_SIZE = 20;  //分页显示条数
 }

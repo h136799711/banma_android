@@ -11,12 +11,12 @@
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1">
+        android:layout_weight="1" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
             <LinearLayout
                 android:id="@+id/add_adress_layout"
@@ -122,6 +122,15 @@
                         android:textSize="@dimen/text_size_14" />
                 </LinearLayout>
 
+                <TextView
+                        android:id="@+id/adr_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="添加地址"
+                        android:visibility="gone"
+                        />
+                
                 <ImageView
                     android:layout_width="30dip"
                     android:layout_height="53dp"
@@ -133,104 +142,204 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="0.3dp"
                 android:background="@color/line" />
-
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/main_layout" />
+			<View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/line" />
             <LinearLayout
                 android:id="@+id/three_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/main_layout"
+                android:gravity="center"
                 android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/tex_three"
+                <LinearLayout
+                    android:id="@+id/order_flex"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/white"
+                    android:gravity="center"
                     android:paddingBottom="5dip"
                     android:paddingLeft="15dp"
-                    android:paddingTop="20dip"
-                    android:text="订单" />
+                    android:paddingTop="10dip" >
+
+                    <TextView
+                        android:id="@+id/order"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dip"
+                        
+                        android:gravity="left|center"
+                        android:text="订单" />
+                   <View 
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dip"
+                        android:gravity="left|center"
+                        android:text="共 " />
+
+                    <TextView
+                        android:id="@+id/all_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dip"
+                        android:gravity="left|center"
+                        android:text="1"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dip"
+                        android:gravity="left|center"
+                        android:layout_marginRight="10dip"
+                        android:text=" 件商品" />
+
+                    <ImageView
+                        android:id="@+id/img_flex"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="10dip"
+                        android:layout_marginBottom="5dip"
+                        android:layout_marginRight="10dip"
+                        android:background="@drawable/arrow_down" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
+                    android:layout_height="0.3dp"
                     android:background="@color/line" />
 
-                <ListView 
+                <ListView
                     android:id="@+id/order_list"
-            		android:layout_width="match_parent"
-            		android:layout_height="wrap_content"
-            		android:divider="@color/line"
-            		android:dividerHeight="1px" />
-
-               <!--  <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:divider="@color/line"
+                    android:dividerHeight="1px" />
+				<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:background="@color/line" />
+
+                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/white" >
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="15dp"
-                        android:text="购买数量" />
-
-                    <TextView
-                        android:id="@+id/pop_reduce"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/yuanjiao"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
-                        android:paddingTop="10dp"
-                        android:text="一"
-                        android:textColor="@color/black" />
-
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="15dp"
+                        android:text="物流费用" />
                     <TextView
-                        android:id="@+id/pop_num"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/number_bg"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="1"
-                        android:textColor="@color/black" />
-
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:text="1.5kg"
+                        android:textSize="10dp"
+                        android:textColor="@color/grey"
+                        />
                     <TextView
-                        android:id="@+id/pop_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/yuanjiao"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="13dp"
-                        android:paddingRight="13dp"
-                        android:paddingTop="10dp"
-                        android:text="+"
-                        android:textColor="@color/black" />
-                </LinearLayout> -->
+                        android:text="￥0.00"
+                        />
+                </LinearLayout>
+				
+				<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="0dip"
+                    android:background="@color/line" />
+				
+				<LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/white" >
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="15dp"
+                        android:text="关税" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="￥0.00"
+                        />
+                </LinearLayout>
+                
+				<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.3dp"
+                    android:background="@color/line" />
+				
+				<View
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:background="@color/main_layout" />
+				
+                
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
                     android:background="@color/line" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:background="@color/white" >
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="支付方式" />
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="15dp"
-                        android:text="配送方式" />
+                        android:padding="10dp"
+                        android:gravity="right"
+                        android:text="支付宝支付"
+                        android:textColor="@color/grey" />
+                    
+                    <ImageView
+                    android:layout_width="30dip"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="10dip"
+                    android:src="@drawable/arrow_right" />
+                    
                 </LinearLayout>
 
                 <View
@@ -239,6 +348,36 @@
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="10dip"
                     android:background="@color/line" />
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/white" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="选择优惠券" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:gravity="right"
+                       
+                        android:textColor="@color/grey" />
+                    
+                    <ImageView
+                    android:layout_width="30dip"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="10dip"
+                    android:src="@drawable/arrow_right" />
+                    
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -250,22 +389,7 @@
                         android:layout_height="1dp"
                         android:layout_weight="1" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="共" />
-
-                    <TextView
-                        android:id="@+id/all_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-                        android:textColor="@color/red" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="件商品" />
+                    
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -324,7 +448,7 @@
             android:textSize="@dimen/text_size_14" />
 
         <Button
-            android:id="@+id/registered"
+            android:id="@+id/confirm"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:background="@color/red"

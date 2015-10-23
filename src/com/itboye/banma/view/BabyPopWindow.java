@@ -29,8 +29,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -59,7 +62,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private PopupWindow popupWindow;
 	private OnItemClickListener listener;
 	private final int ADDORREDUCE = 1;
-	private Context context;
+	private static Context context;
 	private String str_color = "";
 	private String str_type = "";
 	private Map<String, SkuInfo> skuInfo;
@@ -168,13 +171,27 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
 			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
 			gridviewThree = (MyGridView) view.findViewById(R.id.gridview_three);
-			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0),
-					skuInfo.get(sku_info.get(0).getId()), 0, ch));
-			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1),
+			
+			MyGridAdapter oneAdapter = new MyGridAdapter(context, sku_info.get(0),
+					skuInfo.get(sku_info.get(0).getId()), 0, ch);
+			getItemMaxWhith(gridviewOne, oneAdapter);
+			gridviewOne.setAdapter(oneAdapter);
+			
+			MyGridAdapter twoAdapter = new MyGridAdapter(context, sku_info.get(1),
+					skuInfo.get(sku_info.get(1).getId()), 1, ch);
+			getItemMaxWhith(gridviewTwo, twoAdapter);
+			gridviewTwo.setAdapter(twoAdapter);
+			
+			MyGridAdapter threeAdapter = new MyGridAdapter(context,
+					sku_info.get(2), skuInfo.get(sku_info.get(2).getId()), 2,ch);
+			getItemMaxWhith(gridviewThree, threeAdapter);
+			gridviewThree.setAdapter(threeAdapter);
+			
+			/*gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1),
 					skuInfo.get(sku_info.get(1).getId()), 1, ch));
 			gridviewThree.setAdapter(new MyGridAdapter(context,
 					sku_info.get(2), skuInfo.get(sku_info.get(2).getId()), 2,
-					ch));
+					ch));*/
 			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
 			tex_two.setText(skuInfo.get(sku_info.get(1).getId()).getName());
 			tex_three.setText(skuInfo.get(sku_info.get(2).getId()).getName());
@@ -186,6 +203,46 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			break;
 		}
 	}
+	
+	/**
+	 * 获取adapter的最大item宽度
+	 * @param gridView
+	 * @param adapter
+	 */
+	public static void getItemMaxWhith(MyGridView gridView, MyGridAdapter adapter) {    
+	       // 固定列宽，有多少列  
+	       
+	       int maxwidth = 0;  
+	       int width = 0;
+	       WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+			int win_width = wm.getDefaultDisplay().getWidth();
+			int win_height = wm.getDefaultDisplay().getHeight();
+	       // i每次加4，相当于listAdapter.getCount()小于等于4时 循环一次，计算一次item的高度，  
+	       // listAdapter.getCount()小于等于8时计算两次高度相加  
+	       for (int i = 0; i < adapter.getCount(); i++) {  
+	        // 获取listview的每一个item  
+	           View listItem = adapter.getView(i, null, gridView);  
+	           listItem.measure(0, 0);  
+	           // 获取item的宽度  
+	          
+	           width = listItem.getMeasuredWidth();
+	           if(maxwidth < width){
+	        	   maxwidth = width;
+	           }
+	       }  
+	       int num = win_width / (maxwidth+20);
+	  
+	       // 获取listview的布局参数  
+	       ViewGroup.LayoutParams params = gridView.getLayoutParams();  
+	       // 设置高度  
+	       params.width = (maxwidth+20)*num;  
+	       // 设置margin  
+	       ((MarginLayoutParams) params).setMargins(10, 5, 10, 5);  
+	       // 设置参数  
+	       gridView.setLayoutParams(params); 
+	       gridView.setNumColumns(num);
+	   }  
 
 	private void init() {
 		pop_add.setOnClickListener(this);
@@ -272,15 +329,20 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 
 			break;
 		case R.id.pop_ok:
-
-			if (sku_id == -1) {
+			if(skuInfo == null){
+				Toast.makeText(context, "服务器信息不全,请稍后再试", Toast.LENGTH_SHORT).show();
+			}else if (sku_id == -1) {
 				Toast.makeText(context, "请选择规格", Toast.LENGTH_SHORT).show();
 			} else {
-				skuList.get(skuPosition).setNum(pop_num.getText().toString());
-				skuList.get(skuPosition).setName(name);
-				listener.onClickOKPop(skuList.get(skuPosition));
+				if(skuList.get(skuPosition).getQuantity() <= 0){
+					Toast.makeText(context, "库存为0,请重选规格", Toast.LENGTH_SHORT).show();
+				}else{
+					skuList.get(skuPosition).setNum(pop_num.getText().toString());
+					skuList.get(skuPosition).setName(name);
+					listener.onClickOKPop(skuList.get(skuPosition));
 
-				dissmiss();
+					dissmiss();
+				}
 
 			}
 			break;

@@ -65,7 +65,7 @@ public class OrderListAdapter  extends BaseAdapter {
 				new BitmapCache());
 		ImageListener listener = ImageLoader.getImageListener(order_pic,
 				R.drawable.image_loading, R.drawable.image_load_fail);
-		imageLoader.get("", listener, 0, 0);
+		imageLoader.get(order.getIcon_url(), listener, 0, 0);
 		order_name.setText(order.getName());
 		order_standard.setText(order.getSku());
 		order_price.setText("￥" + order.getPrice() * Integer.valueOf(order.getNum()));

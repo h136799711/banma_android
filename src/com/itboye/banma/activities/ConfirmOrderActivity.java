@@ -41,18 +41,19 @@ import com.itboye.banma.utils.BitmapCache;
 public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		StrUIDataListener {
 	private final int ADDORREDUCE = 1;
-	private AppContext appContext;
+	private final int ADDRESS = 1;
+	private final int ORDER = 2;
+	private AppContext appContext; 
 	private Double priceAll;
 	private int numAll;
 	private ImageView top_back;
 	private TextView top_title;
 	private ListView orderListView;
-	/*private TextView pop_add;
-	private TextView pop_reduce;
-	private TextView pop_num;*/
 	private TextView all_num;
 	private TextView all_price;
 	private TextView order_all_price;
+	private LinearLayout order_flex;
+	private ImageView img_flex;
 	private TextView adr_name;
 	private TextView adr_phone;
 	private TextView adr_address;
@@ -62,7 +63,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 	private StrVolleyInterface strnetworkHelper;
 	private List<SkuStandard> list = new ArrayList<SkuStandard>();
 	private int state = -1;
-	private Button btn_regisited;
+	private Button confirm;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,49 +78,53 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		strnetworkHelper = new StrVolleyInterface(ConfirmOrderActivity.this);
 		strnetworkHelper.setStrUIDataListener(ConfirmOrderActivity.this);
 		Intent intent = getIntent();
-		list = (List<SkuStandard>) intent.getSerializableExtra("SkuStandardList");
-		/*state = intent.getIntExtra("state", -1);
-		if(state == 0){
-			//表示是购买页面传过来的，显示数量添加按钮
-		}*/
+		list = (List<SkuStandard>) intent
+				.getSerializableExtra("SkuStandardList");
+
 		priceAll = 0.0;
 		numAll = 0;
-		for(int i=0; i<list.size(); i++){
-			priceAll += list.get(i).getPrice() * Integer.valueOf(list.get(i).getNum());
+		for (int i = 0; i < list.size(); i++) {
+			priceAll += list.get(i).getPrice()
+					* Integer.valueOf(list.get(i).getNum());
 			numAll += Integer.parseInt(list.get(i).getNum());
 		}
-		
+
 	}
 
 	private void initView() {
-		btn_regisited=(Button)findViewById(R.id.registered);
+		confirm = (Button) findViewById(R.id.confirm);
 		select_adress_layout = (LinearLayout) findViewById(R.id.select_adress_layout);
+		order_flex = (LinearLayout) findViewById(R.id.order_flex);
+		img_flex = (ImageView) findViewById(R.id.img_flex);
 		orderListView = (ListView) findViewById(R.id.order_list);
 		top_back = (ImageView) findViewById(R.id.iv_back);
 		top_title = (TextView) findViewById(R.id.title);
 		adr_name = (TextView) findViewById(R.id.adr_name);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
 		adr_address = (TextView) findViewById(R.id.adr_address);
-		/*pop_add = (TextView) findViewById(R.id.pop_add);
-		pop_reduce = (TextView) findViewById(R.id.pop_reduce);
-		pop_num = (TextView) findViewById(R.id.pop_num);*/
+		/*
+		 * pop_add = (TextView) findViewById(R.id.pop_add); pop_reduce =
+		 * (TextView) findViewById(R.id.pop_reduce); pop_num = (TextView)
+		 * findViewById(R.id.pop_num);
+		 */
 		all_num = (TextView) findViewById(R.id.all_num);
 		all_price = (TextView) findViewById(R.id.all_price);
 		order_all_price = (TextView) findViewById(R.id.order_all_price);
 		select_adress_layout.setOnClickListener(this);
 		top_back.setOnClickListener(this);
-		/*pop_add.setOnClickListener(this);
-		pop_reduce.setOnClickListener(this);*/
-		
-		OrderListAdapter adapter = new OrderListAdapter(ConfirmOrderActivity.this, list);
+		order_flex.setOnClickListener(this);
+		confirm.setOnClickListener(this);
+		OrderListAdapter adapter = new OrderListAdapter(
+				ConfirmOrderActivity.this, list);
 		orderListView.setAdapter(adapter);
-        setListViewHeightBasedOnChildren(orderListView);
-		
-		/*pop_num.setText(""+numAll);*/
-		all_num.setText(""+numAll);
+		setListViewHeightBasedOnChildren(orderListView);
+
+		/* pop_num.setText(""+numAll); */
+		all_num.setText("" + numAll);
 		all_price.setText("￥" + priceAll);
 		order_all_price.setText("￥" + priceAll);
 		top_title.setText(string.confirm_order);
+
 		load_data();
 	}
 
@@ -128,14 +133,17 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 	 */
 	public void load_data() {
 		try {
+			state = ADDRESS;
 			YesOrNo = appContext.getAddressList(ConfirmOrderActivity.this,
 					strnetworkHelper);
+
 			if (!YesOrNo) { // 如果没联网
 				Toast.makeText(ConfirmOrderActivity.this, "请检查网络连接",
 						Toast.LENGTH_SHORT).show();
+				state = -1;
 			}
 		} catch (Exception e) {
-
+			state = -1;
 			e.printStackTrace();
 		}
 	}
@@ -157,52 +165,51 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		}
 
 	}
-	
+
 	/*
 	 * 动态设置ListView组建的高度
-	 * 
-	 * */
+	 */
 	public void setListViewHeightBasedOnChildren(ListView listView) {
-	      
-	      ListAdapter listAdapter = listView.getAdapter();
-	      
-	      if (listAdapter == null) {
-	      
-	       return;
-	      
-	      }
-	      
-	      int totalHeight = 0;
-	      
-	      for (int i = 0; i < listAdapter.getCount(); i++) {
-	      
-	       View listItem = listAdapter.getView(i, null, listView);
-	      
-	       listItem.measure(0, 0);
-	      
-	       totalHeight += listItem.getMeasuredHeight();
-	      
-	      }
-	      
-	      ViewGroup.LayoutParams params = listView.getLayoutParams();
-	      
-	      params.height = totalHeight
-	      
-	        + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-	      
-	      // params.height += 5;// if without this statement,the listview will be
-	      
-	      // a
-	      
-	      // little short
-	      
-	      // listView.getDividerHeight()获取子项间分隔符占用的高度
-	      
-	      // params.height最后得到整个ListView完整显示需要的高度
-	      
-	      listView.setLayoutParams(params);
-	      
-	    }
+
+		ListAdapter listAdapter = listView.getAdapter();
+
+		if (listAdapter == null) {
+
+			return;
+
+		}
+
+		int totalHeight = 0;
+
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+
+			View listItem = listAdapter.getView(i, null, listView);
+
+			listItem.measure(0, 0);
+
+			totalHeight += listItem.getMeasuredHeight();
+
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+		params.height = totalHeight
+
+		+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+
+		// params.height += 5;// if without this statement,the listview will be
+
+		// a
+
+		// little short
+
+		// listView.getDividerHeight()获取子项间分隔符占用的高度
+
+		// params.height最后得到整个ListView完整显示需要的高度
+
+		listView.setLayoutParams(params);
+
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -225,58 +232,72 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		case R.id.select_adress_layout:
 			Intent intent = new Intent();
 			intent = new Intent(this, SelectOrderAddressActivity.class);
-			if(address == null){
+			if (address == null) {
 				intent.putExtra("addressId", -1);
-			}else{
+			} else {
 				intent.putExtra("addressId", address.getId());
 			}
-			
+
 			startActivityForResult(intent, 2000);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
-		case R.id.registered:
-			//完成订单提交，成功后启动支付宝付款
-			
-			break;
-		/*case R.id.pop_add:
-			if (!pop_num.getText().toString().equals("50")) {
+		case R.id.confirm:
+			// 添加订单
+			ordersAdd(appContext.getLoginUid(), 0, null, null,
+					address.getContactname(), address.getMobile(),
+					address.getCountry(), address.getProvince(),
+					address.getCity(), address.getArea(), null,
+					address.getDetailinfo(), 2);
 
-				String num_add = Integer.valueOf(pop_num.getText().toString())
-						+ ADDORREDUCE + "";
-				priceAll = Integer.parseInt(num_add) * price;
-				skuStandard.setNum(num_add);
-				pop_num.setText(num_add);
-				all_num.setText(skuStandard.getNum());
-				all_price.setText("￥" + priceAll);
-				order_all_price.setText("￥" + priceAll);
-			} else {
-				Toast.makeText(ConfirmOrderActivity.this, "不能超过50",
-						Toast.LENGTH_SHORT).show();
+			// 完成订单提交，成功后启动支付宝付款
+
+			break;
+		case R.id.order_flex:
+			if (orderListView.getVisibility() == View.VISIBLE) {
+				orderListView.setVisibility(View.GONE);
+				img_flex.setBackgroundResource(R.drawable.arrow_up);
+			} else if (orderListView.getVisibility() == View.GONE) {
+				orderListView.setVisibility(View.VISIBLE);
+				img_flex.setBackgroundResource(R.drawable.arrow_down);
 			}
 			break;
-		case R.id.pop_reduce:
-			if (!pop_num.getText().toString().equals("1")) {
-				String num_reduce = Integer.valueOf(pop_num.getText()
-						.toString()) - ADDORREDUCE + "";
-				priceAll = Integer.parseInt(num_reduce) * price;
-				skuStandard.setNum(num_reduce);
-				pop_num.setText(num_reduce);
-				all_num.setText(skuStandard.getNum());
-				all_price.setText("￥" + priceAll);
-				order_all_price.setText("￥" + priceAll);
-			} else {
-				Toast.makeText(ConfirmOrderActivity.this, "已经是最小数量",
-						Toast.LENGTH_SHORT).show();
-			}
-			break;*/
 		default:
 			break;
 		}
 	}
+	
+	/**
+	 * 添加订单
+	 * 
+	 * @return
+	 */
+	public Boolean ordersAdd(int uid, int cartids, String idcode, String note,
+			String contactname, String mobile, String country, String province,
+			String city, String area, String wxno, String detailinfo, int from) {
+		try {
+			state = ORDER;
+			YesOrNo = appContext.ordersAdd(ConfirmOrderActivity.this, uid,
+					cartids, idcode, note, contactname, mobile, country,
+					province, city, area, wxno, detailinfo, from,
+					strnetworkHelper);
+
+			if (!YesOrNo) { // 如果没联网
+				Toast.makeText(ConfirmOrderActivity.this, "请检查网络连接",
+						Toast.LENGTH_SHORT).show();
+				state = -1;
+			}
+		} catch (Exception e) {
+			state = -1;
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(ConfirmOrderActivity.this, "地址加载失败", Toast.LENGTH_SHORT)
+		state = -1;
+		Toast.makeText(ConfirmOrderActivity.this, "加载失败"+error, Toast.LENGTH_SHORT)
 				.show();
 	}
 
@@ -289,37 +310,54 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 			jsondata = new JSONObject(data);
 
 			int code = jsondata.getInt("code");
-			if (code == 0) {
-				String addressData = jsondata.getString("data");
-				addresslist = gson.fromJson(addressData,
-						new TypeToken<List<MailingAdress>>() {
-						}.getType());
-				if (addresslist.size() > 0) {
-					// showListView(addresslist);
-					address = addresslist.get(0);
-					adr_name.setText(address.getContactname());
-					adr_phone.setText(address.getMobile());
-					adr_address.setText(address.getProvince()
-							+ address.getCity() + address.getArea()
-							+ address.getDetailinfo());
 
-				}
-				else {
-					Toast.makeText(ConfirmOrderActivity.this, "请添加地址",
+			if (state == ADDRESS) { // 地址的请求相应
+
+				if (code == 0) {
+					String addressData = jsondata.getString("data");
+					addresslist = gson.fromJson(addressData,
+							new TypeToken<List<MailingAdress>>() {
+							}.getType());
+					if (addresslist.size() > 0) {
+						// showListView(addresslist);
+						address = addresslist.get(0);
+						adr_name.setText(address.getContactname());
+						adr_phone.setText(address.getMobile());
+						adr_address.setText(address.getProvince()
+								+ address.getCity() + address.getArea()
+								+ address.getDetailinfo());
+
+					} else {
+						Toast.makeText(ConfirmOrderActivity.this, "请添加地址",
+								Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent();
+						intent = new Intent(this,
+								SelectOrderAddressActivity.class);
+						intent.putExtra("addressId", -1);
+						startActivityForResult(intent, 2000);
+						overridePendingTransition(R.anim.in_from_right,
+								R.anim.out_to_left);
+					}
+
+				} else {
+					Toast.makeText(ConfirmOrderActivity.this, "地址加载异常",
 							Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent();
-					intent = new Intent(this, SelectOrderAddressActivity.class);
-					intent.putExtra("addressId", -1);
-					startActivityForResult(intent, 2000);
-					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				}
-
-			} else {
-				Toast.makeText(ConfirmOrderActivity.this, "地址加载异常",
-						Toast.LENGTH_SHORT).show();
+				state = -1;
+			} else if (state == ORDER) {
+				if (code == 0) {
+					String addressData = jsondata.getString("data");
+					Toast.makeText(ConfirmOrderActivity.this, "订单添加成功"+data,
+							Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(ConfirmOrderActivity.this, "订单添加异常",
+							Toast.LENGTH_SHORT).show();
+				}
+				state = -1;
 			}
 
 		} catch (JSONException e) {
+			state = -1;
 			e.printStackTrace();
 			Toast.makeText(ConfirmOrderActivity.this, "地址加载失败",
 					Toast.LENGTH_SHORT).show();

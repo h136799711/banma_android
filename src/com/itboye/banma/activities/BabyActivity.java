@@ -41,6 +41,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
+import com.itboye.banma.adapter.BabyDetailAdapter;
 import com.itboye.banma.adapter.ViewPagerFragmentAdapter;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
@@ -56,6 +57,7 @@ import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.shoppingcart.ShoppingCartActivity;
 import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.view.BabyPopWindow;
+import com.itboye.banma.view.MyListView;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
 
@@ -67,11 +69,13 @@ public class BabyActivity extends FragmentActivity implements
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
 	private ProductDetail productDetail;
-
+	private MyListView detailListView;
+	private BabyDetailAdapter adapter;
 	private HackyViewPager viewPager;
 	private ArrayList<View> allListView;
 	private ListView listView;
 	private ImageView iv_baby_collection;
+	private ImageView no_detail;
 	private BabyPopWindow popWindow;
 	private TextView title;
 	private TextView baby_name;
@@ -96,14 +100,6 @@ public class BabyActivity extends FragmentActivity implements
 	private LinearLayout indicatorLayout;
 	private String[] imageList;
 	private ViewPager viewPagerPage;
-	protected TextView one_title;
-	protected TextView two_title;
-	protected TextView three_title;
-	private ViewPagerFragmentAdapter myAdapter;
-	private MyListener listener = new MyListener();
-	private BabyDetailFragment detailFragment;
-	private BabyParameterFragment parameterFragment;
-	private BabyCommentFragment commentFragment;
 	private List<Sku_info> sku_info; // 商品类型参数
 	private int requestState = 0;// 判断哪个请求返回的结果 1表示加入购物车请求
 	private int pid;  //商品ID
@@ -373,6 +369,7 @@ public class BabyActivity extends FragmentActivity implements
 		if (isClickBuy) {
 			if (appContext.isLogin()) {
 			// 跳转到订单确认页面
+			skuStandard.setIcon_url(productDetail.getMain_img());
 			List<SkuStandard> list = new ArrayList<SkuStandard>();
 			list.add(skuStandard);
 			
@@ -552,50 +549,15 @@ public class BabyActivity extends FragmentActivity implements
 	}
 
 	private void initDetailPager() {
-		one_title = (TextView) findViewById(R.id.one_title);
-		two_title = (TextView) findViewById(R.id.two_title);
-		three_title = (TextView) findViewById(R.id.three_title);
-		myAdapter = new ViewPagerFragmentAdapter(getSupportFragmentManager());
-		viewPagerPage = (ViewPager) findViewById(R.id.viewPager);
-		detailFragment = new BabyDetailFragment(productDetail.getDetail());
-		parameterFragment = new BabyParameterFragment();
-		commentFragment = new BabyCommentFragment();
-		myAdapter.addFragment(detailFragment);
-		myAdapter.addFragment(parameterFragment);
-
-		myAdapter.addFragment(commentFragment);
-		viewPagerPage.setOffscreenPageLimit(3);
-		viewPagerPage.setOnPageChangeListener(listener);
-		viewPagerPage.setAdapter(myAdapter);
-		one_title.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				viewPagerPage.setCurrentItem(0);
-			}
-		});
-
-		two_title.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				viewPagerPage.setCurrentItem(1);
-			}
-		});
-
-		three_title.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				viewPagerPage.setCurrentItem(2);
-			}
-		});
-		// 模拟网络请求完成之后重置ViewPager高度
-		new myAsyncTask().execute();
-		// resetViewPagerHeight(0);
+		detailListView = (MyListView) findViewById(R.id.detail_image_list);
+		if(productDetail.getDetail() != null){
+			adapter = new BabyDetailAdapter(BabyActivity.this, productDetail.getDetail());
+			detailListView.setAdapter(adapter);
+		}else{
+			detailListView.setVisibility(View.GONE);
+			no_detail = (ImageView) findViewById(R.id.con_image);
+			no_detail.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**
@@ -614,90 +576,6 @@ public class BabyActivity extends FragmentActivity implements
 			viewPagerPage.setLayoutParams(params);
 		}
 	}
-
-	public class MyListener implements OnPageChangeListener {
-
-		@Override
-		public void onPageScrollStateChanged(int arg0) {
-
-		}
-
-		@Override
-		public void onPageScrolled(int position, float positionOffset,
-				int positionOffsetPixels) {
-
-		}
-
-		@Override
-		public void onPageSelected(int position) {
-			changTextColor(position);
-			// 页面切换后重置ViewPager高度
-			resetViewPagerHeight(position);
-			switch (position) {
-			case 0:
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			}
-		}
-	}
-
-	/**
-	 * 改变title颜色
-	 * 
-	 * @param arg0
-	 */
-	private void changTextColor(int arg0) {
-		one_title.setTextColor(this.getResources().getColor(R.color.black));
-		two_title.setTextColor(this.getResources().getColor(R.color.black));
-		three_title.setTextColor(this.getResources().getColor(R.color.black));
-		one_title.setBackgroundColor(this.getResources()
-				.getColor(R.color.white));
-		two_title.setBackgroundColor(this.getResources()
-				.getColor(R.color.white));
-		three_title.setBackgroundColor(this.getResources().getColor(
-				R.color.white));
-		switch (arg0) {
-		case 0:
-			one_title.setTextColor(this.getResources().getColor(R.color.white));
-			one_title.setBackgroundColor(this.getResources().getColor(
-					R.color.slategray));
-			break;
-		case 1:
-			two_title.setTextColor(this.getResources().getColor(R.color.white));
-			two_title.setBackgroundColor(this.getResources().getColor(
-					R.color.slategray));
-			break;
-		case 2:
-			three_title.setTextColor(this.getResources()
-					.getColor(R.color.white));
-			three_title.setBackgroundColor(this.getResources().getColor(
-					R.color.slategray));
-			break;
-		}
-
-	}
-
-	public class myAsyncTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... params) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			resetViewPagerHeight(0);
-		}
-
-	}
-
 	@Override
 	public void onClickDissmissPop() {
 		setBackgroundBlack(all_choice_layout, 1);

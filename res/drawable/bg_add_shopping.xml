@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <item android:state_pressed="true" android:drawable="@drawable/bg_white_enabled" />
-    <item android:state_enabled="true" android:drawable="@drawable/bg_homebut_focused" />
+    <item android:state_pressed="true" android:drawable="@drawable/bg_shopping_enabled" />
+    <item android:state_enabled="true" android:drawable="@drawable/bg_shopping_focused" />
 
 </selector>

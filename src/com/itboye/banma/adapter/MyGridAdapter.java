@@ -33,8 +33,8 @@ public class MyGridAdapter extends BaseAdapter {
 	private Map<String, MapValue> value;
 	private Sku_info sku_info;
 	private ChooseStandardInterface ch;
-	/*public String[] img_text = { "型号000", "型号111", "型号222", "型号333", "型号444", "型号555",
-			"型号666"};*/
+	public String[] img_text = { "型号000", "型号111111", "型号222222222222222", "型号33333", "型号444", "型号555",
+			"型号66776", "型号54355", "型号555555"};
 	public MyGridAdapter(Context mContext, Sku_info sku_info, SkuInfo skuInfo, int i, ChooseStandardInterface ch) {
 		super();
 		this.mContext = mContext;
@@ -43,6 +43,7 @@ public class MyGridAdapter extends BaseAdapter {
 		this.i = i;
 		this.ch = ch;
 		value = skuInfo.getValue();
+		
 	}
 
 	@Override
@@ -77,13 +78,13 @@ public class MyGridAdapter extends BaseAdapter {
 		
 		LayoutParams params = convertView.getLayoutParams();  
 	    params.height=width/8;  
-	    //params.width =(width-3)/4;
-	    //System.out.println("height="+height+"width="+width);
+	  
 		convertView.setLayoutParams(params);
 		
 		final TextView tv = BaseViewHolder.get(convertView, R.id.tv_item);
+
 		tv.setText(value.get(sku_info.getVid()[position]).getValue());
-		//tv.setText(position+"");
+		
 		tv.setBackgroundResource(R.drawable.yuanjiao);
 		if(position == state){
 			tv.setBackgroundResource(R.drawable.yuanjiao_choice);
