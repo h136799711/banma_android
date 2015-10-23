@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.ConfirmOrderActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
@@ -69,7 +71,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private float raxtate=(float) 0.0;//税率
 	private float express= (float) 0.0;//运费
 	private TextView tv_weight,tv_guansui,tv_express;
-	
+	private Button btn_quguangguang;
 	private List<SkuStandard> list;
 	
 	private ProductDetail productDetail;
@@ -108,6 +110,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 
 	private void initView() {
 		// TODO Auto-generated method stub
+		btn_quguangguang=(Button)findViewById(R.id.btn_quguangguang);
+		btn_quguangguang.setOnClickListener(this);
 		tv_guansui=(TextView)findViewById(R.id.tv_guansui);
 		tv_express=(TextView)findViewById(R.id.tv_express);
 		tv_weight=(TextView)findViewById(R.id.tv_weight);
@@ -444,6 +448,12 @@ OnClickListener,onAddChanged,onReduceChanged{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId() ){
+		case R.id.btn_quguangguang:
+			startActivity(new Intent(ShoppingCartActivity.this,BabyActivity.class));
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
+			finish();
+			break;
 		case R.id.tv_title_right:
 			if (EditState==1) {//当前为1状态被点击了
 				for (int i = 0; i < arrayList_cart.size(); i++) {

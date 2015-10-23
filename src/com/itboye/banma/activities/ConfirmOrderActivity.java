@@ -99,7 +99,7 @@ public class ConfirmOrderActivity extends Activity implements OnClickListener,
 		top_title = (TextView) findViewById(R.id.title);
 		adr_name = (TextView) findViewById(R.id.adr_name);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
-		adr_address = (TextView) findViewById(R.id.adr_address);
+		adr_address = (TextView) findViewById(R.id.adr_address); 
 		/*pop_add = (TextView) findViewById(R.id.pop_add);
 		pop_reduce = (TextView) findViewById(R.id.pop_reduce);
 		pop_num = (TextView) findViewById(R.id.pop_num);*/
