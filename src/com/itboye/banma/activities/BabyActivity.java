@@ -374,7 +374,7 @@ public class BabyActivity extends FragmentActivity implements
 			list.add(skuStandard);
 			
 			Intent intent = new Intent(BabyActivity.this,
-					ConfirmOrderActivity.class);
+					ConfirmOrdersActivity.class);
 			intent.putExtra("SkuStandardList", (Serializable)list);
 			/*intent.putExtra("state", 0);*/
 			

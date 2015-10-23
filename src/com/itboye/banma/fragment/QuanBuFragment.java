@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class QuanBuFragment extends Fragment {
-private 	View view ;
+private  View view ;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		view= inflater.inflate(R.layout.fragment_quanbu, null);
+		view= inflater.inflate(R.layout.fragment_quanbu, null);                                                                
 		return view;
 	}
 

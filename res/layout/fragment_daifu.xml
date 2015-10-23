@@ -2,15 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-     android:gravity="center"
+    android:gravity="center"
+    android:background="@color/white"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/fenzhu"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="待付" />
+	<include layout="@layout/empty_layout"/>
+
 
 </LinearLayout>

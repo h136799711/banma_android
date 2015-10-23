@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+         <LinearLayout
+            android:id="@+id/ll_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <ImageView
+                android:layout_weight="0.1"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center"
+                android:src="@drawable/dingdankong" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="没有更多订单"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_16" />
+
+            <Button
+                android:id="@+id/btn_quguangguang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_14"
+                android:text="主人带我去逛逛吧" />
+<!--    <TextView
+                android:id="@+id/tv_goShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:padding="7dp"
+                android:text="去逛逛"
+                android:textColor="@color/black" /> -->
+          
+        </LinearLayout>
+    
+         
+
+</LinearLayout>
