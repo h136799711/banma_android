@@ -353,8 +353,8 @@ public class ApiClient {
 		String url = Constant.URL+"/Orders/query?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("uid","100");
-		params.put("pageNo",""+pageNo);
-		params.put("pageSize",""+pageSize);
+		params.put("curpage",""+pageNo);
+		params.put("pagesize",""+pageSize);
 		VolleyRequest.StrRequestPost(mContext, url, "getAllOrder",params, networkHelper);
 	}
 	

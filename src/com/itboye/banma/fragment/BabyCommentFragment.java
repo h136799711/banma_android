@@ -88,7 +88,8 @@ public class BabyCommentFragment extends Fragment implements OnClickListener{
 
 	        mPager.setAdapter(new MyFragmentPagerAdapter(getChildFragmentManager(), fragmentsList));
 	        mPager.setOnPageChangeListener(new MyOnPageChangeListener());
-	        mPager.setCurrentItem(0);
+	        //mPager.setCurrentItem(0);
+	        mPager.setOffscreenPageLimit(5);
 	        
 	    }
 

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,9 +40,11 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 	private LinearLayout wait_ll;
 	private LinearLayout loading_ll;
 	private LinearLayout orderListLayout;
+	private LinearLayout ll_cart;
 	private int pageNo;
 	private int pageSize;
 	private boolean YesOrNo; // 网络是否连接
+	private int upOrdowm = -1; //刷新状态 0下拉刷新  1上拉刷新
 	private List<OrderDetailListItem> orderList = new ArrayList<OrderDetailListItem>();
 	private PullToRefreshListView listView;
 	private OrderListAdapter adapter;
@@ -52,7 +56,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		appContext = (AppContext) getActivity().getApplication();
 		networkHelper = new StrVolleyInterface(getActivity());
 		networkHelper.setStrUIDataListener(OrderAllFragment.this);
-		pageNo = 1;
+		pageNo = 0;
 		pageSize = Constant.PAGE_SIZE;
 		load_data();
 	}
@@ -76,6 +80,10 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		} else {
 			adapter.onDateChang(orderList);
 		}
+		if(upOrdowm == 0){
+			listView.onRefreshComplete();
+			listView.setSelection(0);
+		}
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +96,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		 * demandAdapter = new DemandListAdapter(getActivity(), messagelist);
 		 * listView.setAdapter(demandAdapter);
 		 */
+		ll_cart = (LinearLayout) chatView.findViewById(R.id.ll_cart);
 		wait_ll = (LinearLayout) chatView.findViewById(R.id.wait_ll);
 		loading_ll = (LinearLayout) chatView.findViewById(R.id.loading_ll);
 		retry_img = (ImageView) chatView.findViewById(R.id.retry_img);
@@ -97,14 +106,18 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 			@Override
 			public void onClick(View v) {
 				if (retry_img.getVisibility() == View.VISIBLE) {
+					ll_cart.setVisibility(View.GONE);
 					wait_ll.setVisibility(View.VISIBLE);
 					retry_img.setVisibility(View.GONE);
 					loading_ll.setVisibility(View.VISIBLE);
 					orderListLayout.setVisibility(View.GONE);
+					pageNo = 1;
+					orderList.clear();
 					load_data();
 				}
 			}
 		});
+		ll_cart.setVisibility(View.GONE);
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.GONE);
 		loading_ll.setVisibility(View.VISIBLE);
@@ -114,18 +127,26 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 
 	@Override
 	public void onRefresh() {
-
+		upOrdowm = 0;  //0表示顶部刷新
+		pageNo = 0;
+		pageSize = Constant.PAGE_SIZE;
+		//orderList.clear();
+		load_data();
+		
 	}
 
 	@Override
 	public void onLoad() {
-
+		upOrdowm = 1;  //1表示底部刷新
+		pageNo += 1;
+		load_data();
 	}
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		Toast.makeText(getActivity(), "AllOrder返回错误信息：" + error,
 				Toast.LENGTH_LONG).show();
+		ll_cart.setVisibility(View.GONE);
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
 		loading_ll.setVisibility(View.GONE);
@@ -147,31 +168,53 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 			jsonObject = new JSONObject(data);
 			code = jsonObject.getInt("code");
 			content = jsonObject.getString("data");
-			jsonObject2 = new JSONObject(content);
-
+			
 			if (code == 0) {
 				System.out.println(data);
 				Toast.makeText(getActivity(), "AllOrder成功", Toast.LENGTH_LONG)
 						.show();
+				if(content.length() < 5){
+					if(upOrdowm == 1){
+						listView.onLoadNone();
+					}else{
+						ll_cart.setVisibility(View.VISIBLE);
+						wait_ll.setVisibility(View.GONE);
+						retry_img.setVisibility(View.GONE);
+						loading_ll.setVisibility(View.GONE);
+						orderListLayout.setVisibility(View.GONE);
+					}
+					return;
+				}
+				jsonObject2 = new JSONObject(content);
+
 				listStr = jsonObject2.getString("list");
 				Map<String, OrderDetailListItem> retMap = gson.fromJson(listStr,  
 		                new TypeToken<Map<String, OrderDetailListItem>>() {  
 		                }.getType());  
 				System.out.println(retMap);
+				if(upOrdowm == 0){
+					orderList.clear();
+				}
 				//map转化为List
 				Iterator it = retMap.keySet().iterator(); 
+				if(it.hasNext()){
+					listView.loadComplete();
+				}else{
+					listView.onLoadNone();
+				}
 				while (it.hasNext()) {  
 			           String key = it.next().toString();  
 			           orderList.add(retMap.get(key));  
 			       }
 				showListView(orderList);
-
+				ll_cart.setVisibility(View.GONE);
 				wait_ll.setVisibility(View.GONE);
 				retry_img.setVisibility(View.GONE);
 				loading_ll.setVisibility(View.GONE);
 				orderListLayout.setVisibility(View.VISIBLE);
 				
 			} else {
+				ll_cart.setVisibility(View.GONE);
 				wait_ll.setVisibility(View.VISIBLE);
 				retry_img.setVisibility(View.VISIBLE);
 				loading_ll.setVisibility(View.GONE);
@@ -180,6 +223,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 
 		} catch (JSONException e1) {
 			e1.printStackTrace();
+			ll_cart.setVisibility(View.GONE);
 			wait_ll.setVisibility(View.VISIBLE);
 			retry_img.setVisibility(View.VISIBLE);
 			loading_ll.setVisibility(View.GONE);

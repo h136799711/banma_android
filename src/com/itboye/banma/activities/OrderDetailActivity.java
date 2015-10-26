@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -31,6 +32,8 @@ import com.itboye.banma.view.MyListView;
 public class OrderDetailActivity extends Activity implements OnClickListener, StrUIDataListener {
 	private AppContext appContext;
 	private Boolean YesOrNo; // 是否连接网络
+	private ImageView back;
+	private TextView title;
 	private StrVolleyInterface strnetworkHelper;
 	private LinearLayout wait_ll;
 	private LinearLayout loading_ll;
@@ -47,7 +50,7 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	private TextView createtime_text;
 	private LinearLayout order_flex;
 	private ImageView img_flex;
-
+	
 	private int id;			//order的id
 	private OrderDetail orderDetail;
 	
@@ -73,6 +76,8 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 				}
 			}
 		});
+		back = (ImageView) findViewById(R.id.iv_back);
+		title = (TextView) findViewById(R.id.title);
 		order_flex = (LinearLayout) findViewById(R.id.order_flex);
 		img_flex = (ImageView) findViewById(R.id.img_flex);
 		adr_name = (TextView) findViewById(R.id.adr_name);
@@ -84,6 +89,8 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		order_code_text = (TextView) findViewById(R.id.order_code_text);
 		createtime_text = (TextView) findViewById(R.id.createtime_text);
 		order_flex.setOnClickListener(this);
+		back.setOnClickListener(this);
+		title.setText("订单详情");
 		//初始化
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
@@ -199,6 +206,11 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 				order_list.setVisibility(View.VISIBLE);
 				img_flex.setBackgroundResource(R.drawable.arrow_down);
 			}
+			break;
+		case R.id.iv_back:
+			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 			break;
 		default:
 			break;
