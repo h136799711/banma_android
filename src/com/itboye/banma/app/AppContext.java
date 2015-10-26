@@ -12,6 +12,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 /**
@@ -324,4 +325,44 @@ public class AppContext extends Application {
 			return false;
 		}	
 	}
+
+	/**
+	 * 分页获取用户所有订单信息
+	 * @return
+	 * @throws Exception 
+	 */
+	public boolean getAllOrder(Context mContext, int pageNo, int pageSize, 
+			StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getAllOrder(mContext, loginUid, pageNo, pageSize, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	
+	/**
+	 * 获取订单详情
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean getOrderDetail(Context mContext, int id, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getOrderDetail(mContext, id, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	
 }

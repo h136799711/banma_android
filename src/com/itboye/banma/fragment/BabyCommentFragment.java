@@ -74,18 +74,18 @@ public class BabyCommentFragment extends Fragment implements OnClickListener{
 	        mPager = (ViewPager) parentView.findViewById(R.id.vPager);
 	        fragmentsList = new ArrayList<Fragment>();
 
-	        daifa = new DaiFaFragment();
-	        daishou=new DaiShouFragment();
-	        daifu=new DaiFuFragment();
-	        quanbu=new QuanBuFragment();
-	        daiping=new DaiPingFragment();
+	        daifa = new OrderDaiFaFragment();
+	        daishou=new OrderDaiShouFragment();
+	        daifu=new OrderDaiFuFragment();
+	        quanbu=new OrderAllFragment();
+	        daiping=new OrderDaiPingFragment();
 
-	        fragmentsList.add(daifa);
+	        fragmentsList.add(quanbu);
 	        fragmentsList.add(daifu);
+	        fragmentsList.add(daifa);
 	        fragmentsList.add(daishou);
 	        fragmentsList.add(daiping);
-	        fragmentsList.add(quanbu);
-	        
+
 	        mPager.setAdapter(new MyFragmentPagerAdapter(getChildFragmentManager(), fragmentsList));
 	        mPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	        mPager.setCurrentItem(0);

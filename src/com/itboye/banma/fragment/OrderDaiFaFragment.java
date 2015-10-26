@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class DaiFuFragment extends Fragment {
+public class OrderDaiFaFragment extends Fragment{
 	private 	View view ;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		view= inflater.inflate(R.layout.fragment_daifu, null);
+		view= inflater.inflate(R.layout.fragment_daifa, null);
 		return view;
 	}
 

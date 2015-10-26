@@ -30,7 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.itboye.banma.adapter.OrderListAdapter;
+import com.itboye.banma.adapter.ConfirmOrderListAdapter;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
@@ -118,7 +118,7 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 		top_back.setOnClickListener(this);
 		order_flex.setOnClickListener(this);
 		confirm.setOnClickListener(this);
-		OrderListAdapter adapter = new OrderListAdapter(
+		ConfirmOrderListAdapter adapter = new ConfirmOrderListAdapter(
 				ConfirmOrdersActivity.this, list);
 		orderListView.setAdapter(adapter);
 		setListViewHeightBasedOnChildren(orderListView);

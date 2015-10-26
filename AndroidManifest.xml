@@ -59,7 +59,7 @@
            <activity  android:name="com.itboye.banma.util.CaptureActivity"></activity>
            <activity  android:name="com.itboye.banma.activities.ShengFenActivity"></activity>
            <activity android:name="com.itboye.banma.activities.OrderActivity"></activity>
-           
+           <activity android:name="com.itboye.banma.activities.OrderDetailActivity"/>
            <service  android:name="com.itboye.banma.service.TokenIntentService"></service>
     </application>
 

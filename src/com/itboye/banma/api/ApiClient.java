@@ -347,4 +347,23 @@ public class ApiClient {
 		params.put("from",""+from);
 		VolleyRequest.StrRequestPost(mContext, url, "ordersAdd",params, networkHelper);
 	}
+	public static void getAllOrder(Context mContext, int loginUid, int pageNo,
+			int pageSize, StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Orders/query?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid","100");
+		params.put("pageNo",""+pageNo);
+		params.put("pageSize",""+pageSize);
+		VolleyRequest.StrRequestPost(mContext, url, "getAllOrder",params, networkHelper);
+	}
+	
+	public static void getOrderDetail(Context mContext, int id,
+			StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Orders/detail?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("id",""+id);
+		VolleyRequest.StrRequestPost(mContext, url, "getOrderDetail",params, networkHelper);
+	}
 }
