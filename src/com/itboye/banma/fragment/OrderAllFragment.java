@@ -170,9 +170,9 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 			content = jsonObject.getString("data");
 			
 			if (code == 0) {
-				System.out.println(data);
-				Toast.makeText(getActivity(), "AllOrder成功", Toast.LENGTH_LONG)
-						.show();
+				//System.out.println(data);
+				/*Toast.makeText(getActivity(), "AllOrder成功", Toast.LENGTH_LONG)
+						.show();*/
 				if(content.length() < 5){
 					if(upOrdowm == 1){
 						listView.onLoadNone();

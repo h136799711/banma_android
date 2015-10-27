@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -539,5 +540,14 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
 																															//请求用户头像数据
 		}
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
+		}
+		return false;
 	}
 }

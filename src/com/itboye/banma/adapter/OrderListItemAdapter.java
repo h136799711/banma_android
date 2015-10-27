@@ -4,17 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.R.integer;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.BabyActivity;
+import com.itboye.banma.activities.OrderDetailActivity;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.OrderItem;
 import com.itboye.banma.entity.SkuStandard;
@@ -91,6 +97,19 @@ public class OrderListItemAdapter  extends BaseAdapter {
 		}else{
 			line.setVisibility(View.VISIBLE);
 		}
+		
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, BabyActivity.class);
+				intent.putExtra("PID", 1);
+				context.startActivity(intent);
+				((Activity) context).overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}
+		});
+		
 		return view;
 	}
 }

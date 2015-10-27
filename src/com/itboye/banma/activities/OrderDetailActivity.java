@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -148,8 +149,8 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		String content = null;
 		JSONObject jsonObject = null;
 		int code = -1;
-		Toast.makeText(OrderDetailActivity.this, "订单详情数据返回成功"+data, Toast.LENGTH_SHORT)
-		.show();
+		/*Toast.makeText(OrderDetailActivity.this, "订单详情数据返回成功"+data, Toast.LENGTH_SHORT)
+		.show();*/
 		try {
 			jsonObject = new JSONObject(data);
 			code = jsonObject.getInt("code");
@@ -217,4 +218,14 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		}
 		
 	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
+		}
+		return false;
+	}
+	
 }
