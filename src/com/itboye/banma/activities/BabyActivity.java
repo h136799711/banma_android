@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -71,7 +72,6 @@ public class BabyActivity extends FragmentActivity implements
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
 	private ProductDetail productDetail;
-	private MyListView detailListView;
 	private BabyDetailAdapter adapter;
 	private HackyViewPager viewPager;
 	private ArrayList<View> allListView;
@@ -105,6 +105,7 @@ public class BabyActivity extends FragmentActivity implements
 	private LinearLayout indicatorLayout;
 	private String[] imageList;
 	private ViewPager viewPagerPage;
+	private WebView detail_image;
 	private List<Sku_info> sku_info; // 商品类型参数
 	private int requestState = 0;// 判断哪个请求返回的结果 1表示加入购物车请求
 	private int pid;  //商品ID
@@ -516,6 +517,7 @@ public class BabyActivity extends FragmentActivity implements
 				code = jsonObject.getInt("code");
 				detail = jsonObject.getString("data");
 				System.out.println("data*****=" + detail);
+				System.out.println("data*****=" + data);
 				if (code == 0) {
 
 					productDetail = gson.fromJson(detail, ProductDetail.class);
@@ -556,10 +558,14 @@ public class BabyActivity extends FragmentActivity implements
 		customs_duties.setText("免关税");
 		sales_area.setText(productDetail.getLoc_province()
 				+ productDetail.getLoc_city());
-		popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
+		/*popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
 				productDetail.getSkuInfo(), productDetail.getMain_img(),
 				productDetail.getPrice(), productDetail.getOri_price(),
-				productDetail.getQuantity(), productDetail.getSkuList());
+				productDetail.getQuantity(), productDetail.getSkuList());*/
+		popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
+				null, productDetail.getMain_img(),
+				productDetail.getPrice(), productDetail.getOri_price(),
+				productDetail.getQuantity(), null);
 		popWindow.setOnItemClickListener(this);
 		sharePopWindow = new SharePopWindow(this);
 		
@@ -572,12 +578,16 @@ public class BabyActivity extends FragmentActivity implements
 	}
 
 	private void initDetailPager() {
-		detailListView = (MyListView) findViewById(R.id.detail_image_list);
+		detail_image = (WebView) findViewById(R.id.detail_image);
 		if(productDetail.getDetail() != null){
-			adapter = new BabyDetailAdapter(BabyActivity.this, productDetail.getDetail());
-			detailListView.setAdapter(adapter);
+			/*adapter = new BabyDetailAdapter(BabyActivity.this, productDetail.getDetail());
+			detail_image.setAdapter(adapter);*/
+			String htmlString = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>" +
+					productDetail.getDetail();
+			System.out.println(productDetail.getDetail());
+			detail_image.loadDataWithBaseURL("about:blank", htmlString, "text/html", "utf-8", null);
 		}else{
-			detailListView.setVisibility(View.GONE);
+			detail_image.setVisibility(View.GONE);
 			no_detail = (ImageView) findViewById(R.id.con_image);
 			no_detail.setVisibility(View.VISIBLE);
 		}

@@ -34,12 +34,11 @@ public class ProductDetail {
 	private String storeid;				//店铺ID
 	private String properties;			//商品属性
 	private String img;					//商品图片
-	private String[] detail;					//商品详情
-	private List<SkuStandard> skuList;
+	private String detail;					//商品详情
+	//private List<SkuStandard> skuList;
 	
 	private String icon_url;				//多规格颜色对应的图片
-	private Map<String, SkuInfo> skuInfo;   //商品型号
-	//private List<Sku_info> sku_info = new ArrayList<ProductDetail.Sku_info>();			//
+	//private Map<String, SkuInfo> skuInfo;   //商品型号
 	String sku_info;
 	
 	public int getId() {
@@ -216,10 +215,10 @@ public class ProductDetail {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public String[] getDetail() {
+	public String getDetail() {
 		return detail;
 	}
-	public void setDetail(String[] detail) {
+	public void setDetail(String detail) {
 		this.detail = detail;
 	}
 	public Double getWeight() {
@@ -235,12 +234,12 @@ public class ProductDetail {
 		this.icon_url = icon_url;
 	}
 	
-	public Map<String, SkuInfo> getSkuInfo() {
+	/*public Map<String, SkuInfo> getSkuInfo() {
 		return skuInfo;
 	}
 	public void setSkuInfo(Map<String, SkuInfo> skuInfo) {
 		this.skuInfo = skuInfo;
-	}
+	}*/
 	
 	public String getSku_info() {
 		return sku_info;
@@ -249,19 +248,19 @@ public class ProductDetail {
 		this.sku_info = sku_info;
 	}
 
-	public List<SkuStandard> getSkuList() {
+	/*public List<SkuStandard> getSkuList() {
 		return skuList;
 	}
 	public void setSkuList(List<SkuStandard> skuList) {
 		this.skuList = skuList;
-	}
+	}*/
 	/*public List<Sku_info> getSku_info() {
 		return sku_info;
 	}
 	public void setSku_info(List<Sku_info> sku_info) {
 		this.sku_info = sku_info;
 	}*/
-	@Override
+	/*@Override
 	public String toString() {
 		return "ProductDetail [id=" + id + ", product_code=" + product_code
 				+ ", uid=" + uid + ", name=" + name + ", main_img=" + main_img
@@ -279,9 +278,9 @@ public class ProductDetail {
 				+ ", updatetime=" + updatetime + ", onshelf=" + onshelf
 				+ ", status=" + status + ", storeid=" + storeid
 				+ ", properties=" + properties + ", img=" + img + ", detail="
-				+ detail + ", weight=" + weight + ", icon_url=" + icon_url
+				+ "detail" + ", weight=" + weight + ", icon_url=" + icon_url
 				+ "]";
-	}
+	}*/
 	
 	final public class Sku_info{
 		String id;

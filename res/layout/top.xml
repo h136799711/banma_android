@@ -9,6 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
         android:background="@color/nocolor"
         android:orientation="horizontal" >
 

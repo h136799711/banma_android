@@ -128,7 +128,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			mViewPager = (ViewPager) chatView.findViewById(R.id.id_viewpager);
 			// 添加动画效果
 			// mViewPager.setPageTransformer(true, arg1);
-			mViewPager.setPageTransformer(true, new RotateDownTransformer());
+			//mViewPager.setPageTransformer(true, new RotateDownTransformer());
 			mViewPager.setAdapter(adapter);
 			/*mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
