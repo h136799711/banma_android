@@ -4,15 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    <FrameLayout
+        android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       >
     
-    <include layout="@layout/top" />
-
-    <View 
-        android:layout_width="match_parent"
-        android:layout_height="10dip"
-        />
-    
-    <com.itboye.banma.view.FancyCoverFlow
+    <!-- <com.itboye.banma.view.FancyCoverFlow
         android:id="@+id/fancyCoverFlow"
         android:layout_width="match_parent"
         android:layout_height="80dip"
@@ -22,13 +19,29 @@
         fcf:unselectedSaturation="0.0"
         fcf:unselectedScale="0.9"
         fcf:scaleDownGravity="0.5"
-        />
+        /> -->
     
     <android.support.v4.view.ViewPager
         android:id="@+id/id_viewpager"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">"
+        
+   		<include layout="@layout/top" />
+   		
+   		<View 
+   		    android:layout_width="match_parent"
+   		    android:layout_height="0.5dip"
+   		    android:layout_marginLeft="50dip"
+   		    android:layout_marginRight="50dip"
+   		    android:background="@color/black"/>
+   		 
+   	</LinearLayout>
+    
+</FrameLayout>
   
 </LinearLayout>

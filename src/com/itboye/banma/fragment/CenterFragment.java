@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -40,7 +41,7 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 	ImageView ivPersonheadFail;//未登录头头像
 	ImageView ivPersonhead;//登陆的头像
 	TextView tvCheckList;//选择按钮
-	ImageView ivBack;//返回按钮
+	//ImageView ivBack;//返回按钮
 	TextView tvPersonnamefail;//未登录提示
 	private TextView tvYongJin;//我的返佣
 	private ImageView ivShare;//扫描二维码
@@ -77,7 +78,7 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
        // SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
       // String userId= sp.getString("MY_USERID", "");
 		String userId=appContext.getLoginUid()+"";
-		ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
+		//ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
 		ivPersonheadFail=(ImageView)chatView.findViewById(R.id.iv_personheadfail);
 		tvPersonnamefail=(TextView)chatView.findViewById(R.id.tv_personnamefail);
 		sp = getActivity().getSharedPreferences(Constant.MY_PREFERENCES, getActivity().MODE_PRIVATE);
@@ -91,7 +92,7 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 		tvYongJin=(TextView)chatView.findViewById(R.id.tv_yongjin);
 		ivShare=(ImageView)chatView.findViewById(R.id.iv_share);
 	   rlMoney=(RelativeLayout)chatView.findViewById(R.id.rl_money);
-		ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
+		//ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
 		tvCheckList=(TextView)chatView.findViewById(R.id.tv_check_list);
 		order_goods = (RelativeLayout) chatView.findViewById(R.id.order_goods);
 		mailing_address = (RelativeLayout) chatView.findViewById(R.id.address);
@@ -100,7 +101,7 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 		order_goods.setOnClickListener(this);
 		mailing_address.setOnClickListener(this);
 		ivPersonheadFail.setOnClickListener(this);
-		ivBack.setOnClickListener(this);
+		//ivBack.setOnClickListener(this);
 		morePersonal.setOnClickListener(this);
 		ivShare.setOnClickListener(this);
 		tvYongJin.setOnClickListener(this);
@@ -147,11 +148,11 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 			}
 			break;
 			
-		case R.id.iv_back:
+		/*case R.id.iv_back:
 			getActivity().finish();
 			getActivity().overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
-			break;
+			break;*/
 		case R.id.rl_more:
 				startActivity(new Intent(getActivity(),MorePersonal.class));
 				getActivity().overridePendingTransition(R.anim.in_from_right,

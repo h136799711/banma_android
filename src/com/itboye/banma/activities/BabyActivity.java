@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,7 @@ import com.itboye.banma.view.BabyPopWindow;
 import com.itboye.banma.view.MyListView;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
+import com.itboye.banma.view.SharePopWindow;
 
 public class BabyActivity extends FragmentActivity implements
 		OnItemClickListener, OnClickListener, StrUIDataListener {
@@ -77,7 +79,9 @@ public class BabyActivity extends FragmentActivity implements
 	private ImageView iv_baby_collection;
 	private ImageView no_detail;
 	private BabyPopWindow popWindow;
+	private SharePopWindow sharePopWindow;
 	private TextView title;
+	private View top_line;
 	private TextView baby_name;
 	private TextView ori_price;
 	private TextView price;
@@ -87,6 +91,7 @@ public class BabyActivity extends FragmentActivity implements
 	private NetworkImageView pic_image;
 	private Button put_in;
 	private Button buy_now;
+	private ImageView share;
 	private LinearLayout wait_ll;
 	private LinearLayout loading_ll;
 	private ImageView retry_img;
@@ -186,7 +191,10 @@ public class BabyActivity extends FragmentActivity implements
 		put_in.setOnClickListener(this);
 		buy_now = (Button) findViewById(R.id.buy_now);
 		buy_now.setOnClickListener(this);
+		share = (ImageView) findViewById(R.id.share);
+		share.setOnClickListener(this);
 		title = (TextView) findViewById(R.id.title);
+		top_line = findViewById(R.id.top_line);
 		baby_name = (TextView) findViewById(R.id.baby_name);
 		ori_price = (TextView) findViewById(R.id.ori_price);
 		price = (TextView) findViewById(R.id.price);
@@ -200,7 +208,8 @@ public class BabyActivity extends FragmentActivity implements
 		 * listView.setFocusable(false); listView.setSelector(new
 		 * ColorDrawable(Color.TRANSPARENT));
 		 */
-		title.setText("商品详情");
+		top_line.setVisibility(View.GONE);
+		title.setVisibility(View.GONE);
 		/*
 		 * listView.setAdapter(new Adapter_ListView_detail(this));
 		 * listView.setOnItemClickListener(new
@@ -254,6 +263,11 @@ public class BabyActivity extends FragmentActivity implements
 			setBackgroundBlack(all_choice_layout, 0);
 			popWindow.showAsDropDown(view);
 			break;
+		//点击分享
+		case R.id.share:
+			sharePopWindow.showAsDropDown(view, all_choice_layout);
+			setBackgroundBlack(all_choice_layout, 0);
+			break;
 		}
 	}
 
@@ -276,7 +290,11 @@ public class BabyActivity extends FragmentActivity implements
 			pic_image = (NetworkImageView) view.findViewById(R.id.pic_item);
 			// pic_image.setDefaultImageResId(R.drawable.base_map); //加载中显示的图片
 			pic_image.setErrorImageResId(R.drawable.image_load_fail); // 加载失败显示的图片
-			pic_image.setImageUrl(imageList[i], imageLoader);
+			String url_image = imageList[i];
+			if(url_image.equals("false")){
+				url_image = "";
+			}
+			pic_image.setImageUrl(url_image, imageLoader);
 
 			/*
 			 * ImageListener listener = ImageLoader.getImageListener(pic_image,
@@ -306,6 +324,9 @@ public class BabyActivity extends FragmentActivity implements
 
 		viewPager = (HackyViewPager) findViewById(R.id.iv_baby);
 		viewPager.setOffscreenPageLimit(3);
+		if(allListView == null){
+			allListView = new ArrayList<View>();
+		}
 		ViewPagerAdapter adapter = new ViewPagerAdapter();
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
@@ -540,6 +561,8 @@ public class BabyActivity extends FragmentActivity implements
 				productDetail.getPrice(), productDetail.getOri_price(),
 				productDetail.getQuantity(), productDetail.getSkuList());
 		popWindow.setOnItemClickListener(this);
+		sharePopWindow = new SharePopWindow(this);
+		
 		initDetailPager();
 		wait_ll.setVisibility(View.GONE);
 		retry_img.setVisibility(View.GONE);
@@ -580,5 +603,6 @@ public class BabyActivity extends FragmentActivity implements
 	public void onClickDissmissPop() {
 		setBackgroundBlack(all_choice_layout, 1);
 	}
+	
 
 }

@@ -1,209 +1,223 @@
-<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundgray"
     android:orientation="vertical" >
 
-    <include
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/top"  >
-        </include>  
-
-    <RelativeLayout
-        android:id="@+id/Rel_loginfail"
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="115dp"
-        android:background="@color/titlebar"
-        android:visibility="visible" >
+        android:layout_height="wrap_content" >
 
         <RelativeLayout
+            android:id="@+id/Rel_loginfail"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="205dp"
+            android:background="@drawable/center_background"
+            android:visibility="visible" >
 
-            <TextView
-                android:id="@+id/tv_personnamefail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_personheadfail"
-                android:layout_centerHorizontal="true"
-                android:text="登录/注册"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="50dp" >
 
-            <ImageView
-                android:id="@+id/iv_personheadfail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="34dp"
-                android:src="@drawable/person_head" />
+                <TextView
+                    android:id="@+id/tv_personnamefail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_personheadfail"
+                    android:layout_centerHorizontal="true"
+                    android:text="登录/注册"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
 
+                <ImageView
+                    android:id="@+id/iv_personheadfail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="34dp"
+                    android:src="@drawable/person_head" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/lucency_color" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/iv_share"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="-4dp"
+                    android:gravity="center"
+                    android:text="我的名片"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12" />
+
+                <ImageView
+                    android:id="@+id/iv_share"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_above="@+id/textView1"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="45dp"
+                    android:src="@drawable/erweima" />
+
+                <TextView
+                    android:id="@+id/tv_qianbao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tv_yongjin"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="-4dp"
+                    android:gravity="center"
+                    android:text="我的钱包"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12" />
+
+                <TextView
+                    android:id="@+id/tv_yongjin"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_above="@+id/tv_qianbao"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="50dp"
+                    android:gravity="center"
+                    android:text="0.0元"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14" />
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:background="@color/mingpianbackground" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/iv_share"
-            android:layout_marginLeft="-4dp"
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:text="我的名片"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_12" />
-
-        <ImageView
-            android:id="@+id/iv_share"
-            android:layout_width="40dp"
+        <TextView 
+             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_above="@+id/textView1"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="45dp"
-            android:src="@drawable/erweima" />
-
-        <TextView
-            android:id="@+id/tv_qianbao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_yongjin"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="-4dp"
             android:gravity="center"
-            android:text="我的钱包"
+            android:text="个人中心"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_12" />
+            android:textSize="@dimen/text_size_18" />
+        
+    </FrameLayout>
 
-        <TextView
-            android:id="@+id/tv_yongjin"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_above="@+id/tv_qianbao"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="50dp"
-            android:gravity="center"
-            android:text="0.0元"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_14" />
-    </RelativeLayout>
-    
-<com.itboye.banma.view.BounceScrollView
+    <com.itboye.banma.view.BounceScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fillViewport="false"
         android:focusable="false"
-        android:focusableInTouchMode="true">  -->
-  <LinearLayout style="@style/PersonalMainLayoutStyle">
-        <RelativeLayout
-            android:id="@+id/order_goods"
-            style="@style/PersonalTopStyle"
-            android:layout_height="@dimen/center_item_height"  >
-            <ImageView
-                android:id="@+id/personal_icon_01"
-                style="@style/PersonalIconStyle"
-                android:layout_width="36dp"
-                android:layout_height="38dp"
-                android:src="@drawable/toalorder" />
+        android:focusableInTouchMode="true" >
 
-            <TextView
-                style="@style/PersonalTextStyle"
-                android:layout_toRightOf="@id/personal_icon_01"
-                android:text="全部订单" />
+        <LinearLayout style="@style/PersonalMainLayoutStyle" >
 
-            <ImageView
-                style="@style/PersonalRightIconStyle"
-                android:src="@drawable/android_list_idex" />
+            <RelativeLayout
+                android:id="@+id/order_goods"
+                style="@style/PersonalTopStyle"
+                android:layout_height="@dimen/center_item_height" >
 
-            <TextView
-                style="@style/PersonalRightTextStyle"
-                android:id="@+id/tv_check_list"
-                android:text="查看全部订单" />
-        </RelativeLayout>
-         <View style="@style/PersonalLine" />
+                <ImageView
+                    android:id="@+id/personal_icon_01"
+                    style="@style/PersonalIconStyle"
+                    android:layout_width="36dp"
+                    android:layout_height="38dp"
+                    android:src="@drawable/toalorder" />
 
-        <RelativeLayout
-            android:id="@+id/rl_money"
-            style="@style/PersonalTopStyle"
-               android:layout_height="@dimen/center_item_height"  >
+                <TextView
+                    style="@style/PersonalTextStyle"
+                    android:layout_toRightOf="@id/personal_icon_01"
+                    android:text="全部订单" />
 
-            <ImageView
-                android:id="@+id/personal_icon_03"
-                style="@style/PersonalIconStyle"
-                android:src="@drawable/person_head" />
+                <ImageView
+                    style="@style/PersonalRightIconStyle"
+                    android:src="@drawable/android_list_idex" />
 
-            <TextView
-                style="@style/PersonalTextStyle"
-                android:layout_toRightOf="@id/personal_icon_03"
-                android:text="我的返佣" />
+                <TextView
+                    android:id="@+id/tv_check_list"
+                    style="@style/PersonalRightTextStyle"
+                    android:text="查看全部订单" />
+            </RelativeLayout>
 
-            <ImageView
-                style="@style/PersonalRightIconStyle"
-                android:src="@drawable/android_list_idex" />
+            <View style="@style/PersonalLine" />
 
-            <TextView
-                style="@style/PersonalRightTextStyle"
-                android:text="查看我的返佣金额" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_money"
+                style="@style/PersonalTopStyle"
+                android:layout_height="@dimen/center_item_height" >
 
-        <View style="@style/PersonalLine" />
+                <ImageView
+                    android:id="@+id/personal_icon_03"
+                    style="@style/PersonalIconStyle"
+                    android:src="@drawable/person_head" />
 
-        <RelativeLayout
-            android:id="@+id/address"
-            style="@style/PersonalTopStyle"
-          android:layout_height="@dimen/center_item_height"  >
+                <TextView
+                    style="@style/PersonalTextStyle"
+                    android:layout_toRightOf="@id/personal_icon_03"
+                    android:text="我的返佣" />
 
-            <ImageView
-                android:id="@+id/personal_icon_02"
-                style="@style/PersonalIconStyle"
-                android:src="@drawable/addres" />
+                <ImageView
+                    style="@style/PersonalRightIconStyle"
+                    android:src="@drawable/android_list_idex" />
 
-            <TextView
-                style="@style/PersonalTextStyle"
-                android:layout_toRightOf="@id/personal_icon_02"
-                android:text="收获地址管理" />
+                <TextView
+                    style="@style/PersonalRightTextStyle"
+                    android:text="查看我的返佣金额" />
+            </RelativeLayout>
 
-            <ImageView
-                style="@style/PersonalRightIconStyle"
-                android:src="@drawable/android_list_idex" />
+            <View style="@style/PersonalLine" />
 
-            <TextView
-                style="@style/PersonalRightTextStyle"
-                android:text="管理收获地址" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/address"
+                style="@style/PersonalTopStyle"
+                android:layout_height="@dimen/center_item_height" >
 
-        <View style="@style/PersonalLine" />
+                <ImageView
+                    android:id="@+id/personal_icon_02"
+                    style="@style/PersonalIconStyle"
+                    android:src="@drawable/addres" />
 
-       <RelativeLayout
-            android:id="@+id/rl_more"
-            style="@style/PersonalTopStyle"
-              android:layout_height="@dimen/center_item_height" >
+                <TextView
+                    style="@style/PersonalTextStyle"
+                    android:layout_toRightOf="@id/personal_icon_02"
+                    android:text="收获地址管理" />
 
-            <ImageView
-                android:id="@+id/personal_icon_04"
-                style="@style/PersonalIconStyle"
-                android:src="@drawable/setting" />
+                <ImageView
+                    style="@style/PersonalRightIconStyle"
+                    android:src="@drawable/android_list_idex" />
 
-            <TextView
-                style="@style/PersonalTextStyle"
-                android:layout_toRightOf="@id/personal_icon_04"
-                android:text="更多设置" />
-            <ImageView
-                style="@style/PersonalRightIconStyle"
-                android:src="@drawable/android_list_idex" />
+                <TextView
+                    style="@style/PersonalRightTextStyle"
+                    android:text="管理收获地址" />
+            </RelativeLayout>
 
-            <TextView
-                style="@style/PersonalRightTextStyle"
-                android:text="更多设置" />
-        </RelativeLayout>     
-            
-    </LinearLayout> 
-  </com.itboye.banma.view.BounceScrollView>
+            <View style="@style/PersonalLine" />
+
+            <RelativeLayout
+                android:id="@+id/rl_more"
+                style="@style/PersonalTopStyle"
+                android:layout_height="@dimen/center_item_height" >
+
+                <ImageView
+                    android:id="@+id/personal_icon_04"
+                    style="@style/PersonalIconStyle"
+                    android:src="@drawable/setting" />
+
+                <TextView
+                    style="@style/PersonalTextStyle"
+                    android:layout_toRightOf="@id/personal_icon_04"
+                    android:text="更多设置" />
+
+                <ImageView
+                    style="@style/PersonalRightIconStyle"
+                    android:src="@drawable/android_list_idex" />
+
+                <TextView
+                    style="@style/PersonalRightTextStyle"
+                    android:text="更多设置" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.itboye.banma.view.BounceScrollView>
+
 </LinearLayout>

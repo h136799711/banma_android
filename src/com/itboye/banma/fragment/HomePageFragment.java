@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -42,8 +43,10 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	private View chatView;
 	private ViewPager mViewPager;
 	private List<View> mImages = new ArrayList<View>();
+	private LinearLayout all_top;
 	private ImageView back;
 	private TextView title;
+	private View top_line;
 	private ImageView more;
 	private MyPageAdapter adapter;
 	private AppContext appContext;
@@ -73,11 +76,14 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	}
 
 	private void initView() {
+		all_top = (LinearLayout) chatView.findViewById(R.id.all_top);
+		top_line = chatView.findViewById(R.id.top_line);
 		back = (ImageView) chatView.findViewById(R.id.iv_back);
 		title = (TextView) chatView.findViewById(R.id.title);
 		more = (ImageView) chatView.findViewById(R.id.more);
 		back.setVisibility(View.GONE);
-		more.setVisibility(View.GONE);
+		more.setVisibility(View.VISIBLE);
+		top_line.setVisibility(View.GONE);
 		title.setText("商品");
 		initData();
 	}
@@ -91,7 +97,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			mImages.add(convertView);
 
 		}
-		if (flowSampleAdapter == null) {
+		/*if (flowSampleAdapter == null) {
 			fancyCoverFlow = (FancyCoverFlow) chatView
 					.findViewById(R.id.fancyCoverFlow);
 			flowSampleAdapter = new FancyCoverFlowSampleAdapter(getActivity(), productlist);
@@ -115,7 +121,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 						}
 
 					});
-		}
+		}*/
 
 		if (adapter == null) {
 			adapter = new MyPageAdapter(getActivity(), mImages, productlist);
@@ -124,7 +130,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			// mViewPager.setPageTransformer(true, arg1);
 			mViewPager.setPageTransformer(true, new RotateDownTransformer());
 			mViewPager.setAdapter(adapter);
-			mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			/*mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 				@Override
 				public void onPageSelected(int position) {
@@ -144,7 +150,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 				}
 
-			});
+			});*/
 		}
 
 	}

@@ -7,8 +7,10 @@
 	<color name="tab_text_sel">#ffd81e06</color>
     <color name="tab_text">#ff999999</color>
     <color name="bg_color">#808080</color>
+    <color name="lucency_color">#55ffffff</color>
 
     <color name="nocolor">#00ffffff</color>
+    <color name="balck">#000000</color>
     
 	<!-- actionbar 位置颜色 -->
 	<color name="main_layout">#EFEFF4</color>
