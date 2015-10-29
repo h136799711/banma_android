@@ -22,6 +22,7 @@ import com.itboye.banma.entity.MailingAdress;
 import com.itboye.banma.entity.ProductItem;
 import com.itboye.banma.view.FancyCoverFlow;
 
+import android.R.integer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -54,7 +56,12 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	private List<ProductItem> productlist;
 	private FancyCoverFlowSampleAdapter flowSampleAdapter;
 	private FancyCoverFlow fancyCoverFlow;
+	private LinearLayout wait_ll;
+	private LinearLayout loading_ll;
+	private ImageView retry_img;
+	private FrameLayout frame_layout;
 	Boolean YesOrNo;
+	int state;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		networkHelper = new StrVolleyInterface(getActivity());
 		networkHelper.setStrUIDataListener(this);
 		appContext = (AppContext) getActivity().getApplication();
+		state = 0;
 	}
 
 	@Override
@@ -76,6 +84,25 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	}
 
 	private void initView() {
+		// 旋转等待页
+				wait_ll = (LinearLayout) chatView.findViewById(R.id.wait_ll);
+				retry_img = (ImageView) chatView.findViewById(R.id.retry_img);
+				loading_ll = (LinearLayout) chatView.findViewById(R.id.loading_ll);
+				frame_layout = (FrameLayout) chatView.findViewById(R.id.frame_layout);
+				wait_ll.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (retry_img.getVisibility() == View.VISIBLE) {
+							wait_ll.setVisibility(View.VISIBLE);
+							retry_img.setVisibility(View.GONE);
+							loading_ll.setVisibility(View.VISIBLE);
+							frame_layout.setVisibility(View.GONE);
+						
+							initData();
+
+						}
+					}
+				});
 		all_top = (LinearLayout) chatView.findViewById(R.id.all_top);
 		top_line = chatView.findViewById(R.id.top_line);
 		back = (ImageView) chatView.findViewById(R.id.iv_back);
@@ -85,6 +112,12 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		more.setVisibility(View.VISIBLE);
 		top_line.setVisibility(View.GONE);
 		title.setText("商品");
+		
+		wait_ll.setVisibility(View.VISIBLE);
+		retry_img.setVisibility(View.GONE);
+		loading_ll.setVisibility(View.VISIBLE);
+		frame_layout.setVisibility(View.GONE);
+		
 		initData();
 	}
 
@@ -181,13 +214,17 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-
+		wait_ll.setVisibility(View.VISIBLE);
+		retry_img.setVisibility(View.VISIBLE);
+		loading_ll.setVisibility(View.GONE);
+		frame_layout.setVisibility(View.GONE);
 	}
 
 	@Override
 	public void onDataChanged(String data) {
 		/*Toast.makeText(getActivity(), "shuju" + data, Toast.LENGTH_SHORT)
 				.show();*/
+		state += 1;
 		Gson gson = new Gson();
 		productlist = new ArrayList<ProductItem>();
 		JSONObject jsondata;
@@ -196,12 +233,11 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 			int code = jsondata.getInt("code");
 			if (code == 0) {
-				/*
-				 * wait_ll.setVisibility(View.GONE);
-				 * retry_img.setVisibility(View.GONE);
-				 * loading_ll.setVisibility(View.GONE);
-				 * list_Layout.setVisibility(View.VISIBLE);
-				 */
+				wait_ll.setVisibility(View.GONE);
+				retry_img.setVisibility(View.GONE);
+				loading_ll.setVisibility(View.GONE);
+				frame_layout.setVisibility(View.VISIBLE);
+				
 				String producData = jsondata.getString("data");
 				jsondata = new JSONObject(producData);
 				String producList = jsondata.getString("list");
@@ -213,14 +249,16 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 				}
 
 			} else {
-				/*Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();*/
+				if(state<=1){
 				initData();
-				/*
-				 * wait_ll.setVisibility(View.VISIBLE);
-				 * retry_img.setVisibility(View.VISIBLE);
-				 * loading_ll.setVisibility(View.GONE);
-				 * list_Layout.setVisibility(View.GONE);
-				 */
+				}
+				else{
+					Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();
+					wait_ll.setVisibility(View.VISIBLE);
+					retry_img.setVisibility(View.VISIBLE);
+					loading_ll.setVisibility(View.GONE);
+					frame_layout.setVisibility(View.GONE);
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

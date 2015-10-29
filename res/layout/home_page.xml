@@ -4,12 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <FrameLayout
+
+    <LinearLayout
+        android:id="@+id/wait_ll"
         android:layout_width="fill_parent"
-       android:layout_height="fill_parent"
-       >
-    
-    <!-- <com.itboye.banma.view.FancyCoverFlow
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/retry_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/base_empty_view" />
+
+        <LinearLayout
+            android:id="@+id/loading_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <ProgressBar
+                style="@style/loading_large"
+                android:layout_gravity="center" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:src="@drawable/base_bg" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone" >
+
+        <!--
+         <com.itboye.banma.view.FancyCoverFlow
         android:id="@+id/fancyCoverFlow"
         android:layout_width="match_parent"
         android:layout_height="80dip"
@@ -19,29 +56,30 @@
         fcf:unselectedSaturation="0.0"
         fcf:unselectedScale="0.9"
         fcf:scaleDownGravity="0.5"
-        /> -->
-    
-    <android.support.v4.view.ViewPager
-        android:id="@+id/id_viewpager"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">"
-        
-   		<include layout="@layout/top" />
-   		
-   		<View 
-   		    android:layout_width="match_parent"
-   		    android:layout_height="0.5dip"
-   		    android:layout_marginLeft="50dip"
-   		    android:layout_marginRight="50dip"
-   		    android:background="@color/black"/>
-   		 
-   	</LinearLayout>
-    
-</FrameLayout>
-  
+        />
+        -->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/id_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+"
+
+            <include layout="@layout/top" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="50dip"
+                android:layout_marginRight="50dip"
+                android:background="@color/black" />
+        </LinearLayout>
+    </FrameLayout>
+
 </LinearLayout>
