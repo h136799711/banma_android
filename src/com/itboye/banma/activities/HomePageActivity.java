@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itboye.banma.R;
-import com.itboye.banma.fragment.BabyCommentFragment;
+import com.itboye.banma.fragment.BabyOrderFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.fragment.CenterFragment;
 import com.itboye.banma.fragment.HomePageFragment;
@@ -25,7 +25,7 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 	private List<Fragment> mTabs = new ArrayList<Fragment>();
 	private FragmentPagerAdapter mAdapter;
 	private HomePageFragment homePageFragment;
-	private BabyCommentFragment babyCommentFragment;
+	private BabyOrderFragment babyCommentFragment;
 	private CenterFragment centerFragment;
 	private List<LinearLayout> mTabIndicator = new ArrayList<LinearLayout>();
 	private List<ImageView> imageViewlist = new ArrayList<ImageView>();
@@ -47,7 +47,7 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 	private void initView() {
 		
 		homePageFragment = new HomePageFragment();
-		babyCommentFragment = new BabyCommentFragment();
+		babyCommentFragment = new BabyOrderFragment();
 		centerFragment = new CenterFragment();
 		mTabs.add(homePageFragment);
 		mTabs.add(babyCommentFragment);

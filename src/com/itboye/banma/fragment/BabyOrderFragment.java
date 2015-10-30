@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.itboye.banma.R;
 import com.itboye.banma.adapter.MyFragmentPagerAdapter;
 
-public class BabyCommentFragment extends Fragment implements OnClickListener{
+public class BabyOrderFragment extends Fragment implements OnClickListener{
 	private View view;
 	public static int AnimationTimeSeconds=100;	
    private Resources resources;
@@ -28,7 +28,6 @@ public class BabyCommentFragment extends Fragment implements OnClickListener{
     private ArrayList<Fragment> fragmentsList;
     private ImageView ivBottomLine;
     private TextView tv_quanbu, tv_daishou,tv_daifa,tv_daifu,tv_daiping;
-    private TextView tv_title;
 
     private int currIndex = 0;
     private int bottomLineWidth;
@@ -42,7 +41,7 @@ public class BabyCommentFragment extends Fragment implements OnClickListener{
 //	DaiFuFragment daifu;
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.fragment_baby_comment, container,false);
+        view = inflater.inflate(R.layout.fragment_baby_order, container,false);
         resources = getResources();
         InitTextView(view);
         InitWidth(view);
@@ -55,8 +54,6 @@ public class BabyCommentFragment extends Fragment implements OnClickListener{
         return view;    
     }
 	private void InitTextView(View parentView) {
-		  tv_title=(TextView)parentView.findViewById(R.id.title);
-		  tv_title.setText("我的订单");
 		  tv_quanbu = (TextView) parentView.findViewById(R.id.tv_quanbu);
 		  tv_daifu = (TextView) parentView.findViewById(R.id.tv_daifu);
 		  tv_daifa = (TextView) parentView.findViewById(R.id.tv_daifa);
@@ -89,7 +86,7 @@ public class BabyCommentFragment extends Fragment implements OnClickListener{
 	        mPager.setAdapter(new MyFragmentPagerAdapter(getChildFragmentManager(), fragmentsList));
 	        mPager.setOnPageChangeListener(new MyOnPageChangeListener());
 	        //mPager.setCurrentItem(0);
-	        mPager.setOffscreenPageLimit(5);
+	        mPager.setOffscreenPageLimit(0);
 	        
 	    }
 

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
         
-        <include  layout="@layout/top"/>
 
         <LinearLayout
             android:id="@+id/linearLayout1"

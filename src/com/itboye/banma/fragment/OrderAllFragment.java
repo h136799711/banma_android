@@ -56,38 +56,67 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		appContext = (AppContext) getActivity().getApplication();
 		networkHelper = new StrVolleyInterface(getActivity());
 		networkHelper.setStrUIDataListener(OrderAllFragment.this);
-		pageNo = 0;
-		pageSize = Constant.PAGE_SIZE;
-		load_data();
+		
 	}
 
 	/**
 	 * 加载数据
 	 */
 	public void load_data() {
+		
 		try {
 			YesOrNo = appContext.getAllOrder(getActivity(), pageNo, pageSize,
 					networkHelper);
+			if(!YesOrNo){
+				ll_cart.setVisibility(View.GONE);
+				wait_ll.setVisibility(View.VISIBLE);
+				retry_img.setVisibility(View.VISIBLE);
+				loading_ll.setVisibility(View.GONE);
+				orderListLayout.setVisibility(View.GONE);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	private void showListView(List<OrderDetailListItem> orderList) {
-		if (adapter == null) {
-			adapter = new OrderListAdapter(getActivity(), orderList);
-			listView.setAdapter(adapter);
-		} else {
-			adapter.onDateChang(orderList);
+		
+		if(orderList != null && orderList.size() >0){
+
+			if (adapter == null) {
+				adapter = new OrderListAdapter(getActivity(), orderList);
+				listView.setAdapter(adapter);
+			} else {
+				adapter.onDateChang(orderList);
+			}
+			if(upOrdowm == 0){
+				listView.onRefreshComplete();
+				listView.setSelection(0);
+			}
+			ll_cart.setVisibility(View.GONE);
+			wait_ll.setVisibility(View.GONE);
+			retry_img.setVisibility(View.GONE);
+			loading_ll.setVisibility(View.GONE);
+			orderListLayout.setVisibility(View.VISIBLE);
+		}else{
+			ll_cart.setVisibility(View.VISIBLE);
+			wait_ll.setVisibility(View.GONE);
+			retry_img.setVisibility(View.GONE);
+			loading_ll.setVisibility(View.GONE);
+			orderListLayout.setVisibility(View.GONE);
 		}
-		if(upOrdowm == 0){
-			listView.onRefreshComplete();
-			listView.setSelection(0);
-		}
+		
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		pageNo = 0;
+		pageSize = Constant.PAGE_SIZE;
+		adapter = null;
+		if(orderList != null){
+			orderList.clear();
+		}
 		super.onCreateView(inflater, container, savedInstanceState);
 		chatView = inflater.inflate(R.layout.fragment_quanbu, container, false);
 		listView = (PullToRefreshListView) chatView.findViewById(R.id.fresh_list);
@@ -111,7 +140,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 					retry_img.setVisibility(View.GONE);
 					loading_ll.setVisibility(View.VISIBLE);
 					orderListLayout.setVisibility(View.GONE);
-					pageNo = 1;
+					pageNo = 0;
 					orderList.clear();
 					load_data();
 				}
@@ -122,6 +151,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		retry_img.setVisibility(View.GONE);
 		loading_ll.setVisibility(View.VISIBLE);
 		orderListLayout.setVisibility(View.GONE);
+		load_data();
 		return chatView;
 	}
 
@@ -144,7 +174,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(getActivity(), "AllOrder返回错误信息：" + error,
+		Toast.makeText(getActivity(), "返回错误信息：" + error,
 				Toast.LENGTH_LONG).show();
 		ll_cart.setVisibility(View.GONE);
 		wait_ll.setVisibility(View.VISIBLE);
@@ -156,8 +186,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 	@Override
 	public void onDataChanged(String data) {
 		Gson gson = new Gson();
-		/*Toast.makeText(getActivity(), "AllOrder返回数据：" + data, Toast.LENGTH_LONG)
-				.show();*/
+		
 		JSONObject jsonObject = null;
 		String content = null;
 		String listStr;
@@ -206,12 +235,10 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 			           String key = it.next().toString();  
 			           orderList.add(retMap.get(key));  
 			       }
+				/*Toast.makeText(getActivity(), "AllOrder返回数据：orderList"+orderList.size(), Toast.LENGTH_LONG)
+				.show();*/
+	
 				showListView(orderList);
-				ll_cart.setVisibility(View.GONE);
-				wait_ll.setVisibility(View.GONE);
-				retry_img.setVisibility(View.GONE);
-				loading_ll.setVisibility(View.GONE);
-				orderListLayout.setVisibility(View.VISIBLE);
 				
 			} else {
 				ll_cart.setVisibility(View.GONE);

@@ -52,6 +52,14 @@
         android:divider="@color/main_layout"
         android:dividerHeight="0dip" >
     </com.itboye.banma.view.PullToRefreshListView>
+    <ListView 
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/main_layout"
+        android:dividerHeight="0dip"
+        android:visibility="gone" >
+    </ListView>
     </LinearLayout>
 
 </LinearLayout>

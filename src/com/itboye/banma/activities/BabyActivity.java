@@ -53,7 +53,7 @@ import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.ProductDetail;
 import com.itboye.banma.entity.ProductDetail.Sku_info;
 import com.itboye.banma.entity.SkuStandard;
-import com.itboye.banma.fragment.BabyCommentFragment;
+import com.itboye.banma.fragment.BabyOrderFragment;
 import com.itboye.banma.fragment.BabyDetailFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.shoppingcart.ShoppingCartActivity;

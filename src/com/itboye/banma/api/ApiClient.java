@@ -352,6 +352,7 @@ public class ApiClient {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Orders/query?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
+		//params.put("uid",loginUid+"");
 		params.put("uid","100");
 		params.put("curpage",""+pageNo);
 		params.put("pagesize",""+pageSize);
