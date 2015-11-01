@@ -21,6 +21,7 @@ import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.util.MyCountTimer;
 
 public class RegistActivity extends Activity implements StrUIDataListener {
 	private 	Button btnNextStep;//下一步按钮
@@ -174,8 +175,10 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 				Flags=0;
 				startActivity(nextIntent);
 			}else {
-				edCheckCode.setText(checkcode);
-				System.out.println("2");
+			//	edCheckCode.setText(checkcode);
+				Toast.makeText(this, "请输入验证码:"+checkcode, Toast.LENGTH_LONG).show();
+				MyCountTimer myCountTimer=new MyCountTimer(btnGetCheckCode, 0xfff30008, 0xff969696);
+				myCountTimer.start();
 			}
 		} else {
 			Toast.makeText(RegistActivity.this, "验证码失败：" +checkcode, Toast.LENGTH_LONG)

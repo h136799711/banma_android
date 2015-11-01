@@ -1,18 +1,25 @@
 package com.itboye.banma.activities;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -22,7 +29,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -33,11 +43,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
@@ -45,7 +54,9 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.util.ChoosePictureDialog;
-import com.itboye.banma.utils.MultiPartStringRequest;
+import com.itboye.banma.util.CircleImg;
+import com.itboye.banma.util.NetUtil;
+import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.welcome.WelcomeActivity;
 
 public class MorePersonal extends Activity implements OnClickListener,StrUIDataListener{
@@ -77,6 +88,11 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	private int FLAG=0;//区分返回请求数据
 	
 	/* 头像名称 */
+	 private static ProgressDialog pd;// 等待进度圈
+     private String imgUrl = "";
+	 private static final String IMAGE_FILE_NAME = "head.jpg";// 头像文件名称
+	 private String urlpath;			// 图片本地路径
+	 private String resultStr = "";	// 服务端返回结果集
 	private static final String PHOTO_FILE_NAME = "image.jpg";
 	private File tempFile;
 	//获取头像的dialog
@@ -84,7 +100,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	
 //选择上传头像
 	RelativeLayout rlHead;
-	private ImageView ivHead;//头像
+	private CircleImg ivHead;//头像
 	private Bitmap bitmap;
 	private SharedPreferences sp;
 	@Override
@@ -116,6 +132,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	
 	
 	private void initID(){
+		imgUrl = Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
+		
 		rlShengFenZheng=(RelativeLayout)findViewById(R.id.rl_shengfenzheng);
 		tvRenZhen=(TextView)findViewById(R.id.tv_renzhen);
 		rlPersonMain=(RelativeLayout)findViewById(R.id.rl_person_main);
@@ -129,7 +147,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		tvWeiXin=(TextView)findViewById(R.id.tv_bangding);
 	//	rlPersonalMian=(RelativeLayout)findViewById(R.id.rl_person_main);
 		rlHead=(RelativeLayout)findViewById(R.id.rl_head);
-		ivHead=(ImageView)findViewById(R.id.iv_head);
+		ivHead=(CircleImg)findViewById(R.id.iv_head);
 		tvUserName=(TextView)findViewById(R.id.tv_username);
 		tvPhoneNumber=(TextView)findViewById(R.id.tv_phone_number);
 		btExit=(Button)findViewById(R.id.btn_exit);
@@ -152,7 +170,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			String number=sp.getString(Constant.MY_ACCOUNT, "");
 			String psw=sp.getString(Constant.MY_PASSWORD, "");
 			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
-																															//请求用户头像数据
+																													//请求用户头像数据
 			
 		}
 	}
@@ -162,7 +180,16 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.rl_head:
-			if (appContext.isLogin()) {
+			if (appContext.isLogin())
+			{
+				choose=ChoosePictureDialog.getDialog(MorePersonal.this);
+				choose.show();
+				choose.getWindow();
+			}
+			break;
+		case R.id.iv_head:
+			if (appContext.isLogin())
+			{
 				choose=ChoosePictureDialog.getDialog(MorePersonal.this);
 				choose.show();
 				choose.getWindow();
@@ -308,10 +335,12 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 				if (data!=null) {
 					bitmap=	 data.getParcelableExtra("data");
 					//讲bitmap保存到指定文件中
-					saveHeadImage(bitmap);
+			    	saveHeadImage(bitmap);
 				 //  tempFile.delete();
 				 //上传文件中的文件
-				   upLoadImage();
+					// 新线程后台上传服务端
+					pd = ProgressDialog.show(this, null, "正在上传图片，请稍候...");
+					new Thread(uploadImageRunnable).start();
 				}
 			} catch (Exception e) {
 					e.printStackTrace();
@@ -321,6 +350,116 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	/**
+	 * 使用HttpUrlConnection模拟post表单进行文件
+	 * 上传平时很少使用，比较麻烦
+	 * 原理是： 分析文件上传的数据格式，然后根据格式构造相应的发送给服务器的字符串。
+	 */
+	Runnable uploadImageRunnable = new Runnable() {
+		@Override
+		public void run() {
+			
+			if(TextUtils.isEmpty(imgUrl)){
+				//Toast.makeText(mContext, "还没有设置上传服务器的路径！", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
+			Map<String, String> textParams1 = new HashMap<String, String>();
+			Map<String, String> textParams = new HashMap<String, String>();
+			Map<String, File> fileparams = new HashMap<String, File>();
+			
+			try {
+				// 创建一个URL对象
+				URL url = new URL(imgUrl);
+				textParams1=new HashMap<String, String>();
+				textParams = new HashMap<String, String>();
+				fileparams = new HashMap<String, File>();
+				// 要上传的图片文件
+				System.out.println(appContext.getLoginUid());
+				textParams.put("uid", 106+"");
+				textParams1.put("type", "avatar");
+				File file = new File(urlpath);
+				fileparams.put("image", file);
+				// 利用HttpURLConnection对象从网络中获取网页数据
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				// 设置连接超时（记得设置连接超时,如果网络不好,Android系统在超过默认时间会收回资源中断操作）
+				conn.setConnectTimeout(5000);
+				// 设置允许输出（发送POST请求必须设置允许输出）
+				conn.setDoOutput(true);
+				// 设置使用POST的方式发送
+				conn.setRequestMethod("POST");
+				// 设置不使用缓存（容易出现问题）
+				conn.setUseCaches(false);
+				conn.setRequestProperty("Charset", "UTF-8");//设置编码   
+				// 在开始用HttpURLConnection对象的setRequestProperty()设置,就是生成HTML文件头
+				conn.setRequestProperty("ser-Agent", "Fiddler");
+				// 设置contentType
+				conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + NetUtil.BOUNDARY);
+				OutputStream os = conn.getOutputStream();
+				DataOutputStream ds = new DataOutputStream(os);
+				NetUtil.writeStringParams(textParams1, ds);
+				NetUtil.writeStringParams(textParams, ds);
+				NetUtil.writeFileParams(fileparams, ds);
+				NetUtil.paramsEnd(ds);
+				// 对文件流操作完,要记得及时关闭
+				os.close();
+				// 服务器返回的响应吗
+				int code = conn.getResponseCode(); // 从Internet获取网页,发送请求,将网页以流的形式读回来
+				// 对响应码进行判断
+				if (code == 200) {// 返回的响应码200,是成功
+					// 得到网络返回的输入流
+					InputStream is = conn.getInputStream();
+					resultStr = NetUtil.readString(is);
+				} else {
+					//Toast.makeText(mContext, "请求URL失败！", Toast.LENGTH_SHORT).show();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			handler.sendEmptyMessage(0);// 执行耗时的方法之后发送消给handler
+		}
+	};
+	
+	Handler handler = new Handler(new Handler.Callback() {
+		
+		@Override
+		public boolean handleMessage(Message msg) {
+			switch (msg.what) {
+			case 0:
+				pd.dismiss();
+				choose.dismiss();
+				try {
+					// 返回数据示例，根据需求和后台数据灵活处理
+					// {"status":"1","statusMessage":"上传成功","imageUrl":"http://120.24.219.49/726287_temphead.jpg"}
+					JSONObject jsonObject = new JSONObject(resultStr);
+			    	 JSONObject data=null;;
+					int code=jsonObject.getInt("code");
+					if (code==0) {
+						System.out.println(jsonObject.toString());
+					    data=new JSONObject(jsonObject.getString("data"));
+						// 服务端以字符串“1”作为操作成功标记
+					    //暂时这里先使用缓存来存放图片地址，因为登陆时服务器并没有返回图片地址
+				    		Editor editor = sp.edit();  
+					        editor.putString(Constant.MY_HEAD_URL, data.getString("imgurl"));
+					        editor.commit();
+							ivHead.setImageBitmap(bitmap);
+							AppContext.setPathHeadImage(data.getString("imgurl"));
+							System.out.println(jsonObject.toString());
+							Toast.makeText(MorePersonal.this, "头像上传成功", Toast.LENGTH_SHORT).show();			
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				break;
+				
+			default:
+				break;
+			}
+			return false;
+		}
+	});
+	
 	private void saveHeadImage(Bitmap bitmap) {
 		// TODO Auto-generated method stub
 		File file=new File(Environment.getExternalStorageDirectory(),"image.png");
@@ -329,8 +468,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			out=new FileOutputStream(file);
 			bitmap.compress(CompressFormat.PNG, 100, out);
 			out.close();
-			String headPath=file.getAbsolutePath();
-			AppContext.setPathHeadImage(headPath);
+			urlpath=file.getAbsolutePath();
+		//	AppContext.setPathHeadImage(urlpath);
 			System.out.println(file.getAbsolutePath());
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -338,22 +477,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		}
 	}
 
-	private void upLoadImage() {
-		// TODO Auto-generated method stub
-		Map<String, File> files = new HashMap<String, File>();
-		files.put("avatar", new File("/storage/emulated/0/image.png"));
-		ivHead.setImageBitmap(getLoacalBitmap("/storage/emulated/0/image.png"));
-		SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
-		String  id=sp.getString(Constant.MY_USERID, -1+"");
-		Map<String, String> params = new HashMap<String, String>();
-		System.out.println(id);
-		params.put("uid",id);
-		params.put("type","avatar");
-
-		String uri =Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
-	    addPutUploadFileRequest(
-				uri,files, params, mResonseListenerString, mErrorListener, null);
-	}
+	
 	
 	public static Bitmap getLoacalBitmap(String url) {
         try {
@@ -395,85 +519,6 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			return false;
 		}
 	}	
-	
-	
-	Listener<JSONObject> mResonseListener = new Listener<JSONObject>() {
-
-		@Override
-		public void onResponse(JSONObject response) {
-			String data = null;
-			try {
-				data=response.getString("data");
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Log.i("返回数据", " on response json" + data.toString());
-		}
-	};
-	Listener<String> mResonseListenerString = new Listener<String>() {
-		JSONObject data=null;
-		int code=-1;
-		@SuppressLint("CommitPrefEdits")
-		@Override
-		public void onResponse(String response) {
-			try {
-				data=new JSONObject(response);
-				code=data.getInt("code");
-				if (code==0) {
-					SharedPreferences sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
-					Editor editor=sp.edit();
-					editor.putBoolean(Constant.MY_HEAD, true);//如果设置成功，改变头像状态
-					AppContext.setHasHead(true);//设置静态变量 头像已经添加
-					editor.commit();
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Log.i("String", " on response String" + data.toString());
-		}
-	};
-
-	ErrorListener mErrorListener = new ErrorListener() {
-
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			if (error != null) {
-				if (error.networkResponse != null)
-					Log.i("发生错误", " error " + new String(error.networkResponse.data));
-				//如果发生错误，则将头像设为默认的
-				ivHead.setImageResource(R.id.iv_head);
-			}
-		}
-	};
-
-	public static void addPutUploadFileRequest(final String url,
-			final Map<String, File> files, final Map<String, String> params,
-			final Listener<String> responseListener, final ErrorListener errorListener,
-			final Object tag) {
-		if (null == url || null == responseListener) {
-			return;
-		}
-
-		MultiPartStringRequest multiPartRequest = new MultiPartStringRequest(
-				Request.Method.POST, url, responseListener, errorListener) {
-
-			@Override
-			public Map<String, File> getFileUploads() {
-				return files;
-			}
-
-			@Override
-			public Map<String, String> getStringUploads() {
-				return params;
-			}
-			
-		};
-
-		mSingleQueue.add(multiPartRequest);
-	}
-
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
@@ -493,6 +538,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		String phoneNumber=null;
 		String weiXin=null;
 		String renZheng=null;
+		String imageUrl=null;
 		try {
 			jsonObject = new JSONObject(data);
 			code = jsonObject.getInt("code");
@@ -502,6 +548,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			phoneNumber=jsonObject2.getString("mobile");
 			weiXin=jsonObject2.getString("weixin_bind");
 			renZheng=jsonObject2.getString("idnumber");
+		//	imageUrl=jsonObject2.getString("imgurl");
+			
 			System.out.println(phoneNumber);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
@@ -510,6 +558,22 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 				Log.v("登陆数据",content);
 				if (appContext.isLogin()) {
 					tvUserName.setText(nickname);
+					if (appContext.isLogin()) {
+						ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+								new BitmapCache());
+						try {
+						       ivHead.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
+								ivHead.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
+							//	ivHead.setImageUrl(AppContext.getPathHeadImage(), imageLoader);
+							//	System.out.println(AppContext.getPathHeadImage());;
+								System.out.println(sp.getString(Constant.MY_HEAD_URL, "发送错误"));
+								ivHead.setOnClickListener(this);
+							}catch (Exception e) {
+							// TODO: handle exception
+								e.printStackTrace();
+						    	System.out.println("头像加载失败");
+						}		
+					}
 					
 					String newString=phoneNumber.substring(0,3)+"****"+phoneNumber.substring(7, 11);
 					tvPhoneNumber.setText(newString);

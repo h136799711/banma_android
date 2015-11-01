@@ -3,22 +3,20 @@ package com.itboye.banma.welcome;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.VolleyError;
-import com.itboye.banma.R;
-import com.itboye.banma.activities.CenterActivity;
-import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.utils.SharedConfig;
-
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import android.app.Activity;
-import android.content.Intent;
+
+import com.android.volley.VolleyError;
+import com.itboye.banma.R;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.utils.SharedConfig;
 
 public class HomeActivity extends Activity   implements StrUIDataListener{
 	Button btnEnter;//进入主界面按钮，这里请求token的操作暂时放到这里
@@ -42,28 +40,8 @@ public class HomeActivity extends Activity   implements StrUIDataListener{
 				new SharedConfig(getApplicationContext()).ClearConfig();
 			}
 		});
-		
-		//点击进入的监听，同时获取token
-		btnEnter.setOnClickListener(new OnClickListener() {
-	
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(HomeActivity.this,CenterActivity.class));
-				//请求token
-				try {
-					appContext.getToken(HomeActivity.this,
-							"client_credentials", "by559a8de1c325c1",
-							"aedd16f80c192661016eebe3ac35a6e7",networkHelper);
-				} catch (Exception e) {
-					Toast.makeText(HomeActivity.this, "访问异常" + e,
-							Toast.LENGTH_LONG).show();
-					e.printStackTrace();
-					Log.v("获取token异常",e+"" );
-				}
-			}
-		});
 	}
+	
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub

@@ -3,24 +3,21 @@ package com.itboye.banma.fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.gson.JsonObject;
+import com.android.volley.toolbox.ImageLoader;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.LoginActivity;
@@ -33,13 +30,13 @@ import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
-import com.itboye.banma.shoppingcart.ShoppingCartActivity;
-import com.itboye.banma.util.CaptureActivity;
+import com.itboye.banma.util.CircleImg;
+import com.itboye.banma.utils.BitmapCache;
 
 public class CenterFragment extends Fragment implements OnClickListener,StrUIDataListener{
 	private View chatView;
-	ImageView ivPersonheadFail;//未登录头头像
-	ImageView ivPersonhead;//登陆的头像
+	private CircleImg ivPersonheadFail;//未登录头头像
+	private CircleImg ivPersonhead;//登陆的头像
 	TextView tvCheckList;//选择按钮
 	//ImageView ivBack;//返回按钮
 	TextView tvPersonnamefail;//未登录提示
@@ -79,15 +76,26 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
       // String userId= sp.getString("MY_USERID", "");
 		String userId=appContext.getLoginUid()+"";
 		//ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
-		ivPersonheadFail=(ImageView)chatView.findViewById(R.id.iv_personheadfail);
+		ivPersonheadFail=(CircleImg)chatView.findViewById(R.id.iv_personheadfail);
+		ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);;
 		tvPersonnamefail=(TextView)chatView.findViewById(R.id.tv_personnamefail);
 		sp = getActivity().getSharedPreferences(Constant.MY_PREFERENCES, getActivity().MODE_PRIVATE);
 		
-		if (userId!="") {
+		if (appContext.isLogin()) {
 			String number=sp.getString(Constant.MY_ACCOUNT, "");
 			String psw=sp.getString(Constant.MY_PASSWORD, "");
 			ApiClient.Login(getActivity(), number, psw, networkHelper);//请求用户数据
-																															//请求用户头像数据
+			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+					new BitmapCache());
+			try {
+			      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
+			       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
+				  ivPersonheadFail.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
+				}catch (Exception e) {
+				// TODO: handle exception
+					e.printStackTrace();
+			    	System.out.println("头像加载失败");
+			}		
 		}
 		tvYongJin=(TextView)chatView.findViewById(R.id.tv_yongjin);
 		ivShare=(ImageView)chatView.findViewById(R.id.iv_share);
@@ -204,8 +212,21 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 			String number=sp.getString(Constant.MY_ACCOUNT, "");
 			String psw=sp.getString(Constant.MY_PASSWORD, "");
 			ApiClient.Login(getActivity(), number, psw, networkHelper);//请求用户数据
-																															//请求用户头像数据
+			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+					new BitmapCache());
+			try {
+			      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
+			       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
+			      ivPersonheadFail.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
+			      System.out.println("头像加载失败123");
+				}catch (Exception e) {
+				// TODO: handle exception
+					e.printStackTrace();
+			    
+			}		
 		}else {
+			ivPersonheadFail.setImageResource(R.drawable.person_head);
+			System.out.println("头像加载失败");
 			tvPersonnamefail.setText("登陆/注册");
 		}
 		if (appContext.isLogin()) {

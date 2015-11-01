@@ -12,7 +12,7 @@ public class Constant {
 	public static final String MY_ACCOUNT = "MY_ACCOUNT";            //用户账号
     public static final String MY_PASSWORD = "MY_PASSWORD";			//用户密码
     public static final String MY_USERID="MY_USERID";//当前登陆用户的id
-    public static final String MY_HEAD="MY_HEAD";//我的头像
+    public static final String MY_HEAD_URL="MY_HEAD_URL";//我的头像
     public static final String MY_BANGDING="MY_BANGDING";//绑定的手机号
     public static final String 	IS_LOGIN="IS_LOGIN";//是否登陆
     public static final String WEIXIN="WEIXIN";//微信是否绑定

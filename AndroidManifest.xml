@@ -36,7 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-           <activity android:name="com.itboye.banma.activities.CenterActivity"/>
            <activity android:name="com.itboye.banma.activities.LoginActivity"/>
            <activity android:name="com.itboye.banma.activities.RegistActivity"/>
            <activity android:name="com.itboye.banma.activities.RegsitedActivity"/>
