@@ -147,8 +147,9 @@
     <style name="PersonalRightTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">25dp</item>
+        <item name="android:layout_marginRight">5dp</item>
         <item  name="android:textSize">12sp</item>
+        <item  name="android:textColor">@color/grey</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
@@ -166,7 +167,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/background_corners</item>
-        <item name="android:orientation">vertical</item>
+        <item name="android:orientation">vertical</item> 
         <item name="android:padding">2dp</item>
     </style>
     

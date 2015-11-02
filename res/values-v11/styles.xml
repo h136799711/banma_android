@@ -136,6 +136,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">19dp</item>
         <item  name="android:textSize">12sp</item>
+        <item  name="android:textColor">@color/grey</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>

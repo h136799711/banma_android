@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +43,10 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 	TextView tvPersonnamefail;//未登录提示
 	private TextView tvYongJin;//我的返佣
 	private ImageView ivShare;//扫描二维码
-	private RelativeLayout rlMoney;//我的佣金
-	private RelativeLayout mailing_address;//地址管理
-	private RelativeLayout morePersonal;//更多个人相关
-	private RelativeLayout order_goods;
+	private LinearLayout rlMoney;//我的佣金
+	private LinearLayout mailing_address;//地址管理
+	private LinearLayout morePersonal;//更多个人相关
+	private LinearLayout order_goods;
 	private AppContext appContext;
 	private SharedPreferences sp;
 	private String nickname=null;//显示用户昵称
@@ -99,12 +100,12 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 		}
 		tvYongJin=(TextView)chatView.findViewById(R.id.tv_yongjin);
 		ivShare=(ImageView)chatView.findViewById(R.id.iv_share);
-	   rlMoney=(RelativeLayout)chatView.findViewById(R.id.rl_money);
+	   rlMoney=(LinearLayout)chatView.findViewById(R.id.rl_money);
 		//ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
 		tvCheckList=(TextView)chatView.findViewById(R.id.tv_check_list);
-		order_goods = (RelativeLayout) chatView.findViewById(R.id.order_goods);
-		mailing_address = (RelativeLayout) chatView.findViewById(R.id.address);
-		morePersonal=(RelativeLayout)chatView.findViewById(R.id.rl_more);
+		order_goods = (LinearLayout) chatView.findViewById(R.id.order_goods);
+		mailing_address = (LinearLayout) chatView.findViewById(R.id.address);
+		morePersonal=(LinearLayout)chatView.findViewById(R.id.rl_more);
 		rlMoney.setOnClickListener(this);
 		order_goods.setOnClickListener(this);
 		mailing_address.setOnClickListener(this);
