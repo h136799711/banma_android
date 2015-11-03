@@ -74,9 +74,11 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private Double ori_price;
 	private int quantity;
 	private View view;
-	private int skuPosition = 0; // 记录所选规格在列表位置
+	private int skuPosition = -100; // 记录所选规格在列表位置
 	private int sku_id = -1; // 记录所选规格ID
 	private ChooseStandardInterface ch;
+	String standard = null;
+	String standardStr = null;
 
 	public BabyPopWindow(Context context, List<Sku_info> sku_info, String name,
 			List<SkuInfo> skuInfo, String url, Double price,
@@ -344,13 +346,19 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			if(skuInfo == null){
 				Toast.makeText(context, "服务器信息不全,请稍后再试", Toast.LENGTH_SHORT).show();
 			}else if (sku_id == -1) {
-				Toast.makeText(context, "请选择规格", Toast.LENGTH_SHORT).show();
-			} else {
+				if(skuPosition == -1){
+					Toast.makeText(context, "库存为0,请重选规格", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(context, "请选择规格", Toast.LENGTH_SHORT).show();
+				}
+				
+			}else {
 				if(skuList.get(skuPosition).getQuantity() <= 0){
 					Toast.makeText(context, "库存为0,请重选规格", Toast.LENGTH_SHORT).show();
 				}else{
 					skuList.get(skuPosition).setNum(pop_num.getText().toString());
 					skuList.get(skuPosition).setName(name);
+					skuList.get(skuPosition).setSku(standardStr);
 					listener.onClickOKPop(skuList.get(skuPosition));
 
 					dissmiss();
@@ -388,16 +396,19 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 
 	@Override
 	public void changeview() {
-		String standard = null;
+		standard = null;
+		standardStr = null;
 		for (int j = 0; j < skuInfo.size(); j++) {
 			if (standard == null) {
 				standard = Constant.SKU_INFO[j];
+				standardStr = Constant.SKU_INFOSTR[j];
 			} else {
 				standard = standard + Constant.SKU_INFO[j];
+				standardStr = standardStr + Constant.SKU_INFOSTR[j];
 			}
 
-		}
-		;
+		};
+		skuPosition = -1;
 		for (int k = 0; k < skuList.size(); k++) {
 			if (skuList.get(k).getSku_id().equals(standard)) {
 				skuPosition = k;
@@ -406,12 +417,21 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 				break;
 			}
 		}
-		standardView.setText(skuList.get(skuPosition).getSku());
-		pow_quantity.setText("库存" + skuList.get(skuPosition).getQuantity());
-		pow_price.setText("￥" + skuList.get(skuPosition).getPrice());
-		pow_ori_price.setText("￥" + skuList.get(skuPosition).getOri_price());
-		pow_ori_price.getPaint().setFlags(
-				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+		standardView.setText(standardStr);
+		if(skuPosition == -1){
+			pow_quantity.setText("库存0");
+			pow_price.setText("￥" + skuList.get(0).getPrice());
+			pow_ori_price.setText("￥" + skuList.get(0).getOri_price());
+			pow_ori_price.getPaint().setFlags(
+					Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+		}else{
+			pow_quantity.setText("库存" + skuList.get(skuPosition).getQuantity());
+			pow_price.setText("￥" + skuList.get(skuPosition).getPrice());
+			pow_ori_price.setText("￥" + skuList.get(skuPosition).getOri_price());
+			pow_ori_price.getPaint().setFlags(
+					Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+		}
+		
 	}
 
 }

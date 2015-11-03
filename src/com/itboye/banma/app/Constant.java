@@ -18,6 +18,7 @@ public class Constant {
     public static final String WEIXIN="WEIXIN";//微信是否绑定
     
     public static String[] SKU_INFO = {"","","","","",""};
+    public static String[] SKU_INFOSTR = {"","","","","",""};
     public static int SKU_ALLNUM = 0;  //规格总种类
     public static int[] SKU_NUM = {0,0,0,0};   //所选规格数
 

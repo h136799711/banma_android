@@ -130,6 +130,7 @@ public class BabyActivity extends FragmentActivity implements
 		
 		for (int i = 0; i < Constant.SKU_INFO.length; i++) {
 			Constant.SKU_INFO[i] = "";
+			Constant.SKU_INFOSTR[i] = "";
 		}
 		Constant.SKU_ALLNUM = 0;
 

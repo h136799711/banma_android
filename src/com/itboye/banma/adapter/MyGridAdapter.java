@@ -95,6 +95,7 @@ public class MyGridAdapter extends BaseAdapter {
 				notifyDataSetChanged();
 				state = position;
 				Constant.SKU_INFO[i] = skuInfo.getId() + ":" + value.get(position).getId()+";";
+				Constant.SKU_INFOSTR[i] = value.get(position).getName()+"、";
 				//tv.setBackgroundResource(R.drawable.yuanjiao_choice);
 				Constant.SKU_NUM[i] = 1;
 				int sum = 0;
