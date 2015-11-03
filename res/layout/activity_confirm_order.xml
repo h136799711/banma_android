@@ -122,15 +122,6 @@
                         android:textSize="@dimen/text_size_14" />
                 </LinearLayout>
 
-                <TextView
-                        android:id="@+id/adr_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="添加地址"
-                        android:visibility="gone"
-                        />
-                
                 <ImageView
                     android:layout_width="30dip"
                     android:layout_height="53dp"

@@ -53,6 +53,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 	private TextView downtown;
 	private EditText detailed_address;
 	private EditText postcode;
+	private EditText id_card;
 	private LinearLayout remove;
 	private View default_address_line;
 	private LinearLayout default_address_layout;
@@ -63,6 +64,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 	private StrVolleyInterface strnetworkHelper;
 	private ProgressDialog dialog;
 	private int netState = 0;
+	private int add_state;  //接收确认订单跳转过来的传参
 
 	private CascadingMenuPopWindow cascadingMenuPopWindow = null;
 	private ArrayList<Area> provinceList;
@@ -95,7 +97,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 
 		Intent intentdata = this.getIntent();
 		address = (MailingAdress) intentdata.getSerializableExtra("address");
-
+		add_state = intentdata.getIntExtra("add_state", 0);
 		back = (ImageView) findViewById(R.id.iv_back);
 		title = (TextView) findViewById(R.id.title);
 		more = (ImageView) findViewById(R.id.more);
@@ -105,6 +107,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 		downtown = (TextView) findViewById(R.id.downtown);
 		detailed_address = (EditText) findViewById(R.id.detailed_address);
 		postcode = (EditText) findViewById(R.id.postcode);
+		id_card =  (EditText) findViewById(R.id.id_card);
 		default_address_line = findViewById(R.id.default_address_line);
 		default_address_layout = (LinearLayout) findViewById(R.id.default_address_layout);
 		default_address = (CheckBox) findViewById(R.id.default_address);
@@ -175,7 +178,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 							DataStore.AREA_DISTRICT, detailed_address.getText()
 									.toString(), name.getText().toString(),
 							telephone.getText().toString(), postcode.getText()
-									.toString());
+									.toString(), id_card.getText().toString());
 				} catch (Exception e) {
 					e.printStackTrace();
 					dialog.dismiss();
@@ -321,10 +324,10 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 	 */
 	private void saveAdress(Area province, Area city, Area area,
 			String detailinfo, String contactname, String mobile,
-			String postal_code) throws Exception {
+			String postal_code, String id_card) throws Exception {
 		Boolean stateBoolean = appContext.saveAdress(AddAddressActivity.this,
 				province, city, area, detailinfo, contactname, mobile,
-				postal_code, strnetworkHelper);
+				postal_code, id_card, strnetworkHelper);
 		if (stateBoolean == false) {
 			dialog.dismiss();
 			Toast.makeText(AddAddressActivity.this, "请检查网络连接",

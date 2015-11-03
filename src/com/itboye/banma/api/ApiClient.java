@@ -224,7 +224,7 @@ public class ApiClient {
 	}
 
 	public static void saveAdress(Context mContext, int loginUid, Area province, Area city, Area area, String detailinfo,
-			String contactname, String mobile, String postal_code, StrVolleyInterface networkHelper) {
+			String contactname, String mobile, String postal_code, String id_card, StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Address/add?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
@@ -240,6 +240,7 @@ public class ApiClient {
 		params.put("province",province.getName());
 		params.put("city",city.getName());
 		params.put("area",area.getName());
+		params.put("id_card",id_card);
 
 		VolleyRequest.StrRequestPost(mContext, url, "saveAdress",params, networkHelper);
 	}

@@ -132,11 +132,11 @@ public class AppContext extends Application {
 	 * @throws Exception 
 	 */
 	public Boolean saveAdress(Context mContext, Area province, Area city, Area area, String detailinfo,
-			String contactname, String mobile, String postal_code, StrVolleyInterface networkHelper) throws Exception {
+			String contactname, String mobile, String postal_code, String id_card, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
 				ApiClient.saveAdress(mContext, loginUid, province, city, area, detailinfo, 
-						contactname, mobile, postal_code, networkHelper);
+						contactname, mobile, postal_code, id_card, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;

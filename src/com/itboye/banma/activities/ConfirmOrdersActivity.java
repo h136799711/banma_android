@@ -34,12 +34,13 @@ import com.itboye.banma.adapter.ConfirmOrderListAdapter;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
+import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.MailingAdress;
 import com.itboye.banma.entity.SkuStandard;
 import com.itboye.banma.utils.BitmapCache;
 
 public class ConfirmOrdersActivity extends Activity implements OnClickListener,
-		StrUIDataListener {
+StrUIDataListener {
 	private final int ADDORREDUCE = 1;
 	private final int ADDRESS = 1;
 	private final int ORDER = 2;
@@ -58,6 +59,7 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 	private TextView adr_phone;
 	private TextView adr_address;
 	private LinearLayout select_adress_layout;
+	private LinearLayout add_adress_layout;
 	private MailingAdress address = null;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
@@ -94,6 +96,7 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 	private void initView() {
 		confirm = (Button) findViewById(R.id.confirm);
 		select_adress_layout = (LinearLayout) findViewById(R.id.select_adress_layout);
+		add_adress_layout = (LinearLayout) findViewById(R.id.add_adress_layout);
 		order_flex = (LinearLayout) findViewById(R.id.order_flex);
 		img_flex = (ImageView) findViewById(R.id.img_flex);
 		orderListView = (ListView) findViewById(R.id.order_list);
@@ -115,9 +118,11 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 		all_price = (TextView) findViewById(R.id.all_price);
 		order_all_price = (TextView) findViewById(R.id.order_all_price);
 		select_adress_layout.setOnClickListener(this);
+		add_adress_layout.setOnClickListener(this);
 		top_back.setOnClickListener(this);
 		order_flex.setOnClickListener(this);
 		confirm.setOnClickListener(this);
+	
 		ConfirmOrderListAdapter adapter = new ConfirmOrderListAdapter(
 				ConfirmOrdersActivity.this, list);
 		orderListView.setAdapter(adapter);
@@ -166,6 +171,9 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 						+ address.getArea() + address.getDetailinfo());
 			}
 
+		}else if(requestCode == 2100 && resultCode == 1001){
+		
+			load_data();
 		}
 
 	}
@@ -199,7 +207,7 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 
 		params.height = totalHeight
 
-		+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 
 		// params.height += 5;// if without this statement,the listview will be
 
@@ -227,6 +235,7 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onClick(View v) {
+		Intent intent;
 		switch (v.getId()) {
 		case R.id.iv_back:
 			finish();
@@ -234,15 +243,20 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 					R.anim.push_right_out);
 			break;
 		case R.id.select_adress_layout:
-			Intent intent = new Intent();
+			//用户有收货地址
+			intent = new Intent();
 			intent = new Intent(this, SelectOrderAddressActivity.class);
-			if (address == null) {
-				intent.putExtra("addressId", -1);
-			} else {
-				intent.putExtra("addressId", address.getId());
-			}
-
+			intent.putExtra("addressId", address.getId());
 			startActivityForResult(intent, 2000);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+
+
+			break;
+		case R.id.add_adress_layout:
+			intent = new Intent();
+			intent = new Intent(this, AddAddressActivity.class);
+			intent.putExtra("add_state", Constant.CONORDER_ADDADR);
+			startActivityForResult(intent, 2100);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.confirm:
@@ -269,7 +283,7 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 			break;
 		}
 	}
-	
+
 	/**
 	 * 添加订单
 	 * 
@@ -302,7 +316,7 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 	public void onErrorHappened(VolleyError error) {
 		state = -1;
 		Toast.makeText(ConfirmOrdersActivity.this, "加载失败"+error, Toast.LENGTH_SHORT)
-				.show();
+		.show();
 	}
 
 	@Override
@@ -321,9 +335,11 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 					String addressData = jsondata.getString("data");
 					addresslist = gson.fromJson(addressData,
 							new TypeToken<List<MailingAdress>>() {
-							}.getType());
+					}.getType());
 					if (addresslist.size() > 0) {
 						// showListView(addresslist);
+						add_adress_layout.setVisibility(View.GONE);
+						select_adress_layout.setVisibility(View.VISIBLE);
 						address = addresslist.get(0);
 						adr_name.setText(address.getContactname());
 						adr_phone.setText(address.getMobile());
@@ -334,13 +350,16 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 					} else {
 						Toast.makeText(ConfirmOrdersActivity.this, "请添加地址",
 								Toast.LENGTH_SHORT).show();
-						Intent intent = new Intent();
+						add_adress_layout.setVisibility(View.VISIBLE);
+						select_adress_layout.setVisibility(View.GONE);
+
+						/*Intent intent = new Intent();
 						intent = new Intent(this,
 								SelectOrderAddressActivity.class);
 						intent.putExtra("addressId", -1);
 						startActivityForResult(intent, 2000);
 						overridePendingTransition(R.anim.in_from_right,
-								R.anim.out_to_left);
+								R.anim.out_to_left);*/
 					}
 
 				} else {

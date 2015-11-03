@@ -203,6 +203,41 @@
                     android:textColor="@color/gray"
                     android:textSize="16dip" />
             </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginLeft="7dip"
+                android:layout_marginRight="7dip"
+                android:background="@color/lightgray"
+                android:paddingLeft="10dip" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="15dip"
+                android:paddingLeft="5dip"
+                android:paddingTop="15dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="身份证"
+                    android:textColor="@color/black"
+                    android:textSize="15dip" />
+
+                <EditText
+                    android:id="@+id/id_card"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:textColor="@color/gray"
+                    android:textSize="16dip" />
+            </LinearLayout>
              <View
                 android:id="@+id/default_address_line"
                 android:layout_width="fill_parent"
