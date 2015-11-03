@@ -126,7 +126,7 @@ public class BabyActivity extends FragmentActivity implements
 	private void iniData() {
 		
 		Intent intent = getIntent();
-		pid = intent.getIntExtra("PID", 1);
+		pid = intent.getIntExtra("PID", 21);
 		
 		for (int i = 0; i < Constant.SKU_INFO.length; i++) {
 			Constant.SKU_INFO[i] = "";
@@ -416,7 +416,7 @@ public class BabyActivity extends FragmentActivity implements
 			// System.out.println(productDetail.getName());
 			// System.out.println(productDetail.getPrice());
 
-			if (appContext.isLogin()) {
+			/*if (appContext.isLogin()) {
 				if (skuStandard.getQuantity()>Integer.parseInt(skuStandard.getNum())){
 					requestState = 1;
 					ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()
@@ -439,7 +439,7 @@ public class BabyActivity extends FragmentActivity implements
 				startActivity(new Intent(BabyActivity.this, LoginActivity.class));
 				overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
-			}
+			}*/
 		}
 	}
 
@@ -550,10 +550,10 @@ public class BabyActivity extends FragmentActivity implements
 		ori_price.getPaint().setFlags(
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 		// 是否包邮
-		if (productDetail.getAttrext_ispostfree() == 1) {
+		if (productDetail.getTemplate_id() == 1) {
 			freight.setText("免运费");
 		} else {
-			freight.setText("￥" + productDetail.getExpress());
+			freight.setText("￥");
 		}
 		customs_duties.setText("免关税");
 		sales_area.setText(productDetail.getLoc_province()
@@ -563,9 +563,9 @@ public class BabyActivity extends FragmentActivity implements
 				productDetail.getPrice(), productDetail.getOri_price(),
 				productDetail.getQuantity(), productDetail.getSkuList());*/
 		popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
-				null, productDetail.getMain_img(),
+				productDetail.getSku_info_list(), productDetail.getMain_img(),
 				productDetail.getPrice(), productDetail.getOri_price(),
-				productDetail.getQuantity(), null);
+				productDetail.getQuantity(), productDetail.getSku_list());
 		popWindow.setOnItemClickListener(this);
 		sharePopWindow = new SharePopWindow(this);
 		

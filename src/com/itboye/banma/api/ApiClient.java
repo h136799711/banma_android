@@ -302,7 +302,7 @@ public class ApiClient {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Product/detail?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
-		params.put("pid",""+id);
+		params.put("id",""+id);
 		VolleyRequest.StrRequestPost(mContext, url, "getProductDetail",params, networkHelper);
 	}
 	

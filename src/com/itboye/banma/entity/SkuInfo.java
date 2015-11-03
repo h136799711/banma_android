@@ -1,11 +1,19 @@
 package com.itboye.banma.entity;
 
-import java.util.Map;
+import java.util.List;
 
 public class SkuInfo {
+	private int id;
 	private String name;
-	private String key;
-	private Map<String, MapValue> value;
+	private List<MapValue> value_list;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -15,56 +23,37 @@ public class SkuInfo {
 		this.name = name;
 	}
 
-	public String getKey() {
-		return key;
+	public List<MapValue> getValue_list() {
+		return value_list;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public Map<String, MapValue> getValue() {
-		return value;
-	}
-
-	public void setValue(Map<String, MapValue> value) {
-		this.value = value;
-	}
-	
-
-	public SkuInfo(String name, String key, Map<String, MapValue> daMap) {
-		super();
-		this.name = name;
-		this.key = key;
-		this.value = daMap;
+	public void setValue_list(List<MapValue> value_list) {
+		this.value_list = value_list;
 	}
 
 	final public class MapValue {
-		private String value;
-		private String key;
-
-		public String getValue() {
-			return value;
+		private int id;
+		private String name;
+		private String sku_id;
+		public int getId() {
+			return id;
+		}
+		public void setId(int id) {
+			this.id = id;
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getSku_id() {
+			return sku_id;
+		}
+		public void setSku_id(String sku_id) {
+			this.sku_id = sku_id;
 		}
 
-		public void setValue(String value) {
-			this.value = value;
-		}
-
-		public String getKey() {
-			return key;
-		}
-
-		public void setKey(String key) {
-			this.key = key;
-		}
-
-		public MapValue(String value, String key) {
-			super();
-			this.value = value;
-			this.key = key;
-		}
-		
 	}
-	
+
 }

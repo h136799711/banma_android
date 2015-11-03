@@ -65,7 +65,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private static Context context;
 	private String str_color = "";
 	private String str_type = "";
-	private Map<String, SkuInfo> skuInfo;
+	private List<SkuInfo> skuInfo;
 	private List<Sku_info> sku_info;
 	List<SkuStandard> skuList;
 	private String url;
@@ -79,7 +79,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private ChooseStandardInterface ch;
 
 	public BabyPopWindow(Context context, List<Sku_info> sku_info, String name,
-			Map<String, SkuInfo> skuInfo, String url, Double price,
+			List<SkuInfo> skuInfo, String url, Double price,
 			Double ori_price, int quantity, List<SkuStandard> skuList) {
 		this.context = context;
 		this.skuInfo = skuInfo;
@@ -125,6 +125,9 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		} else {
 			Constant.SKU_ALLNUM = 0;
 		}
+		MyGridAdapter oneAdapter;
+		MyGridAdapter twoAdapter;
+		MyGridAdapter threeAdapter;
 		switch (Constant.SKU_ALLNUM) {
 		case 0:
 			init();
@@ -138,9 +141,12 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			twoLayout.setVisibility(View.GONE);
 			threeLayout.setVisibility(View.GONE);
 			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
-			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0),
-					skuInfo.get(sku_info.get(0).getId()), 0, ch));
-			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
+			oneAdapter = new MyGridAdapter(context, sku_info.get(0),
+					skuInfo.get(0), 0, ch);
+			getItemMaxWhith(gridviewOne, oneAdapter);
+			gridviewOne.setAdapter(oneAdapter);
+			
+			tex_one.setText(skuInfo.get(0).getName());
 			init();
 			break;
 		case 2:
@@ -152,12 +158,18 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			threeLayout.setVisibility(View.GONE);
 			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
 			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
-			gridviewOne.setAdapter(new MyGridAdapter(context, sku_info.get(0),
-					skuInfo.get(sku_info.get(0).getId()), 0, ch));
-			gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1),
-					skuInfo.get(sku_info.get(1).getId()), 1, ch));
-			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
-			tex_two.setText(skuInfo.get(sku_info.get(1).getId()).getName());
+			oneAdapter = new MyGridAdapter(context, sku_info.get(0),
+					skuInfo.get(0), 0, ch);
+			getItemMaxWhith(gridviewOne, oneAdapter);
+			gridviewOne.setAdapter(oneAdapter);
+			
+			twoAdapter = new MyGridAdapter(context, sku_info.get(1),
+					skuInfo.get(1), 1, ch);
+			getItemMaxWhith(gridviewTwo, twoAdapter);
+			gridviewTwo.setAdapter(twoAdapter);
+			
+			tex_one.setText(skuInfo.get(0).getName());
+			tex_two.setText(skuInfo.get(1).getName());
 			init();
 
 			break;
@@ -172,18 +184,18 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
 			gridviewThree = (MyGridView) view.findViewById(R.id.gridview_three);
 			
-			MyGridAdapter oneAdapter = new MyGridAdapter(context, sku_info.get(0),
-					skuInfo.get(sku_info.get(0).getId()), 0, ch);
+			oneAdapter = new MyGridAdapter(context, sku_info.get(0),
+					skuInfo.get(0), 0, ch);
 			getItemMaxWhith(gridviewOne, oneAdapter);
 			gridviewOne.setAdapter(oneAdapter);
 			
-			MyGridAdapter twoAdapter = new MyGridAdapter(context, sku_info.get(1),
-					skuInfo.get(sku_info.get(1).getId()), 1, ch);
+			twoAdapter = new MyGridAdapter(context, sku_info.get(1),
+					skuInfo.get(1), 1, ch);
 			getItemMaxWhith(gridviewTwo, twoAdapter);
 			gridviewTwo.setAdapter(twoAdapter);
 			
-			MyGridAdapter threeAdapter = new MyGridAdapter(context,
-					sku_info.get(2), skuInfo.get(sku_info.get(2).getId()), 2,ch);
+			threeAdapter = new MyGridAdapter(context,
+					sku_info.get(2), skuInfo.get(2), 2,ch);
 			getItemMaxWhith(gridviewThree, threeAdapter);
 			gridviewThree.setAdapter(threeAdapter);
 			
@@ -192,9 +204,9 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			gridviewThree.setAdapter(new MyGridAdapter(context,
 					sku_info.get(2), skuInfo.get(sku_info.get(2).getId()), 2,
 					ch));*/
-			tex_one.setText(skuInfo.get(sku_info.get(0).getId()).getName());
-			tex_two.setText(skuInfo.get(sku_info.get(1).getId()).getName());
-			tex_three.setText(skuInfo.get(sku_info.get(2).getId()).getName());
+			tex_one.setText(skuInfo.get(0).getName());
+			tex_two.setText(skuInfo.get(1).getName());
+			tex_three.setText(skuInfo.get(2).getName());
 			init();
 			break;
 

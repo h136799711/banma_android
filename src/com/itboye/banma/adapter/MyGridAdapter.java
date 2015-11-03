@@ -30,7 +30,7 @@ public class MyGridAdapter extends BaseAdapter {
 	private int state = -1;
 	private int i; //区分第几个Grid
 	private SkuInfo skuInfo;
-	private Map<String, MapValue> value;
+	private List<MapValue> value;
 	private Sku_info sku_info;
 	private ChooseStandardInterface ch;
 	public String[] img_text = { "型号000", "型号111111", "型号222222222222222", "型号33333", "型号444", "型号555",
@@ -42,7 +42,7 @@ public class MyGridAdapter extends BaseAdapter {
 		this.sku_info = sku_info;
 		this.i = i;
 		this.ch = ch;
-		value = skuInfo.getValue();
+		value = skuInfo.getValue_list();
 		
 	}
 
@@ -83,7 +83,7 @@ public class MyGridAdapter extends BaseAdapter {
 		
 		final TextView tv = BaseViewHolder.get(convertView, R.id.tv_item);
 
-		tv.setText(value.get(sku_info.getVid()[position]).getValue());
+		tv.setText(value.get(position).getName());
 		
 		tv.setBackgroundResource(R.drawable.yuanjiao);
 		if(position == state){
@@ -94,7 +94,7 @@ public class MyGridAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				notifyDataSetChanged();
 				state = position;
-				Constant.SKU_INFO[i] = skuInfo.getKey() + ":" + value.get(sku_info.getVid()[position]).getKey()+";";
+				Constant.SKU_INFO[i] = skuInfo.getId() + ":" + value.get(position).getId()+";";
 				//tv.setBackgroundResource(R.drawable.yuanjiao_choice);
 				Constant.SKU_NUM[i] = 1;
 				int sum = 0;
