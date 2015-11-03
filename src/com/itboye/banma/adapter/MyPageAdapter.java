@@ -72,6 +72,8 @@ public class MyPageAdapter extends PagerAdapter{
 		imageView.setDefaultImageResId(0);  //加载中显示的图片
 		imageView.setErrorImageResId(R.drawable.image_load_fail);  //加载失败显示的图片
 		imageView.setImageUrl(productlist.get(position).getMain_img(), imageLoader);
+		//imageView.setImageUrl("http://banma.itboye.com/index.php/Api/Picture/index?id=0", imageLoader);
+		
 		imageView.setOnClickListener(new OnClickListener() {
 			
 			@Override

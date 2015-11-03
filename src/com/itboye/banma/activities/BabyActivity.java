@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -85,7 +86,7 @@ public class BabyActivity extends FragmentActivity implements
 	private TextView baby_name;
 	private TextView ori_price;
 	private TextView price;
-	private TextView freight;
+	private TextView weight;
 	private TextView customs_duties;
 	private TextView sales_area;
 	private NetworkImageView pic_image;
@@ -200,7 +201,7 @@ public class BabyActivity extends FragmentActivity implements
 		baby_name = (TextView) findViewById(R.id.baby_name);
 		ori_price = (TextView) findViewById(R.id.ori_price);
 		price = (TextView) findViewById(R.id.price);
-		freight = (TextView) findViewById(R.id.freight);
+		weight = (TextView) findViewById(R.id.weight);
 		customs_duties = (TextView) findViewById(R.id.customs_duties);
 		sales_area = (TextView) findViewById(R.id.sales_area);
 		all_choice_layout = (LinearLayout) findViewById(R.id.all_choice_layout);
@@ -550,13 +551,8 @@ public class BabyActivity extends FragmentActivity implements
 		price.setText("￥" + productDetail.getPrice());
 		ori_price.getPaint().setFlags(
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-		// 是否包邮
-		if (productDetail.getTemplate_id() == 1) {
-			freight.setText("免运费");
-		} else {
-			freight.setText("￥");
-		}
-		customs_duties.setText("免关税");
+		weight.setText(productDetail.getWeight()+"kg");
+		customs_duties.setText("￥0.0");
 		sales_area.setText(productDetail.getLoc_province()
 				+ productDetail.getLoc_city());
 		/*popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
@@ -587,6 +583,7 @@ public class BabyActivity extends FragmentActivity implements
 					productDetail.getDetail();
 			System.out.println(productDetail.getDetail());
 			detail_image.loadDataWithBaseURL("about:blank", htmlString, "text/html", "utf-8", null);
+			detail_image.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		}else{
 			detail_image.setVisibility(View.GONE);
 			no_detail = (ImageView) findViewById(R.id.con_image);
