@@ -1,7 +1,5 @@
 package com.itboye.banma.activities;
 
-import javax.security.auth.PrivateCredentialPermission;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +30,7 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
@@ -47,12 +46,19 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private Gson gson = new Gson();
 	private ProgressDialog dialog;
 	
-	private IWXAPI api;
+	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
+	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
+	 public  static IWXAPI api;
+	
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		api=WXAPIFactory.createWXAPI(this, APP_ID,true);
+		api.registerApp(APP_ID);
+		
 		initId(this);
 		dialog = new ProgressDialog(LoginActivity.this);
 		appContext = (AppContext) getApplication();
@@ -65,9 +71,6 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		tvForget.setOnClickListener(forgetListener);
 		tvQuXiao.setOnClickListener(quxiaoListener );
 		ivWeixin.setOnClickListener(this);
-		//注册到微信
-		api=WXAPIFactory.createWXAPI(this, AppContext.APP_ID,true);
-		api.registerApp(AppContext.APP_ID);
 		
 	}
 
@@ -105,7 +108,11 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.iv_weixin:
-			
+			 final SendAuth.Req req = new SendAuth.Req();
+			    req.scope = "snsapi_userinfo";
+			    req.state = "WEIXIN_STATE";
+		//	   AppContext. api.sendReq(req);
+			   Log.v("Tag", "tingdao");
 			break;
 
 		default:
@@ -192,29 +199,24 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			appContext.setLogin(true);
 			appContext.setLoginUid(user.getId());
 			appContext.setPassword(user.getPassword());
+			AppContext.setHeadurl(user.getHead());
+			AppContext.setNickname(user.getNickname());
 			System.out.println(appContext.getPassword());
 			Log.v("用户id", user.getId()+"");
 		    String use = etName.getText().toString();   
 		    String pas = etPassword.getText().toString(); 
-		/*	//并使用AES加密算法给密码加密。
-	        String use = etName.getText().toString().trim();   
-	        String pas = etPassword.getText().toString().trim(); 
-	       try{  
-	        	pas = AESEncryptor.encrypt("41227677", pas);  
-	        }catch(Exception ex){  
-	            Toast.makeText(this, "给密码加密时产生错误!", Toast.LENGTH_SHORT).show();
-	            pas = "";  
-	        }  */
-	        //获取名字为“MY_PREFERENCES”的参数文件对象。  
 	        SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 	        //使用Editor接口修改SharedPreferences中的值并提交。  
 	        Editor editor = sp.edit();  
 	        editor.putString(Constant.MY_ACCOUNT, use);  
 	        editor.putString(Constant.MY_PASSWORD,pas);  
-	        editor.putString(Constant.MY_USERID, user.getId()+"");
 	        editor.putBoolean(Constant.IS_LOGIN, true);
 	        editor.commit();
 	        dialog.dismiss();
+	        Intent  intent=getIntent();
+	        intent.putExtra("nickname", user.getNickname());
+	        intent.putExtra("headurl", user.getHead());
+	        setResult(100, intent);
 	        sp.getString(Constant.MY_ACCOUNT, "");
 	        System.out.println(data.toString());
 	        finish();
@@ -223,7 +225,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		} else {
 			dialog.dismiss();
 			appContext.setLogin(false);
-			Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" + content.toString(), Toast.LENGTH_LONG)
+			Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" , Toast.LENGTH_LONG)
 			.show();
 			System.out.println("code=" + data.toString());
 		}

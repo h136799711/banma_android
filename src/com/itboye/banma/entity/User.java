@@ -6,6 +6,13 @@ package com.itboye.banma.entity;
  */
 public class User {
 	private int id;
+	private String head;
+	public String getHead() {
+		return head;
+	}
+	public void setHead(String head) {
+		this.head = head;
+	}
 	private String username;
 	private String password;
 	private String email;

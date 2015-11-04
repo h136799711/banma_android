@@ -320,6 +320,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			if (data!=null) {
 				Bundle tempdata=data.getExtras();
 				String nickName=tempdata.getString("nickName");
+				AppContext.setNickname(tempdata.getString("nickName"));
 				tvUserName.setText(nickName);
 			}
 		}
@@ -376,7 +377,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 				fileparams = new HashMap<String, File>();
 				// 要上传的图片文件
 				System.out.println(appContext.getLoginUid());
-				textParams.put("uid", 106+"");
+				textParams.put("uid", appContext.getLoginUid()+"");
 				textParams1.put("type", "avatar");
 				File file = new File(urlpath);
 				fileparams.put("image", file);
@@ -439,11 +440,9 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					    data=new JSONObject(jsonObject.getString("data"));
 						// 服务端以字符串“1”作为操作成功标记
 					    //暂时这里先使用缓存来存放图片地址，因为登陆时服务器并没有返回图片地址
-				    		Editor editor = sp.edit();  
-					        editor.putString(Constant.MY_HEAD_URL, data.getString("imgurl"));
-					        editor.commit();
+//				    	
 							ivHead.setImageBitmap(bitmap);
-							AppContext.setPathHeadImage(data.getString("imgurl"));
+							AppContext.setHeadurl(data.getString("imgurl"));
 							System.out.println(jsonObject.toString());
 							Toast.makeText(MorePersonal.this, "头像上传成功", Toast.LENGTH_SHORT).show();			
 					}
@@ -564,9 +563,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 						try {
 						       ivHead.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
 								ivHead.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
-							//	ivHead.setImageUrl(AppContext.getPathHeadImage(), imageLoader);
+								ivHead.setImageUrl(AppContext.getHeadurl(), imageLoader);
 							//	System.out.println(AppContext.getPathHeadImage());;
-								System.out.println(sp.getString(Constant.MY_HEAD_URL, "发送错误"));
 								ivHead.setOnClickListener(this);
 							}catch (Exception e) {
 							// TODO: handle exception
@@ -593,18 +591,18 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	     		Toast.makeText(MorePersonal.this, "查询数据失败", Toast.LENGTH_SHORT).show();
 			}
 		}
-	@Override 
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
-		if (appContext.isLogin()) {
-			String number=sp.getString(Constant.MY_ACCOUNT, "");
-			String psw=sp.getString(Constant.MY_PASSWORD, "");
-			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
-																															//请求用户头像数据
-		}
-	}
+//	@Override 
+//	protected void onStart() {
+//		// TODO Auto-generated method stub
+//		super.onStart();
+//		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
+//		if (appContext.isLogin()) {
+//			String number=sp.getString(Constant.MY_ACCOUNT, "");
+//			String psw=sp.getString(Constant.MY_PASSWORD, "");
+//			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
+//																															//请求用户头像数据
+//		}
+//	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {

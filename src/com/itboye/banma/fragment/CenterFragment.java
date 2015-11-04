@@ -3,9 +3,11 @@ package com.itboye.banma.fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,7 @@ import com.itboye.banma.app.Constant;
 import com.itboye.banma.util.CircleImg;
 import com.itboye.banma.utils.BitmapCache;
 
-public class CenterFragment extends Fragment implements OnClickListener,StrUIDataListener{
+public class CenterFragment extends Fragment implements OnClickListener{
 	private View chatView;
 	private CircleImg ivPersonheadFail;//未登录头头像
 	private CircleImg ivPersonhead;//登陆的头像
@@ -49,8 +51,8 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 	private LinearLayout order_goods;
 	private AppContext appContext;
 	private SharedPreferences sp;
-	private String nickname=null;//显示用户昵称
 	private StrVolleyInterface networkHelper;
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 		chatView = inflater.inflate(R.layout.activity_center, container, false);
 		appContext = (AppContext) getActivity().getApplication();
 		networkHelper = new StrVolleyInterface(getActivity());
-		networkHelper.setStrUIDataListener(this);
+	//	networkHelper.setStrUIDataListener(this);
 		initId();
 		return chatView;
 	}
@@ -76,28 +78,28 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
        // SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
       // String userId= sp.getString("MY_USERID", "");
 		String userId=appContext.getLoginUid()+"";
-		//ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
+//		ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
 		ivPersonheadFail=(CircleImg)chatView.findViewById(R.id.iv_personheadfail);
-		ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);;
+		ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
 		tvPersonnamefail=(TextView)chatView.findViewById(R.id.tv_personnamefail);
-		sp = getActivity().getSharedPreferences(Constant.MY_PREFERENCES, getActivity().MODE_PRIVATE);
+//		sp = getActivity().getSharedPreferences(Constant.MY_PREFERENCES, getActivity().MODE_PRIVATE);
 		
-		if (appContext.isLogin()) {
-			String number=sp.getString(Constant.MY_ACCOUNT, "");
-			String psw=sp.getString(Constant.MY_PASSWORD, "");
-			ApiClient.Login(getActivity(), number, psw, networkHelper);//请求用户数据
-			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-					new BitmapCache());
-			try {
-			      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
-			       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
-				  ivPersonheadFail.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
-				}catch (Exception e) {
-				// TODO: handle exception
-					e.printStackTrace();
-			    	System.out.println("头像加载失败");
-			}		
-		}
+//		if (appContext.isLogin()) {
+//			String number=sp.getString(Constant.MY_ACCOUNT, "");
+//			String psw=sp.getString(Constant.MY_PASSWORD, "");
+//			ApiClient.Login(getActivity(), number, psw, networkHelper);//请求用户数据
+//			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+//					new BitmapCache());
+//			try {
+//			      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
+//			       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
+//				  ivPersonheadFail.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
+//				}catch (Exception e) {
+//				// TODO: handle exception
+//					e.printStackTrace();
+//			    	System.out.println("头像加载失败");
+//			}		
+//		}
 		tvYongJin=(TextView)chatView.findViewById(R.id.tv_yongjin);
 		ivShare=(ImageView)chatView.findViewById(R.id.iv_share);
 	   rlMoney=(LinearLayout)chatView.findViewById(R.id.rl_money);
@@ -151,7 +153,7 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 			break;
 		case R.id.iv_personheadfail://点击成功头像 跳转
 		if (!appContext.isLogin()) {
-				startActivity(new Intent(getActivity(),LoginActivity.class));
+				startActivityForResult(new Intent(getActivity(),LoginActivity.class),100);
 				getActivity().overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}
@@ -204,62 +206,79 @@ public class CenterFragment extends Fragment implements OnClickListener,StrUIDat
 			break;
 		}
 	}
-	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode==100) {
+			if (data!=null) {
+				if (appContext.isLogin()) {
+					ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+							new BitmapCache());
+					try {
+					      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
+					       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
+					      ivPersonheadFail.setImageUrl(AppContext.getHeadurl(), imageLoader);
+					     tvPersonnamefail.setText(AppContext.getNickname());
+						}catch (Exception e) {
+						// TODO: handle exception
+							e.printStackTrace();
+					}		
+				}else {
+					ivPersonheadFail.setImageResource(R.drawable.person_head);
+					tvPersonnamefail.setText("登陆/注册");
+				}
+    		}
+    	}
+	}
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
 		if (appContext.isLogin()) {
-			String number=sp.getString(Constant.MY_ACCOUNT, "");
-			String psw=sp.getString(Constant.MY_PASSWORD, "");
-			ApiClient.Login(getActivity(), number, psw, networkHelper);//请求用户数据
 			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 					new BitmapCache());
 			try {
 			      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
 			       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
-			      ivPersonheadFail.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
-			      System.out.println("头像加载失败123");
+			      ivPersonheadFail.setImageUrl(AppContext.getHeadurl(), imageLoader);
+			      tvPersonnamefail.setText(AppContext.getNickname());
 				}catch (Exception e) {
 				// TODO: handle exception
+					ivPersonheadFail.setImageResource(R.drawable.person_head);
 					e.printStackTrace();
-			    
 			}		
 		}else {
 			ivPersonheadFail.setImageResource(R.drawable.person_head);
-			System.out.println("头像加载失败");
 			tvPersonnamefail.setText("登陆/注册");
 		}
-		if (appContext.isLogin()) {
-			tvPersonnamefail.setText(nickname);
-		}
 	}
-	@Override
-	public void onErrorHappened(VolleyError error) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onDataChanged(String data) {
-		// TODO Auto-generated method stub
-		JSONObject jsonObject=null;
-		String content=null;
-		int code = -1;
-		JSONObject jsonObject2 = null;
-
-		try {
-			jsonObject = new JSONObject(data);
-			code = jsonObject.getInt("code");
-			content=jsonObject.getString("data");
-			jsonObject2=new JSONObject(content);
-		    nickname=jsonObject2.getString("nickname");
-		} catch (JSONException e1) {
-			e1.printStackTrace();
-		}
-		if (code == 0) {
-				if (appContext.isLogin()) {
-					tvPersonnamefail.setText(nickname);
-				}
-	     	}
-		}  
+//	@Override
+//	public void onErrorHappened(VolleyError error) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//	@Override
+//	public void onDataChanged(String data) {
+//		// TODO Auto-generated method stub
+//		JSONObject jsonObject=null;
+//		String content=null;
+//		int code = -1;
+//		JSONObject jsonObject2 = null;
+//
+//		try {
+//			jsonObject = new JSONObject(data);
+//			code = jsonObject.getInt("code");
+//			content=jsonObject.getString("data");
+//			jsonObject2=new JSONObject(content);
+//		    nickname=jsonObject2.getString("nickname");
+//		} catch (JSONException e1) {
+//			e1.printStackTrace();
+//		}
+//		if (code == 0) {
+//				if (appContext.isLogin()) {
+//					tvPersonnamefail.setText(nickname);
+//				}
+//	     	}
+//		}  
 }

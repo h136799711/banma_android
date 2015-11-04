@@ -33,22 +33,24 @@ public class AppContext extends Application {
 	public static  boolean hasHead=false;//是否已经设置头像
 	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
 	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
-
-	public static boolean isHasHead() {
-		return hasHead;
+	 public static String getNickname() {
+		return nickname;
 	}
 
-	public static void setHasHead(boolean hasHead) {
-		AppContext.hasHead = hasHead;
+	public static void setNickname(String nickname) {
+		AppContext.nickname = nickname;
 	}
 
-	public static String getPathHeadImage() {
-		return pathHeadImage;
+	public static String getHeadurl() {
+		return headurl;
 	}
 
-	public static void setPathHeadImage(String pathHeadImage) {
-		AppContext.pathHeadImage = pathHeadImage;
+	public static void setHeadurl(String headurl) {
+		AppContext.headurl = headurl;
 	}
+
+	public static String nickname;
+	 private static String headurl;
 
 	@Override
 	public void onCreate() {
