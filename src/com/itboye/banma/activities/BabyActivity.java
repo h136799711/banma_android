@@ -418,30 +418,26 @@ public class BabyActivity extends FragmentActivity implements
 			// System.out.println(productDetail.getName());
 			// System.out.println(productDetail.getPrice());
 
-			/*if (appContext.isLogin()) {
-				if (skuStandard.getQuantity()>Integer.parseInt(skuStandard.getNum())){
-					requestState = 1;
-					ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()
-							+ "", productDetail.getStoreid() + "",
-							productDetail.getId() + "", skuStandard.getSku_id()
-									+ "", skuStandard.getSku(),
+			if (appContext.isLogin()) {
+
+				requestState = 1;
+				ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()
+						+ "", productDetail.getStore_id() + "",
+						productDetail.getId() + "", skuStandard.getSku_id()
+						+ "", skuStandard.getSku(),
 						//	skuStandard.getIcon_url(),
-							productDetail.getMain_img(),
-							skuStandard.getNum(), productDetail.getName(),
-							productDetail.getExpress(), productDetail.getPrice()
-									+ "", productDetail.getOri_price() + "",
-							skuStandard.getId() + "", strnetworkHelper);
-				}else {
-					Toast.makeText(BabyActivity.this, "库存不足", Toast.LENGTH_LONG)
-					.show();
-				}
-			} else {
-				Toast.makeText(BabyActivity.this, "请先登录", Toast.LENGTH_LONG)
-						.show();
-				startActivity(new Intent(BabyActivity.this, LoginActivity.class));
-				overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
-			}*/
+						productDetail.getMain_img(),
+						skuStandard.getNum(), productDetail.getName(),
+						"0", productDetail.getPrice()
+						+ "", productDetail.getOri_price() + "",
+						skuStandard.getId() + "", productDetail.getWeight(), "0", strnetworkHelper);
+			}else {
+				Intent intent = new Intent(BabyActivity.this,
+						LoginActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			}
+
 		}
 	}
 

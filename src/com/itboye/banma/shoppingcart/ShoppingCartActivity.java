@@ -114,8 +114,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 		btn_quguangguang.setOnClickListener(this);
 		tv_guansui=(TextView)findViewById(R.id.tv_guansui);
 		tv_express=(TextView)findViewById(R.id.tv_express);
-		tv_weight=(TextView)findViewById(R.id.tv_weight);
-		ll_other=(LinearLayout)findViewById(R.id.ll_other);
+		/*tv_weight=(TextView)findViewById(R.id.tv_weight);
+		ll_other=(LinearLayout)findViewById(R.id.ll_other);*/
 		ll_cart_bottom=(LinearLayout)findViewById(R.id.ll_cart_bottom);
 		all_choice_layout=(LinearLayout)findViewById(R.id.all_choice_layout);
 		tv_title_right=(TextView)findViewById(R.id.tv_title_right);

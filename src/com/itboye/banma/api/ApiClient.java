@@ -98,7 +98,7 @@ public class ApiClient {
 	//购物车添加
 			public static void addCart(Context context,String uid,String  store_id, String p_id,
 					String sku_id,String sku_desc,String icon_url,String count,String name,String express,
-					String price ,String ori_price,String psku_id, StrVolleyInterface networkHelper){
+					String price ,String ori_price,String psku_id, Double weight, String taxrate, StrVolleyInterface networkHelper){
 				String access_token=AppContext.getAccess_token();
 				String url = Constant.URL+"/ShoppingCart/add?access_token="+access_token;
 				Map<String,String> params = new HashMap<String, String>();
@@ -111,10 +111,12 @@ public class ApiClient {
 		        params.put("icon_url",icon_url+"");
 		        params.put("count",count+"");  
 		        params.put("name",name+"");
-		        params.put("express", express+"0");
+		        params.put("express", "0");
 		        params.put("price", price+"");
 		        params.put("ori_price", ori_price+"");
 		        params.put("psku_id", psku_id+"");
+		        params.put("psku_id", weight+"");
+		        params.put("psku_id", taxrate);
 		        VolleyRequest.StrRequestPost(context, url, "addCart",params, networkHelper);
 			}
 	
