@@ -37,6 +37,7 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.MailingAdress;
 import com.itboye.banma.entity.SkuStandard;
+import com.itboye.banma.payalipay.PayAlipay;
 import com.itboye.banma.utils.BitmapCache;
 
 public class ConfirmOrdersActivity extends Activity implements OnClickListener,
@@ -66,7 +67,7 @@ StrUIDataListener {
 	private List<SkuStandard> list = new ArrayList<SkuStandard>();
 	private int state = -1;
 	private Button confirm;
-
+	private PayAlipay payAlipay;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_order);
@@ -261,14 +262,17 @@ StrUIDataListener {
 			break;
 		case R.id.confirm:
 			// 添加订单
-			ordersAdd(appContext.getLoginUid(), 0, null, null,
+			/*ordersAdd(appContext.getLoginUid(), 0, null, null,
 					address.getContactname(), address.getMobile(),
 					address.getCountry(), address.getProvince(),
 					address.getCity(), address.getArea(), null,
-					address.getDetailinfo(), 2);
+					address.getDetailinfo(), 2);*/
 
 			// 完成订单提交，成功后启动支付宝付款
 
+			payAlipay = new PayAlipay(ConfirmOrdersActivity.this);
+			payAlipay.pay(v, ""+priceAll);
+			
 			break;
 		case R.id.order_flex:
 			if (orderListView.getVisibility() == View.VISIBLE) {
