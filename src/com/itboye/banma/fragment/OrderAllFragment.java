@@ -111,7 +111,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		pageNo = 0;
+		pageNo = 1;
 		pageSize = Constant.PAGE_SIZE;
 		adapter = null;
 		if(orderList != null){
@@ -140,7 +140,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 					retry_img.setVisibility(View.GONE);
 					loading_ll.setVisibility(View.VISIBLE);
 					orderListLayout.setVisibility(View.GONE);
-					pageNo = 0;
+					pageNo = 1;
 					orderList.clear();
 					load_data();
 				}
@@ -158,7 +158,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 	@Override
 	public void onRefresh() {
 		upOrdowm = 0;  //0表示顶部刷新
-		pageNo = 0;
+		pageNo = 1;
 		pageSize = Constant.PAGE_SIZE;
 		//orderList.clear();
 		load_data();
