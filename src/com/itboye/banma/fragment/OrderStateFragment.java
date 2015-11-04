@@ -22,6 +22,7 @@ import com.itboye.banma.view.PullToRefreshListView;
 import com.itboye.banma.view.PullToRefreshListView.OnRefreshListener;
 
 import android.support.v4.app.Fragment;
+import android.R.integer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class OrderDaiFuFragment extends Fragment implements StrUIDataListener {
+public class OrderStateFragment extends Fragment implements StrUIDataListener {
 	private View chatView;
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
@@ -48,6 +49,11 @@ public class OrderDaiFuFragment extends Fragment implements StrUIDataListener {
 	private ListView listView;
 	private ListView fresh_list;
 	private OrderListAdapter adapter;
+	private int state;  //区分订单状态:1：代付款 2：代发货  3：待收货  4：待评价
+	
+	public OrderStateFragment(int state){
+		this.state = state;
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,7 @@ public class OrderDaiFuFragment extends Fragment implements StrUIDataListener {
 		super.onCreate(savedInstanceState);
 		appContext = (AppContext) getActivity().getApplication();
 		networkHelper = new StrVolleyInterface(getActivity());
-		networkHelper.setStrUIDataListener(OrderDaiFuFragment.this);
+		networkHelper.setStrUIDataListener(OrderStateFragment.this);
 		
 		
 	}
@@ -193,13 +199,37 @@ public class OrderDaiFuFragment extends Fragment implements StrUIDataListener {
 				//map转化为List
 				Iterator it = retMap.keySet().iterator(); 
 				while (it.hasNext()) {  
-			           String key = it.next().toString();  
-			           if(!retMap.get(key).getOrder_status().equals(Constant.ORDER_CANCEL+"") 
-			        		   && retMap.get(key).getPay_status().equals(Constant.ORDER_TOBE_PAID+"") ){
-			        	   orderList.add(retMap.get(key)); 
-			           }
-			            
-			       }
+					String key = it.next().toString();
+					switch (state) {
+					case Constant.DAIFUKUAN:  //代付款
+						if(!retMap.get(key).getOrder_status().equals(Constant.ORDER_CANCEL+"") 
+							&& retMap.get(key).getPay_status().equals(Constant.ORDER_TOBE_PAID+"")
+							&& retMap.get(key).getOrder_status().equals(Constant.ORDER_TOBE_CONFIRMED+"") ){
+							orderList.add(retMap.get(key)); 
+						}
+					break;
+					case Constant.DAIFAHUO:  //代发货
+						if(retMap.get(key).getOrder_status().equals(Constant.ORDER_TOBE_SHIPPED+"")) 
+						{
+							orderList.add(retMap.get(key)); 
+						}
+					break;
+					case Constant.DAISHOUHUO:  //代收货
+						if(retMap.get(key).getOrder_status().equals(Constant.ORDER_SHIPPED+"")) 
+						{
+							orderList.add(retMap.get(key)); 
+						}
+						break;
+					case Constant.DAIPINGJIA:  //代评价
+						
+						break;
+
+					default:
+						break;
+					}
+
+
+				}
 				showListView(orderList);
 				
 				

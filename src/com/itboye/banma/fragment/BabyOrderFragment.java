@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.itboye.banma.R;
 import com.itboye.banma.adapter.MyFragmentPagerAdapter;
+import com.itboye.banma.app.Constant;
 
 public class BabyOrderFragment extends Fragment implements OnClickListener{
 	private View view;
@@ -71,11 +72,11 @@ public class BabyOrderFragment extends Fragment implements OnClickListener{
 	        mPager = (ViewPager) parentView.findViewById(R.id.vPager);
 	        fragmentsList = new ArrayList<Fragment>();
 
-	        daifa = new OrderDaiFaFragment();
-	        daishou=new OrderDaiShouFragment();
-	        daifu=new OrderDaiFuFragment();
+	        daifa = new OrderStateFragment(Constant.DAIFAHUO);
+	        daishou=new OrderStateFragment(Constant.DAISHOUHUO);
+	        daifu=new OrderStateFragment(Constant.DAIFUKUAN);
 	        quanbu=new OrderAllFragment();
-	        daiping=new OrderDaiPingFragment();
+	        daiping=new OrderStateFragment(Constant.DAIPINGJIA);
 
 	        fragmentsList.add(quanbu);
 	        fragmentsList.add(daifu);

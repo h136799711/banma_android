@@ -29,6 +29,12 @@ public class Constant {
     
     public static final int PAGE_SIZE = 20;  //分页显示条数
     
+    //订单状态显示的区分
+    public static final int DAIFUKUAN = 1;
+    public static final int DAIFAHUO = 2;
+    public static final int DAISHOUHUO = 3;
+    public static final int DAIPINGJIA = 4;
+    
     /**
      * 订单退回
      */

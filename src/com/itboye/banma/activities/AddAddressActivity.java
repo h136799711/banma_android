@@ -1,5 +1,6 @@
 package com.itboye.banma.activities;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -391,8 +392,15 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 							R.anim.push_right_out);
 				}
 			} else {
-				Toast.makeText(AddAddressActivity.this, "操作失败" + data,
-						Toast.LENGTH_LONG).show();
+				try {
+					byte[] bytes = jsondata.getString("data").getBytes(); 
+					String newStr = new String(bytes , "UTF-8"); 
+					Toast.makeText(AddAddressActivity.this, "操作失败:" + newStr,
+							Toast.LENGTH_LONG).show();
+				} catch (UnsupportedEncodingException e) {
+					
+					e.printStackTrace();
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

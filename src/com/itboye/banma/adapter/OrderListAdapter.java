@@ -83,7 +83,8 @@ public class OrderListAdapter   extends BaseAdapter {
 		Button confirm_two = BaseViewHolder.get(view, R.id.confirm_two);
 		
 		order_code.setText(order.getOrder_code());
-		status.setText(Constant.getOrderStatus(Integer.parseInt(order.getOrder_status())));
+		status.setText("["+Constant.getOrderStatus(Integer.parseInt(order.getOrder_status()))
+				+"]"+" "+"["+Constant.getPayStatus(Integer.parseInt(order.getPay_status()))+"]");
 		all_price.setText(order.getPrice());
 		
 		data = order.get_items();
@@ -106,13 +107,50 @@ public class OrderListAdapter   extends BaseAdapter {
 		});
 
 		switch (Integer.parseInt(order.getOrder_status())) {
+		case Constant.ORDER_TOBE_CONFIRMED: //待确认
+			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_TOBE_PAID){ //代付款状态
+				status.setText("["+Constant.getPayStatus(Integer.parseInt(order.getPay_status()))+"]");  //[代付款]
+				confirm_one.setVisibility(View.VISIBLE);
+				confirm_two.setVisibility(View.VISIBLE);
+				confirm_one.setText("取消订单");
+				confirm_two.setText("确认付款");
+				confirm_one.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(context, OrderDetailActivity.class);
+						context.startActivity(intent);
+					}
+				});
+				confirm_two.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(context, OrderDetailActivity.class);
+						context.startActivity(intent);
+					}
+				});
+			}
+			break;
+		
 		case Constant.ORDER_BACK:   	//订单退回
 		case Constant.ORDER_CANCEL:		//取消或交易关闭
+			status.setText("["+Constant.getOrderStatus(Constant.ORDER_CANCEL)+"]");  //[交易关闭]
+			confirm_one.setVisibility(View.VISIBLE);
+			confirm_two.setVisibility(View.GONE);
+			confirm_one.setText("删除订单");
+			confirm_one.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context, OrderDetailActivity.class);
+					context.startActivity(intent);
+				}
+			});
+			break;
 		case Constant.ORDER_COMPLETED :	//已完成
 			confirm_one.setVisibility(View.GONE);
 			confirm_two.setVisibility(View.GONE);
 			break;
 		case Constant.ORDER_TOBE_SHIPPED:	//待发货
+			status.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_SHIPPED)+"]");  //[待发货]
 			confirm_one.setVisibility(View.VISIBLE);
 			confirm_two.setVisibility(View.GONE);
 			confirm_one.setText("申请退款");
