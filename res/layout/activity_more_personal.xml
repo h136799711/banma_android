@@ -98,6 +98,7 @@
         <View  style="@style/CenterLine"/>
          <RelativeLayout
       		android:layout_width="fill_parent"
+      		android:id="@+id/rl_weixin"
             android:layout_height="@dimen/more_item_height"
             android:background="@color/white" >
             <TextView

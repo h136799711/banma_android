@@ -3,6 +3,8 @@ package com.itboye.banma.activities;
 import java.util.Map;
 import java.util.Set;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,6 +55,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private Gson gson = new Gson();
 	private ProgressDialog dialog;
     UMSocialService mController;
+    
+    private SharedPreferences sp ;
 	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
 	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
 	
@@ -115,9 +119,10 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		 final SharedPreferences sp = LoginActivity.this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		switch (v.getId()) {
 		case R.id.iv_weixin:
-			
+			if (!sp.getString(Constant.WEIXIN_CODE, "").equals("")) {
 			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
 			    @Override
 			    public void onStart(SHARE_MEDIA platform) {
@@ -132,6 +137,10 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			    	
 			    	System.out.println(platform.getReqCode()+"bundle"
 			    			   +value.getString("uid")+"uid"+value.toString());
+			    	
+				        //使用Editor接口修改SharedPreferences中的值并提交。  
+			    	ApiClient.wxLogin(LoginActivity.this, value.getString("access_token"), networkHelper);
+			    	
 			        Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
 			        //获取相关授权信息
 			        mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMDataListener() {
@@ -159,7 +168,10 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			    public void onCancel(SHARE_MEDIA platform) {
 			        Toast.makeText(LoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
 			    }
-			} );
+			} );		
+		}else {
+			Toast.makeText(LoginActivity.this, "请先登陆,并绑定您的微信", Toast.LENGTH_SHORT).show();
+		}
 			   Log.v("Tag", "tingdao");
 			break;
 
@@ -275,7 +287,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			appContext.setLogin(false);
 			Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" , Toast.LENGTH_LONG)
 			.show();
-			System.out.println("code=" + data.toString());
+			System.out.println("code=" + content.toString());
 		}
 	}
 	

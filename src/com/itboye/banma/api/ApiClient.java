@@ -23,6 +23,27 @@ public class ApiClient {
 	
 	public static StringRequest stringRequest;
 	
+	//微信登陆
+	public static void wxLogin(Context mContext, String code, StrVolleyInterface networkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Weixin/login?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+        params.put("Code",code);
+        VolleyRequest.StrRequestPost(mContext, url, "wxLogin",params, networkHelper);
+		
+	} 
+	
+	//微信绑定
+		public static void wxBangDing(Context mContext, String uid, String code,StrVolleyInterface networkHelper) {
+			String access_token=AppContext.getAccess_token();
+			System.out.println(access_token);
+			String url = Constant.URL+"/Weixin/bind?access_token="+access_token+"&code="+code;
+			Map<String,String> params = new HashMap<String, String>();
+	        params.put("uid",uid);
+	        VolleyRequest.StrRequestPost(mContext, url, "wxBangDing",params, networkHelper);
+			
+		} 
+	
 	public static void getToken(Context mContext, String grant_type, String client_id,
 			String client_secret, StrVolleyInterface networkHelper) {
 		String url = Constant.URL+"/Token/index ";

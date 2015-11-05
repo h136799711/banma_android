@@ -15,7 +15,7 @@ public class Constant {
     public static final String MY_HEAD_URL="MY_HEAD_URL";//我的头像
     public static final String MY_BANGDING="MY_BANGDING";//绑定的手机号
     public static final String 	IS_LOGIN="IS_LOGIN";//是否登陆
-    public static final String WEIXIN="WEIXIN";//微信是否绑定
+    public static final String WEIXIN_CODE="WEIXIN_CODE";//微信是否绑定
     public static final int CONORDER_ADDADR = 10; //有确认订单跳转到添加收货地址的传参
     
     public static String[] SKU_INFO = {"","","","","",""};

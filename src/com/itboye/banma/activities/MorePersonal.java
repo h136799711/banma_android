@@ -9,8 +9,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.BreakIterator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +60,13 @@ import com.itboye.banma.util.CircleImg;
 import com.itboye.banma.util.NetUtil;
 import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.welcome.WelcomeActivity;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners.UMAuthListener;
+import com.umeng.socialize.controller.listener.SocializeListeners.UMDataListener;
+import com.umeng.socialize.exception.SocializeException;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 public class MorePersonal extends Activity implements OnClickListener,StrUIDataListener{
 	private static final int PHOTO_REQUEST_CAMERA = 1;// 拍照
@@ -84,8 +93,13 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	private TextView tvTelephone;//拨打电话
 	private Button btExit;//退出登陆按钮
 	private RelativeLayout rlPersonMain;//总布局
+	private RelativeLayout rlWeiXin;//微信
 	private RelativeLayout rlShengFenZheng;//绑定身份证
-	private int FLAG=0;//区分返回请求数据
+	private int FLAG=0;//区分返回请求数据 =1,表示微信请求的
+	
+	
+	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
+	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
 	
 	/* 头像名称 */
 	 private static ProgressDialog pd;// 等待进度圈
@@ -103,12 +117,20 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	private CircleImg ivHead;//头像
 	private Bitmap bitmap;
 	private SharedPreferences sp;
+    UMSocialService mController;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_more_personal);
 		//mSingleQueue = Volley.newRequestQueue(this, new MultiPartStack());
+
+		// 添加微信平台
+		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
+		UMWXHandler wxHandler = new UMWXHandler(this,APP_ID,AppSecret);
+		wxHandler.addToSocialSDK();
+		
+		
 		mSingleQueue=AppContext.queues;
 		appContext=(AppContext) getApplication();
 		networkHelper = new StrVolleyInterface(this);
@@ -128,12 +150,13 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		rlPersonMain.setOnClickListener(this);
 		tvRenZhen.setOnClickListener(this);;
 		rlShengFenZheng.setOnClickListener(this);
+		rlWeiXin.setOnClickListener(this);
 	}
 	
 	
 	private void initID(){
 		imgUrl = Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
-		
+		rlWeiXin=(RelativeLayout)findViewById(R.id.rl_weixin);
 		rlShengFenZheng=(RelativeLayout)findViewById(R.id.rl_shengfenzheng);
 		tvRenZhen=(TextView)findViewById(R.id.tv_renzhen);
 		rlPersonMain=(RelativeLayout)findViewById(R.id.rl_person_main);
@@ -178,7 +201,65 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		 final SharedPreferences sp = MorePersonal.this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		switch (v.getId()) {
+	
+		case R.id.rl_weixin:
+			if (appContext.isLogin()) {
+				FLAG=1;
+				mController.doOauthVerify(MorePersonal.this, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
+				    @Override
+				    public void onStart(SHARE_MEDIA platform) {
+				        Toast.makeText(MorePersonal.this, "授权开始", Toast.LENGTH_SHORT).show();
+				    }
+				    @Override
+				    public void onError(SocializeException e, SHARE_MEDIA platform) {
+				        Toast.makeText(MorePersonal.this, "授权错误", Toast.LENGTH_SHORT).show();
+				    }
+				    @Override
+				    public void onComplete(Bundle value, SHARE_MEDIA platform) {
+				    	
+				    	System.out.println(platform.getReqCode()+"bundle"
+				    			   +value.getString("uid")+"uid"+value.toString());
+				    	
+					        //使用Editor接口修改SharedPreferences中的值并提交。  
+				        ApiClient.wxBangDing(MorePersonal.this, appContext.getLoginUid()+"", "107777839405", networkHelper);
+				        Editor editor = sp.edit();  
+				        editor.putString(Constant.WEIXIN_CODE, value.getString("access_token"));
+				        editor.commit();
+				        Toast.makeText(MorePersonal.this, "授权完成", Toast.LENGTH_SHORT).show();
+				        //获取相关授权信息
+				        mController.getPlatformInfo(MorePersonal.this, SHARE_MEDIA.WEIXIN, new UMDataListener() {
+				    @Override
+				    public void onStart() {
+				        Toast.makeText(MorePersonal.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+				    }                                              
+				    @Override
+				        public void onComplete(int status, Map<String, Object> info) {
+				            if(status == 200 && info != null){
+				                StringBuilder sb = new StringBuilder();
+				                Set<String> keys = info.keySet();
+				                for(String key : keys){
+				                   sb.append(key+"="+info.get(key).toString()+"\r\n");
+				                }
+				                Log.d("TestData",sb.toString());
+				            }else{
+				               Log.d("TestData","发生错误："+status);
+				           }
+				        }
+
+				});
+				    }
+				    @Override
+				    public void onCancel(SHARE_MEDIA platform) {
+				        Toast.makeText(MorePersonal.this, "授权取消", Toast.LENGTH_SHORT).show();
+				    }
+				} );		
+				}
+			break;
+
+			
+		
 		case R.id.rl_head:
 			if (appContext.isLogin())
 			{
@@ -439,8 +520,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 						System.out.println(jsonObject.toString());
 					    data=new JSONObject(jsonObject.getString("data"));
 						// 服务端以字符串“1”作为操作成功标记
-					    //暂时这里先使用缓存来存放图片地址，因为登陆时服务器并没有返回图片地址
-//				    	
+					    //暂时这里先使用缓存来存放图片地址，因为登陆时服务器并没有返回图片地址			    	
 							ivHead.setImageBitmap(bitmap);
 							AppContext.setHeadurl(data.getString("imgurl"));
 							System.out.println(jsonObject.toString());
@@ -522,17 +602,38 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
-		
+		Log.v("注册接口",error.toString());
+	    Log.e("LOGIN-ERROR", error.getMessage(), error);
+	    byte[] htmlBodyBytes = error.networkResponse.data;
+	    Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
 	}
 
 
 	@Override
 	public void onDataChanged(String data) {
-		// TODO Auto-generated method stub
 		JSONObject jsonObject=null;
 		int code = -1;
 		String content = null;
 		JSONObject jsonObject2=null;
+		if (FLAG==1) {
+			try {
+				jsonObject=new JSONObject(data);
+				code=jsonObject.getInt("code");
+				content = jsonObject.getString("data");
+				jsonObject2=new JSONObject(content);
+				if (code==0) {
+					System.out.println(content.toString());
+				}
+				else {
+					System.out.println(content.toString());
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+		// TODO Auto-generated method stub
+	
 		String nickname = null;
 		String phoneNumber=null;
 		String weiXin=null;
@@ -591,6 +692,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	     		Toast.makeText(MorePersonal.this, "查询数据失败", Toast.LENGTH_SHORT).show();
 			}
 		}
+ 	}
 //	@Override 
 //	protected void onStart() {
 //		// TODO Auto-generated method stub
