@@ -30,9 +30,6 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
-import com.tencent.mm.sdk.modelmsg.SendAuth;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
@@ -48,16 +45,12 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	
 	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
 	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
-	 public  static IWXAPI api;
 	
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
-		api=WXAPIFactory.createWXAPI(this, APP_ID,true);
-		api.registerApp(APP_ID);
 		
 		initId(this);
 		dialog = new ProgressDialog(LoginActivity.this);
@@ -108,10 +101,6 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.iv_weixin:
-			 final SendAuth.Req req = new SendAuth.Req();
-			    req.scope = "snsapi_userinfo";
-			    req.state = "WEIXIN_STATE";
-		//	   AppContext. api.sendReq(req);
 			   Log.v("Tag", "tingdao");
 			break;
 
