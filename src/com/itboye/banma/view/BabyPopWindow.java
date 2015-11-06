@@ -79,10 +79,11 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private ChooseStandardInterface ch;
 	String standard = null;
 	String standardStr = null;
+	int has_sku;
 
 	public BabyPopWindow(Context context, List<Sku_info> sku_info, String name,
 			List<SkuInfo> skuInfo, String url, Double price,
-			Double ori_price, int quantity, List<SkuStandard> skuList) {
+			Double ori_price, String has_sku, int quantity, List<SkuStandard> skuList) {
 		this.context = context;
 		this.skuInfo = skuInfo;
 		this.sku_info = sku_info;
@@ -92,6 +93,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		this.price = price;
 		this.ori_price = ori_price;
 		this.quantity = quantity;
+		this.has_sku = Integer.parseInt(has_sku);
 		ch = new ChooseStandardInterface();
 		ch.setChooseStandardListener(this);
 		view = LayoutInflater.from(context).inflate(R.layout.adapter_popwindow,
@@ -343,27 +345,43 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 
 			break;
 		case R.id.pop_ok:
-			if(skuInfo == null){
-				Toast.makeText(context, "服务器信息不全,请稍后再试", Toast.LENGTH_SHORT).show();
-			}else if (sku_id == -1) {
-				if(skuPosition == -1){
-					Toast.makeText(context, "库存为0,请重选规格", Toast.LENGTH_SHORT).show();
+			if(has_sku == 0){
+				if(Integer.valueOf(pop_num.getText().toString()) > quantity){
+					Toast.makeText(context, "购买数量过多,请减少数量", Toast.LENGTH_SHORT).show();
 				}else{
-					Toast.makeText(context, "请选择规格", Toast.LENGTH_SHORT).show();
+
+					SkuStandard sku = new SkuStandard();
+					sku.setNum(pop_num.getText().toString());
+					sku.setName(name);
+					listener.onClickOKPop(sku);
 				}
+			}else if(has_sku == 1){
+				if(skuInfo == null){
+					Toast.makeText(context, "服务器信息不全,请稍后再试", Toast.LENGTH_SHORT).show();
+				}else if (sku_id == -1) {
+					if(skuPosition == -1){
+						Toast.makeText(context, "库存为0,请重选规格", Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(context, "请选择规格", Toast.LENGTH_SHORT).show();
+					}
 				
-			}else {
-				if(skuList.get(skuPosition).getQuantity() <= 0){
-					Toast.makeText(context, "库存为0,请重选规格", Toast.LENGTH_SHORT).show();
-				}else{
-					skuList.get(skuPosition).setNum(pop_num.getText().toString());
-					skuList.get(skuPosition).setName(name);
-					skuList.get(skuPosition).setSku(standardStr);
-					listener.onClickOKPop(skuList.get(skuPosition));
+				}else {
+					if(skuList.get(skuPosition).getQuantity() <= 0){
+						Toast.makeText(context, "库存为0,请重选规格", Toast.LENGTH_SHORT).show();
+					}else{
+						if(Integer.valueOf(pop_num.getText().toString()) > skuList.get(skuPosition).getQuantity()){
+							Toast.makeText(context, "购买数量过多,请减少数量", Toast.LENGTH_SHORT).show();
+						}else{
+							skuList.get(skuPosition).setNum(pop_num.getText().toString());
+							skuList.get(skuPosition).setName(name);
+							skuList.get(skuPosition).setSku(standardStr);
+							listener.onClickOKPop(skuList.get(skuPosition));
 
-					dissmiss();
+							dissmiss();
+						}
+					}
+
 				}
-
 			}
 			break;
 

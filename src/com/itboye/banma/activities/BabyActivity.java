@@ -133,9 +133,9 @@ public class BabyActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_babydetail_a);
 		appContext = (AppContext) getApplication();
 		
-		
+		/*
 		//设置腾讯微博SSO handler
-		mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+		//mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
 		
 		//设置新浪SSO handler
 	//	mController.getConfig().setSsoHandler(new SinaSsoHandler());
@@ -161,7 +161,7 @@ public class BabyActivity extends FragmentActivity implements
 		//分享扣扣空间
 		QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, "1104887406",
                 "7mxqFi07TN8QD1ZR");
-        qZoneSsoHandler.addToSocialSDK();
+        qZoneSsoHandler.addToSocialSDK();*/
 		
 		
 		initView();
@@ -451,24 +451,44 @@ public class BabyActivity extends FragmentActivity implements
 		setBackgroundBlack(all_choice_layout, 1);
 		if (isClickBuy) {
 			if (appContext.isLogin()) {
-			// 跳转到订单确认页面
-			skuStandard.setIcon_url(productDetail.getMain_img());
-			List<SkuStandard> list = new ArrayList<SkuStandard>();
-			list.add(skuStandard);
-			
-			Intent intent = new Intent(BabyActivity.this,
-					ConfirmOrdersActivity.class);
-			intent.putExtra("SkuStandardList", (Serializable)list);
-			/*intent.putExtra("state", 0);*/
-			
-			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				int hasSku = Integer.parseInt(productDetail.getHas_sku());
+				if(hasSku == 1){
+					// 跳转到订单确认页面
+					skuStandard.setIcon_url(productDetail.getMain_img());
+					List<SkuStandard> list = new ArrayList<SkuStandard>();
+					list.add(skuStandard);
+
+					Intent intent = new Intent(BabyActivity.this,
+							ConfirmOrdersActivity.class);
+					intent.putExtra("SkuStandardList", (Serializable)list);
+					/*intent.putExtra("state", 0);*/
+
+					startActivity(intent);
+					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				}else if(hasSku == 0){
+					skuStandard.setOri_price(productDetail.getOri_price());
+					skuStandard.setPrice(productDetail.getPrice());
+					skuStandard.setQuantity(productDetail.getQuantity());
+					skuStandard.setProduct_id(productDetail.getId()+"");
+					// 跳转到订单确认页面
+					skuStandard.setIcon_url(productDetail.getMain_img());
+					List<SkuStandard> list = new ArrayList<SkuStandard>();
+					list.add(skuStandard);
+
+					Intent intent = new Intent(BabyActivity.this,
+							ConfirmOrdersActivity.class);
+					intent.putExtra("SkuStandardList", (Serializable)list);
+
+					startActivity(intent);
+					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				}
 			}else{
 				Intent intent = new Intent(BabyActivity.this,
 						LoginActivity.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
+
 		} else {
 			// Gson gson=new Gson();
 			// String s=gson.toJson(skuStandard);
@@ -616,7 +636,7 @@ public class BabyActivity extends FragmentActivity implements
 				productDetail.getQuantity(), productDetail.getSkuList());*/
 		popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
 				productDetail.getSku_info_list(), productDetail.getMain_img(),
-				productDetail.getPrice(), productDetail.getOri_price(),
+				productDetail.getPrice(), productDetail.getOri_price(),productDetail.getHas_sku(),
 				productDetail.getQuantity(), productDetail.getSku_list());
 		popWindow.setOnItemClickListener(this);
 		sharePopWindow = new SharePopWindow(this);
