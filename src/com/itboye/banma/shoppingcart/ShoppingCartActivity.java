@@ -501,6 +501,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 							ApiClient.deleteCart(ShoppingCartActivity.this,arrayList_cart.get(i).get("id").toString(), networkHelper);
 							arrayList_cart.remove(i);
 							RequestState=1;
+							arrayList_cart.get(i).notify();
 							is_choice_copy=deleteByIndex(is_choice, i);
 						}
 					}
