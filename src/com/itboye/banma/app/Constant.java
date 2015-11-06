@@ -18,6 +18,9 @@ public class Constant {
     public static final String WEIXIN_CODE="WEIXIN_CODE";//微信是否绑定
     public static final int CONORDER_ADDADR = 10; //有确认订单跳转到添加收货地址的传参
     
+    public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
+	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
+    
     public static String[] SKU_INFO = {"","","","","",""};
     public static String[] SKU_INFOSTR = {"","","","","",""};
     public static int SKU_ALLNUM = 0;  //规格总种类

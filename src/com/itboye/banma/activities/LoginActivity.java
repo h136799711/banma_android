@@ -35,6 +35,9 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -49,27 +52,27 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	EditText etPassword;//用户密码/明文
    TextView tvForget;//忘记密码
    TextView tvQuXiao;//取消
-   private ImageView ivWeixin;//微信登陆
+    private ImageView ivWeixin;//微信登陆
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	private Gson gson = new Gson();
 	private ProgressDialog dialog;
-    UMSocialService mController;
-    
+//    UMSocialService mController;
+	private IWXAPI api;  
     private SharedPreferences sp ;
-	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
-	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
-	
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
+		api = WXAPIFactory.createWXAPI(this,Constant.APP_ID, true);  
+		api.registerApp(Constant.APP_ID);
+		
 		// 添加微信平台
-		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
-		UMWXHandler wxHandler = new UMWXHandler(this,APP_ID,AppSecret);
-		wxHandler.addToSocialSDK();
+//		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
+//		UMWXHandler wxHandler = new UMWXHandler(this,APP_ID,AppSecret);
+//		wxHandler.addToSocialSDK();
 		
 		
 		initId(this);
@@ -122,57 +125,62 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		 final SharedPreferences sp = LoginActivity.this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		switch (v.getId()) {
 		case R.id.iv_weixin:
-			if (!sp.getString(Constant.WEIXIN_CODE, "").equals("")) {
-			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
-			    @Override
-			    public void onStart(SHARE_MEDIA platform) {
-			        Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
-			    }
-			    @Override
-			    public void onError(SocializeException e, SHARE_MEDIA platform) {
-			        Toast.makeText(LoginActivity.this, "授权错误", Toast.LENGTH_SHORT).show();
-			    }
-			    @Override
-			    public void onComplete(Bundle value, SHARE_MEDIA platform) {
-			    	
-			    	System.out.println(platform.getReqCode()+"bundle"
-			    			   +value.getString("uid")+"uid"+value.toString());
-			    	
-				        //使用Editor接口修改SharedPreferences中的值并提交。  
-			    	ApiClient.wxLogin(LoginActivity.this, value.getString("access_token"), networkHelper);
-			    	
-			        Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
-			        //获取相关授权信息
-			        mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMDataListener() {
-			    @Override
-			    public void onStart() {
-			        Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
-			    }                                              
-			    @Override
-			        public void onComplete(int status, Map<String, Object> info) {
-			            if(status == 200 && info != null){
-			                StringBuilder sb = new StringBuilder();
-			                Set<String> keys = info.keySet();
-			                for(String key : keys){
-			                   sb.append(key+"="+info.get(key).toString()+"\r\n");
-			                }
-			                Log.d("TestData",sb.toString());
-			            }else{
-			               Log.d("TestData","发生错误："+status);
-			           }
-			        }
-
-			});
-			    }
-			    @Override
-			    public void onCancel(SHARE_MEDIA platform) {
-			        Toast.makeText(LoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
-			    }
-			} );		
-		}else {
-			Toast.makeText(LoginActivity.this, "请先登陆,并绑定您的微信", Toast.LENGTH_SHORT).show();
-		}
-			   Log.v("Tag", "tingdao");
+			
+			final SendAuth.Req req = new SendAuth.Req();  
+			req.scope = "snsapi_userinfo";  
+			req.state = "wechat_sdk_demo_test";  
+			api.sendReq(req);  
+//			if (!sp.getString(Constant.WEIXIN_CODE, "").equals("")) {
+//			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
+//			    @Override
+//			    public void onStart(SHARE_MEDIA platform) {
+//			        Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
+//			    }
+//			    @Override
+//			    public void onError(SocializeException e, SHARE_MEDIA platform) {
+//			        Toast.makeText(LoginActivity.this, "授权错误", Toast.LENGTH_SHORT).show();
+//			    }
+//			    @Override
+//			    public void onComplete(Bundle value, SHARE_MEDIA platform) {
+//			    	
+//			    	System.out.println(platform.getReqCode()+"bundle"
+//			    			   +value.getString("uid")+"uid"+value.toString());
+//			    	
+//				        //使用Editor接口修改SharedPreferences中的值并提交。  
+//			    	ApiClient.wxLogin(LoginActivity.this, value.getString("access_token"), networkHelper);
+//			    	
+//			        Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
+//			        //获取相关授权信息
+//			        mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMDataListener() {
+//			    @Override
+//			    public void onStart() {
+//			        Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+//			    }                                              
+//			    @Override
+//			        public void onComplete(int status, Map<String, Object> info) {
+//			            if(status == 200 && info != null){
+//			                StringBuilder sb = new StringBuilder();
+//			                Set<String> keys = info.keySet();
+//			                for(String key : keys){
+//			                   sb.append(key+"="+info.get(key).toString()+"\r\n");
+//			                }
+//			                Log.d("TestData",sb.toString());
+//			            }else{
+//			               Log.d("TestData","发生错误："+status);
+//			           }
+//			        }
+//
+//			});
+//			    }
+//			    @Override
+//			    public void onCancel(SHARE_MEDIA platform) {
+//			        Toast.makeText(LoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
+//			    }
+//			} );		
+//		}else {
+//			Toast.makeText(LoginActivity.this, "请先登陆,并绑定您的微信", Toast.LENGTH_SHORT).show();
+//		}
+//			   Log.v("Tag", "tingdao");
 			break;
 
 		default:
@@ -198,7 +206,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			// TODO Auto-generated method stub 
 			Intent intent=new Intent(LoginActivity.this,RegistActivity.class);
 			intent.putExtra("forgetFlag", "forget");
 			startActivity(intent);
