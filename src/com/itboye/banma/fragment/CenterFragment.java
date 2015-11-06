@@ -122,14 +122,15 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		switch (v.getId()) {
 		case R.id.rl_money:
 			if (appContext.isLogin()) {
-				Intent intent = new Intent(getActivity(), OrderActivity.class);
-				startActivity(intent);
+				Intent intent3=new Intent(getActivity(),WebActivity.class);
+				intent3.putExtra("Url", "FanYong");
+				startActivity(intent3);
 				getActivity().overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}else{
 				Toast.makeText(getActivity(), "请先登录",
 						Toast.LENGTH_LONG).show();
-			}
+			}			
 			break;
 			
 		case R.id.address:
@@ -145,10 +146,19 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			break;
 			
 		case R.id.order_goods:
-			Intent intent = new Intent(getActivity(), BabyActivity.class);
-			startActivity(intent);
-			getActivity().overridePendingTransition(R.anim.in_from_right,
-					R.anim.out_to_left);
+             if (appContext.isLogin()) {
+            	 		Intent intent = new Intent(getActivity(), OrderActivity.class);
+            	 		startActivity(intent);
+            	 		getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+             	}else{
+             			Toast.makeText(getActivity(), "请先登录",
+             						Toast.LENGTH_LONG).show();
+             		}			
+//             	Intent intent = new Intent(getActivity(), BabyActivity.class);
+//             		startActivity(intent);
+//             			getActivity().overridePendingTransition(R.anim.in_from_right,
+//             						R.anim.out_to_left);
 			
 			break;
 		case R.id.iv_personheadfail://点击成功头像 跳转
@@ -190,16 +200,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			break;
 			
 		case R.id.tv_yongjin:
-			if (appContext.isLogin()) {
-				Intent intent3=new Intent(getActivity(),WebActivity.class);
-				intent3.putExtra("Url", "FanYong");
-				startActivity(intent3);
-				getActivity().overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
-			}else{
-				Toast.makeText(getActivity(), "请先登录",
-						Toast.LENGTH_LONG).show();
-			}
+			
 			break;
 			
 		default:

@@ -23,7 +23,7 @@
     <dimen name="center_item_height">37dp</dimen>
     <!-- 更多设置中item字体距离左侧的宽度，也是线的长度 -->
     <dimen  name="more_item_marginlefth">25dp</dimen>
-    <dimen  name="more_item_mainheight">34dip</dimen>
+    <dimen  name="more_item_mainheight">40dip</dimen>
     <dimen name="more_item_height">38dip</dimen>
     
     <dimen name="expand_tab_item_height">45dp</dimen>

@@ -7,7 +7,7 @@
         android:id="@+id/rl_temp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/titlebar" >
+        android:background="@drawable/top" >
 
      <ImageView
             android:id="@+id/iv_back_web"

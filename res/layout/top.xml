@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
-        android:background="@color/nocolor"
+        android:background="@drawable/top"
         android:orientation="horizontal" >
 
         <ImageView
@@ -46,7 +46,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="个人中心"
-            android:textColor="@color/balck"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_size_18" />
 
     </RelativeLayout>
