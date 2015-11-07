@@ -27,6 +27,7 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 	private HomePageFragment homePageFragment;
 	private BabyOrderFragment babyCommentFragment;
 	private CenterFragment centerFragment;
+	private FindFragment findFragment;
 	private List<LinearLayout> mTabIndicator = new ArrayList<LinearLayout>();
 	private List<ImageView> imageViewlist = new ArrayList<ImageView>();
 	private List<TextView> textViewlist = new ArrayList<TextView>();
@@ -49,8 +50,10 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 		homePageFragment = new HomePageFragment();
 		babyCommentFragment = new BabyOrderFragment();
 		centerFragment = new CenterFragment();
+		findFragment=new FindFragment();
 		mTabs.add(homePageFragment);
 		mTabs.add(babyCommentFragment);
+		mTabs.add(findFragment);
 		mTabs.add(centerFragment);
 		
 		mAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
