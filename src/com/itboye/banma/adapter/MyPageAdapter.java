@@ -3,7 +3,9 @@ package com.itboye.banma.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.volley.Response;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.BabyActivity;
@@ -15,12 +17,14 @@ import com.itboye.banma.utils.BitmapCache;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MyPageAdapter extends PagerAdapter{
@@ -60,19 +64,36 @@ public class MyPageAdapter extends PagerAdapter{
 	@Override
 	public Object instantiateItem(ViewGroup container, final int position) {
 		View convertView = mImages.get(position);
+		final LinearLayout imageView_layout = BaseViewHolder.get(convertView,
+				R.id.imageView_layout);
 		NetworkImageView imageView = BaseViewHolder.get(convertView,
 				R.id.imageView);
-		TextView name = BaseViewHolder.get(convertView,
-				R.id.name);
+		/*TextView name = BaseViewHolder.get(convertView,
+				R.id.name);*/
 		TextView price = BaseViewHolder.get(convertView,
 				R.id.price);
-		name.setText(productlist.get(position).getName());
+		/*name.setText(productlist.get(position).getName());*/
 		price.setText("￥"+productlist.get(position).getPrice());
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
 		imageView.setDefaultImageResId(0);  //加载中显示的图片
 		imageView.setErrorImageResId(R.drawable.image_load_fail);  //加载失败显示的图片
-		imageView.setImageUrl(productlist.get(position).getMain_img(), imageLoader);
+		imageView.setImageUrl(productlist.get(position).getImg_post(), imageLoader);
 		//imageView.setImageUrl("http://banma.itboye.com/index.php/Api/Picture/index?id=0", imageLoader);
+
+		/*ImageRequest imageRequest = new ImageRequest(  
+		        "http://developer.android.com/images/home/aw_dac.png",  
+		        new Response.Listener<Bitmap>() {  
+		            @Override  
+		            public void onResponse(Bitmap response) {  
+		            	imageView_layout.set(response);  
+		            }  
+		        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+		            @Override  
+		            public void onErrorResponse(VolleyError error) {  
+		                imageView.setImageResource(R.drawable.default_image);  
+		            }  
+		        });
+		*/
 		
 		imageView.setOnClickListener(new OnClickListener() {
 			

@@ -7,6 +7,9 @@ public class ProductItem {
 	private Double ori_price;			//原价
 	private Double price;				//现价
 	private Double weight;				//商品重量 （克）
+	private String img_post;
+	private String img_post_bg;
+	private String img;
 	public int getId() {
 		return id;
 	}
@@ -42,6 +45,24 @@ public class ProductItem {
 	}
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+	public String getImg_post() {
+		return img_post;
+	}
+	public void setImg_post(String img_post) {
+		this.img_post = img_post;
+	}
+	public String getImg_post_bg() {
+		return img_post_bg;
+	}
+	public void setImg_post_bg(String img_post_bg) {
+		this.img_post_bg = img_post_bg;
+	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
 	}
 	
 	

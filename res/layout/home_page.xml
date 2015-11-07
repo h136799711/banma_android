@@ -69,9 +69,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-"
-
-            <include layout="@layout/top" />
+            
+            <include layout="@layout/top_nocolor" />
 
             <View
                 android:layout_width="match_parent"

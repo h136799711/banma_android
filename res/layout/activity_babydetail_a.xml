@@ -448,6 +448,6 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <include layout="@layout/top" />
+    <include layout="@layout/top_nocolor" />
 
 </FrameLayout>
