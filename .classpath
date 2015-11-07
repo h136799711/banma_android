@@ -22,6 +22,10 @@
 	<classpathentry exported="true" kind="lib" path="libs/httpcore-4.3.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/httpmime-4.3.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/nineoldandroids-2.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_renren_1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_renren_2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_Sina.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_sms.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

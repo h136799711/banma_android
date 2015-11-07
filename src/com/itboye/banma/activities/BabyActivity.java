@@ -133,9 +133,7 @@ public class BabyActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_babydetail_a);
 		appContext = (AppContext) getApplication();
 		
-		/*
-		//设置腾讯微博SSO handler
-		//mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+	
 		
 		//设置新浪SSO handler
 	//	mController.getConfig().setSsoHandler(new SinaSsoHandler());
@@ -152,6 +150,7 @@ public class BabyActivity extends FragmentActivity implements
 		
 		
 		
+		
 		//集成扣扣分享
 		//参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
 		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "1104887406",
@@ -161,7 +160,7 @@ public class BabyActivity extends FragmentActivity implements
 		//分享扣扣空间
 		QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, "1104887406",
                 "7mxqFi07TN8QD1ZR");
-        qZoneSsoHandler.addToSocialSDK();*/
+        qZoneSsoHandler.addToSocialSDK();
 		
 		
 		initView();
@@ -319,16 +318,25 @@ public class BabyActivity extends FragmentActivity implements
 //			sharePopWindow.showAsDropDown(view, all_choice_layout);
 //			setBackgroundBlack(all_choice_layout, 0);
 			// 是否只有已登录用户才能打开分享选择页
-		    	mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
-		    	mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
-		        mController.openShare(BabyActivity.this, false);
+
+
 		     // 首先在您的Activity中添加如下成员变量
 				 mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+				 
+
+					//设置腾讯微博SSO handler
+					mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+					
+			    	mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
+			    	
+			    	mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
+			    	
 				// 设置分享内容
 				mController.setShareContent("斑马海外购，http://banma.itboye.com/index.php/Home/Share/index");
 				// 设置分享图片, 参数2为图片的url地址
 				mController.setShareMedia(new UMImage(this, 
 				                                     productDetail.getMain_img()));
+	        mController.openShare(BabyActivity.this, false);
 			break;
 		}
 	}
