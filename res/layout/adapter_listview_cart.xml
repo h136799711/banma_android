@@ -27,9 +27,10 @@
 
         <ImageView
             android:id="@+id/iv_icon_url"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="80dp"
+            android:layout_height="85dp"
             android:layout_margin="5dp"
+            android:layout_marginLeft="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/image_load_fail" />
 
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:textSize="@dimen/text_size_12"
                 android:maxLines="2"
                 android:text="时尚女衣  尽在恋上猫女衣坊 http//yecaoly.taobao.com"
                 android:textColor="@color/black" />
@@ -70,7 +72,7 @@
 
                 <TextView
                     android:id="@+id/tv_price"
-                    android:layout_width="146dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="￥49.00"
                     android:textColor="@color/red" />

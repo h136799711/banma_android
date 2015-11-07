@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_layout" >
+    
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/loading_large"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,159 +44,195 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="主人带我去逛逛吧"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/text_size_14" />
-        </LinearLayout>
+                android:textSize="@dimen/text_size_14"
+                android:text="主人带我去逛逛吧" />
+<!--    <TextView
+                android:id="@+id/tv_goShop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:padding="7dp"
+                android:text="去逛逛"
+                android:textColor="@color/black" /> -->
+          
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_cart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/main_layout" >
+            android:layout_height="match_parent" >
 
-           <LinearLayout
-               android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            <ScrollView
+                android:id="@+id/sv_temp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" 
+                android:layout_marginBottom="130dp" >
 
-                <ListView
+                <com.itboye.banma.view.MyListView
                     android:id="@+id/listView_cart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                
-                    android:divider="@color/main_layout"
-        			android:dividerHeight="0dip" >
-                </ListView>
-            </LinearLayout>
+                    android:background="@color/white"
+                    android:cacheColorHint="#00000000" >
+                </com.itboye.banma.view.MyListView>
+            </ScrollView>
+            
 
-            <LinearLayout
+
+ <LinearLayout
                 android:id="@+id/ll_cart_bottom"
+                android:weightSum="10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:visibility="gone"
                 android:background="@color/main_layout"
-                android:orientation="vertical"
-                android:weightSum="10" >
+                android:orientation="vertical" >             
+     <LinearLayout 
+        android:id="@+id/ll_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <View 
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp" 
+                android:background="@color/lightgray"/>
+         <RelativeLayout 
+             android:id="@+id/rl_sum"
+             android:layout_width="match_parent"
+             android:gravity="center"
+             android:layout_height="45dp"
+             android:weightSum="1"
+             android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_wuliu"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="物流费用"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+              
+                <TextView
+                 android:id="@+id/tv_weight"
+                 android:layout_toRightOf="@+id/tv_wuliu"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总重量为0.0千克"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/gray"
+                android:layout_marginLeft="20dp"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@color/lightgray" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_express"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:orientation="horizontal" >
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:text="¥0.0"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="5dip"
-                        android:orientation="vertical" >
+      </RelativeLayout>
+      
+         <View 
+                android:layout_width="match_parent"
+                android:layout_height="1dp" 
+                android:background="@color/lightgray"/>
+         <RelativeLayout 
+             android:layout_width="match_parent"
+             android:gravity="center"
+             android:layout_height="40dp"
+             android:weightSum="1"
+             android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_rax"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关税"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"/>
+              
+                <TextView
+                 android:layout_toRightOf="@+id/tv_rax"
+                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/lightgray"
+                android:layout_marginLeft="20dp"/>
 
-                        <TextView
-                            android:id="@+id/tv_express"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingBottom="2dip"
-                            android:text="¥0.0" />
+                <TextView
+                    android:id="@+id/tv_guansui"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:text="¥0.0"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14" />
+			  
+      </RelativeLayout>    
+      <View 
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" 
+                android:background="@color/lightgray"/>   
+    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal" >
 
-                        <TextView
-                            android:id="@+id/tv_wuliu"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="物流费用"
-                            android:textColor="@color/grey"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                <CheckBox
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/cb_cart_all"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="10dp"  
+                    android:button="@null"
+                    android:background="@drawable/checkall"  />
+                <TextView
+                    android:layout_gravity="center_vertical"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:layout_marginLeft="10dp"
+                     android:text="全选"
+                     android:textSize="@dimen/text_size_14"
+                     android:textColor="@color/black"/>
 
-                    <View
-                        android:layout_width="0.2dip"
-                        android:layout_height="match_parent"
-                        android:background="@color/line" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="5dip"
-                        android:orientation="vertical" >
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_cart_Allprice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:paddingRight="10dp"
+                    android:text="合计(含运费)：￥0.0"
+                    android:textColor="@color/red" />
 
-                        <TextView
-                            android:id="@+id/tv_guansui"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingBottom="2dip"
-                            android:text="¥0.0" />
-
-                        <TextView
-                            android:id="@+id/tv_rax"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="关税"
-                            android:textColor="@color/grey"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:background="@color/lightgray" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:orientation="horizontal" >
-
-                    <CheckBox
-                        android:id="@+id/cb_cart_all"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/checkall"
-                        android:button="@null" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:text="全选"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_14" />
-
-                    <TextView
-                        android:id="@+id/tv_cart_Allprice"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:paddingRight="10dp"
-                        android:text="合计(含运费)：￥0.0"
-                        android:textColor="@color/red" />
-
-                    <TextView
-                        android:id="@+id/tv_cart_buy_or_del"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@color/red"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="结算(0)"
-                        android:textColor="@color/white" />
-                </LinearLayout>
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/tv_cart_buy_or_del"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:background="@color/red"
+                    android:padding="10dp"
+                    android:text="结算(0)"
+                    android:textColor="@color/white" />
             </LinearLayout>
+          </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 

@@ -21,6 +21,7 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.itboye.banma.R;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.utils.BitmapCache;
+import com.nineoldandroids.view.ViewHelper;
 
 public class Adapter_ListView_cart extends BaseAdapter  {
 	private Context context;
@@ -48,18 +49,18 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	}
 
 	@Override
-	public Object getItem(int arg0) {
-		return null;
+	public Object getItem(int position) {
+		return position;
 	}
 
 	@Override
-	public long getItemId(int arg0) {
-		return 0;
+	public long getItemId(int position) {
+		return  position;
 	}
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(final int position, View currentView, ViewGroup arg2) {
-		HolderView holderView = null;
+		HolderView holderView;
 		if (currentView == null) {
 			holderView = new HolderView();
 			currentView = LayoutInflater.from(context).inflate(R.layout.adapter_listview_cart, null);
@@ -72,43 +73,21 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			holderView.tv_pop_num=(TextView)currentView.findViewById(R.id.tv_pop_num);
 			holderView.tv_pop_red=(TextView)currentView.findViewById(R.id.tv_pop_reduce);
 			holderView.tv_pop_add=(TextView)currentView.findViewById(R.id.tv_pop_add);
-			//holderView.tv_guige=(TextView)currentView.findViewById(R.id.tv_guige);
 			holderView.cb_choice = (CheckBox) currentView.findViewById(R.id.cb_choice);
 			currentView.setTag(holderView);
-		} else {
+	} 	else {
 			holderView = (HolderView) currentView.getTag();
 		}
 		if (arrayList.size() != 0) {
 			holderView.tv_num.setText("x" + arrayList.get(position).get("count"));
 			holderView.tv_type_color.setText(arrayList.get(position).get("sku_desc")+"");
-			holderView.tv_price.setText(arrayList.get(position).get("price")+"");
+			holderView.tv_price.setText("￥"+arrayList.get(position).get("price"));
 			holderView.tv_name.setText(arrayList.get(position).get("name")+"");	
-//			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-//					new BitmapCache());
-//			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
-//					R.drawable.image_loading, R.drawable.image_load_fail);
-//			imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1, 0, 0);
-//			if (arrayList.get(position).get("icon_url")!=null) {
-//		
-//				holderView.iv_icon.setDefaultImageResId(R.drawable.ic_launcher);  
-//				holderView.iv_icon.setErrorImageResId(R.drawable.ic_launcher);  
-//				holderView.iv_icon.setImageUrl(arrayList.get(position).get("icon_url").toString(), imageLoader);  
-//		}
-//			holderView.iv_xiala.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					// TODO Auto-generated method stub
-//					guiListener.guiGeChanged(position);
-//				}
-//			});
-
-			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-					new BitmapCache());
+			System.out.println(position+":"+arrayList.get(position).get("icon_url").toString());
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);
 			try {
-				imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,75,75);
+				imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,80,85);
 			} catch (Exception e) {
 				// TODO: handle exception
 				holderView.iv_icon.setImageResource(R.drawable.image_load_fail);
@@ -151,7 +130,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 		return currentView;
 	}
 
-	public class HolderView { 
+	public static class HolderView { 
 		private ImageView iv_icon;
 		private ImageView iv_xiala;
 		private TextView tv_name;
