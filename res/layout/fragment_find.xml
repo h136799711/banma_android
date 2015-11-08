@@ -5,7 +5,9 @@
     android:background="@color/white"
     android:orientation="vertical" >
     
-    <include  layout="@layout/top"/>
+    <include
+        android:id="@+id/top"
+          layout="@layout/top"/>
     
      <ProgressBar
         android:id="@+id/progressBar"
@@ -14,25 +16,25 @@
         android:visibility="visible" />
     
 <com.handmark.pulltorefresh.library.PullToRefreshGridView
-     	android:visibility="gone"
+         android:layout_below="@+id/top"
+     	android:visibility="visible"
         xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/pull_refresh_grid"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:columnWidth="100dp"
         android:gravity="center_horizontal"
-        android:horizontalSpacing="1dp"
-        android:numColumns="auto_fit"
+        android:horizontalSpacing="5dp"
+        android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp"
-        ptr:ptrAnimationStyle="flip"
-        ptr:ptrHeaderBackground="#00ff00"
-        ptr:ptrHeaderSubTextColor="#ff0000"
-        ptr:ptrHeaderTextColor="#0000ff"
+        android:verticalSpacing="10dp"
+        ptr:ptrHeaderBackground="@color/main_layout"
+        ptr:ptrHeaderTextColor="@color/gray"
+        ptr:ptrHeaderSubTextColor="@color/gray"
+        ptrHeaderSubTextColor="@color/gray"
         ptr:ptrListViewExtrasEnabled="false"
-        ptr:ptrMode="both"
-        ptr:ptrRefreshableViewBackground="#ff0000"
-        ptr:ptrScrollingWhileRefreshingEnabled="true"
-        ptr:ptrShowIndicator="true" />
+        ptr.ptrShowIndicator="false"
+        ptr:ptrMode="pullFromEnd"
+        ptr:ptrRefreshableViewBackground="@color/white"
+        ptr:ptrScrollingWhileRefreshingEnabled="true" />
 
 </RelativeLayout>

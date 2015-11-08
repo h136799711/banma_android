@@ -7,6 +7,7 @@ import com.itboye.banma.R;
 import com.itboye.banma.fragment.BabyOrderFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.fragment.CenterFragment;
+import com.itboye.banma.fragment.FindFragment;
 import com.itboye.banma.fragment.HomePageFragment;
 
 import android.os.Bundle;
