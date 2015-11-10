@@ -45,25 +45,21 @@
         android:layout_height="fill_parent"
         android:visibility="gone" >
 
-        <!--
-         <com.itboye.banma.view.FancyCoverFlow
-        android:id="@+id/fancyCoverFlow"
-        android:layout_width="match_parent"
-        android:layout_height="80dip"
-        android:spacing="0pt"
-        fcf:maxRotation="100"
-        fcf:unselectedAlpha="0.2"
-        fcf:unselectedSaturation="0.0"
-        fcf:unselectedScale="0.9"
-        fcf:scaleDownGravity="0.5"
-        />
-        -->
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/id_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            <com.itboye.banma.view.DrawableChangeView
+                android:id="@+id/drawableChangeView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/id_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"

@@ -20,9 +20,11 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.MailingAdress;
 import com.itboye.banma.entity.ProductItem;
+import com.itboye.banma.view.DrawableChangeView;
 import com.itboye.banma.view.FancyCoverFlow;
 
 import android.R.integer;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -42,6 +44,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class HomePageFragment extends Fragment implements OnClickListener,
 		StrUIDataListener {
 	// private AppContext appContext;
+	private static final int NUM = 9;
 	private View chatView;
 	private ViewPager mViewPager;
 	private List<View> mImages = new ArrayList<View>();
@@ -60,6 +63,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	private LinearLayout loading_ll;
 	private ImageView retry_img;
 	private FrameLayout frame_layout;
+	private DrawableChangeView darwableView;
+	private Drawable[] drawables = new Drawable[NUM];
 	Boolean YesOrNo;
 	int state;
 
@@ -103,6 +108,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 						}
 					}
 				});
+		darwableView = (DrawableChangeView) chatView.findViewById(R.id.drawableChangeView);
+		mViewPager = (ViewPager) chatView.findViewById(R.id.id_viewpager);
 		all_top = (LinearLayout) chatView.findViewById(R.id.all_top);
 		top_line = chatView.findViewById(R.id.top_line);
 		back = (ImageView) chatView.findViewById(R.id.iv_back);
@@ -157,37 +164,57 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		}*/
 
 		if (adapter == null) {
+			getViews();
 			adapter = new MyPageAdapter(getActivity(), mImages, productlist);
-			mViewPager = (ViewPager) chatView.findViewById(R.id.id_viewpager);
 			// 添加动画效果
 			// mViewPager.setPageTransformer(true, arg1);
 			//mViewPager.setPageTransformer(true, new RotateDownTransformer());
 			mViewPager.setAdapter(adapter);
-			/*mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			mViewPager.setOffscreenPageLimit(2);
+			mViewPager.setAdapter(adapter);
+			mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 				@Override
-				public void onPageSelected(int position) {
-
-					fancyCoverFlow.setSelection(position, true);
+				public void onPageSelected(int arg0) {
+					System.out.println("当前现实的view"+arg0);
 				}
-
-				@Override
-				public void onPageScrollStateChanged(int arg0) {
-					// TODO Auto-generated method stub
-
-				}
-
+				
 				@Override
 				public void onPageScrolled(int arg0, float arg1, int arg2) {
-					// TODO Auto-generated method stub
-
+					//arg1 显示的view前一个view所占屏幕的比例
+					//arg2 viewpager的总宽度
+					System.out.println("arg0所占屏幕的比例"+arg1+"  arg0"+arg0);
+					darwableView.setPosition(arg0 % 6);
+					darwableView.setDegree(arg1);
+					darwableView.invalidate();
+				}
+				
+				@Override
+				public void onPageScrollStateChanged(int arg0) {
+					
 				}
 
-			});*/
+			});
+			darwableView.setDrawables(drawables);
+			
 		}
 
 	}
-
+	
+	private void getViews() {
+		
+		drawables[0] = getActivity().getResources().getDrawable(R.drawable.back001);
+		drawables[1] = getActivity().getResources().getDrawable(R.drawable.back002);
+		drawables[2] = getActivity().getResources().getDrawable(R.drawable.back003);
+		drawables[3] = getActivity().getResources().getDrawable(R.drawable.back004);
+		drawables[4] = getActivity().getResources().getDrawable(R.drawable.back005);
+		drawables[5] = getActivity().getResources().getDrawable(R.drawable.back006);
+		drawables[6] = getActivity().getResources().getDrawable(R.drawable.back001);
+		drawables[7] = getActivity().getResources().getDrawable(R.drawable.back002);
+		drawables[8] = getActivity().getResources().getDrawable(R.drawable.back003);
+	
+	}
+	
 	/**
 	 * 加载商品列表数据
 	 */
