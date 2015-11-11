@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itboye.banma.R;
+import com.itboye.banma.app.AppContext;
 import com.itboye.banma.fragment.BabyOrderFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.fragment.CenterFragment;
 import com.itboye.banma.fragment.FindFragment;
 import com.itboye.banma.fragment.HomePageFragment;
+import com.itboye.banma.fragment.OrderAllFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -34,12 +37,13 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 	private List<TextView> textViewlist = new ArrayList<TextView>();
 	private int[] ic = {R.drawable.banma_home_normal, R.drawable.banma_order_normal,R.drawable.faxian_un, R.drawable.banma_mine_normal};
 	private int[] ic_sel = {R.drawable.banma_home_select, R.drawable.banma_order_select,R.drawable.faxian ,R.drawable.banma_mine_select};
-	
+	private AppContext appContext;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_homepage);
+		appContext = (AppContext) getApplication();
 		mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
         initView();
         mViewPager.setOffscreenPageLimit(3);
@@ -126,8 +130,16 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 			mViewPager.setCurrentItem(0, false);
 			break;
 		case R.id.tab_two:
-			changTabColor(1);
-			mViewPager.setCurrentItem(1, false);
+			if(appContext.isLogin()){
+				changTabColor(1);
+				mViewPager.setCurrentItem(1, false);
+	
+			} else{
+				startActivityForResult(new Intent(HomePageActivity.this,LoginActivity.class),100);
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}
+
 			break;
 		case R.id.tab_three:
 			changTabColor(2);
@@ -153,6 +165,5 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 		textViewlist.get(arg0).setTextColor(this.getResources().getColor(R.color.tab_text_sel));
 		
 	}
-
 	
 }
