@@ -60,6 +60,9 @@ import com.itboye.banma.util.CircleImg;
 import com.itboye.banma.util.NetUtil;
 import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.welcome.WelcomeActivity;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -117,7 +120,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	private CircleImg ivHead;//头像
 	private Bitmap bitmap;
 	private SharedPreferences sp;
-    UMSocialService mController;
+	private IWXAPI api;  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -126,9 +129,9 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		//mSingleQueue = Volley.newRequestQueue(this, new MultiPartStack());
 
 		// 添加微信平台
-		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
-		UMWXHandler wxHandler = new UMWXHandler(this,APP_ID,AppSecret);
-		wxHandler.addToSocialSDK();
+		
+		api = WXAPIFactory.createWXAPI(this,Constant.APP_ID, true);  
+		api.registerApp(Constant.APP_ID);
 		
 		
 		mSingleQueue=AppContext.queues;
@@ -206,55 +209,10 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	
 		case R.id.rl_weixin:
 			if (appContext.isLogin()) {
-				FLAG=1;
-				mController.doOauthVerify(MorePersonal.this, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
-				    @Override
-				    public void onStart(SHARE_MEDIA platform) {
-				        Toast.makeText(MorePersonal.this, "授权开始", Toast.LENGTH_SHORT).show();
-				    }
-				    @Override
-				    public void onError(SocializeException e, SHARE_MEDIA platform) {
-				        Toast.makeText(MorePersonal.this, "授权错误", Toast.LENGTH_SHORT).show();
-				    }
-				    @Override
-				    public void onComplete(Bundle value, SHARE_MEDIA platform) {
-				    	
-				    	System.out.println(platform.getReqCode()+"bundle"
-				    			   +value.getString("uid")+"uid"+value.toString());
-				    	
-					        //使用Editor接口修改SharedPreferences中的值并提交。  
-				        ApiClient.wxBangDing(MorePersonal.this, appContext.getLoginUid()+"", "107777839405", networkHelper);
-				        Editor editor = sp.edit();  
-				        editor.putString(Constant.WEIXIN_CODE, value.getString("access_token"));
-				        editor.commit();
-				        Toast.makeText(MorePersonal.this, "授权完成", Toast.LENGTH_SHORT).show();
-				        //获取相关授权信息
-				        mController.getPlatformInfo(MorePersonal.this, SHARE_MEDIA.WEIXIN, new UMDataListener() {
-				    @Override
-				    public void onStart() {
-				        Toast.makeText(MorePersonal.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
-				    }                                              
-				    @Override
-				        public void onComplete(int status, Map<String, Object> info) {
-				            if(status == 200 && info != null){
-				                StringBuilder sb = new StringBuilder();
-				                Set<String> keys = info.keySet();
-				                for(String key : keys){
-				                   sb.append(key+"="+info.get(key).toString()+"\r\n");
-				                }
-				                Log.d("TestData",sb.toString());
-				            }else{
-				               Log.d("TestData","发生错误："+status);
-				           }
-				        }
-
-				});
-				    }
-				    @Override
-				    public void onCancel(SHARE_MEDIA platform) {
-				        Toast.makeText(MorePersonal.this, "授权取消", Toast.LENGTH_SHORT).show();
-				    }
-				} );		
+				final SendAuth.Req req = new SendAuth.Req();  
+				req.scope = "snsapi_userinfo";  
+				req.state = "wechat_sdk_demo_test";  
+				api.sendReq(req);  
 				}
 			break;
 
@@ -616,12 +574,16 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		String content = null;
 		JSONObject jsonObject2=null;
 		if (FLAG==1) {
+			FLAG=0;
 			try {
 				jsonObject=new JSONObject(data);
 				code=jsonObject.getInt("code");
 				content = jsonObject.getString("data");
 				jsonObject2=new JSONObject(content);
 				if (code==0) {
+					tvWeiXin.setText("已绑定");
+					tvWeiXin.setClickable(false);
+					Toast.makeText(MorePersonal.this, "绑定微信成功", Toast.LENGTH_SHORT).show();
 					System.out.println(content.toString());
 				}
 				else {
@@ -640,6 +602,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		String renZheng=null;
 		String imageUrl=null;
 		try {
+			FLAG=0;
 			jsonObject = new JSONObject(data);
 			code = jsonObject.getInt("code");
 			content = jsonObject.getString("data");
@@ -681,6 +644,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 						tvWeiXin.setText("未绑定");
 					}else {
 						tvWeiXin.setText("已绑定");
+						tvWeiXin.setClickable(false);
 					}
 					if (renZheng.equals("")) {
 						tvRenZhen.setText("未认证");
@@ -693,18 +657,17 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			}
 		}
  	}
-//	@Override 
-//	protected void onStart() {
-//		// TODO Auto-generated method stub
-//		super.onStart();
-//		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
-//		if (appContext.isLogin()) {
-//			String number=sp.getString(Constant.MY_ACCOUNT, "");
-//			String psw=sp.getString(Constant.MY_PASSWORD, "");
-//			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
-//																															//请求用户头像数据
-//		}
-//	}
+	@Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+		super.onResume();
+		if (!AppContext.getCode().equals("")) {
+			FLAG=1;
+	    	ApiClient.wxBangDing(MorePersonal.this,appContext.getLoginUid()+"",AppContext.getCode(),networkHelper);
+	    	AppContext.setCode("");
+		}
+    }
+		
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {

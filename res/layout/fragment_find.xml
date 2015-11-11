@@ -33,7 +33,7 @@
         ptrHeaderSubTextColor="@color/gray"
         ptr:ptrListViewExtrasEnabled="false"
         ptr.ptrShowIndicator="false"
-        ptr:ptrMode="pullFromEnd"
+        ptr:ptrMode="both"
         ptr:ptrRefreshableViewBackground="@color/white"
         ptr:ptrScrollingWhileRefreshingEnabled="true" />
 

@@ -11,6 +11,8 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.service.TokenIntentService;
 import com.itboye.banma.utils.SharedConfig;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UmengRegistrar;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +45,10 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
 		setContentView(view);
+		PushAgent mPushAgent = PushAgent.getInstance(getApplicationContext());
+		mPushAgent.enable();
+		PushAgent.getInstance(getApplicationContext()).onAppStart();
+		String device_token = UmengRegistrar.getRegistrationId(getApplicationContext());
 		new SharedConfig(this);
 		shared = SharedConfig.GetConfig(); 
 		into();
@@ -71,7 +77,7 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 			e.printStackTrace();
 			Log.v("获取token异常",e+"" );
 		}
-		first = shared.getBoolean("First", true);
+		first = shared.getBoolean("First", false);
 
 		animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
 		view.startAnimation(animation);

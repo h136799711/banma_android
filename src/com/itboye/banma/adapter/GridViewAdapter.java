@@ -88,7 +88,7 @@ public class GridViewAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(context, BabyActivity.class);
-				intent.putExtra("PID", 1);
+				intent.putExtra("PID", list.get(position).getId());
 				context.startActivity(intent);
 				((Activity) context).overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);

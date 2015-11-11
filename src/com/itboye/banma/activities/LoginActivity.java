@@ -8,6 +8,7 @@ import javax.security.auth.PrivateCredentialPermission;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -52,7 +53,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	EditText etPassword;//用户密码/明文
    TextView tvForget;//忘记密码
    TextView tvQuXiao;//取消
-   Boolean hasLoginWX=false;//判断微信是否登陆
+   private int LoginWay;//判断登陆方式
     private ImageView ivWeixin;//微信登陆
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
@@ -119,26 +120,20 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		etPassword.setText(pass);
 	}
 	
-	@Override
-	protected void  onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-		try {
-			System.out.println(Constant.WEIXIN_CODE+"授权码");
-			ApiClient.wxLogin(this, Constant.WEIXIN_CODE, networkHelper);
-			if (Constant.WEIXIN_CODE!=null&&hasLoginWX==false) {
-				hasLoginWX=true;
-				ApiClient.wxLogin(this, Constant.WEIXIN_CODE, networkHelper);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
 
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+//		SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+		if (!AppContext.getCode().equals("")) {
+	    	ApiClient.wxLogin(LoginActivity.this,AppContext.getCode() ,networkHelper);
+		}
 	}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		 final SharedPreferences sp = LoginActivity.this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		switch (v.getId()) {
 		case R.id.iv_weixin:
 			final SendAuth.Req req = new SendAuth.Req();  
@@ -237,13 +232,22 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			Log.v("用户id", user.getId()+"");
 		    String use = etName.getText().toString();   
 		    String pas = etPassword.getText().toString(); 
-	        SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
-	        //使用Editor接口修改SharedPreferences中的值并提交。  
-	        Editor editor = sp.edit();  
-	        editor.putString(Constant.MY_ACCOUNT, use);  
-	        editor.putString(Constant.MY_PASSWORD,pas);  
-	        editor.putBoolean(Constant.IS_LOGIN, true);
-	        editor.commit();
+		    SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+		if (AppContext.getCode()=="") {
+			        //使用Editor接口修改SharedPreferences中的值并提交。  
+			        Editor editor = sp.edit();  
+			        editor.putString(Constant.MY_ACCOUNT, use);  
+			        editor.putString(Constant.MY_PASSWORD,pas);  
+			        editor.putBoolean(Constant.IS_LOGIN, true);
+			        editor.commit();
+		}else {
+			    Editor editor = sp.edit();  
+		        editor.putString(Constant.MY_ACCOUNT, user.getUsername());  
+		        editor.putString(Constant.MY_PASSWORD,user.getPassword());  
+		        editor.putBoolean(Constant.IS_LOGIN, true);
+		        editor.commit();
+		        AppContext.setCode("");
+		}
 	        dialog.dismiss();
 	        Intent  intent=getIntent();
 	        intent.putExtra("nickname", user.getNickname());
@@ -295,7 +299,22 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
         }
 
     }
-
+    
+    
+    
+//    @Override
+//    protected void onRestart() {
+//    	// TODO Auto-generated method stub
+//    	super.onRestart();
+//    	//appContext = (AppContext) getApplication();
+//    	System.out.println(AppContext.getCode());
+//    	ApiClient.wxLogin(LoginActivity.this,AppContext.getCode() ,networkHelper);
+////    	 SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+////         String code = sp.getString(Constant.WEIXIN_CODE, "");
+////         System.out.println(sp.getString(Constant.WEIXIN_CODE, "")+"执行");
+////     	ApiClient.wxLogin(LoginActivity.this,code ,networkHelper);
+//    }
+//		
     @Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {

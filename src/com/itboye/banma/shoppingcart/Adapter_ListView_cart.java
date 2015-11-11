@@ -2,9 +2,13 @@ package com.itboye.banma.shoppingcart;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +23,9 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.app.AppContext;
+import com.itboye.banma.entity.ProductItem;
 import com.itboye.banma.utils.BitmapCache;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -39,8 +45,12 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 		this.arrayList = arrayList;
 	}
 
-	public Adapter_ListView_cart(Context context) {
-		this.context = context;
+//	public Adapter_ListView_cart(Context context) {
+//		this.context = context;
+//	}
+	public void onDateChang( ArrayList<HashMap<String, Object>> arrayList) {
+		this.arrayList = arrayList;
+		this.notifyDataSetChanged();
 	}
 
 	@Override
@@ -50,7 +60,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 
 	@Override
 	public Object getItem(int position) {
-		return position;
+		return arrayList.get(position);
 	}
 
 	@Override
@@ -60,7 +70,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(final int position, View currentView, ViewGroup arg2) {
-		HolderView holderView;
+		HolderView holderView=null;
 		if (currentView == null) {
 			holderView = new HolderView();
 			currentView = LayoutInflater.from(context).inflate(R.layout.adapter_listview_cart, null);
@@ -83,6 +93,18 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			holderView.tv_type_color.setText(arrayList.get(position).get("sku_desc")+"");
 			holderView.tv_price.setText("￥"+arrayList.get(position).get("price"));
 			holderView.tv_name.setText(arrayList.get(position).get("name")+"");	
+			
+			currentView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context, BabyActivity.class);
+					intent.putExtra("PID",Integer.parseInt(arrayList.get(position).get("p_id").toString()));
+					System.out.println(Integer.parseInt(arrayList.get(position).get("p_id").toString())+"点击跳转");
+					context.startActivity(intent);
+					((Activity) context).overridePendingTransition(R.anim.in_from_right,
+							R.anim.out_to_left);
+				}
+			});
 			System.out.println(position+":"+arrayList.get(position).get("icon_url").toString());
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);

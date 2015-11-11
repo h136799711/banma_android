@@ -26,6 +26,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_renren_2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_Sina.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_sms.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/com.umeng.message.lib_v2.5.0.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

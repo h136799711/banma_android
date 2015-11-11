@@ -102,7 +102,7 @@
                 android:padding="4dp"
                 android:text="＋"
                 android:textColor="@color/titlebar"
-                android:textSize="@dimen/text_size_24" />
+                android:textSize="@dimen/text_size_28" />
 
             <TextView
                 android:id="@+id/tv_pop_num"
@@ -113,7 +113,7 @@
                 android:padding="4dp"
                 android:text="1"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12" />
+                android:textSize="@dimen/text_size_14" />
 
             <TextView
                 android:id="@+id/tv_pop_reduce"
@@ -124,7 +124,7 @@
                 android:padding="4dp"
                 android:text="－"
                 android:textColor="@color/titlebar"
-                android:textSize="@dimen/text_size_24" />
+                android:textSize="@dimen/text_size_28" />
         </LinearLayout>
         <!--
       <LinearLayout
