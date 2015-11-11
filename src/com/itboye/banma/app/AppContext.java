@@ -28,6 +28,7 @@ public class AppContext extends Application {
 	private static  int loginUid = 0; // 登录用户的id
 	public static String access_token; //访问令牌 
 	public static RequestQueue queues;  //volley请求队列
+	public static String img = null; //图片地址
 	public String password;//登陆密码
 	public static String pathHeadImage;//头像存储路径
 	public static  boolean hasHead=false;//是否已经设置头像
@@ -52,6 +53,14 @@ public class AppContext extends Application {
 
 	public static String getHeadurl() {
 		return headurl;
+	}
+
+	public static String getImg() {
+		return img;
+	}
+
+	public static void setImg(String img) {
+		AppContext.img = img;
 	}
 
 	public static void setHeadurl(String headurl) {

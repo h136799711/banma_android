@@ -2,6 +2,8 @@ package com.itboye.banma.fragment;
 
 import java.util.ArrayList;
 
+import android.R.integer;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,10 +18,14 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.itboye.banma.R;
 import com.itboye.banma.adapter.MyFragmentPagerAdapter;
+import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
+import com.itboye.banma.utils.BitmapCache;
 
 public class BabyOrderFragment extends Fragment implements OnClickListener{
 	private View view;
@@ -35,6 +41,8 @@ public class BabyOrderFragment extends Fragment implements OnClickListener{
     private int offset = 0;
     private int position_one;
     public final static int num = 5; 
+    private int state = 0;  //记录登录状态
+    private AppContext appContext;
     Fragment daifa,daishou,daifu,daiping,quanbu;
 //	DaiShouFragemt daishou;
 //	DaiPingFragment daiping;
@@ -42,18 +50,45 @@ public class BabyOrderFragment extends Fragment implements OnClickListener{
 //	DaiFuFragment daifu;
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
+        appContext = (AppContext) getActivity().getApplication();
         view = inflater.inflate(R.layout.fragment_baby_order, container,false);
-        resources = getResources();
-        InitTextView(view);
-        InitWidth(view);
-        InitViewPager(view);
-        TranslateAnimation animation = new TranslateAnimation(position_one, position_one, 0, 0);
-        tv_quanbu.setTextColor(resources.getColor(R.color.red));
-        animation.setFillAfter(true);
-        animation.setDuration(AnimationTimeSeconds);
-        ivBottomLine.startAnimation(animation);
+        
         return view;    
     }
+	
+	
+	
+	@Override
+	public void onResume() {
+		//Toast.makeText(getActivity(), "onResume()", Toast.LENGTH_SHORT).show();
+		super.onResume();
+	}
+
+
+
+	@Override
+	public void onStart() {
+		
+		//Toast.makeText(getActivity(), "onStart()", Toast.LENGTH_SHORT).show();
+		super.onStart();
+		if(appContext.isLogin() && (state==0)){
+			resources = getResources();
+	        InitTextView(view);
+	        InitWidth(view);
+	        InitViewPager(view);
+	        TranslateAnimation animation = new TranslateAnimation(position_one, position_one, 0, 0);
+	        tv_quanbu.setTextColor(resources.getColor(R.color.red));
+	        animation.setFillAfter(true);
+	        animation.setDuration(AnimationTimeSeconds);
+	        ivBottomLine.startAnimation(animation);
+	        state++;
+		}else{
+			
+		}
+	}
+
+
+
 	private void InitTextView(View parentView) {
 		  tv_quanbu = (TextView) parentView.findViewById(R.id.tv_quanbu);
 		  tv_daifu = (TextView) parentView.findViewById(R.id.tv_daifu);

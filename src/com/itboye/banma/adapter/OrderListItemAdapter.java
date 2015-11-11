@@ -85,7 +85,7 @@ public class OrderListItemAdapter  extends BaseAdapter {
 				new BitmapCache());
 		ImageListener listener = ImageLoader.getImageListener(order_pic,
 				R.drawable.image_loading, R.drawable.image_load_fail);
-		imageLoader.get("http://www.aoni.cc/inc/uploads/ckeditor/2%28259%29.jpg", listener, 80, 80);
+		imageLoader.get(AppContext.getImg()+order.getImg(), listener, 80, 80);
 		order_name.setText(order.getName());
 		order_standard.setText(order.getSku_desc());
 		order_price.setText("￥" + order.getPrice());
