@@ -75,10 +75,12 @@ public class ShengFenActivity extends Activity implements OnClickListener,StrUID
 			e1.printStackTrace();
 		}
 		if (code == 0) {
-			Toast.makeText(ShengFenActivity.this, content, Toast.LENGTH_LONG).show();
+			Toast.makeText(ShengFenActivity.this, content.toString(), Toast.LENGTH_LONG).show();
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
+		}else {
+			Toast.makeText(ShengFenActivity.this, content.toString(), Toast.LENGTH_LONG).show();
 		}
 		
 	}

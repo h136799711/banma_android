@@ -1,17 +1,14 @@
 package com.itboye.banma.activities;
 
-import java.util.Map;
-import java.util.Set;
-
-import javax.security.auth.PrivateCredentialPermission;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -30,6 +27,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.RegistActivity.CloseReceiver;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
@@ -39,13 +37,6 @@ import com.itboye.banma.entity.User;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.controller.UMServiceFactory;
-import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.controller.listener.SocializeListeners.UMAuthListener;
-import com.umeng.socialize.controller.listener.SocializeListeners.UMDataListener;
-import com.umeng.socialize.exception.SocializeException;
-import com.umeng.socialize.weixin.controller.UMWXHandler;
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
@@ -62,7 +53,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 //    UMSocialService mController;
 	private IWXAPI api;  
     private SharedPreferences sp ;
-	
+	private Intent intent;
+	private CloseReceiver closeReceiver;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -76,6 +68,10 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 //		UMWXHandler wxHandler = new UMWXHandler(this,APP_ID,AppSecret);
 //		wxHandler.addToSocialSDK();
 		
+		intent=getIntent();
+		closeReceiver = new CloseReceiver();  
+		IntentFilter intentFilter = new IntentFilter("KILL_ACTIVITY");  
+		registerReceiver(closeReceiver, intentFilter);  
 		
 		initId(this);
 		dialog = new ProgressDialog(LoginActivity.this);
@@ -92,6 +88,23 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		
 	}
 
+	
+	//用于结束activity 
+	 public class CloseReceiver extends BroadcastReceiver  
+	 {   
+	        @Override  
+	        public void onReceive(Context context, Intent intent)  
+	        {  
+	         finish();  
+	        }
+	 }  
+	 @Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+		 	unregisterReceiver(closeReceiver);
+			super.onDestroy();
+		}
+	
 	private void initId(LoginActivity loginActivity) {
 		// TODO Auto-generated method stub
 		
@@ -233,21 +246,26 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		    String use = etName.getText().toString();   
 		    String pas = etPassword.getText().toString(); 
 		    SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+		    Editor editor = sp.edit();  
+	        editor.putString(Constant.MY_BANGDING, user.getWexin_bind());
+	        editor.putString(Constant.MY_HEAD_URL, user.getHead());
+	        editor.putString(Constant.MY_IDNUMBER, user.getIdnumber());
+	        editor.putString(Constant.MY_SHIMING, user.getStatus());
+	        editor.putString(Constant.MY_USER_NICK, user.getNickname());
+	        editor.putString(Constant.MY_USERID,user.getId()+"");
+	        editor.putString(Constant.MY_ACCOUNT, user.getMobile());
+	        editor.putBoolean(Constant.IS_LOGIN, true);
 		if (AppContext.getCode()=="") {
 			        //使用Editor接口修改SharedPreferences中的值并提交。  
-			        Editor editor = sp.edit();  
 			        editor.putString(Constant.MY_ACCOUNT, use);  
 			        editor.putString(Constant.MY_PASSWORD,pas);  
 			        editor.putBoolean(Constant.IS_LOGIN, true);
-			        editor.commit();
 		}else {
-			    Editor editor = sp.edit();  
-		        editor.putString(Constant.MY_ACCOUNT, user.getUsername());  
-		        editor.putString(Constant.MY_PASSWORD,user.getPassword());  
-		        editor.putBoolean(Constant.IS_LOGIN, true);
-		        editor.commit();
+		
+		        AppContext.setWeixin(true);
 		        AppContext.setCode("");
 		}
+        editor.commit();
 	        dialog.dismiss();
 	        Intent  intent=getIntent();
 	        intent.putExtra("nickname", user.getNickname());

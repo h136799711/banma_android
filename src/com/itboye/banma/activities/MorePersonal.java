@@ -192,13 +192,48 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	@SuppressLint("ResourceAsColor")
 	private void initData(){
 		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
-		if (appContext.isLogin()) {
+		if (appContext.isLogin()&&AppContext.isWeixin==false) {
 			String number=sp.getString(Constant.MY_ACCOUNT, "");
 			String psw=sp.getString(Constant.MY_PASSWORD, "");
 			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
 																													//请求用户头像数据
 			
-		}
+		}else {
+			if (appContext.isLogin()) {
+				tvUserName.setText(sp.getString(Constant.MY_USER_NICK, ""));
+					ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+							new BitmapCache());
+					try {
+					       ivHead.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
+							ivHead.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
+						//	System.out.println(AppContext.getPathHeadImage());;
+						}catch (Exception e) {
+						// TODO: handle exception
+							e.printStackTrace();
+					    	System.out.println("头像加载失败");
+					}		
+				try {
+					String newString=sp.getString(Constant.MY_ACCOUNT,"").substring(0,3)+"****"+sp.getString(Constant.MY_ACCOUNT,"").substring(7, 11);
+					tvPhoneNumber.setText(newString);
+			
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+					
+				if (sp.getString(Constant.WEIXIN_LOGIN, "").equals("0")) {
+					tvWeiXin.setText("未绑定");
+				}else {
+					tvWeiXin.setText("已绑定");
+					tvWeiXin.setClickable(false);
+				}
+				if (sp.getString(Constant.MY_SHIMING, "").equals("0")) {
+					tvRenZhen.setText("未认证");
+				}else {
+					tvRenZhen.setText("已认证");
+				}
+			}
+	}
 	}
 	
 	@Override
@@ -289,6 +324,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		case R.id.btn_exit:
 			sp.edit().clear().commit();//清空所有sp中的数据
 			appContext.setLogin(false);
+			AppContext.setWeixin(false);
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
@@ -579,7 +615,6 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 				jsonObject=new JSONObject(data);
 				code=jsonObject.getInt("code");
 				content = jsonObject.getString("data");
-				jsonObject2=new JSONObject(content);
 				if (code==0) {
 					tvWeiXin.setText("已绑定");
 					tvWeiXin.setClickable(false);
@@ -587,10 +622,12 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					System.out.println(content.toString());
 				}
 				else {
+					Toast.makeText(MorePersonal.this, content.toString(), Toast.LENGTH_SHORT).show();
 					System.out.println(content.toString());
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
+				Toast.makeText(MorePersonal.this, "绑定失败", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
 		}else {
@@ -610,7 +647,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			nickname=jsonObject2.getString("nickname");
 			phoneNumber=jsonObject2.getString("mobile");
 			weiXin=jsonObject2.getString("weixin_bind");
-			renZheng=jsonObject2.getString("idnumber");
+			renZheng=jsonObject2.getString("status");
 		//	imageUrl=jsonObject2.getString("imgurl");
 			
 			System.out.println(phoneNumber);
@@ -639,14 +676,16 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					
 					String newString=phoneNumber.substring(0,3)+"****"+phoneNumber.substring(7, 11);
 					tvPhoneNumber.setText(newString);
-					
+					System.out.println(weiXin+"不绑定1");
 					if (weiXin.equals("0")) {
+						System.out.println(weiXin+"不绑定2");
 						tvWeiXin.setText("未绑定");
 					}else {
 						tvWeiXin.setText("已绑定");
+						System.out.println(weiXin+"不绑定3");
 						tvWeiXin.setClickable(false);
 					}
-					if (renZheng.equals("")) {
+					if (renZheng.equals("0")) {
 						tvRenZhen.setText("未认证");
 					}else {
 						tvRenZhen.setText("已认证");

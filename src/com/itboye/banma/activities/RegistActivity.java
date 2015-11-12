@@ -4,7 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +42,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 	String tempCode=null;//临时存储code
 	private Intent intent;
 	private StrVolleyInterface networkHelper;
+	private CloseReceiver closeReceiver;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +50,11 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
 		intent=getIntent();
-
+		
+		closeReceiver = new CloseReceiver();  
+		IntentFilter intentFilter = new IntentFilter("KILL_ACTIVITY");  
+		registerReceiver(closeReceiver, intentFilter);  
+		
 		initId(this);
 
 		forgetFlag=intent.getStringExtra("forgetFlag");
@@ -63,6 +71,22 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 		btnGetCheckCode.setOnClickListener(checkCodeOnclick);
 		tvUrl.setOnClickListener(urlOnClick);
 	}
+	
+	//用于结束activity 
+	 public class CloseReceiver extends BroadcastReceiver  
+	 {   
+	        @Override  
+	        public void onReceive(Context context, Intent intent)  
+	        {  
+	         finish();  
+	        }
+	 }  
+	 @Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+		 	unregisterReceiver(closeReceiver);
+			super.onDestroy();
+		}
 
 	private void initId(RegistActivity registActivity) {
 		// TODO Auto-generated method stub
