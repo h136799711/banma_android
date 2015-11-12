@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -64,22 +64,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <ScrollView
-                android:id="@+id/sv_temp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" 
-                android:layout_marginBottom="130dp" >
-
-                <com.itboye.banma.view.MyListView
+                <ListView
                     android:id="@+id/listView_cart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:cacheColorHint="#00000000" >
-                </com.itboye.banma.view.MyListView>
-            </ScrollView>
-            
-
+                </ListView>
 
  <LinearLayout
                 android:id="@+id/ll_cart_bottom"

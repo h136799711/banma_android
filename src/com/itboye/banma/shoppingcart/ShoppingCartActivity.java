@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,6 +22,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -226,7 +228,52 @@ OnClickListener,onAddChanged,onReduceChanged{
 		
 	}
 	
+	/*
+	 * 动态设置ListView组建的高度
+	 */
+	public void setListViewHeightBasedOnChildren(ListView listView) {
 
+		ListAdapter listAdapter = listView.getAdapter();
+
+		if (listAdapter == null) {
+
+			return;
+
+		}
+
+		int totalHeight = 0;
+
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+
+			View listItem = listAdapter.getView(i, null, listView);
+
+			listItem.measure(0, 0);
+
+			totalHeight += listItem.getMeasuredHeight();
+
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+		params.height = totalHeight
+
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+
+		// params.height += 5;// if without this statement,the listview will be
+
+		// a
+
+		// little short
+
+		// listView.getDividerHeight()获取子项间分隔符占用的高度
+
+		// params.height最后得到整个ListView完整显示需要的高度
+
+		listView.setLayoutParams(params);
+
+	}
+
+	
 	/** 把背景变成暗色 */
 	public void setBackgroundBlack(View view, int what) {
 		switch (what) {
@@ -249,7 +296,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 			adapter.setOnAddChanged(this);
 			adapter.setOnRedChanged(this);
 			//adapter.setGuiChanged(this);
-			listView_cart.setAdapter(adapter);
+			//setListViewHeightBasedOnChildren(listView_cart);
+			listView_cart.setAdapter(adapter); 
 			dialog.setVisibility(View.GONE);
 			ll_cart_bottom.setVisibility(View.VISIBLE);
 			rl_cart.setVisibility(View.VISIBLE);

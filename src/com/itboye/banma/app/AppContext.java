@@ -35,10 +35,11 @@ public class AppContext extends Application {
 	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
 	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
 	 public static String code="";
+	 
 	 public static String getCode() {
 		return code;
 	}
-
+		
 	public static void setCode(String code) {
 		AppContext.code = code;
 	}
