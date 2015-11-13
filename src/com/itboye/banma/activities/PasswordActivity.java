@@ -40,9 +40,11 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
 		 initId(this);
+		 
 		btnRegist.setOnClickListener(regisitOnClickListener);
 		ivBack.setOnClickListener(backOnClickListener);
     }
+    
     
     //返回按钮
     OnClickListener backOnClickListener =new OnClickListener() {
@@ -53,6 +55,8 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			finish();
 		}
 	};
+	
+	
     //注册按钮
     OnClickListener regisitOnClickListener =new OnClickListener() {
 		
@@ -132,6 +136,10 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			e1.printStackTrace();
 		}
 		if (code == 0) {
+			//关闭跳转中间的activiyt
+			Intent intent1 = new Intent();  
+			intent1.setAction("KILL_ACTIVITY");  
+			sendBroadcast(intent1); 
 			switch (state) {
 			case 1:
 				Toast.makeText(PasswordActivity.this, "注册成功" , Toast.LENGTH_LONG).show();

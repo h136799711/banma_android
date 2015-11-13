@@ -76,15 +76,15 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 		// TODO Auto-generated method stub
 		ILoadingLayout startLabels = mPullRefreshGridView
 				.getLoadingLayoutProxy(true, false);
-		startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示
+		//startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示
 		startLabels.setRefreshingLabel("正在刷新...");// 刷新时
 		startLabels.setReleaseLabel("释放刷新");// 下来达到一定距离时，显示的提示
 
 		ILoadingLayout endLabels = mPullRefreshGridView.getLoadingLayoutProxy(
 				false, true);
-		endLabels.setPullLabel("上拉加载更多");// 刚下拉时，显示的提示
+	//	endLabels.setPullLabel("上拉加载更多");// 刚下拉时，显示的提示
 		endLabels.setRefreshingLabel("正在刷新加载");// 刷新时
-		endLabels.setReleaseLabel("加载完成");// 下来达到一定距离时，显示的提示
+		endLabels.setReleaseLabel("释放刷新");// 下来达到一定距离时，显示的提示
 	}
 
 
@@ -124,6 +124,7 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 		// TODO Auto-generated method stub
 		Gson gson = new Gson();
 		productlist = new ArrayList<ProductItem>();
+		productlist.clear();
 		JSONObject jsondata;
 		try {
 			jsondata = new JSONObject(data);
@@ -177,12 +178,23 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 										| DateUtils.FORMAT_ABBREV_ALL);
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-						updateData();
+						updateDataAdd();
 					}
 
-					private void updateData() {
+					private void updateDataAdd() {
 						// TODO Auto-generated method stub
 						pageNow+=1;
+						try {
+							appContext.getProductList(getActivity(), pageNow,
+									Constant.PAGE_SIZE, networkHelper);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					private void updateDataRed() {
+						// TODO Auto-generated method stub
+						pageNow-=1;
 						try {
 							appContext.getProductList(getActivity(), pageNow,
 									Constant.PAGE_SIZE, networkHelper);
@@ -198,7 +210,7 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 					{
 						Log.e("TAG", "onPullUpToRefresh"); // Do work to refresh
 															// the list here.
-						updateData();
+						updateDataRed();
 					}
 				});
 	}

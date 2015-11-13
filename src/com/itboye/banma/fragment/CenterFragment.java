@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.LoginActivity;
@@ -82,24 +83,6 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		ivPersonheadFail=(CircleImg)chatView.findViewById(R.id.iv_personheadfail);
 		ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
 		tvPersonnamefail=(TextView)chatView.findViewById(R.id.tv_personnamefail);
-//		sp = getActivity().getSharedPreferences(Constant.MY_PREFERENCES, getActivity().MODE_PRIVATE);
-		
-//		if (appContext.isLogin()) {
-//			String number=sp.getString(Constant.MY_ACCOUNT, "");
-//			String psw=sp.getString(Constant.MY_PASSWORD, "");
-//			ApiClient.Login(getActivity(), number, psw, networkHelper);//请求用户数据
-//			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-//					new BitmapCache());
-//			try {
-//			      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
-//			       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
-//				  ivPersonheadFail.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
-//				}catch (Exception e) {
-//				// TODO: handle exception
-//					e.printStackTrace();
-//			    	System.out.println("头像加载失败");
-//			}		
-//		}
 		tvYongJin=(TextView)chatView.findViewById(R.id.tv_yongjin);
 		ivShare=(ImageView)chatView.findViewById(R.id.iv_share);
 	   rlMoney=(LinearLayout)chatView.findViewById(R.id.rl_money);
@@ -155,11 +138,6 @@ public class CenterFragment extends Fragment implements OnClickListener{
              			Toast.makeText(getActivity(), "请先登录",
              						Toast.LENGTH_LONG).show();
              		}			
-//             	Intent intent = new Intent(getActivity(), BabyActivity.class);
-//             		startActivity(intent);
-//             			getActivity().overridePendingTransition(R.anim.in_from_right,
-//             						R.anim.out_to_left);
-			
 			break;
 		case R.id.iv_personheadfail://点击成功头像 跳转
 		if (!appContext.isLogin()) {
@@ -169,22 +147,11 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			}
 			break;
 			
-		/*case R.id.iv_back:
-			getActivity().finish();
-			getActivity().overridePendingTransition(R.anim.push_right_in,
-					R.anim.push_right_out);
-			break;*/
 		case R.id.rl_more:
 				startActivity(new Intent(getActivity(),MorePersonal.class));
 				getActivity().overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 				break;
-			
-//	case R.id.rl_money:
-//		startActivity(new Intent(getActivity(),ShoppingCartActivity.class));
-//			overridePendingTransition(R.anim.in_from_right,
-//				R.anim.out_to_left);
-//		break;
 			
 		case R.id.iv_share:
 			if(appContext.isLogin()){
@@ -207,6 +174,8 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			break;
 		}
 	}
+	
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -217,13 +186,12 @@ public class CenterFragment extends Fragment implements OnClickListener{
 					ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 							new BitmapCache());
 					try {
-					      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
-					       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
-					      ivPersonheadFail.setImageUrl(AppContext.getHeadurl(), imageLoader);
+						ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
+					    imageLoader.get(AppContext.getHeadurl(), listener);
 					     tvPersonnamefail.setText(AppContext.getNickname());
 						}catch (Exception e) {
 						// TODO: handle exception
-							e.printStackTrace();
+								e.printStackTrace();
 					}		
 				}else {
 					ivPersonheadFail.setImageResource(R.drawable.person_head);
@@ -240,9 +208,8 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 					new BitmapCache());
 			try {
-			      ivPersonheadFail.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
-			       ivPersonheadFail.setDefaultImageResId(R.drawable.person_head);
-			      ivPersonheadFail.setImageUrl(AppContext.getHeadurl(), imageLoader);
+				ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
+			    imageLoader.get(AppContext.getHeadurl(), listener);
 			      tvPersonnamefail.setText(AppContext.getNickname());
 				}catch (Exception e) {
 				// TODO: handle exception
@@ -254,32 +221,4 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			tvPersonnamefail.setText("登陆/注册");
 		}
 	}
-//	@Override
-//	public void onErrorHappened(VolleyError error) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//	@Override
-//	public void onDataChanged(String data) {
-//		// TODO Auto-generated method stub
-//		JSONObject jsonObject=null;
-//		String content=null;
-//		int code = -1;
-//		JSONObject jsonObject2 = null;
-//
-//		try {
-//			jsonObject = new JSONObject(data);
-//			code = jsonObject.getInt("code");
-//			content=jsonObject.getString("data");
-//			jsonObject2=new JSONObject(content);
-//		    nickname=jsonObject2.getString("nickname");
-//		} catch (JSONException e1) {
-//			e1.printStackTrace();
-//		}
-//		if (code == 0) {
-//				if (appContext.isLogin()) {
-//					tvPersonnamefail.setText(nickname);
-//				}
-//	     	}
-//		}  
 }

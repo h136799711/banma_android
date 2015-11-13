@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,6 +22,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -210,7 +212,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 		case 1:
 			try {				
 				if (code==0) {
-						Log.v("delete","成功");											
+						Log.v("delete","成功");			
+						adapter.notifyDataSetChanged();
 					}
 				} catch (Exception e) {
 				// TODO: handle exception
@@ -225,7 +228,52 @@ OnClickListener,onAddChanged,onReduceChanged{
 		
 	}
 	
+	/*
+	 * 动态设置ListView组建的高度
+	 */
+	public void setListViewHeightBasedOnChildren(ListView listView) {
 
+		ListAdapter listAdapter = listView.getAdapter();
+
+		if (listAdapter == null) {
+
+			return;
+
+		}
+
+		int totalHeight = 0;
+
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+
+			View listItem = listAdapter.getView(i, null, listView);
+
+			listItem.measure(0, 0);
+
+			totalHeight += listItem.getMeasuredHeight();
+
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+		params.height = totalHeight
+
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+
+		// params.height += 5;// if without this statement,the listview will be
+
+		// a
+
+		// little short
+
+		// listView.getDividerHeight()获取子项间分隔符占用的高度
+
+		// params.height最后得到整个ListView完整显示需要的高度
+
+		listView.setLayoutParams(params);
+
+	}
+
+	
 	/** 把背景变成暗色 */
 	public void setBackgroundBlack(View view, int what) {
 		switch (what) {
@@ -248,7 +296,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 			adapter.setOnAddChanged(this);
 			adapter.setOnRedChanged(this);
 			//adapter.setGuiChanged(this);
-			listView_cart.setAdapter(adapter);
+			//setListViewHeightBasedOnChildren(listView_cart);
+			listView_cart.setAdapter(adapter); 
 			dialog.setVisibility(View.GONE);
 			ll_cart_bottom.setVisibility(View.VISIBLE);
 			rl_cart.setVisibility(View.VISIBLE);
@@ -305,8 +354,6 @@ OnClickListener,onAddChanged,onReduceChanged{
 			}
 		});
 
-		
-		
 		
 		tv_cart_buy_Ordel.setOnClickListener(this);
 	//	tv_goShop.setOnClickListener(this);
@@ -426,7 +473,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 					ll_cart.setVisibility(View.VISIBLE);
 				}
 				
-				adapter.notifyDataSetChanged();
+			//	adapter.notifyDataSetChanged();
 				is_choice=new boolean[arrayList_cart.size()];
 				System.out.println("此时的长度---->"+is_choice.length);
 			}else {
@@ -438,31 +485,6 @@ OnClickListener,onAddChanged,onReduceChanged{
 					if (is_choice_copy[i]) {
 						//讲该货物包装成数据
 						SkuStandard tempSku=new SkuStandard();	
-//						private int id;
-//						private String sku_id;             //规格ID1
-//						private Double ori_price;			//原价1
-//						private Double price;				//现价1
-//						private int quantity;				//商品库存1
-//						private String product_code;		//商品编号1
-//						private String createtime;			//创建时间1
-//						private String product_id;			//商品ID1
-//						private String icon_url;			//图片1
-//						private String sku;				//规格1
-//						private String num = "1";         //购买数量1
-//						private String name; 			//商品名称
-//						hashMap.put("id", temp.getInt("id"));
-//						hashMap.put("name", temp.getString("name"));
-//						hashMap.put("count", temp.getInt("count"));
-//						hashMap.put("price",temp.getString("price"));
-//						hashMap.put("ori_price",temp.getDouble("ori_price"));
-//						hashMap.put("express", temp.getString("express"));
-//						hashMap.put("sku_id", temp.getString("sku_id"));
-//						hashMap.put("psku_id", temp.getString("psku_id"));
-//						hashMap.put("sku_desc", temp.getString("sku_desc"));
-//						hashMap.put("icon_url", temp.getString("icon_url"));
-//						hashMap.put("p_id", temp.getInt("p_id"));
-//						hashMap.put("weight", temp.getString("weight"));
-//						hashMap.put("taxrate", temp.getString("taxrate"));
 						int id=(Integer) arrayList_cart.get(i).get("id");
 						//int uid=(Integer) arrayList_cart.get(i).get("uid");
 						double ori_price=(Double.parseDouble(arrayList_cart.get(i).get("ori_price").toString()));
@@ -493,6 +515,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 					overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 				}
 			}
+			break;
 		default:
 			break;
 		}

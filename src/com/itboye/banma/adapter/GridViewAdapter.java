@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +36,7 @@ public class GridViewAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
+		Log.v("Item", list.size()+"");
 		return list.size();
 	}
 
@@ -46,6 +48,7 @@ public class GridViewAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
+		Log.v("Item", list.get(position)+"");
 		return list.get(position);
 	}
 
@@ -88,7 +91,7 @@ public class GridViewAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(context, BabyActivity.class);
-				intent.putExtra("PID", 1);
+				intent.putExtra("PID", list.get(position).getId());
 				context.startActivity(intent);
 				((Activity) context).overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);

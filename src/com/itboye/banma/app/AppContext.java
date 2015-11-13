@@ -32,9 +32,28 @@ public class AppContext extends Application {
 	public String password;//登陆密码
 	public static String pathHeadImage;//头像存储路径
 	public static  boolean hasHead=false;//是否已经设置头像
+	public static boolean isWeixin() {
+		return isWeixin;
+	}
+
+	public static void setWeixin(boolean isWeixin) {
+		AppContext.isWeixin = isWeixin;
+	}
+
+	public static boolean isWeixin=false;//是否是微信登陆的
 	 public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
 	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
-	 public static String getNickname() {
+	 public static String code="";
+	 
+	 public static String getCode() {
+		return code;
+	}
+		
+	public static void setCode(String code) {
+		AppContext.code = code;
+	}
+
+	public static String getNickname() {
 		return nickname;
 	}
 

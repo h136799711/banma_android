@@ -125,6 +125,7 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 				//保存登陆绑定的手机号
 				Editor editor=sp.edit();
 				editor.putString(Constant.MY_BANGDING, etNewNumber.getText().toString());
+				editor.putString(Constant.MY_ACCOUNT, etNewNumber.getText().toString());
 				editor.commit();
 				//修改显示绑定的手机号
 				Intent intent=getIntent();
