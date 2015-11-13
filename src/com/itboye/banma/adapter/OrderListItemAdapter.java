@@ -74,18 +74,22 @@ public class OrderListItemAdapter  extends BaseAdapter {
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(R.layout.confirm_order_item,
 					parent, false);
+			ImageView order_pic = BaseViewHolder.get(view, R.id.order_pic);
+			ImageListener listener = ImageLoader.getImageListener(order_pic,
+					0, R.drawable.image_load_fail);
+			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+					new BitmapCache());
+			imageLoader.get(AppContext.getImg()+order.getImg(), listener, 80, 80);
 		}
-		ImageView order_pic = BaseViewHolder.get(view, R.id.order_pic);
+		
 		TextView order_name = BaseViewHolder.get(view, R.id.order_name);
 		TextView order_standard = BaseViewHolder.get(view, R.id.order_standard);
 		TextView order_price = BaseViewHolder.get(view, R.id.order_price);
 		TextView order_number = BaseViewHolder.get(view, R.id.order_number);
 		View line = BaseViewHolder.get(view, R.id.line);
-		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-				new BitmapCache());
-		ImageListener listener = ImageLoader.getImageListener(order_pic,
-				R.drawable.image_loading, R.drawable.image_load_fail);
-		imageLoader.get(AppContext.getImg()+order.getImg(), listener, 80, 80);
+		
+		
+		
 		order_name.setText(order.getName());
 		order_standard.setText(order.getSku_desc());
 		order_price.setText("￥" + order.getPrice());

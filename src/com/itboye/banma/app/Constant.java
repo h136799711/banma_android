@@ -37,10 +37,36 @@ public class Constant {
     public static final int PAGE_SIZE = 20;  //分页显示条数
     
     //订单状态显示的区分
-    public static final int DAIFUKUAN = 1;
-    public static final int DAIFAHUO = 2;
-    public static final int DAISHOUHUO = 3;
-    public static final int DAIPINGJIA = 4;
+    public static final int STATE_ALL = 0;
+    public static final int STATE_DAIFUKUAN = 1;
+    public static final int STATE_DAIFAHUO = 2;
+    public static final int STATE_DAISHOUHUO = 3;
+    public static final int STATE_YISHOUHUO = 4;
+    
+    /**
+     * 订单状态
+     * @return
+     */
+    public static String getStatus(int state){
+    	String statusString = "";
+    	switch (state) {
+		case STATE_DAIFUKUAN:
+			statusString = "待付款";
+			break;
+		case STATE_DAIFAHUO:
+			statusString = "待发货";
+			break;
+		case STATE_DAISHOUHUO:
+			statusString = "待收货";
+			break;
+		case STATE_YISHOUHUO:
+			statusString = "已收货";
+			break;
+		default:
+			break;
+		}
+		return statusString;
+    }
     
     /**
      * 订单退回

@@ -8,6 +8,7 @@ public class MailingAdress  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	int id;                 //地址ID
 	int uid;				//用户ID
+	String id_card;       	//身份证
 	String country;       	//国家
 	String province;       	//省份
 	String city;       		//城市
@@ -45,6 +46,16 @@ public class MailingAdress  implements Serializable {
 
 	public void setUid(int uid) {
 		this.uid = uid;
+	}
+
+
+	public String getId_card() {
+		return id_card;
+	}
+
+
+	public void setId_card(String id_card) {
+		this.id_card = id_card;
 	}
 
 

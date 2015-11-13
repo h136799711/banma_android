@@ -66,7 +66,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		
 		try {
 			YesOrNo = appContext.getAllOrder(getActivity(), pageNo, pageSize,
-					networkHelper);
+					 Constant.STATE_ALL, networkHelper);
 			if(!YesOrNo){
 				ll_cart.setVisibility(View.GONE);
 				wait_ll.setVisibility(View.VISIBLE);
