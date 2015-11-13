@@ -1,5 +1,6 @@
 package com.itboye.banma.activities;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import com.itboye.banma.R.string;
 
 import android.R.integer;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -68,6 +70,7 @@ StrUIDataListener {
 	private int state = -1;
 	private Button confirm;
 	private PayAlipay payAlipay;
+	private ProgressDialog dialog;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_order);
@@ -77,6 +80,7 @@ StrUIDataListener {
 
 	@SuppressWarnings("unchecked")
 	private void initData() {
+		dialog = new ProgressDialog(ConfirmOrdersActivity.this);
 		appContext = (AppContext) getApplication();
 		strnetworkHelper = new StrVolleyInterface(ConfirmOrdersActivity.this);
 		strnetworkHelper.setStrUIDataListener(ConfirmOrdersActivity.this);
@@ -262,16 +266,10 @@ StrUIDataListener {
 			break;
 		case R.id.confirm:
 			// 添加订单
-			/*ordersAdd(appContext.getLoginUid(), 0, null, null,
-					address.getContactname(), address.getMobile(),
-					address.getCountry(), address.getProvince(),
-					address.getCity(), address.getArea(), null,
-					address.getDetailinfo(), 2);*/
-
-			// 完成订单提交，成功后启动支付宝付款
-
-			payAlipay = new PayAlipay(ConfirmOrdersActivity.this);
-			payAlipay.pay(v, ""+priceAll);
+			ordersAdd(appContext.getLoginUid(), 12, "123", "456",address.getId(),2,1);
+			dialog.setMessage("提交订单...");
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			dialog.show();
 			
 			break;
 		case R.id.order_flex:
@@ -294,13 +292,11 @@ StrUIDataListener {
 	 * @return
 	 */
 	public Boolean ordersAdd(int uid, int cartids, String idcode, String note,
-			String contactname, String mobile, String country, String province,
-			String city, String area, String wxno, String detailinfo, int from) {
+			int addr_id, int from, int payType) {
 		try {
 			state = ORDER;
 			YesOrNo = appContext.ordersAdd(ConfirmOrdersActivity.this, uid,
-					cartids, idcode, note, contactname, mobile, country,
-					province, city, area, wxno, detailinfo, from,
+					cartids, idcode, note, addr_id, from, payType,
 					strnetworkHelper);
 
 			if (!YesOrNo) { // 如果没联网
@@ -321,6 +317,7 @@ StrUIDataListener {
 		state = -1;
 		Toast.makeText(ConfirmOrdersActivity.this, "加载失败"+error, Toast.LENGTH_SHORT)
 		.show();
+		dialog.dismiss();
 	}
 
 	@Override
@@ -372,13 +369,29 @@ StrUIDataListener {
 				}
 				state = -1;
 			} else if (state == ORDER) {
+				String addressData = jsondata.getString("data");
 				if (code == 0) {
-					String addressData = jsondata.getString("data");
+					
 					Toast.makeText(ConfirmOrdersActivity.this, "订单添加成功"+data,
 							Toast.LENGTH_SHORT).show();
+					
+					// 完成订单提交，成功后启动支付宝付款
+					dialog.dismiss();
+					payAlipay = new PayAlipay(ConfirmOrdersActivity.this);
+					payAlipay.pay(null, ""+priceAll);
+						
+					
 				}else{
-					Toast.makeText(ConfirmOrdersActivity.this, "订单添加异常",
+					byte[] bytes = addressData.getBytes();
+					String newStr = null;
+					try {
+						newStr = new String(bytes , "UTF-8");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} 
+					Toast.makeText(ConfirmOrdersActivity.this, "订单添加异常:"+newStr,
 							Toast.LENGTH_SHORT).show();
+					dialog.dismiss();
 				}
 				state = -1;
 			}

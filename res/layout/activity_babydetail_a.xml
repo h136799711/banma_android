@@ -372,7 +372,7 @@
                         android:layout_height="45dip"
                         android:background="@color/line" />
                 </LinearLayout>
-            </com.itboye.banma.view.ViewPagerScroller>
+          </com.itboye.banma.view.ViewPagerScroller>
         </LinearLayout>
 
         <LinearLayout
