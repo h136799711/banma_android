@@ -216,11 +216,11 @@ public class AppContext extends Application {
 	 */
 
 	public Boolean updateAdress(Context mContext, Area province, Area city, Area area, String detailinfo,
-			String contactname, String mobile, String postal_code, int id, StrVolleyInterface networkHelper) throws Exception {
+			String contactname, String mobile, String postal_code, int id, String id_card, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
 				ApiClient.updateAdress(mContext, loginUid, province, city, area, detailinfo, 
-						contactname, mobile, postal_code, id, networkHelper);
+						contactname, mobile, postal_code, id, id_card, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;
@@ -348,13 +348,11 @@ public class AppContext extends Application {
 	 * @throws Exception 
 	 */
 	public Boolean ordersAdd(Context mContext,int uid, int cartids, String idcode, String note,
-			String contactname, String mobile, String country, String province, 
-			String city, String area, String wxno, String detailinfo, int from, 
-			StrVolleyInterface networkHelper) throws Exception {
+			int addr_id, int from, int payType, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
-				ApiClient.ordersAdd(mContext, uid, cartids, idcode, note, contactname,
-						mobile, country, province, city, area, wxno, detailinfo, from, networkHelper);
+				ApiClient.ordersAdd(mContext, uid, cartids, idcode, note, addr_id,
+						from, payType, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;
@@ -365,16 +363,17 @@ public class AppContext extends Application {
 		}	
 	}
 
+
 	/**
 	 * 分页获取用户所有订单信息
 	 * @return
 	 * @throws Exception 
 	 */
-	public boolean getAllOrder(Context mContext, int pageNo, int pageSize, 
+	public boolean getAllOrder(Context mContext, int pageNo, int pageSize, int status,
 			StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
-				ApiClient.getAllOrder(mContext, loginUid, pageNo, pageSize, networkHelper);
+				ApiClient.getAllOrder(mContext, loginUid, pageNo, pageSize, status, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;

@@ -152,6 +152,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 			detailed_address.setText(address.getDetailinfo());
 			postcode.setText(address.getPostal_code());
 			title.setText(R.string.alter_address);
+			id_card.setText(address.getId_card());
 			default_address_line.setVisibility(View.VISIBLE);
 			default_address_layout.setVisibility(View.VISIBLE);
 			remove.setVisibility(View.VISIBLE);
@@ -218,7 +219,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 							DataStore.AREA_DISTRICT, detailed_address.getText()
 									.toString(), name.getText().toString(),
 							telephone.getText().toString(), postcode.getText()
-									.toString(), address.getId());
+									.toString(), address.getId(),id_card.getText().toString());
 				} catch (Exception e) {
 					e.printStackTrace();
 					dialog.dismiss();
@@ -320,11 +321,11 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 	 */
 	private void updateAdress(Area province, Area city, Area area,
 			String detailinfo, String contactname, String mobile,
-			String postal_code, int id) throws Exception {
+			String postal_code, int id, String id_card) throws Exception {
 
 		Boolean stateBoolean = appContext.updateAdress(AddAddressActivity.this,
 				province, city, area, detailinfo, contactname, mobile,
-				postal_code, id, strnetworkHelper);
+				postal_code, id, id_card, strnetworkHelper);
 		if (stateBoolean == false) {
 			dialog.dismiss();
 			Toast.makeText(AddAddressActivity.this, "请检查网络连接",

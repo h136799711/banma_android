@@ -114,11 +114,11 @@ public class BabyOrderFragment extends Fragment implements OnClickListener{
 	        mPager = (ViewPager) parentView.findViewById(R.id.vPager);
 	        fragmentsList = new ArrayList<Fragment>();
 
-	        daifa = new OrderStateFragment(Constant.DAIFAHUO);
-	        daishou=new OrderStateFragment(Constant.DAISHOUHUO);
-	        daifu=new OrderStateFragment(Constant.DAIFUKUAN);
+	        daifa = new OrderStateFragment(Constant.STATE_DAIFAHUO);
+	        daishou=new OrderStateFragment(Constant.STATE_DAISHOUHUO);
+	        daifu=new OrderStateFragment(Constant.STATE_DAIFUKUAN);
 	        quanbu=new OrderAllFragment();
-	        daiping=new OrderStateFragment(Constant.DAIPINGJIA);
+	        daiping=new OrderStateFragment(Constant.STATE_YISHOUHUO);
 
 	        fragmentsList.add(quanbu);
 	        fragmentsList.add(daifu);
