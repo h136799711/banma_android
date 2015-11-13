@@ -72,7 +72,7 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener {
 		try {
 			
 			YesOrNo = appContext.getAllOrder(getActivity(), pageNo, pageSize,
-					networkHelper);
+					state, networkHelper);
 			if(!YesOrNo){
 				ll_cart.setVisibility(View.GONE);
 				wait_ll.setVisibility(View.VISIBLE);
@@ -198,8 +198,10 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener {
 				System.out.println(retMap);
 				//map转化为List
 				Iterator it = retMap.keySet().iterator(); 
-				while (it.hasNext()) {  
+				while (it.hasNext()) {
 					String key = it.next().toString();
+					orderList.add(retMap.get(key)); 
+					/*String key = it.next().toString();
 					switch (state) {
 					case Constant.DAIFUKUAN:  //代付款
 						if(!retMap.get(key).getOrder_status().equals(Constant.ORDER_CANCEL+"") 
@@ -228,7 +230,7 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener {
 						break;
 					}
 
-
+*/
 				}
 				showListView(orderList);
 				

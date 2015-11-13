@@ -188,11 +188,11 @@ public class AppContext extends Application {
 	 */
 
 	public Boolean updateAdress(Context mContext, Area province, Area city, Area area, String detailinfo,
-			String contactname, String mobile, String postal_code, int id, StrVolleyInterface networkHelper) throws Exception {
+			String contactname, String mobile, String postal_code, int id, String id_card, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
 				ApiClient.updateAdress(mContext, loginUid, province, city, area, detailinfo, 
-						contactname, mobile, postal_code, id, networkHelper);
+						contactname, mobile, postal_code, id, id_card, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;
@@ -342,11 +342,11 @@ public class AppContext extends Application {
 	 * @return
 	 * @throws Exception 
 	 */
-	public boolean getAllOrder(Context mContext, int pageNo, int pageSize, 
+	public boolean getAllOrder(Context mContext, int pageNo, int pageSize, int status,
 			StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
-				ApiClient.getAllOrder(mContext, loginUid, pageNo, pageSize, networkHelper);
+				ApiClient.getAllOrder(mContext, loginUid, pageNo, pageSize, status, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;

@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <ScrollView
+            <com.itboye.banma.view.ViewPagerScroller
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" >
@@ -372,7 +372,7 @@
                         android:layout_height="45dip"
                         android:background="@color/line" />
                 </LinearLayout>
-            </ScrollView>
+            </com.itboye.banma.view.ViewPagerScroller>
         </LinearLayout>
 
         <LinearLayout

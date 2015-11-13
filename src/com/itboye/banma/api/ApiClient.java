@@ -279,7 +279,7 @@ public class ApiClient {
 	}
 
 	public static void updateAdress(Context mContext, int loginUid, Area province, Area city, Area area, String detailinfo,
-			String contactname, String mobile, String postal_code, int id, StrVolleyInterface networkHelper) {
+			String contactname, String mobile, String postal_code, int id, String id_card,StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Address/update?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
@@ -296,7 +296,7 @@ public class ApiClient {
 		params.put("city",city.getName());
 		params.put("area",area.getName());
 		params.put("id",""+id);
-
+		params.put("id_card",id_card);
 		VolleyRequest.StrRequestPost(mContext, url, "updateAdress",params, networkHelper);
 	}
 
@@ -372,7 +372,7 @@ public class ApiClient {
 		VolleyRequest.StrRequestPost(mContext, url, "ordersAdd",params, networkHelper);
 	}
 	public static void getAllOrder(Context mContext, int loginUid, int pageNo,
-			int pageSize, StrVolleyInterface networkHelper) {
+			int pageSize, int status, StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Orders/query?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
@@ -380,6 +380,7 @@ public class ApiClient {
 		params.put("uid",""+loginUid);
 		params.put("curpage",""+pageNo);
 		params.put("pagesize",""+pageSize);
+		params.put("status",""+status);
 		VolleyRequest.StrRequestPost(mContext, url, "getAllOrder",params, networkHelper);
 	}
 	

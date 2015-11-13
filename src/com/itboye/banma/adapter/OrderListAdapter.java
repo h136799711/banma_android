@@ -83,8 +83,7 @@ public class OrderListAdapter   extends BaseAdapter {
 		Button confirm_two = BaseViewHolder.get(view, R.id.confirm_two);
 		
 		order_code.setText(order.getOrder_code());
-		status.setText("["+Constant.getOrderStatus(Integer.parseInt(order.getOrder_status()))
-				+"]"+" "+"["+Constant.getPayStatus(Integer.parseInt(order.getPay_status()))+"]");
+		status.setText("["+Constant.getStatus(Integer.parseInt(order.getStatus()))+"]");
 		all_price.setText(order.getPrice());
 		
 		data = order.get_items();
@@ -105,7 +104,7 @@ public class OrderListAdapter   extends BaseAdapter {
 				((Activity) context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			}
 		});
-
+/*
 		switch (Integer.parseInt(order.getOrder_status())) {
 		case Constant.ORDER_TOBE_CONFIRMED: //待确认
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_TOBE_PAID){ //代付款状态
@@ -197,7 +196,7 @@ public class OrderListAdapter   extends BaseAdapter {
 		default:
 			break;
 		}
-		
+		*/
 		return view;
 	}
 }
