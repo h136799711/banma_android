@@ -29,6 +29,7 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.OrderDetail;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.MyListView;
+import com.umeng.analytics.MobclickAgent;
 
 public class OrderDetailActivity extends Activity implements OnClickListener, StrUIDataListener {
 	private AppContext appContext;
@@ -138,6 +139,21 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 			bottom.setVisibility(View.GONE);
 		}
 	}
+	
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
+	
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		Toast.makeText(OrderDetailActivity.this, "订单详情数据返回失败"+error, Toast.LENGTH_SHORT)

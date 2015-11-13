@@ -37,6 +37,7 @@ import com.itboye.banma.utils.CascadingMenuViewOnSelectListener;
 import com.itboye.banma.utils.DBhelper;
 import com.itboye.banma.utils.DataStore;
 import com.itboye.banma.view.CascadingMenuPopWindow;
+import com.umeng.analytics.MobclickAgent;
 
 public class AddAddressActivity extends Activity implements StrUIDataListener,
 		OnClickListener {
@@ -91,6 +92,20 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 		return false;
 	}
 
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
+	
 	private void init() {
 		// 向三级menu添加地区数据
 		dBhelper = new DBhelper(this);

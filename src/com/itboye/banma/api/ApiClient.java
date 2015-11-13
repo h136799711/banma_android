@@ -23,6 +23,28 @@ public class ApiClient {
 	
 	public static StringRequest stringRequest;
 	
+	//意见反馈
+			public static void suggest(Context mContext, String text, String uid,StrVolleyInterface networkHelper) {
+				String access_token=AppContext.getAccess_token();
+				String url = Constant.URL+"/Coupon/info?access_token="+access_token;
+				Map<String,String> params = new HashMap<String, String>();
+		        params.put("text",text);
+		        params.put("uid",uid);
+		        VolleyRequest.StrRequestPost(mContext, url, "Suggest",params, networkHelper);
+				
+			} 
+	
+	//优惠码
+		public static void youHuiMa(Context mContext, String coupon, StrVolleyInterface networkHelper) {
+			String access_token=AppContext.getAccess_token();
+			String url = Constant.URL+"/Coupon/info?access_token="+access_token;
+			Map<String,String> params = new HashMap<String, String>();
+	        params.put("coupon",coupon);
+	        VolleyRequest.StrRequestPost(mContext, url, "youHuiMa",params, networkHelper);
+			
+		} 
+		
+	
 	//微信登陆
 	public static void wxLogin(Context mContext, String code, StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();

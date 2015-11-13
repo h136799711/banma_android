@@ -11,6 +11,7 @@ import com.itboye.banma.fragment.CenterFragment;
 import com.itboye.banma.fragment.FindFragment;
 import com.itboye.banma.fragment.HomePageFragment;
 import com.itboye.banma.fragment.OrderAllFragment;
+import com.umeng.analytics.MobclickAgent;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,6 +82,15 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 
 	}
 	
+	//友盟统计
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
 	
 	private void initTabIndicator()
 	{

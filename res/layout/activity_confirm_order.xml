@@ -341,6 +341,7 @@
                     android:background="@color/line" />
                 
                 <LinearLayout
+                    android:id="@+id/ll_youhui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -361,6 +362,46 @@
                         android:textColor="@color/grey" />
                     
                     <ImageView
+                       android:focusable="false"
+                    android:layout_width="30dip"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="10dip"
+                    android:src="@drawable/arrow_right" />
+                    
+                </LinearLayout>
+                      <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginRight="10dip"
+                    android:background="@color/line" />
+                
+                <LinearLayout
+                    android:id="@+id/ll_beizhu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/white" >
+
+                    <TextView
+                        android:focusable="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="留言备注" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:gravity="right"
+                       
+                        android:textColor="@color/grey" />
+                    
+                    <ImageView
+                        android:focusable="false"
                     android:layout_width="30dip"
                     android:layout_height="30dp"
                     android:layout_gravity="center"

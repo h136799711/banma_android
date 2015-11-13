@@ -22,6 +22,7 @@ import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.Constant;
+import com.umeng.analytics.MobclickAgent;
 
 public class NewPhoneActivity  extends Activity implements OnClickListener,StrUIDataListener{
 	private StrVolleyInterface networkHelper;
@@ -61,6 +62,20 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 	}
 
 
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
+	
 
 	@Override
 	public void onClick(View v) {

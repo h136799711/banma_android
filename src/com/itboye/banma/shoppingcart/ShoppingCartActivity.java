@@ -44,6 +44,7 @@ import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onAddChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onCheckedChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onReduceChanged;
 import com.itboye.banma.view.BabyPopWindow;
+import com.umeng.analytics.MobclickAgent;
 
 public class ShoppingCartActivity  extends Activity implements StrUIDataListener,onCheckedChanged,
 OnClickListener,onAddChanged,onReduceChanged{
@@ -138,6 +139,20 @@ OnClickListener,onAddChanged,onReduceChanged{
 		listView_cart = (ListView) this.findViewById(R.id.listView_cart);
 	}
 
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
+	
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub

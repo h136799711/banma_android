@@ -44,6 +44,8 @@ public class BabyOrderFragment extends Fragment implements OnClickListener{
     private int state = 0;  //记录登录状态
     private AppContext appContext;
     Fragment daifa,daishou,daifu,daiping,quanbu;
+    private TextView title;
+    private ImageView iv_back;
 //	DaiShouFragemt daishou;
 //	DaiPingFragment daiping;
 //	QuanBuFragment quanbu;
@@ -52,7 +54,10 @@ public class BabyOrderFragment extends Fragment implements OnClickListener{
         super.onCreateView(inflater, container, savedInstanceState);
         appContext = (AppContext) getActivity().getApplication();
         view = inflater.inflate(R.layout.fragment_baby_order, container,false);
-        
+		title=(TextView)view.findViewById(R.id.title);
+		title.setText("全部订单");
+		iv_back=(ImageView)view.findViewById(R.id.iv_back);
+		iv_back.setVisibility(View.GONE);
         return view;    
     }
 	
@@ -90,6 +95,8 @@ public class BabyOrderFragment extends Fragment implements OnClickListener{
 
 
 	private void InitTextView(View parentView) {
+
+		
 		  tv_quanbu = (TextView) parentView.findViewById(R.id.tv_quanbu);
 		  tv_daifu = (TextView) parentView.findViewById(R.id.tv_daifu);
 		  tv_daifa = (TextView) parentView.findViewById(R.id.tv_daifa);

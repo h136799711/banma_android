@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/no_color"
+    android:orientation="vertical" >
+
+    <include layout="@layout/top" />
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal" >
+
+      <EditText
+          android:id="@+id/et_youhuima"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/et_padding"
+          android:layout_weight="6"
+          android:hint="请输入优惠码"
+          android:textSize="@dimen/text_size_13" />
+
+      <Button
+          android:id="@+id/btn_yanzheng"
+          android:layout_width="wrap_content"
+          android:layout_height="35dp"
+          android:background="@color/titlebar"
+          android:layout_marginLeft="20dp"
+          android:layout_weight="3"
+          android:text="验证"
+          android:textColor="@color/white"
+          android:textSize="@dimen/text_size_13" />
+  </LinearLayout>
+  <TextView  
+      android:id="@+id/tv_list"
+      android:layout_marginTop="20dp"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:textColor="@color/titlebar"
+     android:textSize="@dimen/text_size_16"
+     android:layout_gravity="center_horizontal"
+     android:text="优惠码列表" />
+  
+   <EditText
+          android:id="@+id/tv_youhui_list"
+          android:layout_marginTop="10dp"
+          android:visibility="gone"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/et_padding"
+          android:hint="优惠码列表"
+          android:textSize="@dimen/text_size_13" />
+  
+
+</LinearLayout>

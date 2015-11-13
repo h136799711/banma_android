@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.itboye.banma.R;
 import com.itboye.banma.app.AppContext;
+import com.umeng.analytics.MobclickAgent;
 
 public class WebActivity  extends Activity{
 	WebView wvShow;//显示web页面
@@ -99,4 +100,18 @@ public class WebActivity  extends Activity{
 			}
 		});
     }
+	
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
 }

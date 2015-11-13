@@ -28,10 +28,19 @@ public class AppContext extends Application {
 	private static  int loginUid = 0; // 登录用户的id
 	public static String access_token; //访问令牌 
 	public static RequestQueue queues;  //volley请求队列
+	public static String getIdcode() {
+		return idcode;
+	}
+
+	public static void setIdcode(String idcode) {
+		AppContext.idcode = idcode;
+	}
+
 	public static String img = null; //图片地址
 	public String password;//登陆密码
 	public static String pathHeadImage;//头像存储路径
 	public static  boolean hasHead=false;//是否已经设置头像
+	private static String idcode;//用户优惠码
 	public static boolean isWeixin() {
 		return isWeixin;
 	}

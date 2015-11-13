@@ -114,7 +114,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);
 			try {
-				imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,80,85);
+			    //    imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,80,85);
 			} catch (Exception e) {
 				// TODO: handle exception
 				holderView.iv_icon.setImageResource(R.drawable.image_load_fail);

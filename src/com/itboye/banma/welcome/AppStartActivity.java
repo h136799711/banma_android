@@ -11,11 +11,14 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.service.TokenIntentService;
 import com.itboye.banma.utils.SharedConfig;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengRegistrar;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -45,6 +48,15 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
 		setContentView(view);
+		
+		
+		//友盟启动
+		MobclickAgent.updateOnlineConfig( this );
+		//加密处理
+		AnalyticsConfig.enableEncrypt(true);
+		
+		MobclickAgent.setDebugMode( true );
+		
 		PushAgent mPushAgent = PushAgent.getInstance(getApplicationContext());
 		mPushAgent.enable();
 		PushAgent.getInstance(getApplicationContext()).onAppStart();
@@ -54,17 +66,20 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 		into();
 		this.startService(new Intent(this,TokenIntentService.class));
 	}
-
+//友盟统计
 	@Override
 	protected void onResume() {
 
 		super.onResume();
+		MobclickAgent.onResume(this);
 	}
 
 	public void onPause() {
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
-
+       
+	
 	private void into() {
 		//请求token
 		try {

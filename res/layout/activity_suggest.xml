@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+<include layout="@layout/top"/>
+
+   <EditText
+        android:id="@+id/et_suggest"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/et_padding"
+        android:layout_marginRight="@dimen/et_padding"
+        android:layout_marginTop="20dp"
+        android:maxLines="6"
+        android:textSize="@dimen/text_size_13" >
+    </EditText>
+    
+     <Button
+         android:id="@+id/btn_tijiao"
+         android:layout_width="120dp"
+         android:layout_height="30dp"
+         android:layout_gravity="center"
+         android:layout_marginTop="50dp"
+         android:background="@color/titlebar"
+         android:gravity="center"
+         android:text="提交反馈"
+         android:textColor="@color/white"
+         android:textSize="@dimen/text_size_14" />
+
+</LinearLayout>

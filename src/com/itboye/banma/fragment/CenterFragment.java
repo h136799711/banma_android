@@ -27,7 +27,6 @@ import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.LoginActivity;
 import com.itboye.banma.activities.MailingAddressActivity;
 import com.itboye.banma.activities.MorePersonal;
-import com.itboye.banma.activities.OrderActivity;
 import com.itboye.banma.activities.WebActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
@@ -128,17 +127,17 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			}
 			break;
 			
-		case R.id.order_goods:
-             if (appContext.isLogin()) {
-            	 		Intent intent = new Intent(getActivity(), OrderActivity.class);
-            	 		startActivity(intent);
-            	 		getActivity().overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
-             	}else{
-             			Toast.makeText(getActivity(), "请先登录",
-             						Toast.LENGTH_LONG).show();
-             		}			
-			break;
+//		case R.id.order_goods:
+//             if (appContext.isLogin()) {
+//            	 		Intent intent = new Intent(getActivity(), OrderActivity.class);
+//            	 		startActivity(intent);
+//            	 		getActivity().overridePendingTransition(R.anim.in_from_right,
+//						R.anim.out_to_left);
+//             	}else{
+//             			Toast.makeText(getActivity(), "请先登录",
+//             						Toast.LENGTH_LONG).show();
+//             		}			
+//			break;
 		case R.id.iv_personheadfail://点击成功头像 跳转
 		if (!appContext.isLogin()) {
 				startActivityForResult(new Intent(getActivity(),LoginActivity.class),100);
@@ -187,8 +186,8 @@ public class CenterFragment extends Fragment implements OnClickListener{
 							new BitmapCache());
 					try {
 						ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
-					    imageLoader.get(AppContext.getHeadurl(), listener);
-					     tvPersonnamefail.setText(AppContext.getNickname());
+						  imageLoader.get(data.getStringExtra("headurl"), listener);
+						     tvPersonnamefail.setText(data.getStringExtra("nickname"));
 						}catch (Exception e) {
 						// TODO: handle exception
 								e.printStackTrace();
@@ -204,21 +203,9 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		if (appContext.isLogin()) {
-			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-					new BitmapCache());
-			try {
-				ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
-			    imageLoader.get(AppContext.getHeadurl(), listener);
-			      tvPersonnamefail.setText(AppContext.getNickname());
-				}catch (Exception e) {
-				// TODO: handle exception
-					ivPersonheadFail.setImageResource(R.drawable.person_head);
-					e.printStackTrace();
-			}		
-		}else {
+		if (appContext.isLogin()==false) {
 			ivPersonheadFail.setImageResource(R.drawable.person_head);
-			tvPersonnamefail.setText("登陆/注册");
+		tvPersonnamefail.setText("登陆/注册");
 		}
 	}
 }

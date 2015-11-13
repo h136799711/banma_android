@@ -64,6 +64,7 @@ import com.itboye.banma.view.MyListView;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
 import com.itboye.banma.view.SharePopWindow;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -168,6 +169,20 @@ public class BabyActivity extends FragmentActivity implements
 
 	}
 
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
+	
 	/**
 	 * 加载数据
 	 */
