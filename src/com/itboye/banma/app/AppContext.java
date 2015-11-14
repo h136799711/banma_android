@@ -41,6 +41,14 @@ public class AppContext extends Application {
 	public String password;//登陆密码
 	public static String pathHeadImage;//头像存储路径
 	public static  boolean hasHead=false;//是否已经设置头像
+	public static boolean isHasHead() {
+		return hasHead;
+	}
+
+	public static void setHasHead(boolean hasHead) {
+		AppContext.hasHead = hasHead;
+	}
+
 	private static String idcode;//用户优惠码
 	public static boolean isWeixin() {
 		return isWeixin;
@@ -403,5 +411,6 @@ public class AppContext extends Application {
 			return false;
 		}	
 	}
+
 	
 }

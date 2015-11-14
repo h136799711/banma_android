@@ -203,9 +203,19 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		if (appContext.isLogin()==false) {
-			ivPersonheadFail.setImageResource(R.drawable.person_head);
-		tvPersonnamefail.setText("登陆/注册");
+		if (appContext.isLogin()==true&&AppContext.isHasHead()==true) {
+			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+					new BitmapCache());
+			AppContext.setHasHead(false);
+			try {
+				ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
+				  imageLoader.get(AppContext.getHeadurl(), listener);
+				     tvPersonnamefail.setText(AppContext.getNickname());
+				}catch (Exception e) {
+				// TODO: handle exception
+						e.printStackTrace();
+			}	
 		}
+		
 	}
 }
