@@ -12,6 +12,7 @@ import android.R.string;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.gesture.GestureOverlayView.OnGestureListener;
 import android.graphics.Paint;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -80,9 +82,11 @@ import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 public class BabyActivity extends FragmentActivity implements
-		OnItemClickListener, OnClickListener, StrUIDataListener {
+		OnItemClickListener, OnClickListener, StrUIDataListener,
+		android.view.GestureDetector.OnGestureListener {
 
 	NfcAdapter nfcAdapter;
+	private LinearLayout ll_all_top;
 	private AppContext appContext;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
@@ -230,6 +234,8 @@ public class BabyActivity extends FragmentActivity implements
 
 	@SuppressLint("NewApi")
 	private void initView() {
+		ll_all_top=(LinearLayout)findViewById(R.id.all_top);
+		ll_all_top.setVisibility(View.GONE);;
 		baby_detail = (LinearLayout) findViewById(R.id.baby_detail);
 		button_lay = (LinearLayout) findViewById(R.id.button_lay);
 		// 旋转等待页
@@ -370,6 +376,8 @@ public class BabyActivity extends FragmentActivity implements
 	}
 
 	private void initViewPager() {
+		
+		
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 				new BitmapCache());
 
@@ -734,5 +742,51 @@ public class BabyActivity extends FragmentActivity implements
 	    }
 	}
 
+	@Override
+	public boolean onDown(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		// TODO Auto-generated method stub
+		System.out.println("执行");
+		if (e2.getY()-e1.getY()>50) {
+			ll_all_top.setVisibility(View.VISIBLE);;
+			System.out.println("执行");
+			return true;
+		}else if (e1.getY()-e2.getY()>20) {
+			ll_all_top.setVisibility(View.GONE);;
+			System.out.println("执行12");
+			return true;
+		} 
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -6,9 +6,17 @@ package com.itboye.banma.entity;
  */
 public class User {
 	private int id;
+	private String idcode;//优惠码
 	private String head;
 	private String idnumber;
 	private String wexin_bind;//微信绑定
+	
+	public String getIdcode() {
+		return idcode;
+	}
+	public void setIdcode(String idcode) {
+		this.idcode = idcode;
+	}
 	public String getIdnumber() {
 		return idnumber;
 	}

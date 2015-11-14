@@ -32,6 +32,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 	private EditText et_youhuima;
 	private Button btn_yanzheng;
 	private TextView tv_list;
+	private EditText tv_youhui_list;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +47,12 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 
 	private void initData() {
 		// TODO Auto-generated method stub
+		System.out.println(AppContext.getIdcode());
+		if (AppContext.getIdcode()=="") {
+			et_youhuima.setText("没有可用的优惠券");
+		}else {
+			et_youhuima.setText(AppContext.getIdcode());
+		}
 	}
 
 	private void initId() {
@@ -58,6 +65,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 		btn_yanzheng.setOnClickListener(this);
 		et_youhuima=(EditText)findViewById(R.id.et_youhuima);
 		tv_list=(TextView) findViewById(R.id.tv_youhui_list);
+		et_youhuima=(EditText)findViewById(R.id.tv_youhui_list);
 	}
 
 	@Override

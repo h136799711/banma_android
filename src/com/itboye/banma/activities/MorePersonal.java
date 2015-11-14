@@ -338,6 +338,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			sp.edit().clear().commit();//清空所有sp中的数据
 			appContext.setLogin(false);
 			AppContext.setWeixin(false);
+			AppContext.setHasHead(false);
+			AppContext.setHeadurl("");
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
@@ -530,6 +532,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					    //暂时这里先使用缓存来存放图片地址，因为登陆时服务器并没有返回图片地址			    	
 							ivHead.setImageBitmap(bitmap);
 							AppContext.setHeadurl(data.getString("imgurl"));
+							AppContext.setHasHead(true);
 							System.out.println(jsonObject.toString());
 							Toast.makeText(MorePersonal.this, "头像上传成功", Toast.LENGTH_SHORT).show();			
 					}
@@ -680,6 +683,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 								ivHead.setImageUrl(AppContext.getHeadurl(), imageLoader);
 							//	System.out.println(AppContext.getPathHeadImage());;
 								ivHead.setOnClickListener(this);
+								AppContext.setHasHead(true);
 							}catch (Exception e) {
 							// TODO: handle exception
 								e.printStackTrace();

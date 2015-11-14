@@ -203,7 +203,13 @@ StrUIDataListener {
 			load_data();
 		}else if(requestCode==1005) {
 			//在这里处理优惠的问题
-			String  youhui=data.getStringExtra("YOU_HUI");
+			try {
+				String  youhui=data.getStringExtra("YOU_HUI");
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			
 		}
 
 	}

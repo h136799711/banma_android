@@ -251,6 +251,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			AppContext.setHeadurl(user.getHead());
 			AppContext.setNickname(user.getNickname());
 		     AppContext.setHasHead(true);
+		     AppContext.setIdcode(user.getIdcode());
 			//AppContext.setIdcode(user.get);
 			System.out.println(appContext.getPassword());
 			Log.v("用户id", user.getId()+"");

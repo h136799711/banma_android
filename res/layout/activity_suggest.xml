@@ -13,7 +13,7 @@
         android:layout_marginLeft="@dimen/et_padding"
         android:layout_marginRight="@dimen/et_padding"
         android:layout_marginTop="20dp"
-        android:maxLines="6"
+        android:text="您的意见与建议"
         android:textSize="@dimen/text_size_13" >
     </EditText>
     
