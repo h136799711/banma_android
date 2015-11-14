@@ -65,6 +65,9 @@ import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
 import com.itboye.banma.view.SharePopWindow;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.analytics.social.UMPlatformData;
+import com.umeng.analytics.social.UMPlatformData.GENDER;
+import com.umeng.analytics.social.UMPlatformData.UMedia;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -352,6 +355,16 @@ public class BabyActivity extends FragmentActivity implements
 				mController.setShareMedia(new UMImage(this, 
 				                                     productDetail.getMain_img()));
 	        mController.openShare(BabyActivity.this, false);
+	        
+	        UMPlatformData platform = new UMPlatformData(UMedia.SINA_WEIBO, "user_id"); 
+	        platform.setGender(GENDER.MALE); //optional   
+	        platform.setWeiboId("weiboId");  //optional   
+	        MobclickAgent.onSocialEvent(this, platform);
+	        
+	        UMPlatformData platform1 = new UMPlatformData(UMedia.TENCENT_QQ, "user_id"); 
+	        platform1.setGender(GENDER.MALE); //optional   
+	        MobclickAgent.onSocialEvent(this, platform);
+	        
 			break;
 		}
 	}

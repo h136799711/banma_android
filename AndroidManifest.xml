@@ -21,6 +21,13 @@
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 <!--【必选】用以设置前台是否显示通知-->
 <uses-permission android:name="android.permission.GET_TASKS" />
+<!-- 可选 -->
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED" />
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+<uses-permission android:name="android.permission.RESTART_PACKAGES" />
+<uses-permission android:name="android.permission.GET_ACCOUNTS" />;
 	
 	<uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
@@ -49,7 +56,8 @@
         
 
     <!-- ###################添加UmengAppkey###################### -->
-        <meta-data android:name="UMENG_APPKEY" android:value="55fd38e9e0f55ab9ff002f7e">
+        <meta-data android:name="UMENG_APPKEY"
+             android:value="55fd38b0e0f55ae67e006c27">
         </meta-data>
 
 <meta-data

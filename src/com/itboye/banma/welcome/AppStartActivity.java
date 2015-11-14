@@ -47,6 +47,12 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 		appContext = (AppContext) getApplication();
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
+//		
+//		//在线参数的获取，如修改欢迎语 背景等
+//		MobclickAgent.updateOnlineConfig( this );
+//		//获取友盟下来的参数
+//		String value = MobclickAgent.getConfigParams( this, "xxxx" );
+		
 		setContentView(view);
 		
 		
@@ -57,10 +63,15 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 		
 		MobclickAgent.setDebugMode( true );
 		
+		//开启推送服务
 		PushAgent mPushAgent = PushAgent.getInstance(getApplicationContext());
 		mPushAgent.enable();
+		//统计应用启动次数
 		PushAgent.getInstance(getApplicationContext()).onAppStart();
-		String device_token = UmengRegistrar.getRegistrationId(getApplicationContext());
+		//获取测试设备的Device Token。
+		String device_token = UmengRegistrar.getRegistrationId(this);
+		System.out.println(device_token+"设备");
+		
 		new SharedConfig(this);
 		shared = SharedConfig.GetConfig(); 
 		into();
