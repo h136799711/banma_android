@@ -21,6 +21,7 @@ import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
+import com.umeng.analytics.MobclickAgent;
 
 public class PasswordActivity extends Activity implements StrUIDataListener{
 	EditText etName;//用户名
@@ -56,6 +57,20 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 		}
 	};
 	
+	
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
 	
     //注册按钮
     OnClickListener regisitOnClickListener =new OnClickListener() {

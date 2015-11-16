@@ -21,6 +21,13 @@
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 <!--【必选】用以设置前台是否显示通知-->
 <uses-permission android:name="android.permission.GET_TASKS" />
+<!-- 可选 -->
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED" />
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
+<uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+<uses-permission android:name="android.permission.RESTART_PACKAGES" />
+<uses-permission android:name="android.permission.GET_ACCOUNTS" />;
 	
 	<uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
@@ -49,17 +56,18 @@
         
 
     <!-- ###################添加UmengAppkey###################### -->
-        <meta-data android:name="UMENG_APPKEY" android:value="55fd38e9e0f55ab9ff002f7e">
+        <meta-data android:name="UMENG_APPKEY"
+             android:value="55fd38b0e0f55ae67e006c27">
         </meta-data>
 
 <meta-data
     android:name="UMENG_MESSAGE_SECRET"
-    android:value="55fd38e9e0f55ab9ff002f7e" >
+    android:value="0548e932b6476d854a7b52b4aea0d417" >
 </meta-data>
 <!-- ###################Channel Id是啥###################### -->
 <meta-data
     android:name="UMENG_CHANNEL"
-    android:value="Channel ID" >
+    android:value="banma" >
 </meta-data>
         
         <activity android:label="@string/app_name"
@@ -91,6 +99,9 @@
            <activity android:name="com.itboye.banma.activities.ShengFenActivity"/>
            <activity android:name="com.itboye.banma.activities.OrderActivity"/>
            <activity android:name="com.itboye.banma.activities.OrderDetailActivity"/>
+           <activity  android:name="com.itboye.banma.activities.SuggestActivity"/>
+           <activity  android:name="com.itboye.banma.activities.YouHuiActivity"/>
+           
            <service android:name="com.itboye.banma.service.TokenIntentService"/>
            <!-- 监听通知点击或者忽略处理的广播 -->
 <receiver

@@ -5,6 +5,7 @@
     android:gravity="center"
     android:background="@color/main_layout"
     android:orientation="vertical" >
+
   
 	<include layout="@layout/empty_layout"/>
            

@@ -30,6 +30,7 @@ import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.MailingAdress;
+import com.umeng.analytics.MobclickAgent;
 
 public class MailingAddressActivity extends Activity implements
 		StrUIDataListener, OnClickListener {
@@ -123,6 +124,20 @@ public class MailingAddressActivity extends Activity implements
 		load_data();
 
 	}
+	
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
 	
 	//刷新当前界面
 	@Override

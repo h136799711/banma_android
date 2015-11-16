@@ -252,7 +252,7 @@
                android:layout_height="@dimen/more_item_mainheight"
                android:layout_alignParentBottom="true"
                android:layout_alignParentLeft="true"
-               android:background="@color/mingpianbackground"
+               android:background="#c34949"
                android:text="退出登录"
              android:textSize="@dimen/small_middle_text_size" /> 
 </RelativeLayout>

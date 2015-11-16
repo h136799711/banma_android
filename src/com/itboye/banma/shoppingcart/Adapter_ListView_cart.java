@@ -110,11 +110,12 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 //							R.anim.out_to_left);
 //				}
 //			});
+			
 			System.out.println(position+":"+arrayList.get(position).get("icon_url").toString());
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);
 			try {
-				imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,80,85);
+			    //    imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,80,85);
 			} catch (Exception e) {
 				// TODO: handle exception
 				holderView.iv_icon.setImageResource(R.drawable.image_load_fail);
@@ -126,6 +127,20 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 					listener.getChoiceData(position, choice);
 				}
 			});
+			
+			currentView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context, BabyActivity.class);
+					intent.putExtra("PID", Integer.parseInt(arrayList.get(position).get("p_id").toString()));
+					context.startActivity(intent);
+					((Activity) context).overridePendingTransition(R.anim.in_from_right,
+							R.anim.out_to_left);
+				}
+			});
+			
+			
 		//	holderView.tv_guige.setText(arrayList.get(position).get("sku_desc")+"");
 			holderView.tv_pop_num.setText( arrayList.get(position).get("count")+"");
 			holderView.tv_pop_red.setOnClickListener(new OnClickListener() {

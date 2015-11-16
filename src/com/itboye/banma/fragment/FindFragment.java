@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 	private PullToRefreshGridView pull_refresh_grid;
 	private Boolean 	YesOrNo;
 	private int pageNow=1;
+	private ImageView iv_back;
 	private ArrayList<ProductItem> productlist ;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,8 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 		// TODO Auto-generated method stub
 		title=(TextView)productGridView.findViewById(R.id.title);
 		title.setText("发现");
+		iv_back=(ImageView)productGridView.findViewById(R.id.iv_back);
+		iv_back.setVisibility(View.GONE);
 		dialog=(ProgressBar) productGridView.findViewById(R.id.progressBar);
 		mPullRefreshGridView = (PullToRefreshGridView) productGridView.findViewById(R.id.pull_refresh_grid);
 	}

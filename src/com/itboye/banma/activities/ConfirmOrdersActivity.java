@@ -41,9 +41,13 @@ import com.itboye.banma.entity.MailingAdress;
 import com.itboye.banma.entity.SkuStandard;
 import com.itboye.banma.payalipay.PayAlipay;
 import com.itboye.banma.utils.BitmapCache;
+import com.umeng.analytics.MobclickAgent;
 
 public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 StrUIDataListener {
+	private LinearLayout ll_youhui;
+	private LinearLayout ll_beizhu;
+	
 	private final int ADDORREDUCE = 1;
 	private final int ADDRESS = 1;
 	private final int ORDER = 2;
@@ -110,6 +114,10 @@ StrUIDataListener {
 		adr_name = (TextView) findViewById(R.id.adr_name);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
 		adr_address = (TextView) findViewById(R.id.adr_address);
+		ll_beizhu=(LinearLayout)findViewById(R.id.ll_beizhu);
+		ll_beizhu.setOnClickListener(this);
+		ll_youhui=(LinearLayout)findViewById(R.id.ll_youhui);
+		ll_youhui.setOnClickListener(this);
 		/*
 		 * pop_add = (TextView) findViewById(R.id.pop_add); pop_reduce =
 		 * (TextView) findViewById(R.id.pop_reduce); pop_num = (TextView)
@@ -162,6 +170,20 @@ StrUIDataListener {
 		}
 	}
 
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
+	
 	// 刷新当前界面
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -179,6 +201,15 @@ StrUIDataListener {
 		}else if(requestCode == 2100 && resultCode == 1001){
 		
 			load_data();
+		}else if(requestCode==1005) {
+			//在这里处理优惠的问题
+			try {
+				String  youhui=data.getStringExtra("YOU_HUI");
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			
 		}
 
 	}
@@ -242,6 +273,15 @@ StrUIDataListener {
 	public void onClick(View v) {
 		Intent intent;
 		switch (v.getId()) {
+		case R.id.ll_youhui:
+			intent = new Intent(this, YouHuiActivity .class);
+			startActivityForResult(intent,1005);
+			break;
+			
+		case R.id.ll_beizhu:
+			startActivity(new Intent(ConfirmOrdersActivity.this,SuggestActivity.class));
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			break;
 		case R.id.iv_back:
 			finish();
 			overridePendingTransition(R.anim.push_right_in,

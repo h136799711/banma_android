@@ -37,6 +37,7 @@ import com.itboye.banma.entity.User;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
@@ -98,6 +99,13 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	         finish();  
 	        }
 	 }  
+	 
+	 //友盟统计
+		 public void onPause() {
+		 super.onPause();
+		 MobclickAgent.onPause(this);
+		 } 
+		 
 	 @Override
 		protected void onDestroy() {
 			// TODO Auto-generated method stub
@@ -139,6 +147,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	protected void onResume() {
 		super.onResume();
 //		SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
+		 MobclickAgent.onResume(this);//友盟统计
 		if (!AppContext.getCode().equals("")) {
 	    	ApiClient.wxLogin(LoginActivity.this,AppContext.getCode() ,networkHelper);
 		}
@@ -241,6 +250,9 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			appContext.setPassword(user.getPassword());
 			AppContext.setHeadurl(user.getHead());
 			AppContext.setNickname(user.getNickname());
+		     AppContext.setHasHead(true);
+		     AppContext.setIdcode(user.getIdcode());
+			//AppContext.setIdcode(user.get);
 			System.out.println(appContext.getPassword());
 			Log.v("用户id", user.getId()+"");
 		    String use = etName.getText().toString();   

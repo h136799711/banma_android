@@ -63,6 +63,7 @@ import com.itboye.banma.welcome.WelcomeActivity;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -112,6 +113,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	 private String resultStr = "";	// 服务端返回结果集
 	private static final String PHOTO_FILE_NAME = "image.jpg";
 	private File tempFile;
+	private TextView title;
 	//获取头像的dialog
 	Dialog choose;
 	
@@ -158,6 +160,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	
 	
 	private void initID(){
+		title=(TextView)findViewById(R.id.title);
+		title.setText("更多设置");
 		imgUrl = Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
 		rlWeiXin=(RelativeLayout)findViewById(R.id.rl_weixin);
 		rlShengFenZheng=(RelativeLayout)findViewById(R.id.rl_shengfenzheng);
@@ -235,6 +239,15 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			}
 	}
 	}
+	
+	
+	//友盟统计
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
 	
 	@Override
 	public void onClick(View v) {
@@ -325,6 +338,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			sp.edit().clear().commit();//清空所有sp中的数据
 			appContext.setLogin(false);
 			AppContext.setWeixin(false);
+			AppContext.setHasHead(false);
+			AppContext.setHeadurl("");
 			finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
@@ -517,6 +532,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					    //暂时这里先使用缓存来存放图片地址，因为登陆时服务器并没有返回图片地址			    	
 							ivHead.setImageBitmap(bitmap);
 							AppContext.setHeadurl(data.getString("imgurl"));
+							AppContext.setHasHead(true);
 							System.out.println(jsonObject.toString());
 							Toast.makeText(MorePersonal.this, "头像上传成功", Toast.LENGTH_SHORT).show();			
 					}
@@ -667,6 +683,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 								ivHead.setImageUrl(AppContext.getHeadurl(), imageLoader);
 							//	System.out.println(AppContext.getPathHeadImage());;
 								ivHead.setOnClickListener(this);
+								AppContext.setHasHead(true);
 							}catch (Exception e) {
 							// TODO: handle exception
 								e.printStackTrace();
@@ -700,6 +717,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
     protected void onResume() {
     	// TODO Auto-generated method stub
 		super.onResume();
+		MobclickAgent.onResume(this);
 		if (!AppContext.getCode().equals("")) {
 			FLAG=1;
 	    	ApiClient.wxBangDing(MorePersonal.this,appContext.getLoginUid()+"",AppContext.getCode(),networkHelper);

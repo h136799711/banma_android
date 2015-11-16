@@ -24,6 +24,7 @@ import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
+import com.umeng.analytics.MobclickAgent;
 
 public class ShengFenActivity extends Activity implements OnClickListener,StrUIDataListener {
 	
@@ -60,6 +61,20 @@ public class ShengFenActivity extends Activity implements OnClickListener,StrUID
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
 
 	@Override
 	public void onDataChanged(String data) {

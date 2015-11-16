@@ -21,6 +21,7 @@ import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
+import com.umeng.analytics.MobclickAgent;
 
 public class NickName extends Activity implements StrUIDataListener {
 	private TextView tvNickName;//昵称t
@@ -64,6 +65,20 @@ public class NickName extends Activity implements StrUIDataListener {
 			}
 		});
 	}
+	
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
 	private void initId() {
 		// TODO Auto-generated method stub
 		ivBack=(ImageView)findViewById(R.id.iv_back);

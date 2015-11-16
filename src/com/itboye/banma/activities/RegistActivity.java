@@ -25,6 +25,7 @@ import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.util.MyCountTimer;
+import com.umeng.analytics.MobclickAgent;
 
 public class RegistActivity extends Activity implements StrUIDataListener {
 	private 	Button btnNextStep;//下一步按钮
@@ -71,6 +72,20 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 		btnGetCheckCode.setOnClickListener(checkCodeOnclick);
 		tvUrl.setOnClickListener(urlOnClick);
 	}
+	
+	//友盟统计
+		@Override
+		protected void onResume() {
+
+			super.onResume();
+			MobclickAgent.onResume(this);
+		}
+
+		public void onPause() {
+			super.onPause();
+			MobclickAgent.onPause(this);
+		}
+
 	
 	//用于结束activity 
 	 public class CloseReceiver extends BroadcastReceiver  
