@@ -51,7 +51,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 		if (AppContext.getIdcode()=="") {
 			et_youhuima.setText("没有可用的优惠券");
 		}else {
-			et_youhuima.setText(AppContext.getIdcode());
+			et_youhuima.setText(AppContext.getIdcode()+"\n");
 		}
 	}
 
