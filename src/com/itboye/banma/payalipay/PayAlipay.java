@@ -202,7 +202,7 @@ public class PayAlipay {
 			orderInfo += "&total_fee=" + "\"" + price + "\"";
 
 			// 服务器异步通知页面路径
-			orderInfo += "&notify_url=" + "\"" + "http://notify.msp.hk/notify.htm"
+			orderInfo += "&notify_url=" + "\"" + "http://banma.itboye.com/api.php/GAlipayApp/notify_url"
 					+ "\"";
 
 			// 服务接口名称， 固定值
@@ -225,7 +225,7 @@ public class PayAlipay {
 			// orderInfo += "&extern_token=" + "\"" + extern_token + "\"";
 
 			// 支付宝处理完请求后，当前页面跳转到商户指定页面的路径，可空
-			orderInfo += "&return_url=\"m.alipay.com\"";
+			//orderInfo += "&return_url=\"m.alipay.com\"";
 
 			// 调用银行卡支付，需配置此参数，参与签名， 固定值 （需要签约《无线银行卡快捷支付》才能使用）
 			// orderInfo += "&paymethod=\"expressGateway\"";
