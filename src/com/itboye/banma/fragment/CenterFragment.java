@@ -184,7 +184,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 				if (appContext.isLogin()) {
 					ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 							new BitmapCache());
-							AppContext.setHasHead(false);
+							AppContext.setHasHead(true);
 					try {
 						ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
 						  imageLoader.get(data.getStringExtra("headurl"), listener);
@@ -204,17 +204,20 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (appContext.isLogin()==true&&AppContext.isHasHead()==true) {
-			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-					new BitmapCache());
-			try {
-				ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
-				  imageLoader.get(AppContext.getHeadurl(), listener);
-				     tvPersonnamefail.setText(AppContext.getNickname());
-				}catch (Exception e) {
-				// TODO: handle exception
-						e.printStackTrace();
-			}	
+		if (appContext.isLogin()==true) {
+			if (AppContext.hasHead==false) {
+				ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+						new BitmapCache());
+				try {
+					ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
+					  imageLoader.get(AppContext.getHeadurl(), listener);
+					}catch (Exception e) {
+					// TODO: handle exception
+							e.printStackTrace();
+				}	
+			}
+			   tvPersonnamefail.setText(AppContext.getNickname());
+		
 		}else {
 			ivPersonheadFail.setImageResource(R.drawable.person_head);
 			tvPersonnamefail.setText("登陆/注册");
