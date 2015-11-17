@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import com.alipay.sdk.app.PayTask;
+import com.itboye.banma.entity.OrderPayData;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -87,7 +88,7 @@ public class PayAlipay {
 		 * call alipay sdk pay. 调用SDK支付
 		 * 
 		 */
-		public void pay(View v, String priceAll) {
+		public void pay(View v, OrderPayData orderPayData) {
 			if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE)
 					|| TextUtils.isEmpty(SELLER)) {
 				new AlertDialog.Builder(mContext)
@@ -104,7 +105,8 @@ public class PayAlipay {
 				return;
 			}
 			// 订单
-			String orderInfo = getOrderInfo("斑马订单", "该测试商品的详细描述", "0.01");
+			String orderInfo = getOrderInfo(orderPayData.getCode(), orderPayData.getName(), 
+					orderPayData.getDesc(), orderPayData.getTotal_price() ,orderPayData.getShow_url());
 
 			// 对订单做RSA 签名
 			String sign = sign(orderInfo);
@@ -181,8 +183,32 @@ public class PayAlipay {
 		 * create the order info. 创建订单信息
 		 * 
 		 */
-		public String getOrderInfo(String subject, String body, String price) {
-
+		public String getOrderInfo(String code, String subject, String body, String price, String show_url) {
+			/*String orderInfo = "";
+			// 商品详情
+			orderInfo += "body=" + "\"" + body + "\"";
+			orderInfo += "&currency=\"USD\"";
+			orderInfo += "&forex_biz=\"FP\"";
+			orderInfo += "&it_b_pay=\"30m\"";
+			orderInfo += "&notify_url=\"http://banma.itboye.com/api.php/GAlipayApp/notify_url\"";
+			orderInfo += "&_input_charset=\"utf-8\"";
+			// 商户网站唯一订单号
+			orderInfo += "&out_trade_no=\"T1447675764U29P188\"";
+			// 签约合作者身份ID
+			orderInfo += "partner=" + "\"" + PARTNER + "\"";
+			// 支付类型， 固定值
+			orderInfo += "&payment_type=\"1\"";
+			// 签约卖家支付宝账号
+			orderInfo += "&seller_id=" + "\"" + SELLER + "\"";
+			// 服务接口名称， 固定值
+			orderInfo += "&service=\"mobile.securitypay.pay\"";
+			orderInfo += "&show_url=\"http://banma.itboye.com\"";
+			// 商品名称
+			orderInfo += "&subject=" + "\"" + subject + "\"";
+			// 商品金额
+			orderInfo += "&total_fee=" + "\"" + price + "\"";
+			*/
+			
 			// 签约合作者身份ID
 			String orderInfo = "partner=" + "\"" + PARTNER + "\"";
 
@@ -190,7 +216,7 @@ public class PayAlipay {
 			orderInfo += "&seller_id=" + "\"" + SELLER + "\"";
 
 			// 商户网站唯一订单号
-			orderInfo += "&out_trade_no=" + "\"" + getOutTradeNo() + "\"";
+			orderInfo += "&out_trade_no=" + "\"" + code + "\"";
 
 			// 商品名称
 			orderInfo += "&subject=" + "\"" + subject + "\"";
@@ -199,7 +225,7 @@ public class PayAlipay {
 			orderInfo += "&body=" + "\"" + body + "\"";
 
 			// 商品金额
-			orderInfo += "&total_fee=" + "\"" + price + "\"";
+			orderInfo += "&rmb_fee=" + "\"" + 0.06 + "\"";
 
 			// 服务器异步通知页面路径
 			orderInfo += "&notify_url=" + "\"" + "http://banma.itboye.com/api.php/GAlipayApp/notify_url"
@@ -220,6 +246,11 @@ public class PayAlipay {
 			// m-分钟，h-小时，d-天，1c-当天（无论交易何时创建，都在0点关闭）。
 			// 该参数数值不接受小数点，如1.5h，可转换为90m。
 			orderInfo += "&it_b_pay=\"30m\"";
+			
+			orderInfo += "&currency=\"USD\"";
+			orderInfo += "&forex_biz=\"FP\"";
+			//商品展示地址
+			orderInfo += "&show_url=" + "\"" + show_url + "\"";
 
 			// extern_token为经过快登授权获取到的alipay_open_id,带上此参数用户将使用授权的账户进行支付
 			// orderInfo += "&extern_token=" + "\"" + extern_token + "\"";
@@ -230,6 +261,7 @@ public class PayAlipay {
 			// 调用银行卡支付，需配置此参数，参与签名， 固定值 （需要签约《无线银行卡快捷支付》才能使用）
 			// orderInfo += "&paymethod=\"expressGateway\"";
 
+			
 			return orderInfo;
 		}
 

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -26,6 +27,7 @@ import com.itboye.banma.adapter.OrderListItemAdapter;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
+import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.OrderDetail;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.MyListView;
@@ -45,13 +47,15 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	private TextView adr_name;
 	private TextView adr_phone;
 	private TextView adr_address;
-	private TextView order_code;
 	private TextView order_price;
+	private TextView order_all_price;
 	private MyListView order_list;
 	private TextView order_code_text;
 	private TextView createtime_text;
 	private LinearLayout order_flex;
 	private ImageView img_flex;
+	private TextView order_state;
+	private Button confirm;
 	
 	private int id;			//order的id
 	private OrderDetail orderDetail;
@@ -85,11 +89,14 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		adr_name = (TextView) findViewById(R.id.adr_name);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
 		adr_address = (TextView) findViewById(R.id.adr_address);
-		order_code = (TextView) findViewById(R.id.order_code);
 		order_price = (TextView) findViewById(R.id.order_price);
 		order_list = (MyListView) findViewById(R.id.order_list);
 		order_code_text = (TextView) findViewById(R.id.order_code_text);
 		createtime_text = (TextView) findViewById(R.id.createtime_text);
+		order_state =  (TextView) findViewById(R.id.order_state);
+		order_all_price =  (TextView) findViewById(R.id.order_all_price);
+		confirm = (Button) findViewById(R.id.confirm);
+		confirm.setOnClickListener(this);
 		order_flex.setOnClickListener(this);
 		back.setOnClickListener(this);
 		title.setText("订单详情");
@@ -186,8 +193,12 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 				loading_ll.setVisibility(View.GONE);
 				scrollView.setVisibility(View.GONE);
 				bottom.setVisibility(View.GONE);
+				byte[] bytes = jsonObject.getString("data").getBytes(); 
+				String newStr = new String(bytes , "UTF-8"); 
+				Toast.makeText(OrderDetailActivity.this, ""+newStr, Toast.LENGTH_SHORT)
+				.show();
 			}
-		}catch (JSONException e1) {
+		}catch (Exception e1) {
 			e1.printStackTrace();
 			wait_ll.setVisibility(View.VISIBLE);
 			retry_img.setVisibility(View.VISIBLE);
@@ -205,12 +216,51 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		adr_phone.setText(orderDetail.getMobile());
 		adr_address.setText(orderDetail.getCountry()+" "+orderDetail.getProvince()
 				+" "+orderDetail.getCity()+" "+orderDetail.getArea()+" "+orderDetail.getDetailinfo());
-		order_code.setText(orderDetail.getOrder_code());
 		order_price.setText("￥"+orderDetail.getPrice());
 		order_code_text.setText(orderDetail.getOrder_code());
 		createtime_text.setText(orderDetail.getCreatetime());
 		OrderListItemAdapter adapter = new OrderListItemAdapter(OrderDetailActivity.this, orderDetail.getItems());
 		order_list.setAdapter(adapter);
+		order_all_price.setText("￥"+orderDetail.getPrice());
+		
+		switch (Integer.parseInt(orderDetail.getOrder_status())) {
+		case Constant.ORDER_CANCEL:		//取消或交易关闭
+			order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_CANCEL)+"状态]");  //[交易关闭]
+			break;
+			
+		case Constant.ORDER_TOBE_CONFIRMED:		//待确认状态
+			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
+				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_CONFIRMED)+"状态]");  //[交易关闭]
+				
+			}else if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_TOBE_PAID ){ //待支付
+				order_state.setText("[待付款]");  //[待付款]
+			}
+			break;
+		
+		case Constant.ORDER_TOBE_SHIPPED:		//待发货状态
+			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
+				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_SHIPPED)+"状态]");  //[代发货]
+			}
+			break;
+			
+		case Constant.ORDER_SHIPPED:		//已发货
+			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
+				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_SHIPPED)+"状态]");  //[待收货]
+				confirm.setVisibility(View.VISIBLE);
+			}
+			break;
+			
+		case Constant.ORDER_RECEIPT_OF_GOODS:		//已收货
+			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
+				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_RECEIPT_OF_GOODS)+"状态]");  //[已收货]
+				
+			}
+			break;
+		default:
+			break;
+		}
+		
+		
 	}
 	@Override
 	public void onClick(View v) {
@@ -224,6 +274,10 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 				img_flex.setBackgroundResource(R.drawable.arrow_down);
 			}
 			break;
+		case R.id.confirm:
+			
+			break;
+			
 		case R.id.iv_back:
 			finish();
 			overridePendingTransition(R.anim.push_right_in,

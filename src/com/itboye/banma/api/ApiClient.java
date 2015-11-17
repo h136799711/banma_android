@@ -411,4 +411,34 @@ public class ApiClient {
 		params.put("id",""+id);
 		VolleyRequest.StrRequestPost(mContext, url, "getOrderDetail",params, networkHelper);
 	}
+
+	public static void ordersPay(Context mContext, int uid,
+			String order_id, StrVolleyInterface strnetworkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Orders/pay?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+uid);
+		params.put("order_id",""+order_id);
+		VolleyRequest.StrRequestPost(mContext, url, "ordersPay",params, strnetworkHelper);
+	}
+
+	public static void ordersSureorder(Context mContext, String order_code,
+			int loginUid, StrVolleyInterface strnetworkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Orders/pay?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("order_code",""+order_code);
+		params.put("uid",""+loginUid);
+		VolleyRequest.StrRequestPost(mContext, url, "ordersSureorder",params, strnetworkHelper);
+	}
+
+	public static void getLogistics(Context mContext, String order_code,
+			int loginUid, StrVolleyInterface strnetworkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Orders/pay?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("uid",""+loginUid);
+		params.put("order_code",""+order_code);
+		VolleyRequest.StrRequestPost(mContext, url, "getLogistics",params, strnetworkHelper);
+	}
 }

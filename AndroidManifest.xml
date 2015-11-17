@@ -101,6 +101,7 @@
            <activity android:name="com.itboye.banma.activities.OrderDetailActivity"/>
            <activity  android:name="com.itboye.banma.activities.SuggestActivity"/>
            <activity  android:name="com.itboye.banma.activities.YouHuiActivity"/>
+           <activity android:name="com.itboye.banma.activities.ActivityLogistics"/>
            
            <service android:name="com.itboye.banma.service.TokenIntentService"/>
            <!-- 监听通知点击或者忽略处理的广播 -->

@@ -418,7 +418,7 @@ StrUIDataListener {
 					// 完成订单提交，成功后启动支付宝付款
 					dialog.dismiss();
 					payAlipay = new PayAlipay(ConfirmOrdersActivity.this);
-					payAlipay.pay(null, ""+priceAll);
+					//payAlipay.pay(null, ""+priceAll);
 						
 					
 				}else{

@@ -412,5 +412,66 @@ public class AppContext extends Application {
 		}	
 	}
 
+	/**
+	 * 重新发起订单支付
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean ordersPay(Context mContext, String order_id,
+			StrVolleyInterface strnetworkHelper) throws Exception {
+		
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.ordersPay(mContext, loginUid, order_id, strnetworkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+
+	/**
+	 * 确认收货
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean ordersSureorder(Context context, String order_code,
+			StrVolleyInterface strnetworkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.ordersSureorder(context, order_code, loginUid, strnetworkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+
+	/**
+	 * 查看物流
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean getLogistics(Context context, String order_code,
+			StrVolleyInterface strnetworkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getLogistics(context, order_code, loginUid, strnetworkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+
 	
 }
