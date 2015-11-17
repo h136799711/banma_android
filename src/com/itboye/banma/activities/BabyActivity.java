@@ -20,13 +20,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -100,6 +103,7 @@ public class BabyActivity extends FragmentActivity implements
 	private TextView baby_name;
 	private TextView ori_price;
 	private TextView price;
+	private TextView total_sales;
 	private TextView weight;
 	private TextView customs_duties;
 	private TextView sales_area;
@@ -266,6 +270,7 @@ public class BabyActivity extends FragmentActivity implements
 		baby_name = (TextView) findViewById(R.id.baby_name);
 		ori_price = (TextView) findViewById(R.id.ori_price);
 		price = (TextView) findViewById(R.id.price);
+		total_sales = (TextView) findViewById(R.id.total_sales);
 		weight = (TextView) findViewById(R.id.weight);
 		customs_duties = (TextView) findViewById(R.id.customs_duties);
 		sales_area = (TextView) findViewById(R.id.sales_area);
@@ -662,10 +667,10 @@ public class BabyActivity extends FragmentActivity implements
 		price.setText("￥" + productDetail.getPrice());
 		ori_price.getPaint().setFlags(
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+		total_sales.setText( productDetail.getTotal_sales());
 		weight.setText(productDetail.getWeight()+"kg");
 		customs_duties.setText("￥0.0");
-		sales_area.setText(productDetail.getLoc_province()
-				+ productDetail.getLoc_city());
+		sales_area.setText(productDetail.getSource());
 		/*popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
 				productDetail.getSkuInfo(), productDetail.getMain_img(),
 				productDetail.getPrice(), productDetail.getOri_price(),
@@ -690,11 +695,17 @@ public class BabyActivity extends FragmentActivity implements
 		if(productDetail.getDetail() != null){
 			/*adapter = new BabyDetailAdapter(BabyActivity.this, productDetail.getDetail());
 			detail_image.setAdapter(adapter);*/
-			String htmlString = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>" +
+			String htmlString = "<style type=\"text/css\">img{width:100%;height:auto;}</style><div class=\"img\">"+
 					productDetail.getDetail();
 			System.out.println(productDetail.getDetail());
 			detail_image.loadDataWithBaseURL("about:blank", htmlString, "text/html", "utf-8", null);
-			detail_image.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			//detail_image.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			WebSettings webSettings = detail_image.getSettings();  
+			webSettings.setUseWideViewPort(true);  //任意比例缩放
+			webSettings.setLoadWithOverviewMode(true); 
+			webSettings.setBuiltInZoomControls(false); // 设置显示缩放按钮  
+			webSettings.setSupportZoom(false); // 支持缩放  
+			
 		}else{
 			detail_image.setVisibility(View.GONE);
 			no_detail = (ImageView) findViewById(R.id.con_image);

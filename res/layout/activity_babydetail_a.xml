@@ -100,6 +100,7 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical|left"
                             android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
                             android:text="商品名"
                             android:textColor="#000000"
                             android:textSize="16sp" />
@@ -128,6 +129,26 @@
                             android:text="￥10000"
                             android:textColor="@color/gray"
                             android:textSize="14sp" />
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="销量："
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                        
+                        <TextView
+                            android:id="@+id/total_sales"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:text="10000"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <View
@@ -222,7 +243,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="发货地"
+                                android:text="发货商"
                                 android:textColor="@color/grey"
                                 android:textSize="14sp" />
                         </LinearLayout>

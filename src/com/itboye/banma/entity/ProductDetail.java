@@ -16,6 +16,7 @@ public class ProductDetail {
 	private String has_sku;				//是否多规格
 	private Double ori_price;			//原价
 	private Double price;				//现价
+	private String total_sales;			//总销量
 	private String is_time_limit;		//价格是否有时间限制
 	private String price_begin_time;    //价格开始时间
 	private String price_end_time;		//价格结束时间
@@ -134,6 +135,14 @@ public class ProductDetail {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public String getTotal_sales() {
+		return total_sales;
+	}
+
+	public void setTotal_sales(String total_sales) {
+		this.total_sales = total_sales;
 	}
 
 	public String getIs_time_limit() {

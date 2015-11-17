@@ -356,11 +356,11 @@ public class AppContext extends Application {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Boolean ordersAdd(Context mContext,int uid, int cartids, String idcode, String note,
+	public Boolean ordersAdd(Context mContext,int uid, String cart_ids, String idcode, String note,
 			int addr_id, int from, int payType, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
-				ApiClient.ordersAdd(mContext, uid, cartids, idcode, note, addr_id,
+				ApiClient.ordersAdd(mContext, uid, cart_ids, idcode, note, addr_id,
 						from, payType, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");

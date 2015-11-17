@@ -374,16 +374,20 @@ public class ApiClient {
 		VolleyRequest.StrRequestPost(mContext, url, "getCardListByPage",params, networkHelper);
 	}
 	
-	public static void ordersAdd(Context mContext, int uid, int cartids,
+	public static void ordersAdd(Context mContext, int uid, String cart_ids,
 			String idcode, String note, int addr_id, int from, int payType,
 			StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Orders/add?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("uid",""+uid);
-		params.put("cartids",""+cartids);
-		params.put("idcode",idcode);
-		params.put("note",note);
+		params.put("cart_ids",cart_ids);
+		if(idcode!=null){
+			params.put("idcode",idcode);
+		}
+		if(note!=null){
+			params.put("note",note);
+		}
 		params.put("addr_id",""+addr_id);
 		params.put("from",""+from);
 		params.put("payType",""+payType);

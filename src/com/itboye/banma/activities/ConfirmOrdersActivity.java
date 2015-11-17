@@ -38,6 +38,7 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.MailingAdress;
+import com.itboye.banma.entity.OrderPayData;
 import com.itboye.banma.entity.SkuStandard;
 import com.itboye.banma.payalipay.PayAlipay;
 import com.itboye.banma.utils.BitmapCache;
@@ -75,6 +76,7 @@ StrUIDataListener {
 	private Button confirm;
 	private PayAlipay payAlipay;
 	private ProgressDialog dialog;
+	private String cart_ids;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_order);
@@ -85,6 +87,9 @@ StrUIDataListener {
 	@SuppressWarnings("unchecked")
 	private void initData() {
 		dialog = new ProgressDialog(ConfirmOrdersActivity.this);
+		dialog.setMessage("加载...");
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dialog.show();
 		appContext = (AppContext) getApplication();
 		strnetworkHelper = new StrVolleyInterface(ConfirmOrdersActivity.this);
 		strnetworkHelper.setStrUIDataListener(ConfirmOrdersActivity.this);
@@ -98,8 +103,12 @@ StrUIDataListener {
 			priceAll += list.get(i).getPrice()
 					* Integer.valueOf(list.get(i).getNum());
 			numAll += Integer.parseInt(list.get(i).getNum());
+			if(i==0){
+				cart_ids = ""+list.get(i).getId();
+			}else{
+				cart_ids += ","+list.get(i).getId();
+			}
 		}
-
 	}
 
 	private void initView() {
@@ -303,7 +312,7 @@ StrUIDataListener {
 			break;
 		case R.id.confirm:
 			// 添加订单
-			ordersAdd(appContext.getLoginUid(), 12, "123", "456",address.getId(),2,1);
+			ordersAdd(appContext.getLoginUid(), cart_ids, null, null,address.getId(),2,1);
 			dialog.setMessage("提交订单...");
 			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			dialog.show();
@@ -328,12 +337,12 @@ StrUIDataListener {
 	 * 
 	 * @return
 	 */
-	public Boolean ordersAdd(int uid, int cartids, String idcode, String note,
+	public Boolean ordersAdd(int uid, String cart_ids, String idcode, String note,
 			int addr_id, int from, int payType) {
 		try {
 			state = ORDER;
 			YesOrNo = appContext.ordersAdd(ConfirmOrdersActivity.this, uid,
-					cartids, idcode, note, addr_id, from, payType,
+					cart_ids, idcode, note, addr_id, from, payType,
 					strnetworkHelper);
 
 			if (!YesOrNo) { // 如果没联网
@@ -368,7 +377,7 @@ StrUIDataListener {
 			int code = jsondata.getInt("code");
 
 			if (state == ADDRESS) { // 地址的请求相应
-
+				dialog.dismiss();
 				if (code == 0) {
 					String addressData = jsondata.getString("data");
 					addresslist = gson.fromJson(addressData,
@@ -406,20 +415,20 @@ StrUIDataListener {
 				}
 				state = -1;
 			} else if (state == ORDER) {
-				String addressData = jsondata.getString("data");
+				String content = jsondata.getString("data");
 				if (code == 0) {
-					
+					OrderPayData orderPayData;
 					Toast.makeText(ConfirmOrdersActivity.this, "订单添加成功"+data,
 							Toast.LENGTH_SHORT).show();
-					
+					orderPayData = gson.fromJson(content, OrderPayData.class);
 					// 完成订单提交，成功后启动支付宝付款
 					dialog.dismiss();
 					payAlipay = new PayAlipay(ConfirmOrdersActivity.this);
-					//payAlipay.pay(null, ""+priceAll);
+					payAlipay.pay(null, orderPayData);
 						
 					
 				}else{
-					byte[] bytes = addressData.getBytes();
+					byte[] bytes = content.getBytes();
 					String newStr = null;
 					try {
 						newStr = new String(bytes , "UTF-8");

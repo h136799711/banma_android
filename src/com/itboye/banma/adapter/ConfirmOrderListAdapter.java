@@ -68,8 +68,12 @@ public class ConfirmOrderListAdapter  extends BaseAdapter {
 				R.drawable.image_loading, R.drawable.image_load_fail);
 		imageLoader.get(order.getIcon_url(), listener, 0, 0);
 		order_name.setText(order.getName());
-		order_standard.setText(order.getSku());
-		order_price.setText("￥" + order.getPrice() * Integer.valueOf(order.getNum()));
+		if(order.getSku().isEmpty() || order.getSku().length()<=0 ){
+			order_standard.setText(order.getSku());
+		}else{
+			order_standard.setText("暂无规格说明");
+		}
+		order_price.setText("￥" + order.getPrice());
 		// order_number.setText("×"+skuStandard.getNum());
 		order_number.setText("×"+order.getNum());
 		int num = getCount()-1;
