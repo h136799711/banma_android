@@ -3,9 +3,13 @@ package com.itboye.banma.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.animation.AnimatorSet.Builder;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,19 +26,26 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.ActivityLogistics;
+import com.itboye.banma.activities.AddAddressActivity;
 import com.itboye.banma.activities.ConfirmOrdersActivity;
 import com.itboye.banma.activities.LoginActivity;
 import com.itboye.banma.activities.OrderDetailActivity;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.OrderDetailListItem;
 import com.itboye.banma.entity.OrderItem;
+import com.itboye.banma.entity.OrderPayData;
 import com.itboye.banma.entity.SkuStandard;
+import com.itboye.banma.entity.User;
 import com.itboye.banma.entity.ProductDetail.Sku_info;
 import com.itboye.banma.payalipay.PayAlipay;
 import com.itboye.banma.util.BaseViewHolder;
@@ -42,13 +53,29 @@ import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.view.MyLinearLayout;
 import com.itboye.banma.view.MyListView;
 
-public class OrderListAdapter   extends BaseAdapter {
+public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
+	private final int ZHUFU_ORDER = 1;
+	private final int QUXIAO_ORDER = 2;
+	private final int QUERENSHOUHUO_ORDER = 3;
+	
 	private Context context;
+	private AppContext appContext;
+	private StrVolleyInterface strnetworkHelper;
+	private Boolean YesOrNo; // 是否连接网络
+	private int state = -1;
+	private ProgressDialog dialog;
+	private Gson gson = new Gson();
+	private PayAlipay payAlipay;
 	private List<OrderDetailListItem> orderList = new ArrayList<OrderDetailListItem>();
+	private int location;
 
 	public OrderListAdapter(Context context, List<OrderDetailListItem> orderList) {
 		this.context = context;
 		this.orderList = orderList;
+		appContext = (AppContext) ((Activity) context).getApplication();
+		strnetworkHelper = new StrVolleyInterface(context);
+		strnetworkHelper.setStrUIDataListener(this);
+		dialog = new ProgressDialog(context);
 	}
 
 	@Override
@@ -76,14 +103,12 @@ public class OrderListAdapter   extends BaseAdapter {
 	@Override
 	public View getView(final int position, View view, ViewGroup parent) {
 		final OrderDetailListItem order = orderList.get(position);
-		Gson gson = new Gson();
-		final PayAlipay payAlipay;
+		
 		List<OrderItem> data = null;
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(R.layout.order_listitem,
 					parent, false);
 		}
-		payAlipay = new PayAlipay(context);
 		MyLinearLayout order_click_layout = BaseViewHolder.get(view, R.id.order_click_layout);
 		TextView order_code = BaseViewHolder.get(view, R.id.order_code);
 		TextView status = BaseViewHolder.get(view, R.id.status);
@@ -96,7 +121,7 @@ public class OrderListAdapter   extends BaseAdapter {
 		status.setText("["+order.getStatus()+Constant.getStatus(Integer.parseInt(order.getStatus()))+"]"+
 				"["+order.getOrder_status()+Constant.getOrderStatus(Integer.parseInt(order.getOrder_status()))+"]"+
 				"["+order.getPay_status()+Constant.getPayStatus(Integer.parseInt(order.getPay_status()))+"]");
-		all_price.setText(order.getPrice());
+		all_price.setText("￥"+order.getPrice());
 		
 		data = order.get_items();
 		if(data != null){
@@ -111,7 +136,8 @@ public class OrderListAdapter   extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(context, OrderDetailActivity.class);
-				intent.putExtra("id", 20);
+				int orderId = Integer.valueOf(order.getId());
+				intent.putExtra("id", orderId);
 				context.startActivity(intent);
 				((Activity) context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			}
@@ -120,7 +146,7 @@ public class OrderListAdapter   extends BaseAdapter {
 		switch (Integer.parseInt(order.getOrder_status())) {
 		case Constant.ORDER_CANCEL:		//取消或交易关闭
 			status.setText("["+Constant.getOrderStatus(Constant.ORDER_CANCEL)+"]");  //[交易关闭]
-			confirm_one.setVisibility(View.VISIBLE);
+			confirm_one.setVisibility(View.GONE);
 			confirm_two.setVisibility(View.GONE);
 			confirm_one.setText("取消订单");
 			confirm_one.setOnClickListener(new OnClickListener() {
@@ -139,17 +165,20 @@ public class OrderListAdapter   extends BaseAdapter {
 				confirm_one.setVisibility(View.GONE);
 				confirm_two.setVisibility(View.GONE);
 			}else if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_TOBE_PAID ){ //待支付
-				status.setText("[代付款]");  //[代付款]
+				status.setText("[待付款]");  //[待付款]
 				confirm_one.setVisibility(View.VISIBLE);
-				confirm_two.setVisibility(View.VISIBLE);
+				confirm_two.setVisibility(View.GONE);
 				confirm_one.setText("发起支付");
 				confirm_two.setText("取消订单");
 				confirm_one.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Toast.makeText(context, "发起支付", Toast.LENGTH_LONG).show();
-						payAlipay.pay(null, order.getPrice());
+						ordersPay(order.getId());
+					
 					}
+
+					
 				});
 				confirm_two.setOnClickListener(new OnClickListener() {
 					@Override
@@ -181,13 +210,17 @@ public class OrderListAdapter   extends BaseAdapter {
 					@Override
 					public void onClick(View v) {
 						Toast.makeText(context, "查看物流", Toast.LENGTH_LONG).show();
+						getLogistics(order.getOrder_code());
 					}
 				});
 				confirm_two.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						location = position;
 						Toast.makeText(context, "货已发，待收货", Toast.LENGTH_LONG).show();
+						ordersSureorder(order.getOrder_code());
 					}
+
 				});
 			}
 			break;
@@ -195,7 +228,7 @@ public class OrderListAdapter   extends BaseAdapter {
 		case Constant.ORDER_RECEIPT_OF_GOODS:		//已收货
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				status.setText("["+Constant.getOrderStatus(Constant.ORDER_RECEIPT_OF_GOODS)+"]");  //[已收货]
-				confirm_one.setVisibility(View.VISIBLE);
+				confirm_one.setVisibility(View.GONE);
 				confirm_two.setVisibility(View.GONE);
 				confirm_one.setText("评价");
 				confirm_one.setOnClickListener(new OnClickListener() {
@@ -325,6 +358,114 @@ public class OrderListAdapter   extends BaseAdapter {
 		});
 		
 		builder.create().show();
+	}
+	
+	/**
+	 * 发起支付
+	 * @param id
+	 */
+	private void ordersPay(String id) {
+		dialog.setMessage("正在发起支付...");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.show();
+		try {
+			state = ZHUFU_ORDER;
+			YesOrNo = appContext.ordersPay(context, id, strnetworkHelper);
+
+			if (!YesOrNo) { // 如果没联网
+				Toast.makeText(context, "请检查网络连接",
+						Toast.LENGTH_SHORT).show();
+				state = -1;
+				dialog.dismiss();
+			}
+		} catch (Exception e) {
+			state = -1;
+			dialog.dismiss();
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 确认收货
+	 * @param order_code
+	 */
+	private void ordersSureorder(String order_code) {
+		dialog.setMessage("正在确认收货...");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.show();
+		try {
+			state = QUERENSHOUHUO_ORDER;
+			YesOrNo = appContext.ordersSureorder(context, order_code, strnetworkHelper);
+
+			if (!YesOrNo) { // 如果没联网
+				Toast.makeText(context, "请检查网络连接",
+						Toast.LENGTH_SHORT).show();
+				state = -1;
+				dialog.dismiss();
+			}
+		} catch (Exception e) {
+			state = -1;
+			dialog.dismiss();
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 查看物流
+	 * @param order_code
+	 */
+	private void getLogistics(String order_code) {
+		Intent intent = new Intent(context, ActivityLogistics.class);
+		intent.putExtra("order_code", order_code);
+		context.startActivity(intent);
+		((Activity) context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+	}
+	@Override
+	public void onErrorHappened(VolleyError error) {
+		dialog.dismiss();
+		Toast.makeText(context, "服务器异常，稍后再试",Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onDataChanged(String data) {
+		dialog.dismiss();
+		JSONObject jsonObject=null;
+		int code = -1;
+		String content = null;
+		OrderPayData orderPayData;
+		if(state == ZHUFU_ORDER){
+			try {
+				jsonObject = new JSONObject(data);
+				code = jsonObject.getInt("code");
+				content = jsonObject.getString("data");
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+			if (code == 0) {
+				payAlipay = new PayAlipay(context);
+				orderPayData = gson.fromJson(content, OrderPayData.class);
+				payAlipay.pay(null, orderPayData);
+			}
+			else{
+				Toast.makeText(context, "服务器异常，稍后再试"+data,Toast.LENGTH_SHORT).show();
+			}
+		}
+		else if(state == QUERENSHOUHUO_ORDER){
+			try {
+				jsonObject = new JSONObject(data);
+				code = jsonObject.getInt("code");
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+			if (code == 0) {
+				
+				orderList.remove(location);
+				notifyDataSetChanged();
+				
+			}else{
+				Toast.makeText(context, "服务器异常，稍后再试",Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 }
 

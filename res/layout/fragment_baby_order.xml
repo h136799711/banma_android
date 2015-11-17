@@ -64,7 +64,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1.0"
                 android:gravity="center"
-                android:text="待评价"
+                android:text="已收货"
                  android:textColor="@color/grey"
                  android:textSize="@dimen/text_size_14"   />
         </LinearLayout>

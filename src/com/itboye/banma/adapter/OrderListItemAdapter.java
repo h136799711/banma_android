@@ -91,7 +91,11 @@ public class OrderListItemAdapter  extends BaseAdapter {
 		
 		
 		order_name.setText(order.getName());
-		order_standard.setText(order.getSku_desc());
+		if(order.getSku_desc()==null || order.getSku_desc().length()<=0){
+			order_standard.setText("无规格参数");
+		}else{
+			order_standard.setText(order.getSku_desc());
+		}
 		order_price.setText("￥" + order.getPrice());
 		// order_number.setText("×"+skuStandard.getNum());
 		order_number.setText("×"+order.getCount());
