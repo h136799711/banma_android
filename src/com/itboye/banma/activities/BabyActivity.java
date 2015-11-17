@@ -584,11 +584,11 @@ public class BabyActivity extends FragmentActivity implements
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(BabyActivity.this, "网络异常" + error, Toast.LENGTH_SHORT)
-		.show();
-       Log.e("LOGIN-ERROR", error.getMessage(), error);
-       byte[] htmlBodyBytes = error.networkResponse.data;
-       Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
+		Toast.makeText(BabyActivity.this, "网络异常" + error, Toast.LENGTH_SHORT).show();
+//		.show();
+//       Log.e("LOGIN-ERROR", error.getMessage(), error);
+//       byte[] htmlBodyBytes = error.networkResponse.data;
+//       Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
 		if (requestState!=1) {
 			wait_ll.setVisibility(View.VISIBLE);
 			retry_img.setVisibility(View.VISIBLE);
@@ -605,6 +605,7 @@ public class BabyActivity extends FragmentActivity implements
 			requestState = 0;
 			try {
 				JSONObject jsonObject = new JSONObject(data);
+				System.out.println(data.toString() + "成功了");
 				code1 = jsonObject.getInt("code");
 				if (code1 == 0) {
 					Toast.makeText(this, "添加购物车成功", Toast.LENGTH_SHORT).show();

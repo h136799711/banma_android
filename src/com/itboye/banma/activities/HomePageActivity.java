@@ -12,21 +12,27 @@ import com.itboye.banma.fragment.CenterFragment.ChangeItemListener;
 import com.itboye.banma.fragment.FindFragment;
 import com.itboye.banma.fragment.HomePageFragment;
 import com.itboye.banma.fragment.OrderAllFragment;
+import com.itboye.banma.fragment.OrderAllFragment.AllGoShoppingListener;
+import com.itboye.banma.fragment.OrderStateFragment.GoShoppingListener;
 import com.umeng.analytics.MobclickAgent;
 
+import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class HomePageActivity extends FragmentActivity  implements OnClickListener,ChangeItemListener{
+public class HomePageActivity extends FragmentActivity  implements OnClickListener,
+ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	private ViewPager mViewPager;
 	private List<Fragment> mTabs = new ArrayList<Fragment>();
 	private FragmentPagerAdapter mAdapter;
@@ -178,10 +184,33 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 	}
 
 	@Override
-	public void onItemChanged(int postion) {
+	public void onItemChanged(int position) {
 		// TODO Auto-generated method stub
-		changTabColor(postion);
-		mViewPager.setCurrentItem(postion,false);
+		changTabColor(position);
+		mViewPager.setCurrentItem(position,false);
 	}
 	
+	private long exitTime = 0;
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   
+	        if((System.currentTimeMillis()-exitTime) > 2000){  
+	            Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();                                
+	            exitTime = System.currentTimeMillis();   
+	        } else {
+	            finish();
+	            System.exit(0);
+	        }
+	        return true;   
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public void onChanged(int position ) {
+		// TODO Auto-generated method stub
+		changTabColor(position);
+		mViewPager.setCurrentItem(position,false);
+	}
 }

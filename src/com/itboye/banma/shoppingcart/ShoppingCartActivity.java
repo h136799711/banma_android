@@ -194,11 +194,12 @@ OnClickListener,onAddChanged,onReduceChanged{
 		case 2:
 			try {
 				if (code==0) {
-
+					System.out.println();
 					Toast.makeText(this, "修改购物车成功", Toast.LENGTH_SHORT).show();
 				//	Log.v("修改购物车", jsonObject.toString());
-					adapter.notifyDataSetChanged();
+		//			adapter.notifyDataSetChanged();
 					calPriceAndWeight(tempPostionAdd, 1);
+					adapter.onDataChanged(arrayList_cart);
 				}else {
 					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
 				}
@@ -442,8 +443,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 			// 如果选中的状态数量！=列表的总数量，那么就将全选设置为取消
 			cb_cart_all.setChecked(false);
 		}
-		tv_express.setText(""+express);
-		tv_weight.setText("总重量为"+weight);
+		tv_express.setText("￥"+express);
+		tv_weight.setText("总重量为"+weight+"kg");
 		tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
 		System.out.println("选择的位置--->"+position);
 	}
@@ -543,14 +544,13 @@ OnClickListener,onAddChanged,onReduceChanged{
 					//	j+=1;
 					}
 				}	
-				if (list!=null) {
+				if (list.size()>=1) {
 					Intent  intent=new Intent(ShoppingCartActivity.this,ConfirmOrdersActivity.class);
 					intent.putExtra("SkuStandardList", (Serializable)list);
-//					intent.putExtra("main_img", skuStandards[0].getIcon_url());
-//					intent.putExtra("name", skuStandards[0].getSku());
-//					intent.putExtra("price", skuStandards[0].getPrice());
 					startActivity(intent);
 					overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+				}else {
+					Toast.makeText(ShoppingCartActivity.this, "您还没选择商品", Toast.LENGTH_SHORT).show();
 				}
 			}
 			break;
@@ -625,8 +625,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 				express-=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 			}
 		}
-		tv_express.setText(""+express);
-		tv_weight.setText("总重量为"+weight);
-		tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
+		tv_express.setText("￥"+express);
+		tv_weight.setText("总重量为"+weight+"kg");
+		tv_cart_Allprice.setText("合计：(含邮费)￥"+AllCount+ "");
 	}
 }

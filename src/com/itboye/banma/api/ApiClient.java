@@ -34,6 +34,16 @@ public class ApiClient {
 				
 			} 
 	
+			//优惠码历史
+			public static void youHuiHistory(Context mContext, String uid, StrVolleyInterface networkHelper) {
+				String access_token=AppContext.getAccess_token();
+				String url = Constant.URL+"/Coupon/history?access_token="+access_token;
+				Map<String,String> params = new HashMap<String, String>();
+		        params.put("uid",uid);
+		        VolleyRequest.StrRequestPost(mContext, url, "youHuiHistory",params, networkHelper);
+				
+			} 
+			
 	//优惠码
 		public static void youHuiMa(Context mContext, String coupon, StrVolleyInterface networkHelper) {
 			String access_token=AppContext.getAccess_token();
@@ -41,7 +51,6 @@ public class ApiClient {
 			Map<String,String> params = new HashMap<String, String>();
 	        params.put("coupon",coupon);
 	        VolleyRequest.StrRequestPost(mContext, url, "youHuiMa",params, networkHelper);
-			
 		} 
 		
 	

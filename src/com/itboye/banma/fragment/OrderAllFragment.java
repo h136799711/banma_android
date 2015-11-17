@@ -18,20 +18,23 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.OrderDetailListItem;
+import com.itboye.banma.fragment.OrderStateFragment.GoShoppingListener;
 import com.itboye.banma.view.PullToRefreshListView;
 import com.itboye.banma.view.PullToRefreshListView.OnRefreshListener;
 
 import android.support.v4.app.Fragment;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class OrderAllFragment extends Fragment implements StrUIDataListener,
+public class OrderAllFragment extends Fragment implements StrUIDataListener,OnClickListener,
 		OnRefreshListener {
 	private View chatView;
 	private AppContext appContext;
@@ -48,6 +51,8 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 	private List<OrderDetailListItem> orderList = new ArrayList<OrderDetailListItem>();
 	private PullToRefreshListView listView;
 	private OrderListAdapter adapter;
+	private AllGoShoppingListener goShoppingListener;
+	private Button goshop;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -119,6 +124,8 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		}
 		super.onCreateView(inflater, container, savedInstanceState);
 		chatView = inflater.inflate(R.layout.fragment_quanbu, container, false);
+		goshop=(Button) chatView.findViewById(R.id.btn_quguangguang);
+		goshop.setOnClickListener(this);
 		listView = (PullToRefreshListView) chatView.findViewById(R.id.fresh_list);
 		listView.setOnRefreshListener(this);
 		/*
@@ -258,4 +265,29 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,
 		}
 	}
 
+	 @Override  
+	    public void onAttach(Activity activity)   
+	    {  
+	        super.onAttach(activity);  
+	        goShoppingListener = (AllGoShoppingListener) activity;   
+	    }  
+	
+	 public interface AllGoShoppingListener{  
+	      public void onChanged(int position);  
+	  }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.btn_quguangguang:
+			goShoppingListener.onChanged(2);
+			break;
+
+		default:
+			break;
+		}
+	}  
+
+	
 }

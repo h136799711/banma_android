@@ -49,7 +49,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 //	public Adapter_ListView_cart(Context context) {
 //		this.context = context;
 //	}
-	public void onDateChang( ArrayList<HashMap<String, Object>> arrayList) {
+	public void onDataChanged( ArrayList<HashMap<String, Object>> arrayList) {
 		this.arrayList = arrayList;
 		this.notifyDataSetChanged();
 	}
