@@ -52,7 +52,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private StrVolleyInterface networkHelper;
 	
 	private LinearLayout ll_cart_bottom;//底部显示
-	private RelativeLayout rl_cart;
+	private LinearLayout rl_cart;
 	private ImageView ivBack;//返回按钮
 	private TextView tv_goShop, tv_cart_Allprice, tv_cart_buy_Ordel;
 	private LinearLayout ll_cart;
@@ -126,7 +126,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 		ll_cart_bottom=(LinearLayout)findViewById(R.id.ll_cart_bottom);
 		all_choice_layout=(LinearLayout)findViewById(R.id.all_choice_layout);
 		tv_title_right=(TextView)findViewById(R.id.tv_title_right);
-		rl_cart=(RelativeLayout)findViewById(R.id.rl_cart);
+		rl_cart=(LinearLayout)findViewById(R.id.rl_cart);
 		tv_title_right.setOnClickListener(this);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		ivBack.setOnClickListener(this);
@@ -179,6 +179,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 					Toast.makeText(this, "修改购物车成功", Toast.LENGTH_SHORT).show();
 				//	Log.v("修改购物车", jsonObject.toString());
 					adapter.notifyDataSetChanged();
+					setListViewHeightBasedOnChildren(listView_cart);
 				}else {
 					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
 				}
@@ -229,6 +230,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 				if (code==0) {
 						Log.v("delete","成功");			
 						adapter.notifyDataSetChanged();
+						setListViewHeightBasedOnChildren(listView_cart);
 					}
 				} catch (Exception e) {
 				// TODO: handle exception
@@ -285,6 +287,9 @@ OnClickListener,onAddChanged,onReduceChanged{
 		// params.height最后得到整个ListView完整显示需要的高度
 
 		listView.setLayoutParams(params);
+		System.out.println("高度"+totalHeight+"高度");
+		Log.v("height", totalHeight+"");
+
 
 	}
 
@@ -304,19 +309,18 @@ OnClickListener,onAddChanged,onReduceChanged{
 		// TODO Auto-generated method stub
 		// 如果购物车中有数据，那么就显示数据，否则显示默认界面
 		is_choice=new boolean[arrayList_cart.size()];
-		System.out.println(arrayList_cart.size()+"数量");
 		if ( arrayList_cart.size() != 0) {
+			dialog.setVisibility(View.GONE);
+			ll_cart_bottom.setVisibility(View.VISIBLE);
+			rl_cart.setVisibility(View.VISIBLE);
+			ll_cart.setVisibility(View.GONE);
 			adapter = new Adapter_ListView_cart(ShoppingCartActivity.this, arrayList_cart);
 		    adapter.setOnCheckedChanged(this);
 			adapter.setOnAddChanged(this);
 			adapter.setOnRedChanged(this);
 			//adapter.setGuiChanged(this);
-			//setListViewHeightBasedOnChildren(listView_cart);
 			listView_cart.setAdapter(adapter); 
-			dialog.setVisibility(View.GONE);
-			ll_cart_bottom.setVisibility(View.VISIBLE);
-			rl_cart.setVisibility(View.VISIBLE);
-			ll_cart.setVisibility(View.GONE);
+			setListViewHeightBasedOnChildren(listView_cart);
 		} else {
 			dialog.setVisibility(View.GONE);
 			rl_cart.setVisibility(View.GONE);

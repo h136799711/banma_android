@@ -3,18 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_layout" >
-    
-    <ProgressBar
+     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/loading_large"
         android:layout_centerInParent="true"
         android:visibility="visible" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal" >
-
         <LinearLayout
             android:id="@+id/ll_cart"
             android:layout_width="match_parent"
@@ -34,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="购物车快饿扁了T.T"
+                android:text="购物车是空的"
                 android:textColor="@color/gray"
                 android:textSize="20sp" />
 
@@ -46,50 +39,35 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_size_14"
-                android:text="主人带我去逛逛吧" />
-<!--    <TextView
-                android:id="@+id/tv_goShop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:padding="7dp"
-                android:text="去逛逛"
-                android:textColor="@color/black" /> -->
-          
+                android:text="去逛逛" />
         </LinearLayout>
-
-        <RelativeLayout
+    
+   
+<ScrollView  
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"   >
+       <LinearLayout
             android:id="@+id/rl_cart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <ScrollView
-                android:id="@+id/sv_temp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" 
-                android:layout_marginBottom="130dp" >
-
-                <com.itboye.banma.view.MyListView
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+                <ListView
                     android:id="@+id/listView_cart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:cacheColorHint="#00000000" >
-                </com.itboye.banma.view.MyListView>
-            </ScrollView>
-            
-
-
- <LinearLayout
-                android:id="@+id/ll_cart_bottom"
-                android:weightSum="10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:visibility="gone"
-                android:background="@color/main_layout"
-                android:orientation="vertical" >             
+                </ListView>
+                
+       <LinearLayout
+              android:id="@+id/ll_cart_bottom"
+              android:weightSum="10"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:visibility="visible"
+              android:background="@color/main_layout"
+              android:orientation="vertical" >             
      <LinearLayout 
         android:id="@+id/ll_other"
         android:layout_width="match_parent"
@@ -233,7 +211,7 @@
                     android:textColor="@color/white" />
             </LinearLayout>
           </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
-
+                
+      </LinearLayout>
+	</ScrollView>
 </RelativeLayout>

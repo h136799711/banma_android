@@ -4,11 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.R.integer;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +55,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	private AppContext appContext;
 	private SharedPreferences sp;
 	private StrVolleyInterface networkHelper;
+	private  ChangeItemListener changeItemListener;
 
 	
 	@Override
@@ -127,17 +131,15 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			}
 			break;
 			
-//		case R.id.order_goods:
-//             if (appContext.isLogin()) {
-//            	 		Intent intent = new Intent(getActivity(), OrderActivity.class);
-//            	 		startActivity(intent);
-//            	 		getActivity().overridePendingTransition(R.anim.in_from_right,
-//						R.anim.out_to_left);
-//             	}else{
-//             			Toast.makeText(getActivity(), "请先登录",
-//             						Toast.LENGTH_LONG).show();
-//             		}			
-//			break;
+		case R.id.order_goods:
+             if (appContext.isLogin()) {
+            	 changeItemListener.onItemChanged(1);
+             		}			
+             else {
+     			Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
 		case R.id.iv_personheadfail://点击成功头像 跳转
 		if (!appContext.isLogin()) {
 				startActivityForResult(new Intent(getActivity(),LoginActivity.class),100);
@@ -161,7 +163,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 					R.anim.out_to_left);
 			}else{
 				Toast.makeText(getActivity(), "请先登录",
-						Toast.LENGTH_LONG).show();
+						Toast.LENGTH_SHORT).show();
 			}
 			break;
 			
@@ -205,7 +207,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onResume();
 		if (appContext.isLogin()==true) {
-			if (AppContext.hasHead==false) {
+			if (AppContext.hasHead==true) {
 				ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 						new BitmapCache());
 				try {
@@ -224,4 +226,15 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		}
 		
 	}
+	//这里必不可少， /** Fragment第一次附属于Activity时调用,在onCreate之前调用 */  
+	 @Override  
+	    public void onAttach(Activity activity)   
+	    {  
+	        super.onAttach(activity);  
+	        changeItemListener = (ChangeItemListener) activity;   
+	    }  
+	
+	 public interface ChangeItemListener{  
+	      public void onItemChanged(int postion);  
+	  }  
 }

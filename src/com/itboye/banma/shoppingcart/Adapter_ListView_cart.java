@@ -56,19 +56,17 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 
 	@Override
 	public int getCount() {
-		Log.v("Count", (String) ((arrayList != null && arrayList.size() == 0) ? 0: arrayList.size()+""));
+		System.out.println("高度pppppppppp"+arrayList.size());
 		return (arrayList != null && arrayList.size() == 0) ? 0: arrayList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		Log.v("Item", arrayList.get(position)+"");
 		return arrayList.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		Log.v("ItemId", position+"");
 		return  position;
 	}
 	@SuppressLint("InflateParams")
@@ -97,20 +95,6 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			holderView.tv_type_color.setText(arrayList.get(position).get("sku_desc")+"");
 			holderView.tv_price.setText("￥"+arrayList.get(position).get("price"));
 			holderView.tv_name.setText(arrayList.get(position).get("name")+"");	
-			System.out.println(position+":"+arrayList.get(position).get("count").toString());
-			
-//			currentView.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					Intent intent = new Intent(context, BabyActivity.class);
-//					intent.putExtra("PID",Integer.parseInt(arrayList.get(position).get("p_id").toString()));
-//					System.out.println(Integer.parseInt(arrayList.get(position).get("p_id").toString())+"点击跳转");
-//					context.startActivity(intent);
-//					((Activity) context).overridePendingTransition(R.anim.in_from_right,
-//							R.anim.out_to_left);
-//				}
-//			});
-			
 			System.out.println(position+":"+arrayList.get(position).get("icon_url").toString());
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);

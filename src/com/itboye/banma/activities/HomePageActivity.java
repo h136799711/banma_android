@@ -8,6 +8,7 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.fragment.BabyOrderFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.fragment.CenterFragment;
+import com.itboye.banma.fragment.CenterFragment.ChangeItemListener;
 import com.itboye.banma.fragment.FindFragment;
 import com.itboye.banma.fragment.HomePageFragment;
 import com.itboye.banma.fragment.OrderAllFragment;
@@ -25,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class HomePageActivity extends FragmentActivity  implements OnClickListener{
+public class HomePageActivity extends FragmentActivity  implements OnClickListener,ChangeItemListener{
 	private ViewPager mViewPager;
 	private List<Fragment> mTabs = new ArrayList<Fragment>();
 	private FragmentPagerAdapter mAdapter;
@@ -174,6 +175,13 @@ public class HomePageActivity extends FragmentActivity  implements OnClickListen
 		imageViewlist.get(arg0).setImageResource(ic_sel[arg0]);
 		textViewlist.get(arg0).setTextColor(this.getResources().getColor(R.color.tab_text_sel));
 		
+	}
+
+	@Override
+	public void onItemChanged(int postion) {
+		// TODO Auto-generated method stub
+		changTabColor(postion);
+		mViewPager.setCurrentItem(postion,false);
 	}
 	
 }

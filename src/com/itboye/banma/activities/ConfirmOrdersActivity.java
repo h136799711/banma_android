@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -253,7 +254,8 @@ StrUIDataListener {
 		// params.height最后得到整个ListView完整显示需要的高度
 
 		listView.setLayoutParams(params);
-
+		System.out.println("高度"+totalHeight+"高度");
+		Log.v("height", totalHeight+"");
 	}
 
 	@Override
