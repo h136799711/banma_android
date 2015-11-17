@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private StrVolleyInterface networkHelper;
 	
 	private LinearLayout ll_cart_bottom;//底部显示
-	private LinearLayout rl_cart;
+	private RelativeLayout rl_cart;
 	private ImageView ivBack;//返回按钮
 	private TextView tv_goShop, tv_cart_Allprice, tv_cart_buy_Ordel;
 	private LinearLayout ll_cart;
@@ -65,8 +66,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private SkuStandard[] skuStandards;
 	//private CartList[] cartList=new CartList[10];//多页查询购物车实体
 	private int EditState=1;//标示编辑状态,1标示编辑，2标示完成
-	private int RequestState=-1;//区分不同的请求返回 1.购物车删除。2.购物车修改。3.购物车分页查询
-												//4.单个查询。5.数量查询6.批量添加接口7.请求商品详情，显示popwindow
+	private int RequestState=-1;//区分不同的请求返回 1.购物车删除。2.购物车数量增加修改。3.购物车数量减少修改
+												//5.数量查询6.批量添加接口7.请求商品详情，显示popwindow
 	private boolean Is_Internet;//是否联网
 	private int AllCount=0;//购物车总价格
 	private LinearLayout ll_other;//list列表下面的
@@ -76,7 +77,9 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private TextView tv_weight,tv_guansui,tv_express;
 	private Button btn_quguangguang;
 	private List<SkuStandard> list;
-	
+	private int  tag=-1;
+	private int tempPostionAdd;//用于增加与减少时临时位置传递
+	private int tempPostionRed;//用于增加与减少时临时位置传递
 	private  	ProgressBar dialog;//显示正在加载
 	
 	private ProductDetail productDetail;
@@ -126,7 +129,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 		ll_cart_bottom=(LinearLayout)findViewById(R.id.ll_cart_bottom);
 		all_choice_layout=(LinearLayout)findViewById(R.id.all_choice_layout);
 		tv_title_right=(TextView)findViewById(R.id.tv_title_right);
-		rl_cart=(LinearLayout)findViewById(R.id.rl_cart);
+		rl_cart=(RelativeLayout)findViewById(R.id.rl_cart);
 		tv_title_right.setOnClickListener(this);
 		ivBack=(ImageView)findViewById(R.id.iv_back);
 		ivBack.setOnClickListener(this);
@@ -172,6 +175,22 @@ OnClickListener,onAddChanged,onReduceChanged{
 			e1.printStackTrace();
 		}
 		switch (RequestState) {
+		case 3:
+			try {
+				if (code==0) {
+					Toast.makeText(this, "修改购物车成功", Toast.LENGTH_SHORT).show();
+				//	Log.v("修改购物车", jsonObject.toString());
+					adapter.notifyDataSetChanged();
+					calPriceAndWeight(tempPostionRed, 0);
+				}else {
+					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			break;
 		case 2:
 			try {
 				if (code==0) {
@@ -179,7 +198,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 					Toast.makeText(this, "修改购物车成功", Toast.LENGTH_SHORT).show();
 				//	Log.v("修改购物车", jsonObject.toString());
 					adapter.notifyDataSetChanged();
-					setListViewHeightBasedOnChildren(listView_cart);
+					calPriceAndWeight(tempPostionAdd, 1);
 				}else {
 					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
 				}
@@ -559,6 +578,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 //		flagPosition=2;
 //		addPosition=position;
 		RequestState=2;
+		tempPostionAdd=position;
 		int temp=(Integer) arrayList_cart.get(position).get("count");
 		arrayList_cart.get(position).put("count", temp+1);
 		ApiClient.modifyCart(ShoppingCartActivity.this,arrayList_cart.get(position).get("id")+"", arrayList_cart.get(position).get("count")+"", 
@@ -574,15 +594,39 @@ OnClickListener,onAddChanged,onReduceChanged{
 //		flagPosition=1;
 		int temp=(Integer) arrayList_cart.get(position).get("count");
 		if (temp>1) {
+			//这里因为开始设计的时候不合理，所以写的比较乱
+			RequestState=3;
 			arrayList_cart.get(position).put("count", temp-1);
+			ApiClient.modifyCart(ShoppingCartActivity.this,arrayList_cart.get(position).get("id")+"", arrayList_cart.get(position).get("count")+"", 
+					arrayList_cart.get(position).get("express")+"",
+					arrayList_cart.get(position).get("p_id")+"",arrayList_cart.get(position).get("psku_id")+"",networkHelper);
+			tempPostionRed=position;
 		}else {
 			Toast.makeText(this, "不能再少了", Toast.LENGTH_SHORT).show();
 		}	
-		//这里因为开始设计的时候不合理，所以写的比较乱
-		RequestState=2;
-		ApiClient.modifyCart(ShoppingCartActivity.this,arrayList_cart.get(position).get("id")+"", arrayList_cart.get(position).get("count")+"", 
-				arrayList_cart.get(position).get("express")+"",
-				arrayList_cart.get(position).get("p_id")+"",arrayList_cart.get(position).get("psku_id")+"",networkHelper);
+
 //		adapter.notifyDataSetChanged();
+	
+	}
+	
+	//计算当前总价和重量
+	public void calPriceAndWeight(int position,int tag){
+		if (is_choice[position]==true) {
+			if (tag==1) {
+				AllCount +=	Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				AllCount+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
+				weight+=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
+				express+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
+			}
+			else  if(tag==0){
+				AllCount -= Float.valueOf(arrayList_cart.get(position).get("price").toString());
+				AllCount-=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
+				weight-=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
+				express-=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
+			}
+		}
+		tv_express.setText(""+express);
+		tv_weight.setText("总重量为"+weight);
+		tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
 	}
 }

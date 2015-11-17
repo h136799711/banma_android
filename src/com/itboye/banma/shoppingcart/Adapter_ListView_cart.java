@@ -56,7 +56,6 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 
 	@Override
 	public int getCount() {
-		System.out.println("高度pppppppppp"+arrayList.size());
 		return (arrayList != null && arrayList.size() == 0) ? 0: arrayList.size();
 	}
 
@@ -73,9 +72,11 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 	@Override
 	public View getView(final int position, View currentView, ViewGroup arg2) {
 		HolderView holderView=null;
+		TextView 	currentText=null;
 		if (currentView == null) {
 			holderView = new HolderView();
 			currentView = LayoutInflater.from(context).inflate(R.layout.adapter_listview_cart, null);
+			currentText=(TextView) currentView.findViewById(R.id.tv_name);
 			holderView.tv_name=(TextView)currentView.findViewById(R.id.tv_name);
 			holderView.tv_num = (TextView) currentView.findViewById(R.id.tv_num);
 			holderView.tv_price=(TextView)currentView.findViewById(R.id.tv_price);
@@ -89,8 +90,8 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			currentView.setTag(holderView);
 	} 	else {
 			holderView = (HolderView) currentView.getTag();
+			currentText=(TextView) currentView.findViewById(R.id.tv_name);
 		}
-
 			holderView.tv_num.setText("x" + arrayList.get(position).get("count"));
 			holderView.tv_type_color.setText(arrayList.get(position).get("sku_desc")+"");
 			holderView.tv_price.setText("￥"+arrayList.get(position).get("price"));
@@ -112,7 +113,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 				}
 			});
 			
-			currentView.setOnClickListener(new OnClickListener() {
+			currentText.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
