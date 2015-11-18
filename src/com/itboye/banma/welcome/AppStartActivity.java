@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import com.android.volley.VolleyError;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.HomePageActivity;
+import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
@@ -75,7 +76,6 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 		new SharedConfig(this);
 		shared = SharedConfig.GetConfig(); 
 		into();
-		this.startService(new Intent(this,TokenIntentService.class));
 	}
 //友盟统计
 	@Override
@@ -93,6 +93,9 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 	
 	private void into() {
 		//请求token
+		if (appContext.isNetworkConnected()==false) {
+			Toast.makeText(AppStartActivity.this, "请检查网络是否连接", Toast.LENGTH_LONG).show();
+		}
 		try {
 			appContext.getToken(AppStartActivity.this,
 					"client_credentials", "by559a8de1c325c1",
@@ -144,6 +147,8 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 		// TODO Auto-generated method stub
 		Toast.makeText(AppStartActivity.this, "加载失败" + error, Toast.LENGTH_LONG)
 		.show();
+		this.startService(new Intent(this,TokenIntentService.class));
+		AppContext.setTokenSuccess(false);
 		Log.v("获取token",error.toString() );
 	}
 	@Override
@@ -164,12 +169,16 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 				access_token = tempdata.getString("access_token");
 				Log.v("获取token",access_token+"1");
 				AppContext.setAccess_token(access_token);
+				AppContext.setTokenSuccess(true);
+				this.startService(new Intent(this,TokenIntentService.class));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			Toast.makeText(AppStartActivity.this, "获取token成功：" + access_token, Toast.LENGTH_LONG)
 			.show();
 		} else {
+			AppContext.setTokenSuccess(false);
+			this.startService(new Intent(this,TokenIntentService.class));
 			Toast.makeText(AppStartActivity.this, "获取token失败：code=" + code, Toast.LENGTH_LONG)
 			.show();
 		}

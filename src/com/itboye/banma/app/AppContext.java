@@ -24,7 +24,15 @@ import android.util.Log;
  */
 public class AppContext extends Application {
 	final static String TAG = "AppContext.java";
-	
+	private static boolean isTokenSuccess=false;//判断token是否拿到，启动server
+	public static boolean isTokenSuccess() {
+		return isTokenSuccess;
+	}
+
+	public static void setTokenSuccess(boolean isTokenSuccess) {
+		AppContext.isTokenSuccess = isTokenSuccess;
+	}
+
 	private static boolean login = false; // 登录状态
 	private static  int loginUid = 0; // 登录用户的id
 	public static String access_token; //访问令牌 
