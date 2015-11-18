@@ -333,6 +333,7 @@ public class BabyActivity extends FragmentActivity implements
 			// if (appContext.isLogin()) {
 			startActivity(new Intent(BabyActivity.this,
 					ShoppingCartActivity.class));
+			finish();
 			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 			// }else {
 			// Toast.makeText(BabyActivity.this, "请先登录",
@@ -521,6 +522,7 @@ public class BabyActivity extends FragmentActivity implements
 					/*intent.putExtra("state", 0);*/
 
 					startActivity(intent);
+					finish();
 					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				}else if(hasSku == 0){
 					skuStandard.setOri_price(productDetail.getOri_price());
@@ -537,6 +539,7 @@ public class BabyActivity extends FragmentActivity implements
 					intent.putExtra("SkuStandardList", (Serializable)list);
 
 					startActivity(intent);
+					finish();
 					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				}
 			}else{

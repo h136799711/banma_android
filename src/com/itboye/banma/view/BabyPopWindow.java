@@ -320,13 +320,13 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		switch (v.getId()) {
 
 		case R.id.pop_add:
-			if (!pop_num.getText().toString().equals("50")) {
+			if (Integer.valueOf(pop_num.getText().toString()) < quantity) {
 
 				String num_add = Integer.valueOf(pop_num.getText().toString())
 						+ ADDORREDUCE + "";
 				pop_num.setText(num_add);
 			} else {
-				Toast.makeText(context, "不能超过50", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "不能超过"+quantity, Toast.LENGTH_SHORT).show();
 			}
 
 			break;
