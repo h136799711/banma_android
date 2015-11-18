@@ -213,8 +213,10 @@ StrUIDataListener {
 			load_data();
 		}else if(requestCode==1005) {
 			//在这里处理优惠的问题
+			//处理方法，比较store_id,计算折扣
 			if (data!=null) {
-				String  youhui=data.getStringExtra("YOU_HUI");
+				String  discount=data.getStringExtra("discount_ratio");
+				String store_id=data.getStringExtra("store_id");
 			}
 		
 		}
