@@ -46,6 +46,7 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	private int[] ic = {R.drawable.banma_home_normal, R.drawable.banma_order_normal,R.drawable.faxian_un, R.drawable.banma_mine_normal};
 	private int[] ic_sel = {R.drawable.banma_home_select, R.drawable.banma_order_select,R.drawable.faxian ,R.drawable.banma_mine_select};
 	private AppContext appContext;
+	private long exitTime = 0;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,8 +191,6 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 		mViewPager.setCurrentItem(position,false);
 	}
 	
-	private long exitTime = 0;
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){   

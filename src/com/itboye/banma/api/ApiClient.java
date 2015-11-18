@@ -45,11 +45,11 @@ public class ApiClient {
 			} 
 			
 	//优惠码
-		public static void youHuiMa(Context mContext, String coupon, StrVolleyInterface networkHelper) {
+		public static void youHuiMa(Context mContext, String idcode, StrVolleyInterface networkHelper) {
 			String access_token=AppContext.getAccess_token();
 			String url = Constant.URL+"/Coupon/info?access_token="+access_token;
 			Map<String,String> params = new HashMap<String, String>();
-	        params.put("coupon",coupon);
+	        params.put("idcode",idcode);
 	        VolleyRequest.StrRequestPost(mContext, url, "youHuiMa",params, networkHelper);
 		} 
 		

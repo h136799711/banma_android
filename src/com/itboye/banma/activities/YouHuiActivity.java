@@ -88,13 +88,13 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 		try {
 			jsonObject = new JSONObject(data);
 			code = jsonObject.getInt("code");
-			content = jsonObject.getString("data");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
 		if (Request==1) {
 			if (code==0) {
 				try {
+					content = jsonObject.getString("data");
 					JSONArray jsonArray=new JSONArray(content);
 					System.out.println(jsonArray.length());
 					if (jsonArray.length()>0) {
@@ -124,22 +124,34 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 						+ "我的名片中获取相关的优惠码字符串，然后输入到当前界面即可。");
 			}
 		}else if (Request==2)  {
-			if (code == 0) {
-				Toast.makeText(YouHuiActivity.this, content.toString(), Toast.LENGTH_LONG).show();
-				Intent intent = new Intent();
-				intent.putExtra("YOU_HUI", content);
-				System.out.println(content.toString());
-				/*
-				 * 调用setResult方法表示我将Intent对象返回给之前的那个Activity，
-				 * 这样就可以在onActivityResult方法中得到Intent对象，
-				 */
-				setResult(1005, intent);
-				overridePendingTransition(R.anim.push_right_in,
-						R.anim.push_right_out);
-			}else {
-				Toast.makeText(YouHuiActivity.this, content.toString(), Toast.LENGTH_LONG).show();
+				try {
+					content = jsonObject.getString("data");
+					JSONArray jsonArray=new JSONArray(content);
+					if (code==0) {
+					if (jsonArray.length()>0) {
+						String discount="";
+						String store_id="";
+						for (int i = 0; i < jsonArray.length(); i++) {
+							discount=jsonArray.getJSONObject(i).getString("discount_ratio");
+							store_id=jsonArray.getJSONObject(i).getString("store_id");
+						}
+						Intent intent=new Intent(YouHuiActivity.this,ConfirmOrdersActivity.class);
+						 intent.putExtra("discount_ratio", discount);
+						 intent.putExtra("store_id", store_id);
+						 setResult(1005, intent);
+						 finish();
+						 overridePendingTransition(R.anim.push_right_in,
+								 R.anim.push_right_out);
+						 System.out.println(content.toString());
+					}
+				} else {
+					 Toast.makeText(YouHuiActivity.this, content.toString(), Toast.LENGTH_LONG).show();
+				}
+				}catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
 	}
 
 
