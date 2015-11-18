@@ -40,7 +40,6 @@ public class OrderActivity extends Activity{
         		// TODO Auto-generated method stub
         		super.onPageFinished(view, url);
         		view.setVisibility(View.VISIBLE);
-        		System.out.println("进来了");
                 //dialog.setVisibility(View.GONE);
         	}
         });

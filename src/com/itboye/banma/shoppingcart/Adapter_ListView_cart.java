@@ -49,35 +49,34 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 //	public Adapter_ListView_cart(Context context) {
 //		this.context = context;
 //	}
-	public void onDateChang( ArrayList<HashMap<String, Object>> arrayList) {
+	public void onDataChanged( ArrayList<HashMap<String, Object>> arrayList) {
 		this.arrayList = arrayList;
 		this.notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		Log.v("Count", (String) ((arrayList != null && arrayList.size() == 0) ? 0: arrayList.size()+""));
 		return (arrayList != null && arrayList.size() == 0) ? 0: arrayList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		Log.v("Item", arrayList.get(position)+"");
 		return arrayList.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		Log.v("ItemId", position+"");
 		return  position;
 	}
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(final int position, View currentView, ViewGroup arg2) {
 		HolderView holderView=null;
+		TextView 	currentText=null;
 		if (currentView == null) {
 			holderView = new HolderView();
 			currentView = LayoutInflater.from(context).inflate(R.layout.adapter_listview_cart, null);
+			currentText=(TextView) currentView.findViewById(R.id.tv_name);
 			holderView.tv_name=(TextView)currentView.findViewById(R.id.tv_name);
 			holderView.tv_num = (TextView) currentView.findViewById(R.id.tv_num);
 			holderView.tv_price=(TextView)currentView.findViewById(R.id.tv_price);
@@ -91,26 +90,12 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			currentView.setTag(holderView);
 	} 	else {
 			holderView = (HolderView) currentView.getTag();
+			currentText=(TextView) currentView.findViewById(R.id.tv_name);
 		}
-
 			holderView.tv_num.setText("x" + arrayList.get(position).get("count"));
 			holderView.tv_type_color.setText(arrayList.get(position).get("sku_desc")+"");
 			holderView.tv_price.setText("￥"+arrayList.get(position).get("price"));
 			holderView.tv_name.setText(arrayList.get(position).get("name")+"");	
-			System.out.println(position+":"+arrayList.get(position).get("count").toString());
-			
-//			currentView.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					Intent intent = new Intent(context, BabyActivity.class);
-//					intent.putExtra("PID",Integer.parseInt(arrayList.get(position).get("p_id").toString()));
-//					System.out.println(Integer.parseInt(arrayList.get(position).get("p_id").toString())+"点击跳转");
-//					context.startActivity(intent);
-//					((Activity) context).overridePendingTransition(R.anim.in_from_right,
-//							R.anim.out_to_left);
-//				}
-//			});
-			
 			System.out.println(position+":"+arrayList.get(position).get("icon_url").toString());
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);
@@ -128,7 +113,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 				}
 			});
 			
-			currentView.setOnClickListener(new OnClickListener() {
+			currentText.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {

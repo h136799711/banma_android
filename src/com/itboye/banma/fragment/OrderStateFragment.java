@@ -18,23 +18,26 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.OrderDetailListItem;
+import com.itboye.banma.fragment.CenterFragment.ChangeItemListener;
 import com.itboye.banma.view.PullToRefreshListView;
 import com.itboye.banma.view.PullToRefreshListView.OnRefreshListener;
 
 import android.support.v4.app.Fragment;
 import android.R.integer;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OrderStateFragment extends Fragment implements StrUIDataListener {
+public class OrderStateFragment extends Fragment implements StrUIDataListener ,OnClickListener{
 	private View chatView;
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
@@ -51,6 +54,8 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener {
 	private ListView fresh_list;
 	private OrderListAdapter adapter;
 	private int state;  //区分订单状态:1：代付款 2：代发货  3：待收货  4：待评价
+	private Button goShop;
+	private GoShoppingListener goShoppingListener;
 	
 	public OrderStateFragment(int state){
 		this.state = state;
@@ -114,6 +119,8 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener {
 		}
 		super.onCreateView(inflater, container, savedInstanceState);
 		chatView = inflater.inflate(R.layout.fragment_quanbu, container, false);
+		goShop=(Button)chatView.findViewById(R.id.btn_quguangguang);
+		goShop.setOnClickListener(this);
 		fresh_list = (ListView) chatView.findViewById(R.id.fresh_list);
 		fresh_list.setVisibility(View.GONE);
 		listView = (ListView) chatView.findViewById(R.id.list);
@@ -253,5 +260,29 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener {
 			orderListLayout.setVisibility(View.GONE);
 		}
 	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.btn_quguangguang:
+			goShoppingListener.onChanged(2);
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+	 @Override  
+	    public void onAttach(Activity activity)   
+	    {  
+	        super.onAttach(activity);  
+	        goShoppingListener = (GoShoppingListener) activity;   
+	    }  
+	
+	 public interface GoShoppingListener{  
+	      public void onChanged(int position);  
+	  }  
 
 }
