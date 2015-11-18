@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import com.android.volley.VolleyError;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.HomePageActivity;
-import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
