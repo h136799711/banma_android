@@ -275,7 +275,13 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 			}
 			break;
 		case R.id.confirm:
-			
+	
+			Intent intent = new Intent(OrderDetailActivity.this, ActivityLogistics.class);
+			intent.putExtra("order_code", orderDetail.getOrder_code());
+			startActivity(intent);
+			finish();
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
 			break;
 			
 		case R.id.iv_back:

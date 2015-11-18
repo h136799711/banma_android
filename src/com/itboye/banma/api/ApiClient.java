@@ -448,7 +448,7 @@ public class ApiClient {
 	public static void getLogistics(Context mContext, String order_code,
 			int loginUid, StrVolleyInterface strnetworkHelper) {
 		String access_token=AppContext.getAccess_token();
-		String url = Constant.URL+"/Orders/pay?access_token="+access_token;
+		String url = Constant.URL+"/Orders/express?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("uid",""+loginUid);
 		params.put("order_code",""+order_code);

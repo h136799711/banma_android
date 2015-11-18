@@ -9,13 +9,21 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.itboye.banma.R;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
+import com.itboye.banma.entity.OrderExpress;
 import com.itboye.banma.entity.OrderPayData;
 import com.itboye.banma.payalipay.PayAlipay;
 
@@ -24,6 +32,9 @@ OnClickListener {
 	private AppContext appContext;
 	private StrVolleyInterface strnetworkHelper;
 	private Boolean YesOrNo;
+	private ImageView back;
+	private TextView title;
+	private WebView logistics;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,11 @@ OnClickListener {
 		Intent intent = getIntent();
 		String Order_code = intent.getStringExtra("order_code");
 		getLogistics(Order_code);
+		back = (ImageView) findViewById(R.id.iv_back);
+		title = (TextView) findViewById(R.id.title);
+		logistics = (WebView) findViewById(R.id.logistics);
+		back.setOnClickListener(this);
+		title.setText("物流查询");
 	}
 
 	/**
@@ -70,7 +86,15 @@ OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-
+		switch (v.getId()) {
+		case R.id.iv_back:
+			finish();
+			overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -81,7 +105,8 @@ OnClickListener {
 
 	@Override
 	public void onDataChanged(String data) {
-
+		OrderExpress orderExpress = null;
+		Gson gson = new Gson();
 		JSONObject jsonObject=null;
 		int code = -1;
 		String content = null;
@@ -91,6 +116,22 @@ OnClickListener {
 			code = jsonObject.getInt("code");
 			content = jsonObject.getString("data");
 			if (code == 0) {
+				
+				orderExpress = gson.fromJson(content, OrderExpress.class);
+				String url = "http://m.kuaidi100.com/index_all.html?type="+orderExpress.getExpresscode()+"&postid="+orderExpress.getExpressno();
+				WebSettings ws = logistics.getSettings();  
+		        //是否允许脚本支持  
+		        ws.setJavaScriptEnabled(true);  
+		        ws.setJavaScriptCanOpenWindowsAutomatically(true);  
+		        ws.setSaveFormData(false);  
+		        ws.setSavePassword(false);  
+		        ws.setAppCacheEnabled(true);  
+		        ws.setAppCacheMaxSize(10240);  
+//		      ws.setCacheMode(WebSettings.LOAD_NO_CACHE);  
+		        //是否允许缩放  
+//		      ws.setBuiltInZoomControls(true);  
+		        
+		        conn(url);
 				
 			}
 			else{
@@ -103,8 +144,20 @@ OnClickListener {
 			e1.printStackTrace();
 		}
 
-		Toast.makeText(ActivityLogistics.this, "返回"+data,
-				Toast.LENGTH_LONG).show();
+		/*Toast.makeText(ActivityLogistics.this, "返回"+data,
+				Toast.LENGTH_LONG).show();*/
 	}
-
+    /** 
+     * 访问url 
+     * @param urlStr 
+     */  
+    private void conn(String urlStr){  
+        String url = "";  
+        if(urlStr.contains("http://")){  
+            url = urlStr;  
+        }else{  
+            url = "http://"+urlStr;  
+        }  
+        logistics.loadUrl(url);  
+    } 
 }
