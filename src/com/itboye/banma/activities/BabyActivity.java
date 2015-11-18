@@ -25,8 +25,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
@@ -68,6 +70,8 @@ import com.itboye.banma.view.MyListView;
 import com.itboye.banma.view.BabyPopWindow.OnItemClickListener;
 import com.itboye.banma.view.HackyViewPager;
 import com.itboye.banma.view.SharePopWindow;
+import com.itboye.banma.view.ViewPagerScroller;
+import com.itboye.banma.view.ViewPagerScroller.OnScrollListener;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.analytics.social.UMPlatformData;
 import com.umeng.analytics.social.UMPlatformData.GENDER;
@@ -84,7 +88,7 @@ import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 public class BabyActivity extends FragmentActivity implements
-		OnItemClickListener, OnClickListener, StrUIDataListener {
+		OnItemClickListener, OnClickListener, StrUIDataListener, OnScrollListener {
 
 	NfcAdapter nfcAdapter;
 	private AppContext appContext;
@@ -125,16 +129,20 @@ public class BabyActivity extends FragmentActivity implements
 	private LinearLayout indicatorLayout;
 	private String[] imageList;
 	private ViewPager viewPagerPage;
+	private ViewPagerScroller myScrollView;
+	private LinearLayout all_top;
 	private WebView detail_image;
 	private List<Sku_info> sku_info; // 商品类型参数
 	private int requestState = 0;// 判断哪个请求返回的结果 1表示加入购物车请求
 	private int pid;  //商品ID
     UMSocialService mController;
+    /** 
+     * myScrollView与其父类布局的顶部距离 
+     */  
+    private int myScrollViewTop; 
     //微信
 	String appID = "wx0d259d7e9716d3dd";
 	String appSecret = "94124fb74284c8dae6f188c7e269a5a0";
-
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -235,6 +243,11 @@ public class BabyActivity extends FragmentActivity implements
 
 	@SuppressLint("NewApi")
 	private void initView() {
+		myScrollView = (ViewPagerScroller) findViewById(R.id.myScrollView);
+		myScrollView.setOnScrollListener(this);
+		all_top = (LinearLayout) findViewById(R.id.all_top);
+		all_top.setBackgroundDrawable(getResources().getDrawable(R.drawable.top)); 
+    	all_top.getBackground().setAlpha(0);//0~255透明度值
 		baby_detail = (LinearLayout) findViewById(R.id.baby_detail);
 		button_lay = (LinearLayout) findViewById(R.id.button_lay);
 		// 旋转等待页
@@ -705,10 +718,27 @@ public class BabyActivity extends FragmentActivity implements
 			detail_image.loadDataWithBaseURL("about:blank", htmlString, "text/html", "utf-8", null);
 			//detail_image.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 			WebSettings webSettings = detail_image.getSettings();  
-			webSettings.setUseWideViewPort(true);  //任意比例缩放
-			webSettings.setLoadWithOverviewMode(true); 
+			webSettings.setUseWideViewPort(false);  //任意比例缩放
+			webSettings.setLoadWithOverviewMode(false); 
 			webSettings.setBuiltInZoomControls(false); // 设置显示缩放按钮  
 			webSettings.setSupportZoom(false); // 支持缩放  
+			//myScrollView.requestDisallowInterceptTouchEvent(false); 
+			/*detail_image.setOnTouchListener(new OnTouchListener() {
+
+			      @Override
+			      public boolean onTouch(View v, MotionEvent event) {
+			        // TODO Auto-generated method stub
+			        if (event.getAction() == MotionEvent.ACTION_UP) 
+			        	myScrollView.requestDisallowInterceptTouchEvent(true); 
+			              else  
+			            	  myScrollView.requestDisallowInterceptTouchEvent(false);
+
+			              return false; 
+			      }
+
+
+			      });
+			*/
 			
 		}else{
 			detail_image.setVisibility(View.GONE);
@@ -748,6 +778,37 @@ public class BabyActivity extends FragmentActivity implements
 	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
 	    }
 	}
+
+	/** 
+     * 窗口有焦点的时候，即所有的布局绘制完毕的时候，我们来获取购买布局的高度和myScrollView距离父类布局的顶部位置 
+     */  
+    @Override    
+    public void onWindowFocusChanged(boolean hasFocus) {    
+        super.onWindowFocusChanged(hasFocus);    
+        if(hasFocus){  
+            
+            myScrollViewTop = myScrollView.getTop();  
+            System.out.println("myScrollViewTop="+myScrollViewTop);
+        }  
+    }  
+    /** 
+     * 滚动的回调方法，当滚动的Y距离大于或者等于 购买布局距离父类布局顶部的位置，就显示购买的悬浮框 
+     * 当滚动的Y的距离小于 购买布局距离父类布局顶部的位置加上购买布局的高度就移除购买的悬浮框 
+     *  
+     */  
+    @Override  
+    public void onScroll(int scrollY) {  
+    	System.out.println("scrollY="+scrollY);
+        if(scrollY < 150){  
+        	all_top.getBackground().setAlpha(0);
+        }else if(scrollY >= 150 && scrollY <= 650){  
+        	all_top.getBackground().setAlpha((scrollY - 150)/2);//0~255透明度值  
+        } else if(scrollY > 650){
+        	all_top.getBackground().setAlpha(255);//0~255透明度值
+        	
+        }
+    }  
+	
 
 
 }

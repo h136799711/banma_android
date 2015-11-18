@@ -51,6 +51,7 @@
             android:orientation="vertical" >
 
             <com.itboye.banma.view.ViewPagerScroller
+                android:id="@+id/myScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
