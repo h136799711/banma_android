@@ -13,19 +13,18 @@
         android:paddingRight="5dip"
         android:orientation="horizontal" >
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_back"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:padding="5dp"
             android:layout_centerVertical="true"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="5dp"
-            android:paddingTop="5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/top_bar_back" />
-
+            android:background="@drawable/top_bar_back"
+            android:src="@null"/>
+        
+       
         <ImageButton
             android:id="@+id/more"
             android:layout_width="30dp"

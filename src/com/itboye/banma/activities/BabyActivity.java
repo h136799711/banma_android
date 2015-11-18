@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.drawable;
 import android.R.integer;
 import android.R.string;
 import android.annotation.SuppressLint;
@@ -258,6 +259,8 @@ public class BabyActivity extends FragmentActivity implements
 		ib_more.setOnClickListener(this);
 		ib_more.setVisibility(View.VISIBLE);
 
+		((ImageView) findViewById(R.id.iv_back)).setBackgroundDrawable(getResources().getDrawable(R.drawable.top_babydetail_back));
+		//((ImageView) findViewById(R.id.iv_back)).setImageResource(R.drawable.top_babydetail_back);
 		((ImageView) findViewById(R.id.iv_back)).setOnClickListener(this);
 		put_in = (Button) findViewById(R.id.put_in);
 		put_in.setOnClickListener(this);
