@@ -79,6 +79,8 @@ import com.umeng.analytics.social.UMPlatformData.UMedia;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.QQShareContent;
+import com.umeng.socialize.media.QZoneShareContent;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 //import com.umeng.socialize.sso.SinaSsoHandler;
@@ -86,6 +88,8 @@ import com.umeng.socialize.sso.TencentWBSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 public class BabyActivity extends FragmentActivity implements
 		OnItemClickListener, OnClickListener, StrUIDataListener, OnScrollListener {
@@ -136,6 +140,7 @@ public class BabyActivity extends FragmentActivity implements
 	private int requestState = 0;// 判断哪个请求返回的结果 1表示加入购物车请求
 	private int pid;  //商品ID
     UMSocialService mController;
+    public String urlShare="http://banma.itboye.com/index.php/Home/Share/index";
     /** 
      * myScrollView与其父类布局的顶部距离 
      */  
@@ -353,42 +358,77 @@ public class BabyActivity extends FragmentActivity implements
 			setBackgroundBlack(all_choice_layout, 0);
 			popWindow.showAsDropDown(view);
 			break;
-		//点击分享
+
 		case R.id.share:
-//			sharePopWindow.showAsDropDown(view, all_choice_layout);
-//			setBackgroundBlack(all_choice_layout, 0);
-			// 是否只有已登录用户才能打开分享选择页
-
-
-		     // 首先在您的Activity中添加如下成员变量
-				 mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-				 
-
-					//设置腾讯微博SSO handler
-					mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
-					
-			    	mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
-			    	
-			    	mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
-			    	
-				// 设置分享内容
-				mController.setShareContent("斑马海外购，http://banma.itboye.com/index.php/Home/Share/index");
-				// 设置分享图片, 参数2为图片的url地址
-				mController.setShareMedia(new UMImage(this, 
-				                                     productDetail.getMain_img()));
-	        mController.openShare(BabyActivity.this, false);
-	        
-	        UMPlatformData platform = new UMPlatformData(UMedia.SINA_WEIBO, "user_id"); 
-	        platform.setGender(GENDER.MALE); //optional   
-	        platform.setWeiboId("weiboId");  //optional   
-	        MobclickAgent.onSocialEvent(this, platform);
-	        
-	        UMPlatformData platform1 = new UMPlatformData(UMedia.TENCENT_QQ, "user_id"); 
-	        platform1.setGender(GENDER.MALE); //optional   
-	        MobclickAgent.onSocialEvent(this, platform);
-	        
+			umengShare();
 			break;
 		}
+	}
+
+	private void umengShare() {
+
+			 // 首先在您的Activity中添加如下成员变量
+				mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+
+				//设置腾讯微博SSO handler
+				mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+				
+		    	mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
+		    	
+		    	mController.getConfig().removePlatform( SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN);
+		   
+		    	//设置微信好友分享内容
+		    	WeiXinShareContent weixinContent = new WeiXinShareContent();
+		    	//设置分享文字
+		    	weixinContent.setShareContent(productDetail.getName());
+		    	//设置title
+		    	weixinContent.setTitle("斑马海外购");
+		    	//设置分享内容跳转URL
+		    	weixinContent.setTargetUrl(urlShare);
+		    	//设置分享图片
+		    	weixinContent.setShareImage(new UMImage(this, 
+	                   productDetail.getMain_img()));
+		    	System.out.println(productDetail.getDetail()+urlShare+new UMImage(this, 
+		                   productDetail.getMain_img()));
+		    	mController.setShareMedia(weixinContent);			
+		    
+	   
+		    	
+		    	//设置微信朋友圈分享内容
+		    	CircleShareContent circleMedia = new CircleShareContent();
+		    	circleMedia.setShareContent(productDetail.getName());
+		    	//设置朋友圈title
+		    	circleMedia.setTitle("斑马海外购");
+		    	circleMedia.setShareImage(new UMImage(this, 
+		                   productDetail.getMain_img()));
+		    	circleMedia.setTargetUrl(urlShare);
+		    	mController.setShareMedia(circleMedia);
+		    	
+		    	QQShareContent qqShareContent = new QQShareContent();
+		    	//设置分享文字
+		    	qqShareContent.setShareContent(productDetail.getName());
+		    	//设置分享title
+		    	qqShareContent.setTitle("斑马海外购");
+		    	//设置分享图片
+		    	qqShareContent.setShareImage(new UMImage(this, 
+		                   productDetail.getMain_img()));
+		    	//设置点击分享内容的跳转链接
+		    	qqShareContent.setTargetUrl(urlShare);
+		    	mController.setShareMedia(qqShareContent);
+		    	
+		    	QZoneShareContent qzone = new QZoneShareContent();
+		    	//设置分享文字
+		    	qzone.setShareContent(productDetail.getName());
+		    	//设置点击消息的跳转URL
+		    	qzone.setTargetUrl(urlShare);
+		    	//设置分享内容的标题
+		    	qzone.setTitle("斑马海外购");
+		    	//设置分享图片
+		    	qzone.setShareImage(new UMImage(this, 
+		                   productDetail.getMain_img()));
+		    	mController.setShareMedia(qzone);
+		    	
+		    	mController.openShare(BabyActivity.this, false);
 	}
 
 	private void initViewPager() {

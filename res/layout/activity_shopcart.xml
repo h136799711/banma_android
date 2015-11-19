@@ -43,13 +43,22 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_18" />
 
+         <TextView
+             android:id="@+id/tv_count"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_toRightOf="@+id/title"
+             android:layout_centerVertical="true"
+             android:text=""
+             android:textColor="@color/white"
+             android:textSize="@dimen/text_size_18" />
+
     </RelativeLayout>
-    
+
+ <include layout="@layout/cart_all_f" />
  
 	<View android:layout_width="fill_parent"
 	    android:layout_height="1dp"
 	    android:background="@color/lightgray"/>
-
-	<include layout="@layout/cart_all_f" />
 
 </LinearLayout>

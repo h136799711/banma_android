@@ -1,5 +1,7 @@
 package com.itboye.banma.fragment;
 
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +9,8 @@ import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.support.v4.app.Fragment;
@@ -22,9 +26,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.android.volley.toolbox.ImageRequest;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.LoginActivity;
@@ -37,6 +43,7 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.util.CircleImg;
+import com.itboye.banma.util.FileUtil;
 import com.itboye.banma.utils.BitmapCache;
 
 public class CenterFragment extends Fragment implements OnClickListener{
@@ -184,20 +191,30 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		if (requestCode==100) {
 			if (data!=null) {
 				if (appContext.isLogin()) {
-					ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-							new BitmapCache());
-							AppContext.setHasHead(true);
-					try {
-						ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
-						  imageLoader.get(data.getStringExtra("headurl"), listener);
-						     tvPersonnamefail.setText(data.getStringExtra("nickname"));
-						}catch (Exception e) {
-						// TODO: handle exception
-								e.printStackTrace();
-					}		
-				}else {
-					ivPersonheadFail.setImageResource(R.drawable.person_head);
-					tvPersonnamefail.setText("登陆/注册");
+					//保存bitmap图片到本地
+					AppContext.setHasHead(true);
+					ImageRequest imageRequest = new ImageRequest(  
+							data.getStringExtra("headurl"),  
+					        new Response.Listener<Bitmap>() {  
+					            @Override  
+					            public void onResponse(Bitmap response) {  
+					                ivPersonheadFail.setImageBitmap(response);  
+					                try {
+										AppContext.setHeadurl(FileUtil.saveFile(getActivity().getApplicationContext(), 
+												getActivity().getApplicationContext().getFilesDir().getCanonicalPath(),
+												Constant.IMAGE_FILE_NAME, response));
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+					            }  
+					        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+					            @Override  
+					            public void onErrorResponse(VolleyError error) {  
+					                ivPersonheadFail.setImageResource(R.drawable.person_head);  
+					            }  
+					        });  
+					AppContext.queues.add(imageRequest);  
 				}
     		}
     	}
@@ -208,17 +225,41 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		super.onResume();
 		if (appContext.isLogin()==true) {
 			if (AppContext.hasHead==true) {
-				ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-						new BitmapCache());
 				try {
-					ImageListener listener = ImageLoader.getImageListener(ivPersonheadFail,R.drawable.person_head, R.drawable.person_head);  
-					  imageLoader.get(AppContext.getHeadurl(), listener);
-					}catch (Exception e) {
+					ivPersonheadFail.setImageBitmap(FileUtil.getLoacalBitmap(AppContext.getHeadurl()));
+				} catch (Exception e) {
 					// TODO: handle exception
-							e.printStackTrace();
-				}	
+					e.printStackTrace();
+				}
+			}else {
+
+				//保存bitmap图片到本地
+				AppContext.setHasHead(true);
+				ImageRequest imageRequest = new ImageRequest(  
+						AppContext.getHeadurl(),  
+				        new Response.Listener<Bitmap>() {  
+				            @Override  
+				            public void onResponse(Bitmap response) {  
+				                ivPersonheadFail.setImageBitmap(response);  
+				                try {
+									AppContext.setHeadurl(FileUtil.saveFile(getActivity().getApplicationContext(), 
+											getActivity().getApplicationContext().getFilesDir().getCanonicalPath(),
+											Constant.IMAGE_FILE_NAME, response));
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+				            }  
+				        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+				            @Override  
+				            public void onErrorResponse(VolleyError error) {  
+				                ivPersonheadFail.setImageResource(R.drawable.person_head);  
+				            }  
+				        });  
+				AppContext.queues.add(imageRequest);  
+			
 			}
-			   tvPersonnamefail.setText(AppContext.getNickname());
+		   tvPersonnamefail.setText(AppContext.getNickname());
 		
 		}else {
 			ivPersonheadFail.setImageResource(R.drawable.person_head);

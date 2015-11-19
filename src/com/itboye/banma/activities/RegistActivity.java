@@ -149,7 +149,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 			else
 			{
 				Flags=1;
-				ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), checkcode, "1", " ", networkHelper);
+				ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), edCheckCode.getText().toString(), "1", " ", networkHelper);
 			}
 		}
 	};
@@ -200,6 +200,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 		int code = -1 ;
 		try {
 			jsonObject=new JSONObject(data);
+			System.out.println(data+"pppppppppppppppppppppppppppppp");
 			checkcode=jsonObject.getString("data");
 			code=jsonObject.getInt("code");
 		} catch (JSONException e1) {
@@ -215,12 +216,12 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 				startActivity(nextIntent);
 			}else {
 			//	edCheckCode.setText(checkcode);
-				Toast.makeText(this, "请输入验证码:"+checkcode, Toast.LENGTH_LONG).show();
+				Toast.makeText(this, checkcode, Toast.LENGTH_LONG).show();
 				MyCountTimer myCountTimer=new MyCountTimer(btnGetCheckCode, 0xfff30008, 0xff969696);
 				myCountTimer.start();
 			}
 		} else {
-			Toast.makeText(RegistActivity.this, "验证码失败：" +checkcode, Toast.LENGTH_LONG)
+			Toast.makeText(RegistActivity.this, checkcode, Toast.LENGTH_LONG)
 			.show();
 		}
 	}

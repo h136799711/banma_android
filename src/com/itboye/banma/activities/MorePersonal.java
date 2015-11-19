@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -57,6 +58,7 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.util.ChoosePictureDialog;
 import com.itboye.banma.util.CircleImg;
+import com.itboye.banma.util.FileUtil;
 import com.itboye.banma.util.NetUtil;
 import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.welcome.WelcomeActivity;
@@ -107,9 +109,8 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	
 	/* 头像名称 */
 	 private static ProgressDialog pd;// 等待进度圈
-     private String imgUrl = "";
-	 private static final String IMAGE_FILE_NAME = "head.jpg";// 头像文件名称
-	 private String urlpath;			// 图片本地路径
+     private String imgUrl = "";//头像上传地址
+	 private String urlpath="";			// 图片本地路径
 	 private String resultStr = "";	// 服务端返回结果集
 	private static final String PHOTO_FILE_NAME = "image.jpg";
 	private File tempFile;
@@ -426,8 +427,11 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 				if (data!=null) {
 					bitmap=	 data.getParcelableExtra("data");
 					//讲bitmap保存到指定文件中
-			    	saveHeadImage(bitmap);
-				 //  tempFile.delete();
+					urlpath=FileUtil.saveFile(getApplicationContext(), getApplicationContext().getFilesDir().getCanonicalPath(),
+							Constant.IMAGE_FILE_NAME, bitmap);
+					AppContext.setHeadurl(urlpath);
+			   // 	saveHeadImage(bitmap);
+				//   tempFile.delete();
 				 //上传文件中的文件
 					// 新线程后台上传服务端
 					pd = ProgressDialog.show(this, null, "正在上传图片，请稍候...");
@@ -531,12 +535,22 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 						// 服务端以字符串“1”作为操作成功标记
 					    //暂时这里先使用缓存来存放图片地址，因为登陆时服务器并没有返回图片地址			    	
 							ivHead.setImageBitmap(bitmap);
-							AppContext.setHeadurl(data.getString("imgurl"));
+						   urlpath=	FileUtil.saveFile(getApplicationContext(), getApplicationContext().getFilesDir().getCanonicalPath(),
+								   Constant.IMAGE_FILE_NAME, bitmap);
+							//AppContext.setHeadurl(urlpath);
+							System.out.println("头像地址"+urlpath);
 							AppContext.setHasHead(true);
-							System.out.println(jsonObject.toString());
+							//System.out.println(jsonObject.toString());
 							Toast.makeText(MorePersonal.this, "头像上传成功", Toast.LENGTH_SHORT).show();			
 					}
+					else {
+						//上传失败
+						urlpath="";
+					}
 				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -549,36 +563,6 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		}
 	});
 	
-	private void saveHeadImage(Bitmap bitmap) {
-		// TODO Auto-generated method stub
-		File file=new File(Environment.getExternalStorageDirectory(),"image.png");
-		FileOutputStream out=null;
-		try {
-			out=new FileOutputStream(file);
-			bitmap.compress(CompressFormat.PNG, 100, out);
-			out.close();
-			urlpath=file.getAbsolutePath();
-		//	AppContext.setPathHeadImage(urlpath);
-			System.out.println(file.getAbsolutePath());
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-
-	
-	
-	public static Bitmap getLoacalBitmap(String url) {
-        try {
-             FileInputStream fis = new FileInputStream(url);
-             return BitmapFactory.decodeStream(fis);  ///把流转化为Bitmap图片        
-
-          } catch (FileNotFoundException e) {
-             e.printStackTrace();
-             return null;
-        }
-	}
-
 	/**
 	 * 剪切图片
 	 */
@@ -653,7 +637,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		String phoneNumber=null;
 		String weiXin=null;
 		String renZheng=null;
-		String imageUrl=null;
+	//	String imageUrl=null;
 		try {
 			FLAG=0;
 			jsonObject = new JSONObject(data);
@@ -675,12 +659,13 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 				if (appContext.isLogin()) {
 					tvUserName.setText(nickname);
 					if (appContext.isLogin()) {
-						ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-								new BitmapCache());
+//						ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+//								new BitmapCache());
 						try {
 						       ivHead.setErrorImageResId(R.drawable.person_head); // 加载失败显示的图片
-								ivHead.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
-								ivHead.setImageUrl(AppContext.getHeadurl(), imageLoader);
+//								ivHead.setImageUrl(sp.getString(Constant.MY_HEAD_URL, ""), imageLoader);
+//								ivHead.setImageUrl(AppContext.getHeadurl(), imageLoader);
+						       ivHead.setImageBitmap(FileUtil.getLoacalBitmap(AppContext.getHeadurl()));
 							//	System.out.println(AppContext.getPathHeadImage());;
 								ivHead.setOnClickListener(this);
 								AppContext.setHasHead(true);

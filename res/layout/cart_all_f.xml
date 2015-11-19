@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@color/main_layout"
                 android:orientation="vertical" >             
      <LinearLayout 
@@ -223,18 +223,18 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:paddingRight="10dp"
-                    android:text="合计(含运费)：￥0.0"
+                    android:text="合计￥0.0"
                     android:textColor="@color/red" />
 
                 <TextView
                     android:layout_gravity="center_vertical"
                     android:id="@+id/tv_cart_buy_or_del"
                     android:layout_width="80dp"
-                    android:layout_height="40dp"
+                    android:layout_height="43dp"
                     android:gravity="center"
                     android:background="@color/red"
                     android:padding="10dp"
-                    android:text="结算(0)"
+                    android:text="结算"
                     android:textColor="@color/white" />
             </LinearLayout>
           </LinearLayout>
