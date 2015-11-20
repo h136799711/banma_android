@@ -454,4 +454,11 @@ public class ApiClient {
 		params.put("order_code",""+order_code);
 		VolleyRequest.StrRequestPost(mContext, url, "getLogistics",params, strnetworkHelper);
 	}
+	public static void getCartById(Context mContext, int id, StrVolleyInterface strnetworkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/ShoppingCart/getInfo?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("id",""+id);
+		VolleyRequest.StrRequestPost(mContext, url, "getCartById",params, strnetworkHelper);
+	}
 }

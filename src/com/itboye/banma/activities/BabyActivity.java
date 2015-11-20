@@ -12,6 +12,7 @@ import android.R.integer;
 import android.R.string;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.nfc.NfcAdapter;
@@ -94,6 +95,9 @@ import com.umeng.socialize.weixin.media.WeiXinShareContent;
 public class BabyActivity extends FragmentActivity implements
 		OnItemClickListener, OnClickListener, StrUIDataListener, OnScrollListener {
 
+	private static int BUY_ADDCART = 5;  //购买时添加购物车标志
+	private static int BUY_CART_ID = 6; //购物车单个查询接口标志
+	
 	NfcAdapter nfcAdapter;
 	private AppContext appContext;
 	private Boolean YesOrNo; // 是否连接网络
@@ -140,6 +144,7 @@ public class BabyActivity extends FragmentActivity implements
 	private int requestState = 0;// 判断哪个请求返回的结果 1表示加入购物车请求
 	private int pid;  //商品ID
     UMSocialService mController;
+    private ProgressDialog dialog;
     public String urlShare="http://banma.itboye.com/index.php/Home/Share/index";
     /** 
      * myScrollView与其父类布局的顶部距离 
@@ -208,7 +213,7 @@ public class BabyActivity extends FragmentActivity implements
 	 * 加载数据
 	 */
 	private void iniData() {
-		
+		dialog = new ProgressDialog(BabyActivity.this);
 		Intent intent = getIntent();
 		pid = intent.getIntExtra("PID", 21);
 		
@@ -549,39 +554,10 @@ public class BabyActivity extends FragmentActivity implements
 		setBackgroundBlack(all_choice_layout, 1);
 		if (isClickBuy) {
 			if (appContext.isLogin()) {
-				int hasSku = Integer.parseInt(productDetail.getHas_sku());
-				if(hasSku == 1){
-					// 跳转到订单确认页面
-					skuStandard.setIcon_url(productDetail.getMain_img());
-					List<SkuStandard> list = new ArrayList<SkuStandard>();
-					list.add(skuStandard);
+				requestState = BUY_ADDCART;
+				addCart(skuStandard);
+				
 
-					Intent intent = new Intent(BabyActivity.this,
-							ConfirmOrdersActivity.class);
-					intent.putExtra("SkuStandardList", (Serializable)list);
-					/*intent.putExtra("state", 0);*/
-
-					startActivity(intent);
-					finish();
-					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-				}else if(hasSku == 0){
-					skuStandard.setOri_price(productDetail.getOri_price());
-					skuStandard.setPrice(productDetail.getPrice());
-					skuStandard.setQuantity(productDetail.getQuantity());
-					skuStandard.setProduct_id(productDetail.getId()+"");
-					// 跳转到订单确认页面
-					skuStandard.setIcon_url(productDetail.getMain_img());
-					List<SkuStandard> list = new ArrayList<SkuStandard>();
-					list.add(skuStandard);
-
-					Intent intent = new Intent(BabyActivity.this,
-							ConfirmOrdersActivity.class);
-					intent.putExtra("SkuStandardList", (Serializable)list);
-
-					startActivity(intent);
-					finish();
-					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-				}
 			}else{
 				Intent intent = new Intent(BabyActivity.this,
 						LoginActivity.class);
@@ -600,16 +576,7 @@ public class BabyActivity extends FragmentActivity implements
 			if (appContext.isLogin()) {
 
 				requestState = 1;
-				ApiClient.addCart(BabyActivity.this, appContext.getLoginUid()
-						+ "", productDetail.getStore_id() + "",
-						productDetail.getId() + "", skuStandard.getSku_id()
-						+ "", skuStandard.getSku(),
-						//	skuStandard.getIcon_url(),
-						productDetail.getMain_img(),
-						skuStandard.getNum(), productDetail.getName(),
-						"0", productDetail.getPrice()
-						+ "", productDetail.getOri_price() + "",
-						skuStandard.getId() + "", productDetail.getWeight(), "0", strnetworkHelper);
+				addCart(skuStandard);
 			}else {
 				Intent intent = new Intent(BabyActivity.this,
 						LoginActivity.class);
@@ -617,6 +584,51 @@ public class BabyActivity extends FragmentActivity implements
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 
+		}
+	}
+	
+	/**
+	 * 添加购物车
+	 * @param skuStandard
+	 */
+	public void addCart(SkuStandard skuStandard){
+		if (popWindow.isOrNot()) {
+			popWindow.dissmiss();
+		}
+		dialog.setMessage("请稍等...");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.show();
+		int hasSku = Integer.parseInt(productDetail.getHas_sku());
+		if(hasSku == 1){
+			// 相应规格里面有数据
+			skuStandard.setIcon_url(productDetail.getMain_img());
+		}else if(hasSku == 0){
+			//规格里面 没有数据，先初始化加入数据
+			skuStandard.setOri_price(productDetail.getOri_price());
+			skuStandard.setPrice(productDetail.getPrice());
+			skuStandard.setQuantity(productDetail.getQuantity());
+			skuStandard.setProduct_id(productDetail.getId()+"");
+			skuStandard.setIcon_url(productDetail.getMain_img());
+		}
+		
+		try {
+			Boolean stateBoolean = appContext.addCart(BabyActivity.this, appContext.getLoginUid()
+					+ "", productDetail.getStore_id() + "",
+					productDetail.getId() + "", skuStandard.getSku_id()
+					+ "", skuStandard.getSku(), skuStandard.getIcon_url(),
+					skuStandard.getNum(), productDetail.getName(),
+					"0", skuStandard.getPrice()
+					+ "", skuStandard.getOri_price() + "",
+					skuStandard.getId() + "", productDetail.getWeight(), "0", strnetworkHelper);
+			if (stateBoolean == false) {
+				//dialog.dismiss();
+				Toast.makeText(BabyActivity.this, "请检查网络连接",
+						Toast.LENGTH_LONG).show();
+				dialog.dismiss();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			dialog.dismiss();
 		}
 	}
 
@@ -648,6 +660,7 @@ public class BabyActivity extends FragmentActivity implements
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
+		dialog.dismiss();
 		Toast.makeText(BabyActivity.this, "网络异常" + error, Toast.LENGTH_SHORT).show();
 //		.show();
 //       Log.e("LOGIN-ERROR", error.getMessage(), error);
@@ -659,12 +672,14 @@ public class BabyActivity extends FragmentActivity implements
 			loading_ll.setVisibility(View.GONE);
 			baby_detail.setVisibility(View.GONE);
 			button_lay.setVisibility(View.GONE);
-		}	
+		}
+		requestState = 0;
 	}
 
 	@Override
 	public void onDataChanged(String data) {
 		if (requestState == 1) {
+			dialog.dismiss();
 			int code1 = -1;
 			requestState = 0;
 			try {
@@ -684,7 +699,80 @@ public class BabyActivity extends FragmentActivity implements
 				e.printStackTrace();
 				Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
 			}
-		} else {
+		}else if (requestState == BUY_ADDCART) {  //购买时 先添加购物车
+			int code1 = -1;
+			requestState = 0;
+			try {
+				JSONObject jsonObject = new JSONObject(data);
+				System.out.println(data.toString() + "成功了");
+				code1 = jsonObject.getInt("code");
+				if (code1 == 0) {
+					//cartId为购物车ID
+					int cartId = jsonObject.getInt("data");
+					requestState = BUY_CART_ID;
+					 appContext.getCartById(BabyActivity.this, cartId, strnetworkHelper);
+				}
+				else {
+					Toast.makeText(this, "服务器异常，请稍后再试", Toast.LENGTH_SHORT).show();
+					dialog.dismiss();
+				}
+					
+			} catch (Exception e) {
+				// TODO: handle exception
+				requestState = 0;
+				e.printStackTrace();
+				Toast.makeText(this, "服务器异常，请稍后再试", Toast.LENGTH_SHORT).show();
+				dialog.dismiss();
+			}
+		}else if (requestState == BUY_CART_ID) {  //得到购物车ID 跳转到订单确认页面
+			dialog.dismiss();
+			int code1 = -1;
+			requestState = 0;
+			try {
+				JSONObject jsonObject = new JSONObject(data);
+				code1 = jsonObject.getInt("code");
+				if (code1 == 0) {
+					//cartId为购物车ID
+					String cartData = jsonObject.getString("data");
+					JSONObject cartData_jsonObject = new JSONObject(cartData); 
+					
+					// 跳转到订单确认页面
+					//
+					SkuStandard skuStandard = new SkuStandard();
+					skuStandard.setId(cartData_jsonObject.getInt("id"));
+					skuStandard.setSku_id(cartData_jsonObject.getString("sku_id"));
+					skuStandard.setOri_price(cartData_jsonObject.getDouble("ori_price"));
+					skuStandard.setPrice(cartData_jsonObject.getDouble("price"));
+					skuStandard.setProduct_id(cartData_jsonObject.getString("p_id"));
+					skuStandard.setSku(cartData_jsonObject.getString("sku_desc"));
+					skuStandard.setName(cartData_jsonObject.getString("name"));
+					skuStandard.setNum(cartData_jsonObject.getString("count"));
+					skuStandard.setIcon_url(appContext.getImg()+cartData_jsonObject.getString("icon_url"));
+					List<SkuStandard> list = new ArrayList<SkuStandard>();
+					list.add(skuStandard);
+
+					Intent intent = new Intent(BabyActivity.this,
+							ConfirmOrdersActivity.class);
+					intent.putExtra("SkuStandardList", (Serializable)list);
+
+					startActivity(intent);
+					finish();
+					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+					
+				}
+				else {
+					Toast.makeText(this, "服务器异常，请稍后再试", Toast.LENGTH_SHORT).show();
+				}
+					
+			} catch (Exception e) {
+				// TODO: handle exception
+				requestState = 0;
+				e.printStackTrace();
+				Toast.makeText(this, "服务器异常，请稍后再试", Toast.LENGTH_SHORT).show();
+			}
+		}
+		
+		else {
 			Gson gson = new Gson();
 			int code = -1;
 			String detail = null;

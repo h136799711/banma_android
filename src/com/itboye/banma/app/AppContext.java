@@ -491,5 +491,40 @@ public class AppContext extends Application {
 		}	
 	}
 
+	//购物车添加
+	public Boolean addCart(Context context,String uid,String  store_id, String p_id,
+			String sku_id,String sku_desc,String icon_url,String count,String name,String express,
+			String price ,String ori_price,String psku_id, Double weight, String taxrate, StrVolleyInterface networkHelper) throws Exception{
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.addCart(context, uid, store_id,  p_id, sku_id, sku_desc, icon_url, count, name, express,
+						 price , ori_price, psku_id,  weight,  taxrate,  networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	/**
+	 * 购物车单个查询接口
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean getCartById(Context mContext, int id, StrVolleyInterface networkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.getCartById(mContext, id, networkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
 	
 }
