@@ -42,6 +42,7 @@ public class WXEntryActivity extends Activity  implements IWXAPIEventHandler{
 	private void handleIntent(Intent paramIntent) {
 		api = WXAPIFactory.createWXAPI(this,Constant.APP_ID, true);  
 		api.handleIntent(paramIntent, this);
+		
 		}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class WXEntryActivity extends Activity  implements IWXAPIEventHandler{
 		appContext = (AppContext) getApplication();
 		networkHelper = new StrVolleyInterface(this);
 		sp = getSharedPreferences(Constant.MY_PREFERENCES, 0);
-	//	networkHelper.setStrUIDataListener(this);
+		
 	}
 	
 	protected void onNewIntent(Intent intent) {
@@ -60,6 +61,7 @@ public class WXEntryActivity extends Activity  implements IWXAPIEventHandler{
 		super.onNewIntent(intent);
 		setIntent(intent);
 		handleIntent(intent);
+		
 		}
 
 	@Override
@@ -75,17 +77,6 @@ public class WXEntryActivity extends Activity  implements IWXAPIEventHandler{
 		case BaseResp.ErrCode.ERR_OK:
 			Toast.makeText(context, "授权成功", Toast.LENGTH_LONG).show();
 			 String code=((SendAuth.Resp)resp).code;
-		//	 System.out.println(code+"code");
-//			  SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
-//		        //使用Editor接口修改SharedPreferences中的值并提交。  
-//		     //   Editor editor = sp.edit();  
-//		    //    editor.putString(Constant.WEIXIN_CODE, code);
-//		     //   editor.commit();
-////		       System.out.println(code+"code");
-//		//	 ApiClient.wxLogin(WXEntryActivity.this, code, networkHelper);
-//		       Editor edit = sp.edit();
-//		       edit.putBoolean("iscode", true);
-//		       edit.commit();
 		       AppContext.setCode(code);
 			  System.out.println( AppContext.getCode()+"code1");
 			  
@@ -98,60 +89,5 @@ public class WXEntryActivity extends Activity  implements IWXAPIEventHandler{
 			break;
 		}
 		  finish();
-		}
-/*	@Override
-	public void onErrorHappened(VolleyError error) {
-		// TODO Auto-generated method stub
-		appContext.setLogin(false);
-		Toast.makeText(WXEntryActivity.this, "登陆发生异常", Toast.LENGTH_LONG).show();
-	}
-	@Override
-	public void onDataChanged(String data) {
-		// TODO Auto-generated method stub
-		JSONObject jsonObject=null;
-		int code = -1;
-		String content = null;
-		try {
-			jsonObject = new JSONObject(data);
-			code = jsonObject.getInt("code");
-			content = jsonObject.getString("data");
-		} catch (JSONException e1) {
-			e1.printStackTrace();
-		}
-		if (code == 0) {
-			//String userId=jsonObject.getString("data");
-			//System.out.println("code=" + data.toString());
-			User user = gson.fromJson(content, User.class);
-			appContext.setLogin(true);
-			appContext.setLoginUid(user.getId());
-			appContext.setPassword(user.getPassword());
-			AppContext.setHeadurl(user.getHead());
-			AppContext.setNickname(user.getNickname());
-			System.out.println(appContext.getPassword());
-			Log.v("用户id", user.getId()+"");
-//		    String use = etName.getText().toString();   
-//		    String pas = etPassword.getText().toString(); 
-	        SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
-	        //使用Editor接口修改SharedPreferences中的值并提交。  
-	        Editor editor = sp.edit();  
-	        editor.putString(Constant.MY_ACCOUNT, user.getUsername());  
-	        editor.putString(Constant.MY_PASSWORD,user.getPassword());  
-	        editor.putBoolean(Constant.IS_LOGIN, true);
-	        editor.commit();
-//	        Intent  intent=getIntent();
-//	        intent.putExtra("nickname", user.getNickname());
-//	        intent.putExtra("headurl", user.getHead());
-//	        setResult(100, intent);
-//	        sp.getString(Constant.MY_ACCOUNT, "");
-	        System.out.println(data.toString());
-	        finish();
-	        startActivity(new Intent(WXEntryActivity.this,CenterFragment.class));
-	        overridePendingTransition(R.anim.push_right_in,
-					R.anim.push_right_out);
-		} else {
-			appContext.setLogin(false);
-			System.out.println("code=" + content.toString());
-		}
-	}*/
-		
+		}	
 }

@@ -1,5 +1,7 @@
 package com.itboye.banma.activities;
 
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,6 +13,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,7 +28,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.google.gson.Gson;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.RegistActivity.CloseReceiver;
@@ -34,6 +40,7 @@ import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
+import com.itboye.banma.util.FileUtil;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -250,7 +257,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			appContext.setPassword(user.getPassword());
 			AppContext.setHeadurl(user.getHead());
 			AppContext.setNickname(user.getNickname());
-		    AppContext.setHasHead(true);
+		  //  AppContext.setHasHead(true);
+		    saveHead(user.getHead());
 			//AppContext.setIdcode(user.get);
 			System.out.println(appContext.getPassword());
 			Log.v("用户id", user.getId()+"");
@@ -353,5 +361,28 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		}
 		return false;
 	}
+    
+    private void saveHead(String url){
+    	ImageRequest imageRequest = new ImageRequest(  
+				url,  
+		        new Response.Listener<Bitmap>() {  
+		            @Override  
+		            public void onResponse(Bitmap response) {  
+		                try {
+							AppContext.setHeadurl(FileUtil.saveFile(getApplicationContext(), 
+									getApplicationContext().getFilesDir().getCanonicalPath(),
+									Constant.IMAGE_FILE_NAME, response));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		            }  
+		        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+		            @Override  
+		            public void onErrorResponse(VolleyError error) {  
+		            }  
+		        });  
+		AppContext.queues.add(imageRequest);  
+    }
 
 }

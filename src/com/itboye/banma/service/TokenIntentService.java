@@ -32,16 +32,21 @@ import com.itboye.banma.app.Constant;
 
 public class TokenIntentService extends IntentService
 {
+	String httpurl=Constant.URL+"/Token/index ";
 	RequestQueue requestQueue = AppContext.getHttpQueues();
 	public TokenIntentService()
 	{
 		super("TokenIntentService");
+		
 	}
-	//必须要写的intentservice 方法
+	//必须要写的intent service 方法
 	protected void onHandleIntent(Intent intent)
 	{
 		System.out.println("service 已经运行");
-		String httpurl=Constant.URL+"/Token/index ";
+		if (AppContext.isTokenSuccess()==false){
+			System.out.println("service 已经运行1");
+			reqeustToken();
+		}
 		// TODO Auto-generated method stub
 		long endTime=System.currentTimeMillis()+1000*60*55;//50分钟后重新请求
 		while(System.currentTimeMillis()<endTime){
@@ -55,46 +60,52 @@ public class TokenIntentService extends IntentService
 			}
 			Boolean isRunning=getAppRunState();
 			if (isRunning) {
-				endTime=System.currentTimeMillis()+1000*60*55;//重新定时五十分钟			
-				StringRequest jsonRequest = new StringRequest(Request.Method.POST,httpurl, new Response.Listener<String>() {
-					@Override
-					public void onResponse(String response) {
-						// TODO Auto-generated method stub
-						System.out.println(response.toString());
-						try {
-							JSONObject jsonObject=new JSONObject(response);
-					     	JSONObject 	data=(JSONObject) jsonObject.get("data");
-							String   access_token=data.getString("access_token");
-							AppContext.setAccess_token(access_token);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				},new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
-						System.out.println(error.toString());
-					}
-				}){
-					@Override 
-					  protected Map<String, String> getParams() throws AuthFailureError {  
-						Map<String, String> map = new HashMap<String, String>();  
-						map.put("client_secret", "aedd16f80c192661016eebe3ac35a6e7");
-						map.put("grant_type", "client_credentials");  
-						map.put("client_id", "by559a8de1c325c1");
-						return map;
-					}
-				};
-			requestQueue.add(jsonRequest);
+				endTime=System.currentTimeMillis()+1000*60*55;//重新定时五十分钟	
+				reqeustToken();
 			}
 			else {
 				stopSelf();//若应用已经退出，则不进行请求
 				System.out.println("service结束");
 		}
 		}
+	}
+	
+	//请求token
+	private void reqeustToken(){
+		StringRequest jsonRequest = new StringRequest(Request.Method.POST,httpurl, new Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+				// TODO Auto-generated method stub
+				System.out.println(response.toString());
+				try {
+					JSONObject jsonObject=new JSONObject(response);
+			     	JSONObject 	data=(JSONObject) jsonObject.get("data");
+					String   access_token=data.getString("access_token");
+					System.out.println("token拿到"+AppContext.getAccess_token());
+					AppContext.setAccess_token(access_token);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		},new Response.ErrorListener() {
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				// TODO Auto-generated method stub
+				System.out.println(error.toString());
+			}
+		}){
+			@Override 
+			  protected Map<String, String> getParams() throws AuthFailureError {  
+				Map<String, String> map = new HashMap<String, String>();  
+				map.put("client_secret", "aedd16f80c192661016eebe3ac35a6e7");
+				map.put("grant_type", "client_credentials");  
+				map.put("client_id", "by559a8de1c325c1");
+				return map;
+			}
+		};
+	requestQueue.add(jsonRequest);
 	}
 	
 	//判断应用是否在运行

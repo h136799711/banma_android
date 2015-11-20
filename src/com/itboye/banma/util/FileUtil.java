@@ -18,15 +18,6 @@ import android.os.Environment;
 
 public class FileUtil {
 
-    
-    /**
-     * ��Bitmap ͼƬ���浽����·����������·��
-     * @param c
-     * @param mType ��Դ���ͣ�����  MultimediaContentType ö�٣����ݴ����ͣ�����ʱ���Զ�����
-     * @param fileName �ļ�����
-     * @param bitmap ͼƬ
-     * @return
-     */
 	public static Bitmap getLoacalBitmap(String url) {
 	     try {
 	          FileInputStream fis = new FileInputStream(url);
@@ -71,12 +62,14 @@ public class FileUtil {
 			fos.write(bytes);
 		} catch (Exception e) {
 			fileFullName = "";
+			e.printStackTrace();
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException e) {
 					fileFullName = "";
+					e.printStackTrace();
 				}
 			}
 		}

@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.ConfirmOrdersActivity;
+import com.itboye.banma.activities.HomePageActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
@@ -41,6 +42,7 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.ProductDetail;
 import com.itboye.banma.entity.ProductDetail.Sku_info;
 import com.itboye.banma.entity.SkuStandard;
+import com.itboye.banma.fragment.HomePageFragment;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onAddChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onCheckedChanged;
 import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onReduceChanged;
@@ -60,7 +62,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private ListView listView_cart;
 	private CheckBox cb_cart_all;
 	private Adapter_ListView_cart adapter;
-	private String str_del = "结算(0)";
+	private String str_del = "结算";
 	private TextView tv_title_right;//编辑按钮
 	private boolean[] is_choice;
 	private SkuStandard[] skuStandards;
@@ -86,6 +88,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private List<Sku_info> sku_info; // 商品类型参数
 	private BabyPopWindow popWindow;
 	private LinearLayout all_choice_layout;//pop的背景边框
+	private TextView tv_count;//购物车数量
+	private int  cartCount;//购物车商品数量
 //	private int addPosition,reducePosition,flagPosition=0;//用于保存adpapter传出来的位置信息和网络返回请求信息,1表示减少来的
 	
 	private  ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
@@ -118,7 +122,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		
+		tv_count=(TextView) findViewById(R.id.tv_count);
 		dialog=(ProgressBar)findViewById(R.id.progressBar);
 		btn_quguangguang=(Button)findViewById(R.id.btn_quguangguang);
 		btn_quguangguang.setOnClickListener(this);
@@ -213,6 +217,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			try {				
 				if (code==0) {
 					JSONArray jsonArray=new JSONArray(jsonObject.getString("data"));
+					cartCount=jsonArray.length();
 					if (jsonArray!=null) {
 						for (int i = 0; i < jsonArray.length(); i++) {
 							JSONObject temp=(JSONObject) jsonArray.get(i);
@@ -250,6 +255,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 				if (code==0) {
 						Log.v("delete","成功");			
 						adapter.notifyDataSetChanged();
+						tv_count.setText("("+(cartCount-1)+")");
 						setListViewHeightBasedOnChildren(listView_cart);
 					}
 				} catch (Exception e) {
@@ -329,6 +335,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 		// TODO Auto-generated method stub
 		// 如果购物车中有数据，那么就显示数据，否则显示默认界面
 		is_choice=new boolean[arrayList_cart.size()];
+		tv_count.setText("("+cartCount+")");
 		if ( arrayList_cart.size() != 0) {
 			dialog.setVisibility(View.GONE);
 			ll_cart_bottom.setVisibility(View.VISIBLE);
@@ -408,17 +415,17 @@ OnClickListener,onAddChanged,onReduceChanged{
 				AllCount += Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
 				AllCount+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
-				weight+=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
-				System.out.println("总重量为"+weight);
+				weight+=Float.parseFloat((String) arrayList_cart.get(position).get("weight"))*
+						Float.valueOf(arrayList_cart.get(position).get("count").toString());
 				express+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
-				System.out.println("运费"+express);
 			}
 		} else {
 			if (arrayList_cart.size()!=0) {
 				AllCount -= Float.valueOf(arrayList_cart.get(position).get("count").toString())*
 						Float.valueOf(arrayList_cart.get(position).get("price").toString());
 				AllCount+=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
-				weight-=Float.parseFloat((String) arrayList_cart.get(position).get("weight"));
+				weight-=Float.parseFloat((String) arrayList_cart.get(position).get("weight"))*
+						Float.valueOf(arrayList_cart.get(position).get("count").toString());
 				express-=Float.parseFloat((String) arrayList_cart.get(position).get("express"));
 			}
 		}
@@ -446,7 +453,6 @@ OnClickListener,onAddChanged,onReduceChanged{
 		tv_express.setText("￥"+express);
 		tv_weight.setText("总重量为"+weight+"kg");
 		tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
-		System.out.println("选择的位置--->"+position);
 	}
 
 	@Override
@@ -454,7 +460,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 		// TODO Auto-generated method stub
 		switch (v.getId() ){
 		case R.id.btn_quguangguang:
-			startActivity(new Intent(ShoppingCartActivity.this,BabyActivity.class));
+			finish();
+			startActivity(new Intent(ShoppingCartActivity.this,HomePageActivity.class));
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
 			finish();
@@ -506,7 +513,6 @@ OnClickListener,onAddChanged,onReduceChanged{
 						}
 					}
 				}
-				
 				
 				if (arrayList_cart.size()==0) {
 					ll_cart.setVisibility(View.VISIBLE);
@@ -627,6 +633,6 @@ OnClickListener,onAddChanged,onReduceChanged{
 		}
 		tv_express.setText("￥"+express);
 		tv_weight.setText("总重量为"+weight+"kg");
-		tv_cart_Allprice.setText("合计：(含邮费)￥"+AllCount+ "");
+		tv_cart_Allprice.setText("合计:￥"+AllCount+ "");
 	}
 }

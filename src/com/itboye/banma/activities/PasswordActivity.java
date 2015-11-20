@@ -129,8 +129,8 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 		// TODO Auto-generated method stub
 		Log.v("注册接口",error.toString());
 	    Log.e("LOGIN-ERROR", error.getMessage(), error);
-	    byte[] htmlBodyBytes = error.networkResponse.data;
-	    Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
+//	    byte[] htmlBodyBytes = error.networkResponse.data;
+//	    Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
 		Toast.makeText(PasswordActivity.this, "验证密码请求发生异常，请重新尝试"+error.toString() , Toast.LENGTH_LONG)
 		.show();
 	}
