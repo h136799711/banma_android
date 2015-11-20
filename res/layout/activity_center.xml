@@ -74,7 +74,7 @@
 
                 <TextView
                     android:id="@+id/tv_qianbao"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/tv_yongjin"
                     android:layout_alignParentBottom="true"
@@ -86,13 +86,13 @@
 
                 <TextView
                     android:id="@+id/tv_yongjin"
-                    android:layout_width="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_above="@+id/tv_qianbao"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="50dp"
                     android:gravity="center"
-                    android:text="0.0元"
+                    android:text="0.00元"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_14" />
             </RelativeLayout>

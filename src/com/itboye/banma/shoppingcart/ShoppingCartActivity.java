@@ -13,6 +13,7 @@ import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ import com.itboye.banma.shoppingcart.Adapter_ListView_cart.onReduceChanged;
 import com.itboye.banma.view.BabyPopWindow;
 import com.umeng.analytics.MobclickAgent;
 
-public class ShoppingCartActivity  extends Activity implements StrUIDataListener,onCheckedChanged,
+public class ShoppingCartActivity extends Activity implements StrUIDataListener,onCheckedChanged,
 OnClickListener,onAddChanged,onReduceChanged{
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;

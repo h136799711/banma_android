@@ -5,6 +5,13 @@ package com.itboye.banma.entity;
  *
  */
 public class User {
+	private String coin;//我的钱包；
+	public String getCoin() {
+		return coin;
+	}
+	public void setCoin(String coin) {
+		this.coin = coin;
+	}
 	private int id;
 	private String head;
 	private String idnumber;

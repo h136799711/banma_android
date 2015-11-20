@@ -2,62 +2,48 @@ package com.itboye.banma.fragment;
 
 import java.io.IOException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.ImageRequest;
 import com.itboye.banma.R;
-import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.LoginActivity;
 import com.itboye.banma.activities.MailingAddressActivity;
 import com.itboye.banma.activities.MorePersonal;
 import com.itboye.banma.activities.WebActivity;
-import com.itboye.banma.api.ApiClient;
-import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.util.CircleImg;
 import com.itboye.banma.util.FileUtil;
-import com.itboye.banma.utils.BitmapCache;
 
 public class CenterFragment extends Fragment implements OnClickListener{
 	private View chatView;
-	private CircleImg ivPersonheadFail;//未登录头头像
-	private CircleImg ivPersonhead;//登陆的头像
-	TextView tvCheckList;//选择按钮
-	//ImageView ivBack;//返回按钮
-	TextView tvPersonnamefail;//未登录提示
-	private TextView tvYongJin;//我的返佣
-	private ImageView ivShare;//扫描二维码
-	private LinearLayout rlMoney;//我的佣金
-	private LinearLayout mailing_address;//地址管理
-	private LinearLayout morePersonal;//更多个人相关
+	private CircleImg ivPersonheadFail;//鏈櫥褰曞ご澶村儚
+	private CircleImg ivPersonhead;//鐧婚檰鐨勫ご鍍�
+	TextView tvCheckList;//閫夋嫨鎸夐挳
+	//ImageView ivBack;//杩斿洖鎸夐挳
+	TextView tvPersonnamefail;//鏈櫥褰曟彁绀�
+	private TextView tvYongJin;//鎴戠殑杩斾剑
+	private ImageView ivShare;//鎵弿浜岀淮鐮�
+	private LinearLayout rlMoney;//鎴戠殑浣ｉ噾
+	private LinearLayout mailing_address;//鍦板潃绠＄悊
+	private LinearLayout morePersonal;//鏇村涓汉鐩稿叧
 	private LinearLayout order_goods;
 	private AppContext appContext;
 	private SharedPreferences sp;
@@ -121,19 +107,19 @@ public class CenterFragment extends Fragment implements OnClickListener{
 				getActivity().overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}else{
-				Toast.makeText(getActivity(), "请先登录",
+				Toast.makeText(getActivity(), "璇峰厛鐧诲綍",
 						Toast.LENGTH_LONG).show();
 			}			
 			break;
 			
 		case R.id.address:
-			if(appContext.isLogin()){   //判断登陆
+			if(appContext.isLogin()){   //鍒ゆ柇鐧婚檰
 				Intent intent = new Intent(getActivity(), MailingAddressActivity.class);
 				startActivity(intent);
 				getActivity().overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}else{
-				Toast.makeText(getActivity(), "请先登录",
+				Toast.makeText(getActivity(), "璇峰厛鐧诲綍",
 						Toast.LENGTH_LONG).show();
 			}
 			break;
@@ -143,11 +129,11 @@ public class CenterFragment extends Fragment implements OnClickListener{
             	 changeItemListener.onItemChanged(1);
              		}			
              else {
-     			Toast.makeText(getActivity(), "请先登录",
+     			Toast.makeText(getActivity(), "璇峰厛鐧诲綍",
 						Toast.LENGTH_SHORT).show();
 			}
 			break;
-		case R.id.iv_personheadfail://点击成功头像 跳转
+		case R.id.iv_personheadfail://鐐瑰嚮鎴愬姛澶村儚 璺宠浆
 		if (!appContext.isLogin()) {
 				startActivityForResult(new Intent(getActivity(),LoginActivity.class),100);
 				getActivity().overridePendingTransition(R.anim.in_from_right,
@@ -169,7 +155,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			getActivity().overridePendingTransition(R.anim.in_from_right,
 					R.anim.out_to_left);
 			}else{
-				Toast.makeText(getActivity(), "请先登录",
+				Toast.makeText(getActivity(), "璇峰厛鐧诲綍",
 						Toast.LENGTH_SHORT).show();
 			}
 			break;
@@ -191,7 +177,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		if (requestCode==100) {
 			if (data!=null) {
 				if (appContext.isLogin()) {
-					//保存bitmap图片到本地
+					//淇濆瓨bitmap鍥剧墖鍒版湰鍦�
 					AppContext.setHasHead(true);
 					ImageRequest imageRequest = new ImageRequest(  
 							data.getStringExtra("headurl"),  
@@ -233,7 +219,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 				}
 			}else {
 
-				//保存bitmap图片到本地
+				//淇濆瓨bitmap鍥剧墖鍒版湰鍦�
 				AppContext.setHasHead(true);
 				ImageRequest imageRequest = new ImageRequest(  
 						AppContext.getHeadurl(),  
@@ -263,11 +249,11 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		
 		}else {
 			ivPersonheadFail.setImageResource(R.drawable.person_head);
-			tvPersonnamefail.setText("登陆/注册");
+			tvPersonnamefail.setText("鐧婚檰/娉ㄥ唽");
 		}
 		
 	}
-	//这里必不可少， /** Fragment第一次附属于Activity时调用,在onCreate之前调用 */  
+	//杩欓噷蹇呬笉鍙皯锛� /** Fragment绗竴娆￠檮灞炰簬Activity鏃惰皟鐢�,鍦╫nCreate涔嬪墠璋冪敤 */  
 	 @Override  
 	    public void onAttach(Activity activity)   
 	    {  

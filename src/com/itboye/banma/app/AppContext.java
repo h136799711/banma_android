@@ -25,6 +25,16 @@ import android.util.Log;
 public class AppContext extends Application {
 	final static String TAG = "AppContext.java";
 	private static boolean isTokenSuccess=false;//判断token是否拿到，启动server
+	public static String coin;//我的钱包
+	
+	public static String getCoin() {
+		return coin;
+	}
+
+	public static void setCoin(String coin) {
+		AppContext.coin = coin;
+	}
+
 	public static boolean isTokenSuccess() {
 		return isTokenSuccess;
 	}
