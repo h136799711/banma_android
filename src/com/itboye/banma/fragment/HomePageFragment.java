@@ -273,7 +273,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 						}.getType());
 				if (productlist != null) {
 					showListView(productlist);
-					appContext.setImg(productlist.get(0).getImg());
+					appContext.setImg("http://banma.itboye.com/index.php/Api/Picture/index?id=");
 				}
 
 			} else {

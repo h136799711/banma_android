@@ -9,7 +9,7 @@ public class OrderItem {
 	private int id;                     
 	private String has_sku;
 	private String name;
-	private String img;
+	private String img_url;
 	private String price;
 	private String ori_price;
 	private String post_price;
@@ -42,11 +42,11 @@ public class OrderItem {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getImg() {
-		return img;
+	public String getImg_url() {
+		return img_url;
 	}
-	public void setImg(String img) {
-		this.img = img;
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
 	}
 	public String getPrice() {
 		return price;

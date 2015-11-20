@@ -79,7 +79,8 @@ public class OrderListItemAdapter  extends BaseAdapter {
 					0, R.drawable.image_load_fail);
 			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 					new BitmapCache());
-			imageLoader.get(AppContext.getImg()+order.getImg(), listener, 80, 80);
+			//String urlimg = AppContext.getImg()+order.getImg_url();
+			imageLoader.get(order.getImg_url(), listener, 80, 80);
 		}
 		
 		TextView order_name = BaseViewHolder.get(view, R.id.order_name);
@@ -111,7 +112,7 @@ public class OrderListItemAdapter  extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(context, BabyActivity.class);
-				intent.putExtra("PID", 1);
+				intent.putExtra("PID", Integer.valueOf(order.getP_id()));
 				context.startActivity(intent);
 				((Activity) context).overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
