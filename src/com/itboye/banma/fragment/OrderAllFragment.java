@@ -265,12 +265,12 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 		}
 	}
 
-	 @Override  
+	 /*@Override  
 	    public void onAttach(Activity activity)   
 	    {  
 	        super.onAttach(activity);  
 	        goShoppingListener = (AllGoShoppingListener) activity;   
-	    }  
+	    }  */
 	
 	 public interface AllGoShoppingListener{  
 	      public void onChanged(int position);  

@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.BabyOrderActivity;
 import com.itboye.banma.activities.LoginActivity;
 import com.itboye.banma.activities.MailingAddressActivity;
 import com.itboye.banma.activities.MorePersonal;
@@ -45,6 +46,11 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	private LinearLayout mailing_address;//地址管理
 	private LinearLayout morePersonal;//更多个人相关
 	private LinearLayout order_goods;
+	private LinearLayout order_quanbu;
+	private LinearLayout order_daifu;
+	private LinearLayout order_daifa;
+	private LinearLayout order_daishou;
+	private LinearLayout order_yishou;
 	private AppContext appContext;
 	private SharedPreferences sp;
 	private StrVolleyInterface networkHelper;
@@ -85,10 +91,20 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		//ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
 		tvCheckList=(TextView)chatView.findViewById(R.id.tv_check_list);
 		order_goods = (LinearLayout) chatView.findViewById(R.id.order_goods);
+		order_quanbu = (LinearLayout) chatView.findViewById(R.id.quanbu);
+		order_daifu = (LinearLayout) chatView.findViewById(R.id.daifu);
+		order_daifa = (LinearLayout) chatView.findViewById(R.id.daifa);
+		order_daishou = (LinearLayout) chatView.findViewById(R.id.daishou);
+		order_yishou = (LinearLayout) chatView.findViewById(R.id.yishou);
 		mailing_address = (LinearLayout) chatView.findViewById(R.id.address);
 		morePersonal=(LinearLayout)chatView.findViewById(R.id.rl_more);
 		rlMoney.setOnClickListener(this);
 		order_goods.setOnClickListener(this);
+		order_quanbu.setOnClickListener(this);
+		order_daifu.setOnClickListener(this);
+		order_daifa.setOnClickListener(this);
+		order_daishou.setOnClickListener(this);
+		order_yishou.setOnClickListener(this);
 		mailing_address.setOnClickListener(this);
 		ivPersonheadFail.setOnClickListener(this);
 		//ivBack.setOnClickListener(this);
@@ -126,10 +142,91 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			
 		case R.id.order_goods:
              if (appContext.isLogin()) {
-            	 changeItemListener.onItemChanged(1);
+            	 //changeItemListener.onItemChanged(1);
+            	 Intent intent = new Intent(getActivity(),BabyOrderActivity.class);
+            	 intent.putExtra("orderState", Constant.STATE_ALL);
+            	 startActivity(intent);
+ 				getActivity().overridePendingTransition(R.anim.in_from_right,
+ 						R.anim.out_to_left);
+            	 
              		}			
              else {
      			Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case R.id.quanbu:
+            if (appContext.isLogin()) {
+           	 //changeItemListener.onItemChanged(1);
+           	 Intent intent = new Intent(getActivity(),BabyOrderActivity.class);
+           	 intent.putExtra("orderState", Constant.STATE_ALL);
+           	 startActivity(intent);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+           	 
+            		}			
+            else {
+    			Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case R.id.daifu:
+            if (appContext.isLogin()) {
+           	 //changeItemListener.onItemChanged(1);
+           	 Intent intent = new Intent(getActivity(),BabyOrderActivity.class);
+           	 intent.putExtra("orderState", Constant.STATE_DAIFUKUAN);
+           	 startActivity(intent);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+           	 
+            		}			
+            else {
+    			Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case R.id.daifa:
+            if (appContext.isLogin()) {
+           	 //changeItemListener.onItemChanged(1);
+           	 Intent intent = new Intent(getActivity(),BabyOrderActivity.class);
+           	 intent.putExtra("orderState", Constant.STATE_DAIFAHUO);
+           	 startActivity(intent);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+           	 
+            		}			
+            else {
+    			Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case R.id.daishou:
+            if (appContext.isLogin()) {
+           	 //changeItemListener.onItemChanged(1);
+           	 Intent intent = new Intent(getActivity(),BabyOrderActivity.class);
+           	 intent.putExtra("orderState", Constant.STATE_DAISHOUHUO);
+           	 startActivity(intent);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+           	 
+            		}			
+            else {
+    			Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case R.id.yishou:
+            if (appContext.isLogin()) {
+           	 //changeItemListener.onItemChanged(1);
+           	 Intent intent = new Intent(getActivity(),BabyOrderActivity.class);
+           	 intent.putExtra("orderState", Constant.STATE_YISHOUHUO);
+           	 startActivity(intent);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+           	 
+            		}			
+            else {
+    			Toast.makeText(getActivity(), "请先登录",
 						Toast.LENGTH_SHORT).show();
 			}
 			break;
@@ -218,31 +315,35 @@ public class CenterFragment extends Fragment implements OnClickListener{
 					e.printStackTrace();
 				}
 			}else {
-
 				//保存bitmap图片到本地
 				AppContext.setHasHead(true);
-				ImageRequest imageRequest = new ImageRequest(  
-						AppContext.getHeadurl(),  
-				        new Response.Listener<Bitmap>() {  
-				            @Override  
-				            public void onResponse(Bitmap response) {  
-				                ivPersonheadFail.setImageBitmap(response);  
-				                try {
-									AppContext.setHeadurl(FileUtil.saveFile(getActivity().getApplicationContext(), 
-											getActivity().getApplicationContext().getFilesDir().getCanonicalPath(),
-											Constant.IMAGE_FILE_NAME, response));
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-				            }  
-				        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
-				            @Override  
-				            public void onErrorResponse(VolleyError error) {  
-				                ivPersonheadFail.setImageResource(R.drawable.person_head);  
-				            }  
-				        });  
-				AppContext.queues.add(imageRequest);  
+				try {
+					ImageRequest imageRequest = new ImageRequest(  
+							AppContext.getHeadurl(),  
+					        new Response.Listener<Bitmap>() {  
+					            @Override  
+					            public void onResponse(Bitmap response) {  
+					                ivPersonheadFail.setImageBitmap(response);  
+					                try {
+										AppContext.setHeadurl(FileUtil.saveFile(getActivity().getApplicationContext(), 
+												getActivity().getApplicationContext().getFilesDir().getCanonicalPath(),
+												Constant.IMAGE_FILE_NAME, response));
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+					            }  
+					        }, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+					            @Override  
+					            public void onErrorResponse(VolleyError error) {  
+					                ivPersonheadFail.setImageResource(R.drawable.person_head);  
+					            }  
+					        });  
+					AppContext.queues.add(imageRequest);  
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
 			
 			}
 		   tvPersonnamefail.setText(AppContext.getNickname());

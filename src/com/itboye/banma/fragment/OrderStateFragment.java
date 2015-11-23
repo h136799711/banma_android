@@ -274,12 +274,12 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener ,O
 		}
 	}
 	
-	 @Override  
+	/* @Override  
 	    public void onAttach(Activity activity)   
 	    {  
 	        super.onAttach(activity);  
 	        goShoppingListener = (GoShoppingListener) activity;   
-	    }  
+	    } */ 
 	
 	 public interface GoShoppingListener{  
 	      public void onChanged(int position);  
