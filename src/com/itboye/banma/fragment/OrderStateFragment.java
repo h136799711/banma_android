@@ -93,7 +93,7 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener ,O
 	
 	private void showListView(List<OrderDetailListItem> orderList) {
 		if(orderList != null && orderList.size() >0){
-			adapter = new OrderListAdapter(getActivity(), orderList);
+			adapter = new OrderListAdapter(getActivity(), orderList, appContext);
 			listView.setAdapter(adapter);
 			ll_cart.setVisibility(View.GONE);
 			wait_ll.setVisibility(View.GONE);

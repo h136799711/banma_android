@@ -91,7 +91,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 		if(orderList != null && orderList.size() >0){
 
 			if (adapter == null) {
-				adapter = new OrderListAdapter(getActivity(), orderList);
+				adapter = new OrderListAdapter(getActivity(), orderList, appContext);
 				listView.setAdapter(adapter);
 			} else {
 				adapter.onDateChang(orderList);
