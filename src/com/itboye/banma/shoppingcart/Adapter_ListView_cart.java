@@ -126,7 +126,6 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			});
 			
 			
-		//	holderView.tv_guige.setText(arrayList.get(position).get("sku_desc")+"");
 			holderView.tv_pop_num.setText( arrayList.get(position).get("count")+"");
 			holderView.tv_pop_red.setOnClickListener(new OnClickListener() {
 				
@@ -134,17 +133,10 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					reduceListener.reduceCount(position);
+			//		holderView.tv_num.setText((Integer.parseInt((String) arrayList.get(position).get("count"))-1)+"");
 				}
 			});
 			
-			holderView.tv_pop_red.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					reduceListener.reduceCount(position);
-				}
-			});
 			holderView.tv_pop_add.setOnClickListener(new OnClickListener() {
 				
 				@Override

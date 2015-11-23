@@ -185,8 +185,12 @@ OnClickListener,onAddChanged,onReduceChanged{
 				if (code==0) {
 					Toast.makeText(this, "修改购物车成功", Toast.LENGTH_SHORT).show();
 				//	Log.v("修改购物车", jsonObject.toString());
-					adapter.notifyDataSetChanged();
+				//	adapter.notifyDataSetChanged();
 					calPriceAndWeight(tempPostionRed, 0);
+					((TextView) (listView_cart.getChildAt(tempPostionRed)).findViewById(R.id.tv_pop_num)).setText(
+							(Integer.parseInt(arrayList_cart.get(tempPostionRed).get("count").toString()))+"");
+					((TextView) (listView_cart.getChildAt(tempPostionRed)).findViewById(R.id.tv_num)).setText("×"+
+							(Integer.parseInt(arrayList_cart.get(tempPostionRed).get("count").toString()))+"");
 				}else {
 					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
 				}
@@ -204,7 +208,11 @@ OnClickListener,onAddChanged,onReduceChanged{
 				//	Log.v("修改购物车", jsonObject.toString());
 		//			adapter.notifyDataSetChanged();
 					calPriceAndWeight(tempPostionAdd, 1);
-					adapter.onDataChanged(arrayList_cart);
+					((TextView) (listView_cart.getChildAt(tempPostionAdd)).findViewById(R.id.tv_pop_num)).setText(
+							(Integer.parseInt(arrayList_cart.get(tempPostionAdd).get("count").toString()))+"");
+					((TextView) (listView_cart.getChildAt(tempPostionAdd)).findViewById(R.id.tv_num)).setText("×"+
+							(Integer.parseInt(arrayList_cart.get(tempPostionAdd).get("count").toString()))+"");
+					//adapter.onDataChanged(arrayList_cart);
 				}else {
 					Toast.makeText(this, "库存不足", Toast.LENGTH_SHORT).show();
 				}
@@ -385,8 +393,6 @@ OnClickListener,onAddChanged,onReduceChanged{
 						if (((CheckBox) (listView_cart.getChildAt(i)).findViewById(R.id.cb_choice)).isChecked()) {
 							// 计算出列表选中状态的数量
 							isChoice_all += 1;
-						//	weight-=Float.parseFloat((String) arrayList_cart.get(i).get("weight"));
-						//	express-=Float.parseFloat((String) arrayList_cart.get(i).get("express"));
 						}
 					}
 					// 判断列表选中数是否等于列表的总数，如果等于，那么就需要执行全部取消操作
@@ -603,11 +609,12 @@ OnClickListener,onAddChanged,onReduceChanged{
 		if (temp>1) {
 			//这里因为开始设计的时候不合理，所以写的比较乱
 			RequestState=3;
-			arrayList_cart.get(position).put("count", temp-1);
+			tempPostionRed=position;
+			int temp1=(Integer) arrayList_cart.get(position).get("count");
+			arrayList_cart.get(position).put("count", temp1-1);
 			ApiClient.modifyCart(ShoppingCartActivity.this,arrayList_cart.get(position).get("id")+"", arrayList_cart.get(position).get("count")+"", 
 					arrayList_cart.get(position).get("express")+"",
 					arrayList_cart.get(position).get("p_id")+"",arrayList_cart.get(position).get("psku_id")+"",networkHelper);
-			tempPostionRed=position;
 		}else {
 			Toast.makeText(this, "不能再少了", Toast.LENGTH_SHORT).show();
 		}	
