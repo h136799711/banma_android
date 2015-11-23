@@ -52,6 +52,7 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 	private int pageNow=1;
 	private ImageView iv_back;
 	private ArrayList<ProductItem> productlist ;
+	private int state=0;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -217,5 +218,14 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 						updateDataRed();
 					}
 				});
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if (state<=1) {
+			state+=1;
+			initDatas();
+		}
 	}
 }
