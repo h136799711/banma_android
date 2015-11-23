@@ -137,7 +137,7 @@
                     android:id="@+id/order_goods"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@drawable/listview_item_selector"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingBottom="5dip"
@@ -175,16 +175,17 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingBottom="10dip"
-                    android:paddingLeft="5dip"
-                    android:paddingRight="5dip"
-                    android:paddingTop="10dip" >
+                     >
 
                     <LinearLayout
+                        android:id="@+id/quanbu"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingTop="10dip"
+                        android:paddingBottom="10dip"
                         android:gravity="center"
+                        android:background="@drawable/listview_item_selector"
                         android:orientation="vertical" >
 
                         <ImageView
@@ -201,10 +202,14 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/daifu"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingTop="10dip"
+                        android:paddingBottom="10dip"
                         android:gravity="center"
+                        android:background="@drawable/listview_item_selector"
                         android:orientation="vertical" >
 
                         <ImageView
@@ -221,10 +226,14 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/daifa"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingTop="10dip"
+                        android:paddingBottom="10dip"
                         android:gravity="center"
+                        android:background="@drawable/listview_item_selector"
                         android:orientation="vertical" >
 
                         <ImageView
@@ -241,10 +250,14 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/daishou"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingTop="10dip"
+                        android:paddingBottom="10dip"
                         android:gravity="center"
+                        android:background="@drawable/listview_item_selector"
                         android:orientation="vertical" >
 
                         <ImageView
@@ -261,10 +274,14 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/yishou"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingTop="10dip"
+                        android:paddingBottom="10dip"
                         android:gravity="center"
+                        android:background="@drawable/listview_item_selector"
                         android:orientation="vertical" >
 
                         <ImageView
@@ -276,7 +293,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dip"
-                            android:text="评价"
+                            android:text="已收货"
                             android:textColor="@color/grey" />
                     </LinearLayout>
                 </LinearLayout>
@@ -306,12 +323,13 @@
                     android:id="@+id/rl_money"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@drawable/listview_item_selector"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingBottom="10dip"
                     android:paddingLeft="15dip"
-                    android:paddingTop="10dip" >
+                    android:paddingTop="10dip"
+                     >
 
                     <ImageView
                         android:layout_width="35dip"
@@ -343,7 +361,7 @@
                     android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@drawable/listview_item_selector"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingBottom="10dip"
@@ -380,7 +398,7 @@
                     android:id="@+id/rl_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="@drawable/listview_item_selector"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingBottom="10dip"

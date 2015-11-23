@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.itboye.banma.R;
 import com.itboye.banma.app.AppContext;
-import com.itboye.banma.fragment.BabyOrderFragment;
 import com.itboye.banma.fragment.BabyParameterFragment;
 import com.itboye.banma.fragment.CenterFragment;
 import com.itboye.banma.fragment.CenterFragment.ChangeItemListener;
@@ -37,7 +36,7 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	private List<Fragment> mTabs = new ArrayList<Fragment>();
 	private FragmentPagerAdapter mAdapter;
 	private HomePageFragment homePageFragment;
-	private BabyOrderFragment babyCommentFragment;
+	private OrderAllFragment babyCommentFragment;  //
 	private CenterFragment centerFragment;
 	private FindFragment findFragment;
 	private List<LinearLayout> mTabIndicator = new ArrayList<LinearLayout>();
@@ -62,7 +61,7 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	private void initView() {
 		
 		homePageFragment = new HomePageFragment();
-		babyCommentFragment = new BabyOrderFragment();
+		babyCommentFragment = new OrderAllFragment();
 		centerFragment = new CenterFragment();
 		findFragment=new FindFragment();
 		mTabs.add(homePageFragment);
