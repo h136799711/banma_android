@@ -73,6 +73,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 			YesOrNo = appContext.getAllOrder(getActivity(), pageNo, pageSize,
 					 Constant.STATE_ALL, networkHelper);
 			if(!YesOrNo){
+				upOrdowm = -1;
 				ll_cart.setVisibility(View.GONE);
 				wait_ll.setVisibility(View.VISIBLE);
 				retry_img.setVisibility(View.VISIBLE);
@@ -80,6 +81,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 				orderListLayout.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
+			upOrdowm = -1;
 			e.printStackTrace();
 		}
 	}
@@ -98,12 +100,14 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 				listView.onRefreshComplete();
 				listView.setSelection(0);
 			}
+			upOrdowm = -1;
 			ll_cart.setVisibility(View.GONE);
 			wait_ll.setVisibility(View.GONE);
 			retry_img.setVisibility(View.GONE);
 			loading_ll.setVisibility(View.GONE);
 			orderListLayout.setVisibility(View.VISIBLE);
 		}else{
+			upOrdowm = -1;
 			ll_cart.setVisibility(View.VISIBLE);
 			wait_ll.setVisibility(View.GONE);
 			retry_img.setVisibility(View.GONE);
@@ -142,6 +146,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 			@Override
 			public void onClick(View v) {
 				if (retry_img.getVisibility() == View.VISIBLE) {
+					upOrdowm = -1;
 					ll_cart.setVisibility(View.GONE);
 					wait_ll.setVisibility(View.VISIBLE);
 					retry_img.setVisibility(View.GONE);
@@ -153,6 +158,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 				}
 			}
 		});
+		upOrdowm = -1;
 		ll_cart.setVisibility(View.GONE);
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.GONE);
@@ -174,15 +180,21 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 
 	@Override
 	public void onLoad() {
-		upOrdowm = 1;  //1表示底部刷新
-		pageNo += 1;
-		load_data();
+		if(upOrdowm == 0){
+			listView.hideBottom();
+		}else{
+			upOrdowm = 1;  //1表示底部刷新
+			pageNo += 1;
+			load_data();
+		}
+		
 	}
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		Toast.makeText(getActivity(), "返回错误信息：" + error,
 				Toast.LENGTH_LONG).show();
+		upOrdowm = -1;
 		ll_cart.setVisibility(View.GONE);
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
@@ -248,6 +260,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 				showListView(orderList);
 				
 			} else {
+				upOrdowm = -1;
 				ll_cart.setVisibility(View.GONE);
 				wait_ll.setVisibility(View.VISIBLE);
 				retry_img.setVisibility(View.VISIBLE);
@@ -257,6 +270,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 
 		} catch (JSONException e1) {
 			e1.printStackTrace();
+			upOrdowm = -1;
 			ll_cart.setVisibility(View.GONE);
 			wait_ll.setVisibility(View.VISIBLE);
 			retry_img.setVisibility(View.VISIBLE);

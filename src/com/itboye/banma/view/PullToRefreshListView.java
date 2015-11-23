@@ -440,6 +440,17 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 	}
 	
 	/**
+	 * 隐藏底部刷新加载
+	 */
+	public void hideBottom(){
+		isLoading = false;
+		footerView.findViewById(R.id.footer).setVisibility(View.VISIBLE);
+		foot_more.setText("");
+		foot_more.setVisibility(View.VISIBLE);
+		footer_progressBar.setVisibility(View.GONE);
+	}
+	
+	/**
 	 *  计算headView的width及height值
 	 * @param child
 	 */
