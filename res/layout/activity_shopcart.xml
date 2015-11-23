@@ -11,6 +11,7 @@
 
         <ImageView
             android:id="@+id/iv_back"
+            android:visibility="gone"
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"

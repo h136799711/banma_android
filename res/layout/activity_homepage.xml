@@ -81,7 +81,7 @@
                 android:layout_weight="1"
                 android:textSize="12sp"
                 android:textColor="@color/tab_text"
-                android:text="订单"
+                android:text="购物车"
                 >
             </TextView>
         </LinearLayout>

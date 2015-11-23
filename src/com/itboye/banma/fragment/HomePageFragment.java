@@ -116,7 +116,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		title = (TextView) chatView.findViewById(R.id.title);
 		more = (ImageView) chatView.findViewById(R.id.more);
 		back.setVisibility(View.GONE);
-		more.setVisibility(View.VISIBLE);
+		more.setVisibility(View.GONE);
 		top_line.setVisibility(View.GONE);
 		title.setText("商品");
 		
@@ -241,6 +241,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
+		Toast.makeText(getActivity(), "onErrorHappened" + error.toString(), Toast.LENGTH_SHORT)
+		.show();
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
 		loading_ll.setVisibility(View.GONE);
@@ -249,8 +251,6 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void onDataChanged(String data) {
-		/*Toast.makeText(getActivity(), "shuju" + data, Toast.LENGTH_SHORT)
-				.show();*/
 		state += 1;
 		Gson gson = new Gson();
 		productlist = new ArrayList<ProductItem>();
@@ -260,6 +260,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 			int code = jsondata.getInt("code");
 			if (code == 0) {
+				Toast.makeText(getActivity(), "code=1" + data.toString(), Toast.LENGTH_SHORT)
+				.show();
 				wait_ll.setVisibility(View.GONE);
 				retry_img.setVisibility(View.GONE);
 				loading_ll.setVisibility(View.GONE);
@@ -277,7 +279,11 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 				}
 
 			} else {
+				Toast.makeText(getActivity(), "code=0" + data.toString(), Toast.LENGTH_SHORT)
+				.show();
 				if(state<=1){
+					Toast.makeText(getActivity(), "code=00" + data.toString(), Toast.LENGTH_SHORT)
+					.show();
 				initData();
 				}
 				else{

@@ -13,6 +13,7 @@ import com.itboye.banma.fragment.HomePageFragment;
 import com.itboye.banma.fragment.OrderAllFragment;
 import com.itboye.banma.fragment.OrderAllFragment.AllGoShoppingListener;
 import com.itboye.banma.fragment.OrderStateFragment.GoShoppingListener;
+import com.itboye.banma.fragment.ShoppingCartFragment;
 import com.umeng.analytics.MobclickAgent;
 
 import android.R.integer;
@@ -36,7 +37,7 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	private List<Fragment> mTabs = new ArrayList<Fragment>();
 	private FragmentPagerAdapter mAdapter;
 	private HomePageFragment homePageFragment;
-	private OrderAllFragment babyCommentFragment;  //
+	private ShoppingCartFragment shoppingCartFragment;  //
 	private CenterFragment centerFragment;
 	private FindFragment findFragment;
 	private List<LinearLayout> mTabIndicator = new ArrayList<LinearLayout>();
@@ -61,11 +62,11 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	private void initView() {
 		
 		homePageFragment = new HomePageFragment();
-		babyCommentFragment = new OrderAllFragment();
+		shoppingCartFragment= new ShoppingCartFragment();
 		centerFragment = new CenterFragment();
 		findFragment=new FindFragment();
 		mTabs.add(homePageFragment);
-		mTabs.add(babyCommentFragment);
+		mTabs.add(shoppingCartFragment);
 		mTabs.add(findFragment);
 		mTabs.add(centerFragment);
 		
