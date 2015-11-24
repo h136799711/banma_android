@@ -669,15 +669,16 @@ OnClickListener,onAddChanged,onReduceChanged{
 		super.onResume();
 		if (appContext.isLogin()) {
 				arrayList_cart.clear();
-				initData();
 				AllCount=0;
 				express=0;
 				weight=0;
-				tv_count.setText("("+arrayList_cart.size()+")"+"");
+				cartCount=0;
+				tv_count.setText("("+cartCount+")"+"");
 				tv_express.setText("￥"+express);
 				tv_weight.setText("总重量为"+weight+"kg");
 				tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
 				cb_cart_all.setChecked(false);
+				initData();
 		}
 	}
 }
