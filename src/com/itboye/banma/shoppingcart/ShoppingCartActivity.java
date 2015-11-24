@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -91,6 +92,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 	private LinearLayout all_choice_layout;//pop的背景边框
 	private TextView tv_count;//购物车数量
 	private int  cartCount;//购物车商品数量
+	private ImageView iv_back;
 //	private int addPosition,reducePosition,flagPosition=0;//用于保存adpapter传出来的位置信息和网络返回请求信息,1表示减少来的
 	
 	private  ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();
@@ -123,6 +125,8 @@ OnClickListener,onAddChanged,onReduceChanged{
 
 	private void initView() {
 		// TODO Auto-generated method stub
+		iv_back=(ImageView)findViewById(R.id.iv_back);
+		iv_back.setVisibility(View.VISIBLE);
 		tv_count=(TextView) findViewById(R.id.tv_count);
 		dialog=(ProgressBar)findViewById(R.id.progressBar);
 		btn_quguangguang=(Button)findViewById(R.id.btn_quguangguang);
@@ -467,11 +471,11 @@ OnClickListener,onAddChanged,onReduceChanged{
 		// TODO Auto-generated method stub
 		switch (v.getId() ){
 		case R.id.btn_quguangguang:
-			finish();
-			startActivity(new Intent(ShoppingCartActivity.this,HomePageActivity.class));
-			overridePendingTransition(R.anim.push_right_in,
-					R.anim.push_right_out);
-			finish();
+//			finish();
+//			startActivity(new Intent(ShoppingCartActivity.this,HomePageActivity.class));
+//			overridePendingTransition(R.anim.push_right_in,
+//					R.anim.push_right_out);
+//			finish();
 			break;
 		case R.id.tv_title_right:
 			if (EditState==1) {//当前为1状态被点击了
