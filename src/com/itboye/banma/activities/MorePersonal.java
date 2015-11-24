@@ -83,6 +83,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	static RequestQueue mSingleQueue;
 	private AppContext appContext;
 	
+	private  RelativeLayout rl_exit;
 	private StrVolleyInterface networkHelper;
 	private TextView tvUserName;//用户昵称
 	private TextView tvPhoneNumber;//用户手机号
@@ -157,10 +158,12 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		tvRenZhen.setOnClickListener(this);;
 		rlShengFenZheng.setOnClickListener(this);
 		rlWeiXin.setOnClickListener(this);
+		rl_exit.setOnClickListener(this);
 	}
 	
 	
 	private void initID(){
+		rl_exit=(RelativeLayout)findViewById(R.id.rl_exit1);
 		title=(TextView)findViewById(R.id.title);
 		title.setText("更多设置");
 		imgUrl = Constant.URL+"/File/upload?access_token="+AppContext.getAccess_token()+"";
@@ -335,7 +338,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			}
 		break;
 		
-		case R.id.btn_exit:
+		case R.id.rl_exit1:
 			sp.edit().clear().commit();//清空所有sp中的数据
 			appContext.setLogin(false);
 			AppContext.setWeixin(false);

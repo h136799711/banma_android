@@ -8,23 +8,9 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.itboye.banma.R;
-import com.itboye.banma.adapter.OrderListAdapter;
-import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.app.Constant;
-import com.itboye.banma.entity.OrderDetailListItem;
-import com.itboye.banma.fragment.OrderStateFragment.GoShoppingListener;
-import com.itboye.banma.view.PullToRefreshListView;
-import com.itboye.banma.view.PullToRefreshListView.OnRefreshListener;
-
-import android.support.v4.app.Fragment;
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +19,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.itboye.banma.R;
+import com.itboye.banma.activities.HomePageActivity;
+import com.itboye.banma.adapter.OrderListAdapter;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.app.Constant;
+import com.itboye.banma.entity.OrderDetailListItem;
+import com.itboye.banma.view.PullToRefreshListView;
+import com.itboye.banma.view.PullToRefreshListView.OnRefreshListener;
 
 public class OrderAllFragment extends Fragment implements StrUIDataListener,OnClickListener,
 		OnRefreshListener {
@@ -51,7 +51,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 	private List<OrderDetailListItem> orderList = new ArrayList<OrderDetailListItem>();
 	private PullToRefreshListView listView;
 	private OrderListAdapter adapter;
-	private AllGoShoppingListener goShoppingListener;
+	private AllGoShoppingListener allGoShoppingListener;
 	private Button goshop;
 
 	@Override
@@ -287,7 +287,7 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 	    }  */
 	
 	 public interface AllGoShoppingListener{  
-	      public void onChanged(int position);  
+	      public void onAllChanged(int position);  
 	  }
 
 	@Override
@@ -295,9 +295,14 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_quguangguang:
-			goShoppingListener.onChanged(2);
+//			Intent intent=new Intent(getActivity(),HomePageActivity.class);
+//			intent.putExtra("position", 2);
+//			startActivity(intent);
+			getActivity().finish();
+			getActivity().overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
+		//	allGoShoppingListener.onAllChanged(2);
 			break;
-
 		default:
 			break;
 		}

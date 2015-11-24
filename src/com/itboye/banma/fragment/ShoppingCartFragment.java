@@ -673,7 +673,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 				AllCount=0;
 				express=0;
 				weight=0;
-				tv_count.setText(arrayList_cart.size()+"");
+				tv_count.setText("("+arrayList_cart.size()+")"+"");
 				tv_express.setText("￥"+express);
 				tv_weight.setText("总重量为"+weight+"kg");
 				tv_cart_Allprice.setText("合计：￥"+AllCount+ "");

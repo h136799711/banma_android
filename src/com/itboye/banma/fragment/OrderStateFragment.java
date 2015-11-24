@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.HomePageActivity;
 import com.itboye.banma.adapter.OrderListAdapter;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
@@ -25,6 +26,7 @@ import com.itboye.banma.view.PullToRefreshListView.OnRefreshListener;
 import android.support.v4.app.Fragment;
 import android.R.integer;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +57,7 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener ,O
 	private OrderListAdapter adapter;
 	private int state;  //区分订单状态:1：代付款 2：代发货  3：待收货  4：待评价
 	private Button goShop;
-	private GoShoppingListener goShoppingListener;
+	private StateGoShoppingListener goShoppingListener;
 	
 	public OrderStateFragment(int state){
 		this.state = state;
@@ -266,7 +268,13 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener ,O
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_quguangguang:
-			goShoppingListener.onChanged(2);
+//			Intent intent=new Intent(getActivity(),HomePageActivity.class);
+//			intent.putExtra("position", 2);
+//			startActivity(intent);
+			getActivity().finish();
+			getActivity().overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
+			//goShoppingListener.onStateChanged(2);
 			break;
 
 		default:
@@ -281,8 +289,8 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener ,O
 	        goShoppingListener = (GoShoppingListener) activity;   
 	    } */ 
 	
-	 public interface GoShoppingListener{  
-	      public void onChanged(int position);  
+	 public interface StateGoShoppingListener{  
+	      public void onStateChanged(int position);  
 	  }  
 
 }

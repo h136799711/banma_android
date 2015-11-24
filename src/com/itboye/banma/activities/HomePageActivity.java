@@ -3,20 +3,6 @@ package com.itboye.banma.activities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.itboye.banma.R;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.fragment.BabyParameterFragment;
-import com.itboye.banma.fragment.CenterFragment;
-import com.itboye.banma.fragment.CenterFragment.ChangeItemListener;
-import com.itboye.banma.fragment.FindFragment;
-import com.itboye.banma.fragment.HomePageFragment;
-import com.itboye.banma.fragment.OrderAllFragment;
-import com.itboye.banma.fragment.OrderAllFragment.AllGoShoppingListener;
-import com.itboye.banma.fragment.OrderStateFragment.GoShoppingListener;
-import com.itboye.banma.fragment.ShoppingCartFragment;
-import com.umeng.analytics.MobclickAgent;
-
-import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,8 +17,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itboye.banma.R;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.fragment.CenterFragment;
+import com.itboye.banma.fragment.CenterFragment.ChangeItemListener;
+import com.itboye.banma.fragment.FindFragment;
+import com.itboye.banma.fragment.HomePageFragment;
+import com.itboye.banma.fragment.OrderAllFragment.AllGoShoppingListener;
+import com.itboye.banma.fragment.OrderStateFragment.StateGoShoppingListener;
+import com.itboye.banma.fragment.ShoppingCartFragment;
+import com.umeng.analytics.MobclickAgent;
+
 public class HomePageActivity extends FragmentActivity  implements OnClickListener,
-ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
+ChangeItemListener,StateGoShoppingListener,AllGoShoppingListener{
 	private ViewPager mViewPager;
 	private List<Fragment> mTabs = new ArrayList<Fragment>();
 	private FragmentPagerAdapter mAdapter;
@@ -46,7 +43,8 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	private int[] ic = {R.drawable.banma_home_normal, R.drawable.banma_order_normal,R.drawable.faxian_un, R.drawable.banma_mine_normal};
 	private int[] ic_sel = {R.drawable.banma_home_select, R.drawable.banma_order_select,R.drawable.faxian ,R.drawable.banma_mine_select};
 	private AppContext appContext;
-	private long exitTime = 0;
+	private long exitTime = 0; 
+	private int   position;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +55,13 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
         initView();
         mViewPager.setOffscreenPageLimit(3);
 		mViewPager.setAdapter(mAdapter);
+		Intent intent=getIntent();
+		position=intent.getIntExtra("position", -1);
+		System.out.println("位置"+position);
+		if (position!=-1) {
+			changTabColor(position);
+			mViewPager.setCurrentItem(position,false);
+		}
     }
 
 	private void initView() {
@@ -205,9 +210,22 @@ ChangeItemListener,GoShoppingListener,AllGoShoppingListener{
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
+//
+//	@Override
+//	public void onChanged(int position ) {
+//		// TODO Auto-generated method stub
+//
+//	}
 
 	@Override
-	public void onChanged(int position ) {
+	public void onAllChanged(int position) {
+		// TODO Auto-generated method stub
+		changTabColor(position);
+		mViewPager.setCurrentItem(position,false);
+	}
+
+	@Override
+	public void onStateChanged(int position) {
 		// TODO Auto-generated method stub
 		changTabColor(position);
 		mViewPager.setCurrentItem(position,false);

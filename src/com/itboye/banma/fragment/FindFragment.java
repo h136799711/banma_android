@@ -36,7 +36,7 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.ProductItem;
 
-public class FindFragment extends Fragment implements StrUIDataListener {
+public class FindFragment extends Fragment implements StrUIDataListener{
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	private View productGridView;
@@ -198,8 +198,11 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 						}
 					}
 					private void updateDataRed() {
-						// TODO Auto-generated method stub
+						// TODO Auto-generated method stub				
 						pageNow-=1;
+//						if (pageNow<1) {
+//							pageNow=1;
+//						}
 						try {
 							appContext.getProductList(getActivity(), pageNow,
 									Constant.PAGE_SIZE, networkHelper);
@@ -219,13 +222,15 @@ public class FindFragment extends Fragment implements StrUIDataListener {
 					}
 				});
 	}
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if (state<=1) {
-			state+=1;
-			initDatas();
-		}
-	}
+//	@Override
+//	public void onResume() {
+//		// TODO Auto-generated method stub
+//		super.onResume();
+//		if (state<=1&&AppContext.isTokenSuccess()==false) {
+//			dialog.setVisibility(View.VISIBLE);
+//			state+=1;
+//			initDatas();
+//		}
+//	}
+
 }

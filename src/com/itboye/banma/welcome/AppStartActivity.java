@@ -36,7 +36,7 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 	private Context context;
 	private Animation animation;
 	private SharedPreferences shared;
-	private static int TIME = 500; 
+	private static int TIME = 800; 
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	

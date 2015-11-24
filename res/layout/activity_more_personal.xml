@@ -131,6 +131,22 @@
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
         </RelativeLayout>
+        <View  style="@style/CenterLine"/>
+        <RelativeLayout
+       		  android:id="@+id/rl_exit1"
+      		android:layout_width="fill_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:background="@color/white" >
+
+            <TextView
+                style="@style/PersonalTextStyle"
+                android:layout_marginLeft="@dimen/more_item_marginlefth"
+                android:text="退出登录" />
+
+            <ImageView
+                style="@style/PersonalRightIconStyle"
+                android:src="@drawable/android_list_idex" />
+        </RelativeLayout>
    <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/more_item_mainheight"
@@ -249,10 +265,14 @@
  		 <Button
                 android:id="@+id/btn_exit"
                android:layout_width="match_parent"
+               android:visibility="gone"
                android:layout_height="@dimen/more_item_mainheight"
                android:layout_alignParentBottom="true"
-               android:layout_alignParentLeft="true"
-               android:background="#c34949"
+               android:layout_centerHorizontal="true"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="20dp"
+               android:textColor="@color/white"
+               android:background="@color/personn_button"
                android:text="退出登录"
              android:textSize="@dimen/small_middle_text_size" /> 
 </RelativeLayout>
