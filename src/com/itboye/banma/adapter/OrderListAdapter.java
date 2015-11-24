@@ -69,10 +69,10 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 	private List<OrderDetailListItem> orderList = new ArrayList<OrderDetailListItem>();
 	private int location;
 
-	public OrderListAdapter(Context context, List<OrderDetailListItem> orderList) {
+	public OrderListAdapter(Context context, List<OrderDetailListItem> orderList, AppContext appContext) {
 		this.context = context;
 		this.orderList = orderList;
-		appContext = (AppContext) ((Activity) context).getApplication();
+		this.appContext = appContext;
 		strnetworkHelper = new StrVolleyInterface(context);
 		strnetworkHelper.setStrUIDataListener(this);
 		dialog = new ProgressDialog(context);
