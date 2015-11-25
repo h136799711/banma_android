@@ -37,8 +37,8 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
 		context = this;
-		images = new int[] { R.drawable.welcome_01, R.drawable.welcome_02,
-				R.drawable.welcome_03 };
+		images = new int[] { R.drawable.welcome_01, R.drawable.welcome2,
+				 };
 		initView();
 
 	}

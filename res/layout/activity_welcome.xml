@@ -16,16 +16,6 @@
         android:layout_marginBottom="75dp"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/start_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="进入软件"
-            android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:visibility="invisible" />
-
         <LinearLayout
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
@@ -36,5 +26,17 @@
             android:orientation="horizontal" >
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/start_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="进入软件"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:visibility="invisible" />
 
 </RelativeLayout>

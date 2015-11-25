@@ -1,5 +1,8 @@
 package com.itboye.banma.api;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,16 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.provider.MediaStore.Audio.Media;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.itboye.banma.app.AppContext;
@@ -39,7 +35,6 @@ public class VolleyRequest {
 				HashMap<String, String> headers = new HashMap<String, String>();
 				headers.put("Accept", "application/json");
 				headers.put("Content-Type", "charset=UTF-8");
-
 				return headers;
 			}
 			
@@ -57,7 +52,10 @@ public class VolleyRequest {
 
 		strRequest = new StringRequest(Method.POST, url, vif, vif){
 			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
+			protected Map<String,String> getParams() throws AuthFailureError {
+//				params.put("notify_time",getTime());
+				params.put("notify_time", (int)(System.currentTimeMillis()/1000)+"");
+				System.out.println((int)(System.currentTimeMillis()/1000)+""+"时间戳");
 				return params;
 			}
 
@@ -72,5 +70,13 @@ public class VolleyRequest {
 		AppContext.getHttpQueues().add(strRequest);
 		AppContext.getHttpQueues().start();
 	}
-	
+	public  static String getTime(){
+		Date date=new Date();
+		DateFormat format=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String time=format.format(date);
+		return time;
+//		long time=new java
+//		long epoch = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").
+//				parse("01/01/1970 01:00:00");
+	}
 }

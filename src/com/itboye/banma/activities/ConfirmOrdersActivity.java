@@ -217,6 +217,7 @@ StrUIDataListener {
 			if (data!=null) {
 				String  discount=data.getStringExtra("discount_ratio");
 				String store_id=data.getStringExtra("store_id");
+				String  idcode=data.getStringExtra("idcode");
 
 			}
 		

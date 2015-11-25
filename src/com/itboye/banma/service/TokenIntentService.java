@@ -102,6 +102,7 @@ public class TokenIntentService extends IntentService
 				map.put("client_secret", "aedd16f80c192661016eebe3ac35a6e7");
 				map.put("grant_type", "client_credentials");  
 				map.put("client_id", "by559a8de1c325c1");
+				map.put("notify_time", (int)(System.currentTimeMillis()/1000)+"");
 				return map;
 			}
 		};

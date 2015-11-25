@@ -138,6 +138,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 						Intent intent=new Intent(YouHuiActivity.this,ConfirmOrdersActivity.class);
 						 intent.putExtra("discount_ratio", discount);
 						 intent.putExtra("store_id", store_id);
+						 intent.putExtra("idcode", et_youhuima.getText().toString());
 						 setResult(1005, intent);
 						 finish();
 						 overridePendingTransition(R.anim.push_right_in,

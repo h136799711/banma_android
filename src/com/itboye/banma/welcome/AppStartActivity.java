@@ -105,7 +105,7 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 			e.printStackTrace();
 			Log.v("获取token异常",e+"" );
 		}
-		first = shared.getBoolean("First", false);
+		first = shared.getBoolean("First", true);
 
 		animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
 		view.startAnimation(animation);
