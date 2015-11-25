@@ -106,22 +106,22 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 						tv_youhui_list.setText(temp);
 						System.out.println(content.toString());
 						tv_youhui_list.setVisibility(View.VISIBLE);
+					}else {
+						tv_youhui_list.setVisibility(View.VISIBLE);
+						tv_youhui_list.setTextColor(R.color.lightgray);
+						//tv_youhui_list.setTextSize(R.dimen.text_size_14);
+						tv_youhui_list.setGravity(Gravity.LEFT);
+						LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+								(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+						layoutParams.setMargins(20,30,20,0);//4个参数按顺序分别是左上右下
+						tv_youhui_list.setLayoutParams(layoutParams);
+						tv_youhui_list.setText("优惠码的使用方法: 您可以通过其他安装斑马海购app的手机，"
+								+ "我的名片中获取相关的优惠码字符串，然后输入到当前界面即可。");
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}else {
-				tv_youhui_list.setVisibility(View.VISIBLE);
-				tv_youhui_list.setTextColor(R.color.lightgray);
-				//tv_youhui_list.setTextSize(R.dimen.text_size_14);
-				tv_youhui_list.setGravity(Gravity.LEFT);
-				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-						(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-				layoutParams.setMargins(20,30,20,0);//4个参数按顺序分别是左上右下
-				tv_youhui_list.setLayoutParams(layoutParams);
-				tv_youhui_list.setText("优惠码的使用方法: 您可以通过其他安装斑马海购app的手机，"
-						+ "我的名片中获取相关的优惠码字符串，然后输入到当前界面即可。");
 			}
 		}else if (Request==2)  {
 				try {
