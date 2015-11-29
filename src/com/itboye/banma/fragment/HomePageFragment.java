@@ -260,8 +260,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 			int code = jsondata.getInt("code");
 			if (code == 0) {
-				Toast.makeText(getActivity(), "code=1" + data.toString(), Toast.LENGTH_SHORT)
-				.show();
+				/*Toast.makeText(getActivity(), "code=1" + data.toString(), Toast.LENGTH_SHORT)
+				.show();*/
 				wait_ll.setVisibility(View.GONE);
 				retry_img.setVisibility(View.GONE);
 				loading_ll.setVisibility(View.GONE);
@@ -279,12 +279,12 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 				}
 
 			} else {
-				Toast.makeText(getActivity(), "code=0" + data.toString(), Toast.LENGTH_SHORT)
-				.show();
-				if(state<=1){
-					Toast.makeText(getActivity(), "code=00" + data.toString(), Toast.LENGTH_SHORT)
-					.show();
-				initData();
+				/*Toast.makeText(getActivity(), "code=0" + data.toString(), Toast.LENGTH_SHORT)
+				.show();*/
+				if(state<=2){
+					/*Toast.makeText(getActivity(), "code=00" + data.toString(), Toast.LENGTH_SHORT)
+					.show();*/
+					initData();
 				}
 				else{
 					Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();

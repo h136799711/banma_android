@@ -26,14 +26,18 @@ import com.itboye.banma.entity.OrderItem;
 import com.itboye.banma.entity.SkuStandard;
 import com.itboye.banma.util.BaseViewHolder;
 import com.itboye.banma.utils.BitmapCache;
+import com.itboye.banma.utils.OrderBitmapCache;
 
 public class OrderListItemAdapter  extends BaseAdapter {
 	private Context context;
 	private List<OrderItem> list = new ArrayList<OrderItem>();
+	private ImageLoader imageLoader;
 
 	public OrderListItemAdapter(Context context, List<OrderItem> list) {
 		this.context = context;
 		this.list = list;
+		imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+				new OrderBitmapCache());
 	}
 
 	@Override
@@ -71,40 +75,41 @@ public class OrderListItemAdapter  extends BaseAdapter {
 	@Override
 	public View getView(final int position, View view, ViewGroup parent) {
 		final OrderItem order = list.get(position);
+		ViewHolder holder;
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(R.layout.confirm_order_item,
 					parent, false);
-			ImageView order_pic = BaseViewHolder.get(view, R.id.order_pic);
-			ImageListener listener = ImageLoader.getImageListener(order_pic,
+			holder = new ViewHolder();
+			holder.order_pic = (ImageView) view.findViewById(R.id.order_pic);
+			holder.order_name = (TextView) view.findViewById(R.id.order_name);
+			holder.order_standard = (TextView) view.findViewById(R.id.order_standard);
+			holder.order_price = (TextView) view.findViewById(R.id.order_price);
+			holder.order_number = (TextView) view.findViewById(R.id.order_number);
+			holder.line = view.findViewById(R.id.line);
+			holder.listener = ImageLoader.getImageListener(holder.order_pic,
 					0, R.drawable.image_load_fail);
-			ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-					new BitmapCache());
-			//String urlimg = AppContext.getImg()+order.getImg_url();
-			imageLoader.get(order.getImg_url(), listener, 80, 80);
-		}
-		
-		TextView order_name = BaseViewHolder.get(view, R.id.order_name);
-		TextView order_standard = BaseViewHolder.get(view, R.id.order_standard);
-		TextView order_price = BaseViewHolder.get(view, R.id.order_price);
-		TextView order_number = BaseViewHolder.get(view, R.id.order_number);
-		View line = BaseViewHolder.get(view, R.id.line);
-		
-		
-		
-		order_name.setText(order.getName());
-		if(order.getSku_desc()==null || order.getSku_desc().length()<=0){
-			order_standard.setText("无规格参数");
+			view.setTag(holder);
 		}else{
-			order_standard.setText(order.getSku_desc());
+			holder = (ViewHolder) view.getTag();
 		}
-		order_price.setText("￥" + order.getPrice());
+
+		//String urlimg = AppContext.getImg()+order.getImg_url();
+		imageLoader.get(order.getImg_url(), holder.listener, 150, 150);
+		
+		holder.order_name.setText(order.getName());
+		if(order.getSku_desc()==null || order.getSku_desc().length()<=0){
+			holder.order_standard.setText("无规格参数");
+		}else{
+			holder.order_standard.setText(order.getSku_desc());
+		}
+		holder.order_price.setText("￥" + order.getPrice());
 		// order_number.setText("×"+skuStandard.getNum());
-		order_number.setText("×"+order.getCount());
+		holder.order_number.setText("×"+order.getCount());
 		int num = getCount()-1;
 		if(position >= num){
-			line.setVisibility(View.GONE);
+			holder.line.setVisibility(View.GONE);
 		}else{
-			line.setVisibility(View.VISIBLE);
+			holder.line.setVisibility(View.VISIBLE);
 		}
 		
 		view.setOnClickListener(new OnClickListener() {
@@ -120,5 +125,25 @@ public class OrderListItemAdapter  extends BaseAdapter {
 		});
 		
 		return view;
+	}
+	
+	private static class ViewHolder {
+		ImageView order_pic;
+		TextView order_name;
+		TextView order_standard;
+		TextView order_price;
+		TextView order_number;
+		View line;
+		ImageListener listener;
+	}
+	
+	/**
+	 * 刷新列表
+	 * 
+	 * @param newList
+	 */
+	public void notifyDataSetChanged(List<OrderItem> newList) {
+		this.list = newList;
+		notifyDataSetChanged();
 	}
 }

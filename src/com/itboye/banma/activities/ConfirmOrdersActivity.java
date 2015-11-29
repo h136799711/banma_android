@@ -67,6 +67,8 @@ StrUIDataListener {
 	private TextView adr_name;
 	private TextView adr_phone;
 	private TextView adr_address;
+	private TextView discount_code;
+	private TextView privilege_money;
 	private LinearLayout select_adress_layout;
 	private LinearLayout add_adress_layout;
 	private MailingAdress address = null;
@@ -124,6 +126,8 @@ StrUIDataListener {
 		adr_name = (TextView) findViewById(R.id.adr_name);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
 		adr_address = (TextView) findViewById(R.id.adr_address);
+		discount_code = (TextView) findViewById(R.id.discount_code);
+		privilege_money = (TextView) findViewById(R.id.privilege_money);
 		ll_beizhu=(LinearLayout)findViewById(R.id.ll_beizhu);
 		ll_beizhu.setOnClickListener(this);
 		ll_youhui=(LinearLayout)findViewById(R.id.ll_youhui);
@@ -218,7 +222,13 @@ StrUIDataListener {
 				String  discount=data.getStringExtra("discount_ratio");
 				String store_id=data.getStringExtra("store_id");
 				String  idcode=data.getStringExtra("idcode");
-
+				Double discount_price = (Double) (priceAll * Double.valueOf(discount));
+				discount_code.setText(idcode);
+				privilege_money.setText("￥"+discount_price);
+				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
+				order_all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
+				
+				
 			}
 		
 		}
@@ -318,7 +328,7 @@ StrUIDataListener {
 			break;
 		case R.id.confirm:
 			// 添加订单
-			ordersAdd(appContext.getLoginUid(), cart_ids, null, null,address.getId(),2,1);
+			ordersAdd(appContext.getLoginUid(), cart_ids, discount_code.getText().toString(), null,address.getId(),2,1);
 			dialog.setMessage("提交订单...");
 			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			dialog.show();

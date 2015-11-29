@@ -13,9 +13,9 @@ public class BitmapCache implements ImageCache {
 		if (mCache == null) {
 			// 获取到可用内存的最大值，使用内存超出这个值会引起OutOfMemory异常。  
 		    // LruCache通过构造函数传入缓存值，以KB为单位。  
-		    int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);  
+		    int maxMemory = (int) (Runtime.getRuntime().maxMemory());  
 		    // 使用最大可用内存值的1/8作为缓存的大小。  
-		    int cacheSize = maxMemory / 5;  
+		    int cacheSize = maxMemory / 10;  
 			//int maxSize = 10 * 1024 * 1024;
 			mCache = new LruCache<String, Bitmap>(cacheSize) {
 				@Override

@@ -72,6 +72,15 @@
                 android:divider="@color/white"
                 android:dividerHeight="1px" />
         </com.itboye.banma.view.MyLinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/order_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

@@ -28,6 +28,7 @@ import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.ProductItem;
 import com.itboye.banma.utils.BitmapCache;
+import com.itboye.banma.utils.OrderBitmapCache;
 import com.nineoldandroids.view.ViewHelper;
 
 public class Adapter_ListView_cart extends BaseAdapter  {
@@ -41,7 +42,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 
 	public Adapter_ListView_cart(Context context, ArrayList<HashMap<String, Object>> arrayList) {
 		this.imageLoader= new ImageLoader(AppContext.getHttpQueues(),
-				new BitmapCache());
+				new OrderBitmapCache());
 		this.context = context;
 		this.arrayList = arrayList;
 	}
@@ -100,7 +101,7 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
 					R.drawable.image_loading, R.drawable.image_load_fail);
 			try {
-			       imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,80,85);
+			       imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,150,150);
 			} catch (Exception e) {
 				// TODO: handle exception
 				holderView.iv_icon.setImageResource(R.drawable.image_load_fail);

@@ -103,34 +103,33 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 	@Override
 	public View getView(final int position, View view, ViewGroup parent) {
 		final OrderDetailListItem order = orderList.get(position);
-		
-		List<OrderItem> data = null;
+		ViewHolder holder;
+		List<OrderItem> data = order.get_items();
 		if (view == null) {
+			holder = new ViewHolder();
 			view = LayoutInflater.from(context).inflate(R.layout.order_listitem,
 					parent, false);
+			holder.order_click_layout = BaseViewHolder.get(view, R.id.order_click_layout);
+			holder.order_code = BaseViewHolder.get(view, R.id.order_code);
+			holder.status = BaseViewHolder.get(view, R.id.status);
+			holder.order_list = BaseViewHolder.get(view, R.id.order_list);
+			holder.all_price = BaseViewHolder.get(view, R.id.all_price);
+			holder.confirm_one = BaseViewHolder.get(view, R.id.confirm_one);
+			holder.confirm_two = BaseViewHolder.get(view, R.id.confirm_two);
+			holder.adapter = new OrderListItemAdapter(context, data);
+			view.setTag(holder);
+		} else {
+			holder = (ViewHolder) view.getTag();
+			holder.adapter.notifyDataSetChanged(data);
 		}
-		MyLinearLayout order_click_layout = BaseViewHolder.get(view, R.id.order_click_layout);
-		TextView order_code = BaseViewHolder.get(view, R.id.order_code);
-		TextView status = BaseViewHolder.get(view, R.id.status);
-		MyListView order_list = BaseViewHolder.get(view, R.id.order_list);
-		TextView all_price = BaseViewHolder.get(view, R.id.all_price);
-		Button confirm_one = BaseViewHolder.get(view, R.id.confirm_one);
-		Button confirm_two = BaseViewHolder.get(view, R.id.confirm_two);
-		
-		order_code.setText(order.getOrder_code());
-		status.setText("["+order.getStatus()+Constant.getStatus(Integer.parseInt(order.getStatus()))+"]"+
+	
+		holder.order_list.setAdapter(holder.adapter);
+		holder.order_code.setText(order.getOrder_code());
+		holder.status.setText("["+order.getStatus()+Constant.getStatus(Integer.parseInt(order.getStatus()))+"]"+
 				"["+order.getOrder_status()+Constant.getOrderStatus(Integer.parseInt(order.getOrder_status()))+"]"+
 				"["+order.getPay_status()+Constant.getPayStatus(Integer.parseInt(order.getPay_status()))+"]");
-		all_price.setText("￥"+order.getPrice());
-		
-		data = order.get_items();
-		if(data != null){
-			OrderListItemAdapter adapter = new OrderListItemAdapter(context, data);
-			order_list.setAdapter(adapter);
-			order_list.setFocusable(false);
-			order_list.setFocusableInTouchMode(false);
-		}
-		
+		holder.all_price.setText("￥"+order.getPrice());
+	
 		view.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -145,11 +144,11 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 
 		switch (Integer.parseInt(order.getOrder_status())) {
 		case Constant.ORDER_CANCEL:		//取消或交易关闭
-			status.setText("["+Constant.getOrderStatus(Constant.ORDER_CANCEL)+"]");  //[交易关闭]
-			confirm_one.setVisibility(View.GONE);
-			confirm_two.setVisibility(View.GONE);
-			confirm_one.setText("取消订单");
-			confirm_one.setOnClickListener(new OnClickListener() {
+			holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_CANCEL)+"]");  //[交易关闭]
+			holder.confirm_one.setVisibility(View.GONE);
+			holder.confirm_two.setVisibility(View.GONE);
+			holder.confirm_one.setText("取消订单");
+			holder.confirm_one.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(context, "取消订单", Toast.LENGTH_LONG).show();
@@ -161,16 +160,16 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 			
 		case Constant.ORDER_TOBE_CONFIRMED:		//待确认状态
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
-				status.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_CONFIRMED)+"]");  //[交易关闭]
-				confirm_one.setVisibility(View.GONE);
-				confirm_two.setVisibility(View.GONE);
+				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_CONFIRMED)+"]");  //[交易关闭]
+				holder.confirm_one.setVisibility(View.GONE);
+				holder.confirm_two.setVisibility(View.GONE);
 			}else if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_TOBE_PAID ){ //待支付
-				status.setText("[待付款]");  //[待付款]
-				confirm_one.setVisibility(View.VISIBLE);
-				confirm_two.setVisibility(View.GONE);
-				confirm_one.setText("发起支付");
-				confirm_two.setText("取消订单");
-				confirm_one.setOnClickListener(new OnClickListener() {
+				holder.status.setText("[待付款]");  //[待付款]
+				holder.confirm_one.setVisibility(View.VISIBLE);
+				holder.confirm_two.setVisibility(View.GONE);
+				holder.confirm_one.setText("发起支付");
+				holder.confirm_two.setText("取消订单");
+				holder.confirm_one.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Toast.makeText(context, "发起支付", Toast.LENGTH_LONG).show();
@@ -180,7 +179,7 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 
 					
 				});
-				confirm_two.setOnClickListener(new OnClickListener() {
+				holder.confirm_two.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Toast.makeText(context, "取消订单", Toast.LENGTH_LONG).show();
@@ -193,27 +192,27 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 		
 		case Constant.ORDER_TOBE_SHIPPED:		//待发货状态
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
-				status.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_SHIPPED)+"]");  //[代发货]
-				confirm_one.setVisibility(View.GONE);
-				confirm_two.setVisibility(View.GONE);
+				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_SHIPPED)+"]");  //[代发货]
+				holder.confirm_one.setVisibility(View.GONE);
+				holder.confirm_two.setVisibility(View.GONE);
 			}
 			break;
 			
 		case Constant.ORDER_SHIPPED:		//已发货
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
-				status.setText("["+Constant.getOrderStatus(Constant.ORDER_SHIPPED)+"]");  //[待收货]
-				confirm_one.setVisibility(View.VISIBLE);
-				confirm_two.setVisibility(View.VISIBLE);
-				confirm_one.setText("查看物流");
-				confirm_two.setText("确认收货");
-				confirm_one.setOnClickListener(new OnClickListener() {
+				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_SHIPPED)+"]");  //[待收货]
+				holder.confirm_one.setVisibility(View.VISIBLE);
+				holder.confirm_two.setVisibility(View.VISIBLE);
+				holder.confirm_one.setText("查看物流");
+				holder.confirm_two.setText("确认收货");
+				holder.confirm_one.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Toast.makeText(context, "查看物流", Toast.LENGTH_LONG).show();
 						getLogistics(order.getOrder_code());
 					}
 				});
-				confirm_two.setOnClickListener(new OnClickListener() {
+				holder.confirm_two.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						location = position;
@@ -227,11 +226,11 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 			
 		case Constant.ORDER_RECEIPT_OF_GOODS:		//已收货
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
-				status.setText("["+Constant.getOrderStatus(Constant.ORDER_RECEIPT_OF_GOODS)+"]");  //[已收货]
-				confirm_one.setVisibility(View.GONE);
-				confirm_two.setVisibility(View.GONE);
-				confirm_one.setText("评价");
-				confirm_one.setOnClickListener(new OnClickListener() {
+				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_RECEIPT_OF_GOODS)+"]");  //[已收货]
+				holder.confirm_one.setVisibility(View.GONE);
+				holder.confirm_two.setVisibility(View.GONE);
+				holder.confirm_one.setText("评价");
+				holder.confirm_one.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Toast.makeText(context, "待评价", Toast.LENGTH_LONG).show();
@@ -467,5 +466,16 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 			}
 		}
 	}
+	private static class ViewHolder {
+		MyLinearLayout order_click_layout;
+		TextView order_code;
+		TextView status;
+		MyListView order_list;
+		TextView all_price;
+		Button confirm_one;
+		Button confirm_two;
+		OrderListItemAdapter adapter;
+	}
+
 }
 

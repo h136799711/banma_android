@@ -452,6 +452,7 @@
                                 android:textColor="@color/grey" />
 
                             <TextView
+                                android:id="@+id/discount_money"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingRight="15dp"

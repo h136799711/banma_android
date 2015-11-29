@@ -7,6 +7,7 @@ import com.itboye.banma.activities.AddAddressActivity;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.entity.Area;
+import com.itboye.banma.utils.BitmapCache;
 
 import android.app.Application;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.util.Log;
 public class AppContext extends Application {
 	final static String TAG = "AppContext.java";
 	private static boolean isTokenSuccess=false;//判断token是否拿到，启动server
+	public static BitmapCache bitmapCache = new BitmapCache();
 	public static String coin;//我的钱包
 	
 	public static String getCoin() {

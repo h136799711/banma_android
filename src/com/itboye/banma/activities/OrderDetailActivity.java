@@ -52,6 +52,7 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	private MyListView order_list;
 	private TextView order_code_text;
 	private TextView createtime_text;
+	private TextView discount_money;
 	private LinearLayout order_flex;
 	private ImageView img_flex;
 	private TextView order_state;
@@ -95,6 +96,7 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		createtime_text = (TextView) findViewById(R.id.createtime_text);
 		order_state =  (TextView) findViewById(R.id.order_state);
 		order_all_price =  (TextView) findViewById(R.id.order_all_price);
+		discount_money = (TextView) findViewById(R.id.discount_money);
 		confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(this);
 		order_flex.setOnClickListener(this);
@@ -222,7 +224,7 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		OrderListItemAdapter adapter = new OrderListItemAdapter(OrderDetailActivity.this, orderDetail.getItems());
 		order_list.setAdapter(adapter);
 		order_all_price.setText("￥"+orderDetail.getPrice());
-		
+		discount_money.setText("￥"+orderDetail.getDiscount_money()); 
 		switch (Integer.parseInt(orderDetail.getOrder_status())) {
 		case Constant.ORDER_CANCEL:		//取消或交易关闭
 			order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_CANCEL)+"状态]");  //[交易关闭]
