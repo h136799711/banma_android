@@ -25,43 +25,44 @@ public class ViewPagerScroller extends ScrollView {
      */  
     private int lastScrollY; 
   
+ // 滑动距离及坐标  
+    private float xDistance, yDistance, xLast, yLast; 
+  
     public ViewPagerScroller(Context context, AttributeSet attrs, int defStyle) {  
         super(context, attrs, defStyle);  
-        init();  
     }  
   
     public ViewPagerScroller(Context context) {  
         super(context);  
-        init();  
     }  
   
     public ViewPagerScroller(Context context, AttributeSet attrs) {  
         super(context, attrs);  
-        init();  
-    }  
-  
-    private void init() {  
-        mGestureDetector = new GestureDetector(getContext(),
-                new YScrollDetector());  
-        setFadingEdgeLength(0);  
-    }  
+    }   
   
     @Override  
     public boolean onInterceptTouchEvent(MotionEvent ev) {  
-        return super.onInterceptTouchEvent(ev)  
-                && mGestureDetector.onTouchEvent(ev);  
-    }  
-  
-    private class YScrollDetector extends SimpleOnGestureListener {  
-        @Override  
-        public boolean onScroll(MotionEvent e1, MotionEvent e2,  
-                float distanceX, float distanceY) {  
-              
-            if (Math.abs(distanceY) >= Math.abs(distanceX)) {  
-                return true;  
-            }  
-            return false;  
-        }  
+    	 switch (ev.getAction()) {  
+         case MotionEvent.ACTION_DOWN:  
+             xDistance = yDistance = 0f;  
+             xLast = ev.getX();  
+             yLast = ev.getY();  
+             break;  
+         case MotionEvent.ACTION_MOVE:  
+             final float curX = ev.getX();  
+             final float curY = ev.getY();  
+
+             xDistance += Math.abs(curX - xLast);  
+             yDistance += Math.abs(curY - yLast);  
+             xLast = curX;  
+             yLast = curY;  
+
+             if(xDistance > yDistance){  
+                 return false;  
+             }    
+     }  
+
+     return super.onInterceptTouchEvent(ev);    
     }  
     /** 
      * 设置滚动接口 
