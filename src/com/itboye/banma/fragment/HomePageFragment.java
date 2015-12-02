@@ -48,11 +48,6 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	private View chatView;
 	private ViewPager mViewPager;
 	private List<View> mImages = new ArrayList<View>();
-	private LinearLayout all_top;
-	private ImageView back;
-	private TextView title;
-	private View top_line;
-	private ImageView more;
 	private MyPageAdapter adapter;
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
@@ -110,15 +105,6 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 				});
 		darwableView = (DrawableChangeView) chatView.findViewById(R.id.drawableChangeView);
 		mViewPager = (ViewPager) chatView.findViewById(R.id.id_viewpager);
-		all_top = (LinearLayout) chatView.findViewById(R.id.all_top);
-		top_line = chatView.findViewById(R.id.top_line);
-		back = (ImageView) chatView.findViewById(R.id.iv_back);
-		title = (TextView) chatView.findViewById(R.id.title);
-		more = (ImageView) chatView.findViewById(R.id.more);
-		back.setVisibility(View.GONE);
-		more.setVisibility(View.GONE);
-		top_line.setVisibility(View.GONE);
-		title.setText("商品");
 		
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.GONE);

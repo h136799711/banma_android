@@ -746,6 +746,7 @@ public class BabyActivity extends FragmentActivity implements
 					skuStandard.setSku(cartData_jsonObject.getString("sku_desc"));
 					skuStandard.setName(cartData_jsonObject.getString("name"));
 					skuStandard.setNum(cartData_jsonObject.getString("count"));
+					skuStandard.setTaxrate(cartData_jsonObject.getString("taxrate"));
 					skuStandard.setIcon_url(appContext.getImg()+cartData_jsonObject.getString("icon_url"));
 					List<SkuStandard> list = new ArrayList<SkuStandard>();
 					list.add(skuStandard);
@@ -815,8 +816,13 @@ public class BabyActivity extends FragmentActivity implements
 		ori_price.getPaint().setFlags(
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 		total_sales.setText( productDetail.getTotal_sales());
-		weight.setText(productDetail.getWeight()+"kg");
-		customs_duties.setText("￥0.0");
+		weight.setText(productDetail.getWeight()/1000+"kg");
+		if(productDetail.getTax_rate() != null){
+			customs_duties.setText(Double.valueOf(productDetail.getTax_rate())*100+"%");
+		}else{
+			customs_duties.setText("0");
+		}
+		
 		sales_area.setText(productDetail.getSource());
 		/*popWindow = new BabyPopWindow(this, sku_info, productDetail.getName(),
 				productDetail.getSkuInfo(), productDetail.getMain_img(),

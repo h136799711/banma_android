@@ -561,6 +561,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 						tempSku.setSku(arrayList_cart.get(i).get("sku_desc").toString());
 						tempSku.setSku_id(arrayList_cart.get(i).get("sku_id").toString());
 						tempSku.setProduct_id(arrayList_cart.get(i).get("p_id").toString());
+						tempSku.setTaxrate(arrayList_cart.get(i).get("taxrate").toString());
 						list.add(tempSku);
 					//	j+=1;
 					}

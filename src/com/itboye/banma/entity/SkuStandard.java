@@ -18,6 +18,7 @@ public class SkuStandard implements Serializable {
 	private String sku;				//规格
 	private String num = "1";         //购买数量
 	private String name; 			//商品名称
+	private String taxrate = "0";			//税收率
 	public int getId() {
 		return id;
 	}
@@ -89,6 +90,12 @@ public class SkuStandard implements Serializable {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getTaxrate() {
+		return taxrate;
+	}
+	public void setTaxrate(String taxrate) {
+		this.taxrate = taxrate;
 	}
 	
 	

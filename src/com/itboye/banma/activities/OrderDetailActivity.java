@@ -1,5 +1,7 @@
 package com.itboye.banma.activities;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
@@ -50,9 +52,13 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	private TextView order_price;
 	private TextView order_all_price;
 	private MyListView order_list;
+	private TextView store_name;
 	private TextView order_code_text;
 	private TextView createtime_text;
 	private TextView discount_money;
+	private TextView weight;
+	private TextView post_price;
+	private TextView tariff;
 	private LinearLayout order_flex;
 	private ImageView img_flex;
 	private TextView order_state;
@@ -92,11 +98,15 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		adr_address = (TextView) findViewById(R.id.adr_address);
 		order_price = (TextView) findViewById(R.id.order_price);
 		order_list = (MyListView) findViewById(R.id.order_list);
+		store_name = (TextView) findViewById(R.id.store_name);
 		order_code_text = (TextView) findViewById(R.id.order_code_text);
 		createtime_text = (TextView) findViewById(R.id.createtime_text);
 		order_state =  (TextView) findViewById(R.id.order_state);
 		order_all_price =  (TextView) findViewById(R.id.order_all_price);
 		discount_money = (TextView) findViewById(R.id.discount_money);
+		weight = (TextView) findViewById(R.id.weight);
+		post_price = (TextView) findViewById(R.id.post_price);
+		tariff = (TextView) findViewById(R.id.tariff);
 		confirm = (Button) findViewById(R.id.confirm);
 		confirm.setOnClickListener(this);
 		order_flex.setOnClickListener(this);
@@ -218,9 +228,20 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		adr_phone.setText(orderDetail.getMobile());
 		adr_address.setText(orderDetail.getCountry()+" "+orderDetail.getProvince()
 				+" "+orderDetail.getCity()+" "+orderDetail.getArea()+" "+orderDetail.getDetailinfo());
+		store_name.setText(orderDetail.getStore_name());
 		order_price.setText("￥"+orderDetail.getPrice());
 		order_code_text.setText(orderDetail.getOrder_code());
-		createtime_text.setText(orderDetail.getCreatetime());
+		//时间戳转化为时间格式
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String date = sdf.format(new Date(Long.valueOf(orderDetail.getCreatetime())*1000));
+		createtime_text.setText(date);
+		post_price.setText("￥"+orderDetail.getPost_price());
+		tariff.setText("￥"+orderDetail.getTax_amount());
+		double weight_kg = 0.0;
+		for(int i=0; i<orderDetail.getItems().size(); i++){
+			weight_kg += orderDetail.getItems().get(i).getWeight() * Integer.valueOf(orderDetail.getItems().get(i).getCount());
+		}
+		weight.setText(weight_kg/1000 +"kg");
 		OrderListItemAdapter adapter = new OrderListItemAdapter(OrderDetailActivity.this, orderDetail.getItems());
 		order_list.setAdapter(adapter);
 		order_all_price.setText("￥"+orderDetail.getPrice());

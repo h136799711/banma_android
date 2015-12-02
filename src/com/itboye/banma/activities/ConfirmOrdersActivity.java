@@ -55,6 +55,7 @@ StrUIDataListener {
 	private final int ORDER = 2;
 	private AppContext appContext; 
 	private Double priceAll;
+	private Double tax_moneyAll;
 	private int numAll;
 	private ImageView top_back;
 	private TextView top_title;
@@ -69,6 +70,7 @@ StrUIDataListener {
 	private TextView adr_address;
 	private TextView discount_code;
 	private TextView privilege_money;
+	private TextView tax_money;
 	private LinearLayout select_adress_layout;
 	private LinearLayout add_adress_layout;
 	private MailingAdress address = null;
@@ -102,16 +104,21 @@ StrUIDataListener {
 
 		priceAll = 0.0;
 		numAll = 0;
+		tax_moneyAll = 0.0;
 		for (int i = 0; i < list.size(); i++) {
 			priceAll += list.get(i).getPrice()
 					* Integer.valueOf(list.get(i).getNum());
 			numAll += Integer.parseInt(list.get(i).getNum());
+			tax_moneyAll += list.get(i).getPrice()
+					* Integer.valueOf(list.get(i).getNum())
+					*Double.valueOf(list.get(i).getTaxrate());
 			if(i==0){
 				cart_ids = ""+list.get(i).getId();
 			}else{
 				cart_ids += ","+list.get(i).getId();
 			}
 		}
+		priceAll += tax_moneyAll;
 	}
 
 	private void initView() {
@@ -124,6 +131,7 @@ StrUIDataListener {
 		top_back = (ImageView) findViewById(R.id.iv_back);
 		top_title = (TextView) findViewById(R.id.title);
 		adr_name = (TextView) findViewById(R.id.adr_name);
+		tax_money = (TextView) findViewById(R.id.tax_money);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
 		adr_address = (TextView) findViewById(R.id.adr_address);
 		discount_code = (TextView) findViewById(R.id.discount_code);
@@ -160,6 +168,7 @@ StrUIDataListener {
 		all_price.setText("￥" + priceAll);
 		order_all_price.setText("￥" + priceAll);
 		top_title.setText(string.confirm_order);
+		tax_money.setText("￥" + tax_moneyAll);
 
 		load_data();
 	}

@@ -23,7 +23,7 @@ public class OrderItem {
 	private String dt_tariff_code;
 	private String goodsunit;
 	private String dt_origin_country;
-	private String weight;
+	private double weight;
 	public int getId() {
 		return id;
 	}
@@ -126,10 +126,10 @@ public class OrderItem {
 	public void setDt_origin_country(String dt_origin_country) {
 		this.dt_origin_country = dt_origin_country;
 	}
-	public String getWeight() {
+	public double getWeight() {
 		return weight;
 	}
-	public void setWeight(String weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 }

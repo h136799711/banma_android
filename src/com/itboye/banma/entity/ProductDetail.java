@@ -38,6 +38,7 @@ public class ProductDetail {
 	private String dt_origin_country;	//产地编码
 	private String dt_goods_unit;		//计量单位编码
 	private String dt_tariff_code;		//行邮税号
+	private String tax_rate;			//税率
 	private List<SkuStandard> sku_list;
 	private List<SkuInfo> sku_info_list;   //商品型号
 	
@@ -327,6 +328,14 @@ public class ProductDetail {
 
 	public void setSku_info_list(List<SkuInfo> sku_info_list) {
 		this.sku_info_list = sku_info_list;
+	}
+
+	public String getTax_rate() {
+		return tax_rate;
+	}
+
+	public void setTax_rate(String tax_rate) {
+		this.tax_rate = tax_rate;
 	}
 
 	final public class Sku_info{

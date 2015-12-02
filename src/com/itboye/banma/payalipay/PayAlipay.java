@@ -8,12 +8,16 @@ import java.util.Locale;
 import java.util.Random;
 
 import com.alipay.sdk.app.PayTask;
+import com.itboye.banma.R;
+import com.itboye.banma.activities.BabyOrderActivity;
+import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.OrderPayData;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -58,7 +62,21 @@ public class PayAlipay {
 					if (TextUtils.equals(resultStatus, "9000")) {
 						Toast.makeText(mContext, "支付成功",
 								Toast.LENGTH_SHORT).show();
+						 Intent intent = new Intent(mContext,BabyOrderActivity.class);
+			           	 intent.putExtra("orderState", Constant.STATE_DAIFAHUO);
+			           	mContext.startActivity(intent);
+			           	((Activity) mContext).overridePendingTransition(R.anim.in_from_right,
+									R.anim.out_to_left);
+			           	((Activity) mContext).finish();
+			           	
 					} else {
+						
+						Intent intent = new Intent(mContext,BabyOrderActivity.class);
+			           	 intent.putExtra("orderState", Constant.STATE_DAIFUKUAN);
+			           	mContext.startActivity(intent);
+			           ((Activity) mContext).overridePendingTransition(R.anim.in_from_right,
+									R.anim.out_to_left);
+						
 						// 判断resultStatus 为非“9000”则代表可能支付失败
 						// “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
 						if (TextUtils.equals(resultStatus, "8000")) {
@@ -71,6 +89,7 @@ public class PayAlipay {
 									Toast.LENGTH_SHORT).show();
 
 						}
+						((Activity) mContext).finish();
 					}
 					break;
 				}

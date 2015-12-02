@@ -43,7 +43,7 @@
         android:id="@+id/frame_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="gone" >
+        android:visibility="gone" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -65,8 +65,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-            
-        <include layout="@layout/top_nocolor" /> 
+
+            <!-- <include layout="@layout/top_nocolor" /> -->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/title_ico" />
 
             <View
                 android:layout_width="match_parent"

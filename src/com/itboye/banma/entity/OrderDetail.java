@@ -12,9 +12,10 @@ import android.widget.ListView;
 public class OrderDetail {
 
 	private int id;                     
-	private String order_code;
-	private String post_price;
-	private String discount_money;
+	private String order_code;		//
+	private String tax_amount;		//税收
+	private String post_price;		//运费
+	private String discount_money;	//优惠金额
 	private String createtime;
 	private String updatetime;
 	private String uid;
@@ -31,6 +32,12 @@ public class OrderDetail {
 	private String area;
 	private String mobile;
 	private String username;
+	private String store_name;		//店铺名称
+	private String store_desc;		//店铺描述
+	private String store_banner ;		//店铺店招
+	private String store_logo_url;		//店铺logo图片地址
+	private String service_phone;		//店铺联系电话
+	
 	private List<OrderItem> items;
 	public int getId() {
 		return id;
@@ -158,5 +165,42 @@ public class OrderDetail {
 	public void setItems(List<OrderItem> items) {
 		this.items = items;
 	}
+	public String getTax_amount() {
+		return tax_amount;
+	}
+	public void setTax_amount(String tax_amount) {
+		this.tax_amount = tax_amount;
+	}
+	public String getStore_name() {
+		return store_name;
+	}
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
+	public String getStore_desc() {
+		return store_desc;
+	}
+	public void setStore_desc(String store_desc) {
+		this.store_desc = store_desc;
+	}
+	public String getStore_banner() {
+		return store_banner;
+	}
+	public void setStore_banner(String store_banner) {
+		this.store_banner = store_banner;
+	}
+	public String getStore_logo_url() {
+		return store_logo_url;
+	}
+	public void setStore_logo_url(String store_logo_url) {
+		this.store_logo_url = store_logo_url;
+	}
+	public String getService_phone() {
+		return service_phone;
+	}
+	public void setService_phone(String service_phone) {
+		this.service_phone = service_phone;
+	}
+	
 	
 }
