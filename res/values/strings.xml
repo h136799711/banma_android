@@ -15,9 +15,9 @@
     <string name="postcode">邮编</string>
     <string name="save">保存</string>
     <string name="password">密码</string>
-    <string name="username">仅支持手机注册</string>
+    <string name="username">请输入用户名</string>
     <string name="registered">新用户注册</string>
-    <string name="phone_number">手机号</string>
+    <string name="phone_number">仅支持手机号注册</string>
     <string name="check_code">验证码</string>
 	<string name="password1">密码</string>
 	<string name="password2">确认密码</string>

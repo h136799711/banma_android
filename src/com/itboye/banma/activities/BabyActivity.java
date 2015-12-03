@@ -144,7 +144,7 @@ public class BabyActivity extends FragmentActivity implements
 	private int pid;  //商品ID
     UMSocialService mController;
     private ProgressDialog dialog;
-    public String urlShare="http://banma.itboye.com/";
+    public String urlShare="http://banma.itboye.com/index.php/Home/Share/index";
     /** 
      * myScrollView与其父类布局的顶部距离 
      */  
