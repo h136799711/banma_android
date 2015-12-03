@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -53,7 +54,10 @@ import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.listener.SocializeListeners.UMAuthListener;
 import com.umeng.socialize.controller.listener.SocializeListeners.UMDataListener;
 import com.umeng.socialize.exception.SocializeException;
+import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.sso.UMSsoHandler;
+
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
@@ -62,6 +66,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
    TextView tvForget;//忘记密码
    TextView tvQuXiao;//取消
    private int LoginWay;//判断登陆方式
+   private String qqToken;
+   private String qqOpen;
     private ImageView ivWeixin,iv_xinlang,iv_taobao,iv_qq;//微信登陆
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
@@ -82,9 +88,9 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		
 		api = WXAPIFactory.createWXAPI(this,Constant.APP_ID, true);  
 		api.registerApp(Constant.APP_ID);
-		//添加qq平台
-		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "1104887406",
-                "7mxqFi07TN8QD1ZR");
+		//参数1为当前Activity， 参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100424468",
+		                "c7394704798a158208a74ab60104f0ba");
 		qqSsoHandler.addToSocialSDK();
 		
 		// 添加微信平台
@@ -198,8 +204,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			break;
 			
 		case R.id.iv_qq:
-		    Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
-			mController.doOauthVerify(getApplicationContext(), SHARE_MEDIA.QQ, new UMAuthListener() {
+			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.QQ, new UMAuthListener() {
 			    @Override
 			    public void onStart(SHARE_MEDIA platform) {
 			        Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
@@ -211,11 +216,14 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			    @Override
 			    public void onComplete(Bundle value, SHARE_MEDIA platform) {
 			        Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
+			        qqOpen=value.getString("openid", "");
+			        qqToken=value.getString("access_token", "");
+			        ApiClient.qqLogin(LoginActivity.this, qqOpen, qqToken, networkHelper);
 			        //获取相关授权信息
 			        mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, new UMDataListener() {
 			    @Override
 			    public void onStart() {
-			        Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+			    	
 			    }                                              
 			    @Override
 			        public void onComplete(int status, Map<String, Object> info) {
@@ -225,9 +233,9 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			                for(String key : keys){
 			                   sb.append(key+"="+info.get(key).toString()+"\r\n");
 			                }
-			                Log.d("TestData",sb.toString());
+			                Log.v("TestData",sb.toString());
 			            }else{
-			               Log.d("TestData","发生错误："+status);
+			               Log.v("TestData","发生错误："+status);
 			           }
 			        }
 			   
@@ -241,7 +249,48 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			break;
 			
 		case R.id.iv_xinlang:
-		
+			mController.getConfig().setSsoHandler(new SinaSsoHandler());
+			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.SINA,new UMAuthListener() {
+	            @Override
+	            public void onError(SocializeException e, SHARE_MEDIA platform) {
+	            }
+	            @Override
+	            public void onComplete(Bundle value, SHARE_MEDIA platform) {
+	                if (value != null && !TextUtils.isEmpty(value.getString("uid"))) {
+	                    Toast.makeText(LoginActivity.this, "授权成功.",  Toast.LENGTH_SHORT).show();
+	                    
+	                    mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, new UMDataListener() {
+		    			    @Override
+		    			    public void onStart() {
+		    			        Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+		    			    }                                              
+		    			    @Override
+		    			        public void onComplete(int status, Map<String, Object> info) {
+		    			            if(status == 200 && info != null){
+		    			                StringBuilder sb = new StringBuilder();
+		    			                Set<String> keys = info.keySet();
+		    			                for(String key : keys){
+		    			                   sb.append(key+"="+info.get(key).toString()+"\r\n");
+		    			                }
+		    			                Log.d("TestData",sb.toString());
+		    			            }else{
+		    			               Log.d("TestData","发生错误："+status);
+		    			           }
+		    			        }
+		    			});
+	                    
+	                } else {
+	                    Toast.makeText(LoginActivity.this, "授权失败", Toast.LENGTH_SHORT).show();
+	                }
+	                
+
+	            }
+	            @Override
+	            public void onCancel(SHARE_MEDIA platform) {}
+	            @Override
+	            public void onStart(SHARE_MEDIA platform) {}
+	});
+			
 			break;
 			
 		case R.id.iv_taobao:
@@ -462,6 +511,16 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		            }  
 		        });  
 		AppContext.queues.add(imageRequest);  
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /**使用SSO授权必须添加如下代码 */  
+        UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
+        if(ssoHandler != null){
+           ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+        }
     }
 
 }

@@ -53,7 +53,17 @@ public class ApiClient {
 	        VolleyRequest.StrRequestPost(mContext, url, "youHuiMa",params, networkHelper);
 		} 
 		
-	
+	//qq登陆
+		public static void qqLogin(Context mContext, String openid,String openkey ,StrVolleyInterface networkHelper) {
+			String access_token=AppContext.getAccess_token();
+			String url = Constant.URL+"/QQ/login?access_token="+access_token;
+			Map<String,String> params = new HashMap<String, String>();
+	        params.put("openid",openid);
+	        params.put("openkey",openkey);
+	        VolleyRequest.StrRequestPost(mContext, url, "qqLogin",params, networkHelper);
+			
+		} 
+		
 	//微信登陆
 	public static void wxLogin(Context mContext, String code, StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
