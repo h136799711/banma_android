@@ -3,6 +3,7 @@ package com.itboye.banma.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -204,7 +205,7 @@ ChangeItemListener,StateGoShoppingListener,AllGoShoppingListener{
 	            exitTime = System.currentTimeMillis();   
 	        } else {
 	            finish();
-	            System.exit(0);
+	           // System.exit(0);
 	        }
 	        return true;   
 	    }

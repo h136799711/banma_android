@@ -3,6 +3,7 @@ package com.itboye.banma.activities;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -146,8 +147,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 				startActivity(nextIntent);
 				//ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), checkcode, "2", " ", networkHelper);
 			}
-			else
-			{
+			else{
 				Flags=1;
 				ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), edCheckCode.getText().toString(), "1", " ", networkHelper);
 			}

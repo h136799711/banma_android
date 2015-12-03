@@ -2,8 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_WeiXin_1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_WeiXin_2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_QQZone_1.jar"/>
@@ -31,5 +29,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/alipaysecsdk.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/alipayutdid.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

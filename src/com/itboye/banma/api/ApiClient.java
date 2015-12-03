@@ -206,7 +206,6 @@ public class ApiClient {
 		Map<String,String> params = new HashMap<String, String>();
 		//params.put("access_token", access_token);
 		Log.v("用户名", username);
-		
 		Log.v("验证码", code);
 			byte[] encode;
 			try {

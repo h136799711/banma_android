@@ -33,7 +33,8 @@
          android:id="@+id/rl_head"
          android:layout_width="fill_parent"
          android:layout_height="@dimen/more_item_height"
-         android:background="@color/white" >
+        android:background="@drawable/listview_item_selector"
+          >
 
          <TextView
              style="@style/PersonalTextStyle"
@@ -60,7 +61,8 @@
       		android:layout_width="fill_parent"
       		android:id="@+id/rl_username"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+            android:background="@drawable/listview_item_selector"
+            >
             <TextView
                 style="@style/PersonalTextStyle"
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
@@ -83,7 +85,7 @@
          	android:id="@+id/rl_phone_number_"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+              android:background="@drawable/listview_item_selector">
             <TextView
                 style="@style/PersonalTextStyle"
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
@@ -100,7 +102,7 @@
       		android:layout_width="fill_parent"
       		android:id="@+id/rl_weixin"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+           android:background="@drawable/listview_item_selector" >
             <TextView
                 style="@style/PersonalTextStyle"
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
@@ -118,7 +120,7 @@
              android:id="@+id/rl_shengfenzheng"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+              android:background="@drawable/listview_item_selector" >
             <TextView
                 style="@style/PersonalTextStyle"
                 android:layout_marginLeft="@dimen/more_item_marginlefth"
@@ -136,7 +138,7 @@
        		  android:id="@+id/rl_exit1"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+             android:background="@drawable/listview_item_selector" >
 
             <TextView
                 style="@style/PersonalTextStyle"
@@ -156,9 +158,10 @@
                 android:textSize="@dimen/small_middle_text_size"/>
      <RelativeLayout
          android:id="@+id/rl_welcome"
+         android:visibility="gone"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+            android:background="@drawable/listview_item_selector" >
 
             <TextView
                 style="@style/PersonalTextStyle"
@@ -169,12 +172,14 @@
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
         </RelativeLayout>
-        <View  style="@style/CenterLine"/>
+        <View
+            android:visibility="gone"  
+            style="@style/CenterLine"/>
 
          <RelativeLayout
              android:layout_width="fill_parent"
              android:layout_height="@dimen/more_item_height"
-             android:background="@color/white" >
+               android:background="@drawable/listview_item_selector" >
 
              <TextView
                  android:id="@+id/textView1"
@@ -200,7 +205,7 @@
              android:id="@+id/rl_tiaokuan"
              android:layout_width="fill_parent"
              android:layout_height="@dimen/more_item_height"
-             android:background="@color/white" >
+            android:background="@drawable/listview_item_selector" >
 
              <TextView
                  style="@style/PersonalTextStyle"
@@ -217,7 +222,7 @@
              android:id="@+id/rl_aboutbanma"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+            android:background="@drawable/listview_item_selector" >
 
             <TextView
                 style="@style/PersonalTextStyle"
@@ -236,7 +241,7 @@
              android:id="@+id/rl_call_server"
       		android:layout_width="fill_parent"
             android:layout_height="@dimen/more_item_height"
-            android:background="@color/white" >
+             android:background="@drawable/listview_item_selector" >
 
             <TextView
                 android:id="@+id/textview2"

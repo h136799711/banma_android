@@ -146,7 +146,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			jsonObject=new JSONObject(data);
 			userId=jsonObject.getString("data");
 			code=jsonObject.getInt("code");
-			System.out.println("code:"+code);
+			System.out.println("data:"+data.toString());
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
@@ -173,6 +173,7 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			startActivity(intent);
 			finish();
 		} else {
+			System.out.println(userId.toString());
 			Toast.makeText(PasswordActivity.this, "访问服务器错误:"+userId.toString() ,Toast.LENGTH_LONG)
 			.show();
 		}

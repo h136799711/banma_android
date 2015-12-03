@@ -61,6 +61,7 @@ import com.itboye.banma.util.CircleImg;
 import com.itboye.banma.util.FileUtil;
 import com.itboye.banma.util.NetUtil;
 import com.itboye.banma.utils.BitmapCache;
+import com.itboye.banma.welcome.AppStartActivity;
 import com.itboye.banma.welcome.WelcomeActivity;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -301,7 +302,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			}
 			break;
 		case R.id.rl_welcome:
-			startActivity(new Intent(MorePersonal.this,WelcomeActivity.class));
+			startActivity(new Intent(MorePersonal.this,AppStartActivity.class));
 			overridePendingTransition(R.anim.in_from_right,
 					R.anim.out_to_left);
 			break;
