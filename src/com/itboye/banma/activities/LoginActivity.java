@@ -1,6 +1,8 @@
 package com.itboye.banma.activities;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +47,13 @@ import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.analytics.social.UMSocialService;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.listener.SocializeListeners.UMAuthListener;
+import com.umeng.socialize.controller.listener.SocializeListeners.UMDataListener;
+import com.umeng.socialize.exception.SocializeException;
+import com.umeng.socialize.sso.UMQQSsoHandler;
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
 	Button btnLogin;//登陆按钮
@@ -53,7 +62,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
    TextView tvForget;//忘记密码
    TextView tvQuXiao;//取消
    private int LoginWay;//判断登陆方式
-    private ImageView ivWeixin;//微信登陆
+    private ImageView ivWeixin,iv_xinlang,iv_taobao,iv_qq;//微信登陆
 	private AppContext appContext;
 	private StrVolleyInterface networkHelper;
 	private Gson gson = new Gson();
@@ -63,13 +72,20 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
     private SharedPreferences sp ;
 	private Intent intent;
 	private CloseReceiver closeReceiver;
+	private com.umeng.socialize.controller.UMSocialService mController;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
+		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
+		
 		api = WXAPIFactory.createWXAPI(this,Constant.APP_ID, true);  
 		api.registerApp(Constant.APP_ID);
+		//添加qq平台
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "1104887406",
+                "7mxqFi07TN8QD1ZR");
+		qqSsoHandler.addToSocialSDK();
 		
 		// 添加微信平台
 //		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
@@ -135,6 +151,16 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
             Toast.makeText(this, "获取密码时产生解密错误!", Toast.LENGTH_LONG).show();
             pass = "";  
         }  */
+        iv_qq=(ImageView)findViewById(R.id.iv_qq);
+        iv_qq.setOnClickListener(this);
+        
+        iv_taobao=(ImageView)findViewById(R.id.iv_taobao);
+        iv_taobao.setOnClickListener(this);
+        
+        iv_xinlang=(ImageView)findViewById(R.id.iv_xinlang);
+        iv_xinlang.setOnClickListener(this);
+        
+       
         ivWeixin=(ImageView) findViewById(R.id.iv_weixin);
 		 tvQuXiao=(TextView)findViewById(R.id.tv_quxiao);
         tvForget=(TextView)findViewById(R.id.tv_forget);
@@ -169,6 +195,57 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			req.scope = "snsapi_userinfo";  
 			req.state = "wechat_sdk_demo_test";  
 			api.sendReq(req);  
+			break;
+			
+		case R.id.iv_qq:
+		    Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
+			mController.doOauthVerify(getApplicationContext(), SHARE_MEDIA.QQ, new UMAuthListener() {
+			    @Override
+			    public void onStart(SHARE_MEDIA platform) {
+			        Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
+			    }
+			    @Override
+			    public void onError(SocializeException e, SHARE_MEDIA platform) {
+			        Toast.makeText(LoginActivity.this, "授权错误", Toast.LENGTH_SHORT).show();
+			    }
+			    @Override
+			    public void onComplete(Bundle value, SHARE_MEDIA platform) {
+			        Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
+			        //获取相关授权信息
+			        mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, new UMDataListener() {
+			    @Override
+			    public void onStart() {
+			        Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+			    }                                              
+			    @Override
+			        public void onComplete(int status, Map<String, Object> info) {
+			            if(status == 200 && info != null){
+			                StringBuilder sb = new StringBuilder();
+			                Set<String> keys = info.keySet();
+			                for(String key : keys){
+			                   sb.append(key+"="+info.get(key).toString()+"\r\n");
+			                }
+			                Log.d("TestData",sb.toString());
+			            }else{
+			               Log.d("TestData","发生错误："+status);
+			           }
+			        }
+			   
+			});
+			    }
+			@Override
+			public void onCancel(SHARE_MEDIA platform) {
+			        Toast.makeText(LoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
+			    }
+			} );
+			break;
+			
+		case R.id.iv_xinlang:
+		
+			break;
+			
+		case R.id.iv_taobao:
+			
 			break;
 
 		default:
@@ -258,6 +335,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			AppContext.setCoin(user.getCoin());
 			AppContext.setHeadurl(user.getHead());
 			AppContext.setNickname(user.getNickname());
+			AppContext.setIdcode(user.getIdcode());
 		  //  AppContext.setHasHead(true);
 		    saveHead(user.getHead());
 			//AppContext.setIdcode(user.get);
