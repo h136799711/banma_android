@@ -56,6 +56,14 @@ public class AppContext extends Application {
 	public static void setIdcode(String idcode) {
 		AppContext.idcode = idcode;
 	}
+	private String discount_ratio;//优惠比例
+	
+	public String getDiscount_ratio() {
+		return discount_ratio;
+	}
+	public void setDiscount_ratio(String discount_ratio) {
+		this.discount_ratio = discount_ratio;
+	}
 
 	public static String img = null; //图片地址
 	public String password;//登陆密码

@@ -1,6 +1,7 @@
 package com.itboye.banma.activities;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +119,11 @@ StrUIDataListener {
 				cart_ids += ","+list.get(i).getId();
 			}
 		}
-		priceAll += tax_moneyAll;
+		if(priceAll >= 500){      //大于500元收取关税
+			priceAll += tax_moneyAll;
+		}else{
+			tax_moneyAll = 0.0;
+		}
 	}
 
 	private void initView() {
@@ -166,9 +171,17 @@ StrUIDataListener {
 		/* pop_num.setText(""+numAll); */
 		all_num.setText("" + numAll);
 		all_price.setText("￥" + priceAll);
-		order_all_price.setText("￥" + priceAll);
+		DecimalFormat df=new DecimalFormat(".##");
+		Double discount_price = (Double) (priceAll * Double.valueOf(appContext.getDiscount_ratio()));
+		discount_code.setText(appContext.getIdcode());
+		privilege_money.setText("￥"+df.format(discount_price));
+		//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
+		
+		order_all_price.setText("￥"+df.format((Double.valueOf(priceAll) - discount_price)));
+		
+		//order_all_price.setText("￥" + priceAll);
 		top_title.setText(string.confirm_order);
-		tax_money.setText("￥" + tax_moneyAll);
+		tax_money.setText("￥" + df.format(tax_moneyAll));
 
 		load_data();
 	}
@@ -443,8 +456,8 @@ StrUIDataListener {
 				String content = jsondata.getString("data");
 				if (code == 0) {
 					OrderPayData orderPayData;
-					Toast.makeText(ConfirmOrdersActivity.this, "订单添加成功"+data,
-							Toast.LENGTH_SHORT).show();
+					/*Toast.makeText(ConfirmOrdersActivity.this, "订单添加成功"+data,
+							Toast.LENGTH_SHORT).show();*/
 					orderPayData = gson.fromJson(content, OrderPayData.class);
 					// 完成订单提交，成功后启动支付宝付款
 					dialog.dismiss();
