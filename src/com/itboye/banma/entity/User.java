@@ -7,6 +7,7 @@ package com.itboye.banma.entity;
 public class User {
 	private String coin;//我的钱包；aa
 	private String idcode;//优惠码
+	
 	public String getIdcode() {
 		return idcode;
 	}
