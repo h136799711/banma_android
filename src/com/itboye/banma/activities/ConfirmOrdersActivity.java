@@ -237,7 +237,6 @@ StrUIDataListener {
 				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
 				order_all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
 				
-				
 			}
 		
 		}

@@ -91,7 +91,6 @@
         android:layout_height="40dip"
         android:layout_below="@+id/et_new_phone_number"
         android:layout_margin="10dip"
-        android:editable="false"
         android:background="@drawable/bg_edittext"
         android:ems="10"
         android:hint="请输入获取的六位验证码"

@@ -34,6 +34,7 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 	private Button btnSub;//确认修改
 	private ImageView ivBack;//返回按钮
 	SharedPreferences sp;
+	private String requestCode="";
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -87,6 +88,7 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 			if (mobile.length()!=11) {
 				Toast.makeText(NewPhoneActivity.this, "请输入正确地新手机号", Toast.LENGTH_SHORT).show();
 			}else {
+				requestCode="CODE";
 				ApiClient.getCheckCode(NewPhoneActivity.this, mobile, "4", networkHelper);
 			}			
 			break;
@@ -97,6 +99,7 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 			}else if (checdcode.length()!=6) {
 				Toast.makeText(NewPhoneActivity.this, "请先获取验证码", Toast.LENGTH_SHORT).show();
 			} else {
+				requestCode="SUB";
 				ApiClient.changePhone(this, sp.getString(Constant.MY_USERID, ""), etCheckCode.getText().toString(),
 						etNewNumber.getText().toString(), etOldPass.getText().toString(), networkHelper);
 			}
@@ -133,14 +136,14 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 			e1.printStackTrace();
 		}
 		if (code == 0) {
-			if (content.length()==6) {//获取的是验证码
-				etCheckCode.setText(content);
+			if (requestCode.equals("CODE")){//获取的是验证码
+				Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
 				System.out.println("获取验证码成功");
-			}else {
+			}else if (requestCode.equals("SUB")){
 				//保存登陆绑定的手机号
 				Editor editor=sp.edit();
 				editor.putString(Constant.MY_BANGDING, etNewNumber.getText().toString());
-				editor.putString(Constant.MY_ACCOUNT, etNewNumber.getText().toString());
+//				editor.putString(Constant.MY_ACCOUNT, etNewNumber.getText().toString());
 				editor.commit();
 				//修改显示绑定的手机号
 				Intent intent=getIntent();
@@ -152,7 +155,7 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 			}
 		}
 		else {
-			Toast.makeText(this, "请检查手机号和密码:"+content, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
 		}
 	}
 }

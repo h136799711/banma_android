@@ -338,6 +338,15 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 						R.anim.out_to_left);
 			}
 		break;
+		case  R.id.tv_phone_number:
+			if (appContext.isLogin()) {
+				Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
+				newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
+				startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}
+		break;
 		
 		case R.id.rl_exit1:
 			sp.edit().clear().commit();//清空所有sp中的数据
@@ -351,6 +360,14 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			break;
 			
 		case R.id.rl_shengfenzheng:
+			if (appContext.isLogin()) {
+				startActivity(new Intent(MorePersonal.this,ShengFenActivity.class));
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}		
+			break;
+			
+		case R.id.tv_renzhen:
 			if (appContext.isLogin()) {
 				startActivity(new Intent(MorePersonal.this,ShengFenActivity.class));
 				overridePendingTransition(R.anim.in_from_right,

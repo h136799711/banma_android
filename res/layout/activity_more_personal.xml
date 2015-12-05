@@ -128,6 +128,7 @@
              <TextView  style="@style/more_text_right"
                  android:id="@+id/tv_renzhen"
                 android:text=""
+                android:focusable="false"
                 android:textColor="@color/blue"/>
             <ImageView
                 style="@style/PersonalRightIconStyle"

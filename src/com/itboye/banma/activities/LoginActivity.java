@@ -57,6 +57,7 @@ import com.umeng.socialize.exception.SocializeException;
 import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 public class LoginActivity extends Activity implements StrUIDataListener,OnClickListener {
 	TextView tvRegist;//注册view
@@ -88,14 +89,15 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		
 		api = WXAPIFactory.createWXAPI(this,Constant.APP_ID, true);  
 		api.registerApp(Constant.APP_ID);
-		//参数1为当前Activity， 参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
+		//参数1为当前Activity， 参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.这里默认是友盟自带的
+		
 		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100424468",
 		                "c7394704798a158208a74ab60104f0ba");
 		qqSsoHandler.addToSocialSDK();
 		
-		// 添加微信平台
+//		// 添加微信平台
 //		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
-//		UMWXHandler wxHandler = new UMWXHandler(this,APP_ID,AppSecret);
+//		UMWXHandler wxHandler = new UMWXHandler(this,Constant.APP_ID,Constant.AppSecret);
 //		wxHandler.addToSocialSDK();
 		
 		intent=getIntent();
