@@ -177,12 +177,12 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 	@Override
 	public void onPageSelected(int arg0) {
 		if (arg0 == indicators.length - 1) {
-			startButton.setVisibility(View.GONE);
-			enter.setVisibility(View.VISIBLE);
-			
-		} else {
 			startButton.setVisibility(View.VISIBLE);
 			enter.setVisibility(View.GONE);
+			
+		} else {
+			startButton.setVisibility(View.GONE);
+			enter.setVisibility(View.VISIBLE);
 		}
 		for (int i = 0; i < indicators.length; i++) {
 			indicators[i]

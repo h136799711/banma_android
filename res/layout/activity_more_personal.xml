@@ -138,6 +138,7 @@
         <RelativeLayout
        		  android:id="@+id/rl_exit1"
       		android:layout_width="fill_parent"
+      		android:visibility="gone"
             android:layout_height="@dimen/more_item_height"
              android:background="@drawable/listview_item_selector" >
 
@@ -271,11 +272,10 @@
  		 <Button
                 android:id="@+id/btn_exit"
                android:layout_width="match_parent"
-               android:visibility="gone"
+               android:visibility="visible"
                android:layout_height="@dimen/more_item_mainheight"
                android:layout_alignParentBottom="true"
                android:layout_centerHorizontal="true"
-               android:layout_marginLeft="20dp"
                android:layout_marginTop="20dp"
                android:textColor="@color/white"
                android:background="@color/personn_button"

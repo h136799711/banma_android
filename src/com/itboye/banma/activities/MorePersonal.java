@@ -186,6 +186,9 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		tvUserName=(TextView)findViewById(R.id.tv_username);
 		tvPhoneNumber=(TextView)findViewById(R.id.tv_phone_number);
 		btExit=(Button)findViewById(R.id.btn_exit);
+		if (!appContext.isLogin()) {
+			btExit.setVisibility(View.GONE);
+		}
 		rlPhoneNumber=(RelativeLayout)findViewById(R.id.rl_phone_number_);
 
 //		else {
@@ -348,7 +351,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			}
 		break;
 		
-		case R.id.rl_exit1:
+		case R.id.btn_exit:
 			sp.edit().clear().commit();//清空所有sp中的数据
 			appContext.setLogin(false);
 			AppContext.setWeixin(false);
