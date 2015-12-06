@@ -53,7 +53,6 @@
              android:text=""
              android:textColor="@color/white"
              android:textSize="@dimen/text_size_18" />
-
     </RelativeLayout>
 
  <include layout="@layout/cart_all_f" />
