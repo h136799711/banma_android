@@ -466,7 +466,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			cb_cart_all.setChecked(false);
 		}
 		tv_express.setText("￥"+express);
-		tv_weight.setText("总重量为"+weight+"kg");
+		tv_weight.setText("总重量为"+weight/1000+"kg");
 		tv_cart_Allprice.setText("合计：￥"+AllCount+ "");
 	}
 
@@ -649,7 +649,7 @@ OnClickListener,onAddChanged,onReduceChanged{
 			}
 		}
 		tv_express.setText("￥"+express);
-		tv_weight.setText("总重量为"+weight+"kg");
+		tv_weight.setText("总重量为"+weight/1000+"kg");
 		tv_cart_Allprice.setText("合计:￥"+AllCount+ "");
 	}
 	
