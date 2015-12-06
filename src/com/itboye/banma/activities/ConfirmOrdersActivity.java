@@ -402,8 +402,8 @@ StrUIDataListener {
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		state = -1;
-		Toast.makeText(ConfirmOrdersActivity.this, "加载失败"+error, Toast.LENGTH_SHORT)
-		.show();
+//		Toast.makeText(ConfirmOrdersActivity.this, "加载失败"+error, Toast.LENGTH_SHORT)
+//		.show();
 		dialog.dismiss();
 	}
 

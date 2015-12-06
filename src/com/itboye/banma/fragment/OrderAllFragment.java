@@ -192,8 +192,8 @@ public class OrderAllFragment extends Fragment implements StrUIDataListener,OnCl
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(getActivity(), "返回错误信息：" + error,
-				Toast.LENGTH_LONG).show();
+//		Toast.makeText(getActivity(), "返回错误信息：" + error,
+//				Toast.LENGTH_LONG).show();
 		upOrdowm = -1;
 		ll_cart.setVisibility(View.GONE);
 		wait_ll.setVisibility(View.VISIBLE);

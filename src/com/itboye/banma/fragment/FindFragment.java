@@ -152,7 +152,7 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 				}
 			} else {
 				dialog.setVisibility(View.GONE);
-				Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_SHORT).show();
 				}
 		} catch (JSONException e) {
 			e.printStackTrace();

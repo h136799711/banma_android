@@ -175,8 +175,8 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(OrderDetailActivity.this, "订单详情数据返回失败"+error, Toast.LENGTH_SHORT)
-		.show();
+//		Toast.makeText(OrderDetailActivity.this, "订单详情数据返回失败"+error, Toast.LENGTH_SHORT)
+//		.show();
 	}
 	@Override
 	public void onDataChanged(String data) {
@@ -205,10 +205,10 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 				loading_ll.setVisibility(View.GONE);
 				scrollView.setVisibility(View.GONE);
 				bottom.setVisibility(View.GONE);
-				byte[] bytes = jsonObject.getString("data").getBytes(); 
-				String newStr = new String(bytes , "UTF-8"); 
-				Toast.makeText(OrderDetailActivity.this, ""+newStr, Toast.LENGTH_SHORT)
-				.show();
+//				byte[] bytes = jsonObject.getString("data").getBytes(); 
+//				String newStr = new String(bytes , "UTF-8"); 
+//				Toast.makeText(OrderDetailActivity.this, ""+newStr, Toast.LENGTH_SHORT)
+//				.show();
 			}
 		}catch (Exception e1) {
 			e1.printStackTrace();

@@ -131,8 +131,8 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 	    Log.e("LOGIN-ERROR", error.getMessage(), error);
 //	    byte[] htmlBodyBytes = error.networkResponse.data;
 //	    Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
-		Toast.makeText(PasswordActivity.this, "请求发生异常，请重新尝试"+error.toString() , Toast.LENGTH_LONG)
-		.show();
+//		Toast.makeText(PasswordActivity.this, "请求发生异常，请重新尝试"+error.toString() , Toast.LENGTH_LONG)
+//		.show();
 	}
 
 	@SuppressLint("CommitPrefEdits")

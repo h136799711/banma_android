@@ -222,7 +222,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.QQ, new UMAuthListener() {
 				@Override
 				public void onStart(SHARE_MEDIA platform) {
-					Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
+					Toast.makeText(LoginActivity.this, "正在启动", Toast.LENGTH_SHORT).show();
 				}
 				@Override
 				public void onError(SocializeException e, SHARE_MEDIA platform) {
@@ -277,7 +277,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 						mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, new UMDataListener() {
 							@Override
 							public void onStart() {
-								Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+//								Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
 							}                                              
 							@Override
 							public void onComplete(int status, Map<String, Object> info) {
@@ -405,7 +405,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				AppContext.setHeadurl(user.getHead());
 				AppContext.setNickname(user.getNickname());
 				AppContext.setIdcode(user.getIdcode());
-				  //AppContext.setHasHead(true);
+				AppContext.setHasHead(true);
 				saveHead(user.getHead());
 				//AppContext.setIdcode(user.get);
 				System.out.println(appContext.getPassword());

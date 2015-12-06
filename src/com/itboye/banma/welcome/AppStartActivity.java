@@ -100,8 +100,8 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 					"client_credentials", "by559a8de1c325c1",
 					"aedd16f80c192661016eebe3ac35a6e7",networkHelper);
 		} catch (Exception e) {
-			Toast.makeText(AppStartActivity.this, "访问异常" + e,
-					Toast.LENGTH_LONG).show();
+//			Toast.makeText(AppStartActivity.this, "访问异常" + e,
+//					Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 			Log.v("获取token异常",e+"" );
 		}
@@ -144,8 +144,8 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
-		Toast.makeText(AppStartActivity.this, "加载失败" + error, Toast.LENGTH_LONG)
-		.show();
+//		Toast.makeText(AppStartActivity.this, "加载失败" + error, Toast.LENGTH_LONG)
+//		.show();
 		this.startService(new Intent(this,TokenIntentService.class));
 		AppContext.setTokenSuccess(false);
 		Log.v("获取token",error.toString() );
@@ -173,13 +173,13 @@ public class AppStartActivity extends Activity implements StrUIDataListener{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			Toast.makeText(AppStartActivity.this, "获取token成功：" + access_token, Toast.LENGTH_LONG)
-			.show();
+//			Toast.makeText(AppStartActivity.this, "获取token成功：" + access_token, Toast.LENGTH_LONG)
+//			.show();
 		} else {
 			AppContext.setTokenSuccess(false);
 			this.startService(new Intent(this,TokenIntentService.class));
-			Toast.makeText(AppStartActivity.this, "获取token失败：code=" + code, Toast.LENGTH_LONG)
-			.show();
+//			Toast.makeText(AppStartActivity.this, "获取token失败：code=" + code, Toast.LENGTH_LONG)
+//			.show();
 		}
 	}
 

@@ -718,7 +718,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					}
 				}
 	     	}else {
-	     		Toast.makeText(MorePersonal.this, "查询数据失败", Toast.LENGTH_SHORT).show();
+//	     		Toast.makeText(MorePersonal.this, "查询数据失败", Toast.LENGTH_SHORT).show();
 			}
 		}
  	}
