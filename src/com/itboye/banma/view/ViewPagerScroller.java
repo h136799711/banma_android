@@ -94,7 +94,7 @@ public class ViewPagerScroller extends ScrollView {
     /** 
      * 重写onTouchEvent， 当用户的手在MyScrollView上面的时候， 
      * 直接将MyScrollView滑动的Y方向距离回调给onScroll方法中，当用户抬起手的时候， 
-     * MyScrollView可能还在滑动，所以当用户抬起手我们隔5毫秒给handler发送消息，在handler处理 
+     * MyScrollView可能还在滑动，所以当用户抬起手我们隔20毫秒给handler发送消息，在handler处理 
      * MyScrollView滑动的距离 
      */  
     @Override  
@@ -104,7 +104,7 @@ public class ViewPagerScroller extends ScrollView {
         }  
         switch(ev.getAction()){  
         case MotionEvent.ACTION_UP:  
-             handler.sendMessageDelayed(handler.obtainMessage(), 10);    
+             handler.sendMessageDelayed(handler.obtainMessage(), 20);    
             break;  
         }  
         return super.onTouchEvent(ev);  

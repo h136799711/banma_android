@@ -70,7 +70,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="23dp"
                 android:layout_weight="1"
-                android:src="@drawable/banma_order_normal" >
+                android:src="@drawable/banma_cart_normal" >
             </ImageView>
             <TextView
                 android:id="@+id/tex_tab_two"

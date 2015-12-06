@@ -41,8 +41,8 @@ ChangeItemListener,StateGoShoppingListener,AllGoShoppingListener{
 	private List<LinearLayout> mTabIndicator = new ArrayList<LinearLayout>();
 	private List<ImageView> imageViewlist = new ArrayList<ImageView>();
 	private List<TextView> textViewlist = new ArrayList<TextView>();
-	private int[] ic = {R.drawable.banma_home_normal, R.drawable.banma_order_normal,R.drawable.faxian_un, R.drawable.banma_mine_normal};
-	private int[] ic_sel = {R.drawable.banma_home_select, R.drawable.banma_order_select,R.drawable.faxian ,R.drawable.banma_mine_select};
+	private int[] ic = {R.drawable.banma_home_normal, R.drawable.banma_cart_normal,R.drawable.faxian_un, R.drawable.banma_mine_normal};
+	private int[] ic_sel = {R.drawable.banma_home_select, R.drawable.banma_cart_select,R.drawable.faxian ,R.drawable.banma_mine_select};
 	private AppContext appContext;
 	private long exitTime = 0; 
 	private int   position;

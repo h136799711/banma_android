@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
@@ -129,6 +130,7 @@ public class BabyActivity extends FragmentActivity implements
 	private LinearLayout baby_detail;
 	private LinearLayout button_lay;
 	private ImageButton ib_more;
+	private ImageButton iv_back;
 	private LinearLayout all_choice_layout = null;
 	boolean isClickBuy = false;
 	private int position = 0;
@@ -281,9 +283,10 @@ public class BabyActivity extends FragmentActivity implements
 		ib_more.setOnClickListener(this);
 		ib_more.setVisibility(View.VISIBLE);
 
-		((ImageView) findViewById(R.id.iv_back)).setBackgroundDrawable(getResources().getDrawable(R.drawable.top_babydetail_back));
+		iv_back = (ImageButton) findViewById(R.id.iv_back);
+		iv_back.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_babydetail_back));
 		//((ImageView) findViewById(R.id.iv_back)).setImageResource(R.drawable.top_babydetail_back);
-		((ImageView) findViewById(R.id.iv_back)).setOnClickListener(this);
+		iv_back.setOnClickListener(this);
 		put_in = (Button) findViewById(R.id.put_in);
 		put_in.setOnClickListener(this);
 		buy_now = (Button) findViewById(R.id.buy_now);
@@ -308,6 +311,9 @@ public class BabyActivity extends FragmentActivity implements
 		 */
 		top_line.setVisibility(View.GONE);
 		title.setVisibility(View.GONE);
+		title.setText("商品详情");
+		title.setTextColor(Color.WHITE);
+		//title.setVisibility(View.GONE);
 		/*
 		 * listView.setAdapter(new Adapter_ListView_detail(this));
 		 * listView.setOnItemClickListener(new
@@ -339,11 +345,19 @@ public class BabyActivity extends FragmentActivity implements
 			break;
 		case R.id.more:
 			// 点击购物车
+			if (appContext.isLogin()) {
+				startActivity(new Intent(BabyActivity.this,
+						ShoppingCartActivity.class));
+				overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+			}else{
+				Intent intent = new Intent(BabyActivity.this,
+						LoginActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			}
 			// if (appContext.isLogin()) {
-			startActivity(new Intent(BabyActivity.this,
-					ShoppingCartActivity.class));
-			finish();
-			overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+			
 			// }else {
 			// Toast.makeText(BabyActivity.this, "请先登录",
 			// Toast.LENGTH_LONG).show();
@@ -935,13 +949,54 @@ public class BabyActivity extends FragmentActivity implements
     @Override  
     public void onScroll(int scrollY) {  
     	System.out.println("scrollY="+scrollY);
-        if(scrollY < 150){  
+        if(scrollY < 200){  
         	all_top.getBackground().setAlpha(0);
-        }else if(scrollY >= 150 && scrollY <= 650){  
-        	all_top.getBackground().setAlpha((scrollY - 150)/2);//0~255透明度值  
-        } else if(scrollY > 650){
+        	iv_back.getBackground().setAlpha(255);
+        	ib_more.getBackground().setAlpha(255);
+        	if(title.getVisibility() == View.VISIBLE){
+        		title.setVisibility(View.GONE);
+        		iv_back.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_babydetail_back));
+        		ib_more.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_add_cart));
+        	}
+        }else if(scrollY >= 200 && scrollY <= 965){  
+        	all_top.getBackground().setAlpha((scrollY - 200)/3);//0~255透明度值  
+        	if(scrollY > 750){
+        		iv_back.getBackground().setAlpha(scrollY-750);
+        		ib_more.getBackground().setAlpha(scrollY-750);
+        		if(title.getVisibility() == View.GONE){
+        			title.setVisibility(View.VISIBLE);
+        			title.setTextColor(Color.argb(scrollY-750, 0, 255, 0)); //文字透明度
+        			iv_back.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_bar_back));
+        			iv_back.getBackground().setAlpha(0);
+        			ib_more.setBackgroundDrawable(getResources().getDrawable(R.drawable.shopcart_white));
+        			ib_more.getBackground().setAlpha(0);
+        		}
+        		title.setTextColor(Color.argb(scrollY-750, 255, 255, 255)); //文字透明度
+        	}
+        	else if(scrollY <= 750 ){
+        		iv_back.getBackground().setAlpha(((750-scrollY)/2)>255? 255 : ((750-scrollY)/2));
+        		ib_more.getBackground().setAlpha(((750-scrollY)/2)>255? 255 : ((750-scrollY)/2));
+        		if(title.getVisibility() == View.VISIBLE){
+        			title.setVisibility(View.GONE);
+        			iv_back.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_babydetail_back));
+        			iv_back.getBackground().setAlpha(0);
+        			ib_more.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_add_cart));
+        			ib_more.getBackground().setAlpha(0);
+        		}
+        	}
+        } else if(scrollY > 965){
         	all_top.getBackground().setAlpha(255);//0~255透明度值
-        	
+        	iv_back.getBackground().setAlpha(255);
+        	ib_more.getBackground().setAlpha(255);
+        	title.setTextColor(Color.argb(255, 255, 255, 255));
+        	if(title.getVisibility() == View.GONE){
+        		title.setVisibility(View.VISIBLE);
+        		title.setTextColor(Color.argb(255, 255, 255, 255));
+        		iv_back.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_babydetail_back));
+        		iv_back.getBackground().setAlpha(0);
+        		ib_more.setBackgroundDrawable(getResources().getDrawable(R.drawable.shopcart_white));
+    			ib_more.getBackground().setAlpha(0);
+        	}
         }
     }  
 	
