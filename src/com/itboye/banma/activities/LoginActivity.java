@@ -34,6 +34,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.AlibabaSDK;
+import com.alibaba.sdk.android.callback.CallbackContext;
+import com.alibaba.sdk.android.callback.InitResultCallback;
+import com.alibaba.sdk.android.login.LoginService;
+import com.alibaba.sdk.android.login.callback.LoginCallback;
+import com.alibaba.sdk.android.session.model.Session;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -101,11 +107,28 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private String app_key="2334687309";
 	private AuthInfo mAuthInfo;
 	private SsoHandler mSsoHandler;
+	private  LoginService loginService;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
+		//淘宝
+		 AlibabaSDK.asyncInit(this, new InitResultCallback() {
+			 
+		        @Override
+		        public void onSuccess() {
+//		            Toast.makeText(LoginActivity.this, "初始化成功", Toast.LENGTH_SHORT)
+//		                    .show();
+		        }
+		 
+		        @Override
+		        public void onFailure(int code, String message) {
+//		            Toast.makeText(LoginActivity.this, "初始化异常", Toast.LENGTH_SHORT)
+//		                    .show();
+		        }
+		 
+		    });
+		 loginService = AlibabaSDK.getService(LoginService.class);
 		//微博
 		mAuthInfo = new AuthInfo(this,app_key,httpurl, "");
 		
@@ -252,6 +275,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 					Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
 					qqOpen=value.getString("openid", "");
 					qqToken=value.getString("access_token", "");
+					System.out.println(value.toString());
+					request=LOGIN;
 					ApiClient.qqLogin(LoginActivity.this, qqOpen, qqToken, networkHelper);
 					//获取相关授权信息
 					mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, new UMDataListener() {
@@ -288,14 +313,31 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			break;
 
 		case R.id.iv_taobao:
-
+			showLogin(v);
 			break;
 
 		default:
 			break;
 		}
 	}
-	//各种监听
+	public void showLogin(View view) {
+	    loginService.showLogin(LoginActivity.this, new LoginCallback() {
+	        @Override
+	        public void onSuccess(Session session) {
+	        	request=LOGIN;
+	        	ApiClient.taobaoLogin(LoginActivity.this,
+	        			session.getUserId(), session.getUser().nick, session.getUser().avatarUrl, networkHelper);
+//	            Toast.makeText(LoginActivity.this, "欢迎"+session.getUser().nick+session.getUser().avatarUrl,
+//	                    Toast.LENGTH_SHORT).show();
+	        }
+	 
+	        @Override
+	        public void onFailure(int code, String message) {
+	            Toast.makeText(LoginActivity.this, "授权取消"+code+message,
+	                    Toast.LENGTH_SHORT).show();
+	        }
+	    });
+	}
 
 	//取消 返回键
 	OnClickListener quxiaoListener=new OnClickListener() {
@@ -421,7 +463,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			} else {
 				dialog.dismiss();
 				appContext.setLogin(false);
-				Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" , Toast.LENGTH_LONG)
+				Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" +content.toString(), Toast.LENGTH_LONG)
 				.show();
 				System.out.println("code=" + content.toString());
 			}
@@ -548,6 +590,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
+	    CallbackContext.onActivityResult(requestCode, resultCode, data);
 	    if (mSsoHandler != null) {
 	        mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
 	    }
@@ -586,6 +629,4 @@ class AuthListener implements WeiboAuthListener {
 		}
 
 	}
-
-
 }

@@ -34,7 +34,7 @@ public class ApiClient {
 				
 			} 
 	
-			//优惠码历史
+//优惠码历史
 	public static void youHuiHistory(Context mContext, String uid, StrVolleyInterface networkHelper) {
 				String access_token=AppContext.getAccess_token();
 				String url = Constant.URL+"/Coupon/history?access_token="+access_token;
@@ -51,9 +51,21 @@ public class ApiClient {
 			Map<String,String> params = new HashMap<String, String>();
 	        params.put("idcode",idcode);
 	        VolleyRequest.StrRequestPost(mContext, url, "youHuiMa",params, networkHelper);
-		} 
+		}
+		
+		
+		//淘宝登陆
+		public static void taobaoLogin(Context mContext, String openid,String nick ,String icon_url,StrVolleyInterface networkHelper) {
+			String access_token=AppContext.getAccess_token();
+			String url = Constant.URL+"/Taobao/login?access_token="+access_token;
+			Map<String,String> params = new HashMap<String, String>();
+		    params.put("openid",openid);
+		    params.put("nick",nick);
+		    params.put("icon_url",icon_url);
+		   VolleyRequest.StrRequestPost(mContext, url, "taobaoLogin",params, networkHelper);
+			} 	
 	
-	//qq登陆
+	//新浪登陆
 		public static void sinaWeiboLogin(Context mContext, String openid,String sina_token ,StrVolleyInterface networkHelper) {
 				String access_token=AppContext.getAccess_token();
 				String url = Constant.URL+"/SinaWeibo/login?access_token="+access_token;
