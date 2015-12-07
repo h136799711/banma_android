@@ -2,19 +2,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="@color/no_color"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/title_pop"
+            android:layout_width="match_parent"
+            android:layout_height="75dip"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="120dip"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/pow_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dip"
+                        android:text="￥100.00"
+                        android:textColor="@color/red"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/ori_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="￥120.00"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/pow_stock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dip"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="库存750"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/standard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dip"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="无规格参数"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/pop_del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/bt_wrong_number" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/pow_pic"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:layout_alignBottom="@id/title_pop"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:padding="1dip"
+            android:scaleType="fitXY"
+            android:background="@color/bg_color"
+            android:src="@drawable/icon" />
+    </RelativeLayout>
+
+    <!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@color/white"
         android:orientation="horizontal" >
 
         <ImageView
             android:id="@+id/pow_pic"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp" />
 
@@ -32,11 +123,11 @@
 
                 <TextView
                     android:id="@+id/pow_price"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
                     android:text="￥100.00"
+                    android:layout_marginRight="10dip"
                     android:textColor="@color/red"
                     android:textSize="16sp" />
                 
@@ -80,11 +171,13 @@
             android:padding="10dp"
             android:src="@drawable/bt_wrong_number" />
     </LinearLayout>
+    -->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="285dp"
-        android:layout_marginTop="10dp" >
+        android:background="@color/white"
+        android:paddingTop="10dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,9 +197,9 @@
                     android:id="@+id/tex_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="3dip"
                     android:paddingLeft="10dip"
                     android:paddingTop="5dip"
-                    android:paddingBottom="3dip"
                     android:text="颜色" />
 
                 <View
@@ -144,9 +237,9 @@
                     android:id="@+id/tex_two"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="3dip"
                     android:paddingLeft="10dip"
                     android:paddingTop="5dip"
-                    android:paddingBottom="3dip"
                     android:text="型号" />
 
                 <View
@@ -184,9 +277,9 @@
                     android:id="@+id/tex_three"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="3dip"
                     android:paddingLeft="10dip"
                     android:paddingTop="5dip"
-                    android:paddingBottom="3dip"
                     android:text="尺寸" />
 
                 <View
@@ -306,26 +399,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/line" />
-            <View 
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                />
+                android:layout_height="0.5dp" />
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dip"
+        android:background="@color/white"
         android:gravity="center"
-        android:background="#99ffffff"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/pop_ok"
             android:layout_width="wrap_content"
             android:layout_height="35dip"
-            android:gravity="center"
             android:background="@drawable/bg_buy_now"
+            android:gravity="center"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
             android:text="确定"
