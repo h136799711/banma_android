@@ -28,10 +28,13 @@ public class GridViewAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<ProductItem> list = new ArrayList<ProductItem>();
+	private ImageLoader imageLoader;
 
 	public GridViewAdapter(Context context, List<ProductItem> list) {
 		this.context = context;
 		this.list = list;
+		imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+				new BitmapCache());
 	}
 
 	@Override
@@ -79,10 +82,9 @@ public class GridViewAdapter extends BaseAdapter {
 		ImageView order_pic = BaseViewHolder.get(view, R.id.iv_find);
 		TextView order_standard = BaseViewHolder.get(view, R.id.tv_find_des);
 		TextView order_price = BaseViewHolder.get(view, R.id.tv_find_price);
-		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-				new BitmapCache());
+		
 		ImageListener listener = ImageLoader.getImageListener(order_pic,
-				R.drawable.image_loading, R.drawable.image_load_fail);
+				R.drawable.loading_image_baby, R.drawable.loading_image_baby);
 		imageLoader.get(order.getMain_img(), listener);
 		order_standard.setText(order.getName());
 		order_price.setText("￥" + order.getPrice());

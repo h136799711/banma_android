@@ -17,6 +17,7 @@ import com.itboye.banma.util.BaseViewHolder;
 import com.itboye.banma.utils.BitmapCache;
 import com.itboye.banma.utils.ChooseStandardInterface;
 import com.itboye.banma.utils.ChooseStandardListener;
+import com.itboye.banma.utils.OrderBitmapCache;
 
 import android.R.integer;
 import android.annotation.SuppressLint;
@@ -114,15 +115,15 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		standardView = (TextView) view.findViewById(R.id.standard);
 
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
-				new BitmapCache());
+				new OrderBitmapCache());
 		ImageListener listener = ImageLoader.getImageListener(pow_pic,
-				R.drawable.image_loading, R.drawable.image_load_fail);
-		imageLoader.get(url, listener, 100, 100);
+				R.drawable.loading_image_baby, R.drawable.loading_image_baby);
+		imageLoader.get(url, listener, 150, 150);
 		pow_price.setText("￥" + price);
 		pow_ori_price.setText("￥" + ori_price);
 		pow_ori_price.getPaint().setFlags(
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-		pow_quantity.setText("库存" + quantity);
+		pow_quantity.setText("库存" + quantity +"件");
 
 		if (skuInfo != null) {
 			Constant.SKU_ALLNUM = skuInfo.size();

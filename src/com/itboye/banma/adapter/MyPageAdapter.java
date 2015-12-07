@@ -76,7 +76,7 @@ public class MyPageAdapter extends PagerAdapter{
 		price.setText("￥"+productlist.get(position).getPrice());
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
 		imageView.setDefaultImageResId(0);  //加载中显示的图片
-		imageView.setErrorImageResId(R.drawable.image_load_fail);  //加载失败显示的图片
+		imageView.setErrorImageResId(R.drawable.loading_image_shouye);  //加载失败显示的图片
 		imageView.setImageUrl(productlist.get(position).getImg_post(), imageLoader);
 		//imageView.setImageUrl("http://banma.itboye.com/index.php/Api/Picture/index?id=0", imageLoader);
 
