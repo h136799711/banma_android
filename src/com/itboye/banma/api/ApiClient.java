@@ -35,7 +35,7 @@ public class ApiClient {
 			} 
 	
 			//优惠码历史
-			public static void youHuiHistory(Context mContext, String uid, StrVolleyInterface networkHelper) {
+	public static void youHuiHistory(Context mContext, String uid, StrVolleyInterface networkHelper) {
 				String access_token=AppContext.getAccess_token();
 				String url = Constant.URL+"/Coupon/history?access_token="+access_token;
 				Map<String,String> params = new HashMap<String, String>();
@@ -52,6 +52,16 @@ public class ApiClient {
 	        params.put("idcode",idcode);
 	        VolleyRequest.StrRequestPost(mContext, url, "youHuiMa",params, networkHelper);
 		} 
+	
+	//qq登陆
+		public static void sinaWeiboLogin(Context mContext, String openid,String sina_token ,StrVolleyInterface networkHelper) {
+				String access_token=AppContext.getAccess_token();
+				String url = Constant.URL+"/SinaWeibo/login?access_token="+access_token;
+				Map<String,String> params = new HashMap<String, String>();
+			    params.put("openid",openid);
+			    params.put("sina_token",sina_token);
+			   VolleyRequest.StrRequestPost(mContext, url, "sinaWeiboLogin",params, networkHelper);
+				} 		
 		
 	//qq登陆
 		public static void qqLogin(Context mContext, String openid,String openkey ,StrVolleyInterface networkHelper) {

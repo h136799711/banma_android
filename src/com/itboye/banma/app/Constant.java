@@ -6,6 +6,8 @@ import java.util.HashMap;
 import android.R.string;
 
 public class Constant {
+	public static String weibo_token="";
+	public static  String weibo_uid="";
 	public static final String URL = "http://banma.itboye.com/api.php";
 	public static final String IMAGE_FILE_NAME = "head.jpg";// 头像文件名称
 	public static final String MY_PREFERENCES = "MY_PREFERENCES";    //Preferences文件的名称   ,存登陆信息
@@ -14,7 +16,7 @@ public class Constant {
     public static final String MY_USERID="MY_USERID";//当前登陆用户的id
     public static final String MY_HEAD_URL="MY_HEAD_URL";//我的头像的地址
     public static final String MY_SHIMING="MY_SHIMING";//是否实名认证过
-    public static final String MY_BANGDING="MY_BANGDING";//绑定的手机号
+    public static final String MY_BANGDING="MY_BANGDING";//是否绑定的手机号
     public static final String MY_IDNUMBER="MY_IDNUMBER";//身份证号
     public static final String MY_USER_NICK="MY_USER_NICK";//我的用户昵称
     public static final String 	IS_LOGIN="IS_LOGIN";//是否登陆

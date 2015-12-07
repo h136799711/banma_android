@@ -1,6 +1,7 @@
 package com.itboye.banma.activities;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,9 +34,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.RegistActivity.CloseReceiver;
@@ -46,6 +51,11 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.User;
 import com.itboye.banma.util.FileUtil;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.sina.weibo.sdk.exception.WeiboException;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -56,7 +66,6 @@ import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.listener.SocializeListeners.UMAuthListener;
 import com.umeng.socialize.controller.listener.SocializeListeners.UMDataListener;
 import com.umeng.socialize.exception.SocializeException;
-import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
@@ -87,10 +96,20 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private int request = -1;
 	private User user;
 	private com.umeng.socialize.controller.UMSocialService mController;
+	private RequestQueue requestQueue;
+	private String httpurl="http://banma.itboye.com/index.php/Api/SinaWeibo/callback";
+	private String app_key="2334687309";
+	private AuthInfo mAuthInfo;
+	private SsoHandler mSsoHandler;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		//微博
+		mAuthInfo = new AuthInfo(this,app_key,httpurl, "");
+		
+		requestQueue = AppContext.getHttpQueues();
 
 		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
 
@@ -264,48 +283,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			break;
 
 		case R.id.iv_xinlang:
-			mController.getConfig().setSsoHandler(new SinaSsoHandler());
-			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.SINA,new UMAuthListener() {
-				@Override
-				public void onError(SocializeException e, SHARE_MEDIA platform) {
-				}
-				@Override
-				public void onComplete(Bundle value, SHARE_MEDIA platform) {
-					if (value != null && !TextUtils.isEmpty(value.getString("uid"))) {
-						Toast.makeText(LoginActivity.this, "授权成功.",  Toast.LENGTH_SHORT).show();
-
-						mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, new UMDataListener() {
-							@Override
-							public void onStart() {
-//								Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
-							}                                              
-							@Override
-							public void onComplete(int status, Map<String, Object> info) {
-								if(status == 200 && info != null){
-									StringBuilder sb = new StringBuilder();
-									Set<String> keys = info.keySet();
-									for(String key : keys){
-										sb.append(key+"="+info.get(key).toString()+"\r\n");
-									}
-									Log.d("TestData",sb.toString());
-								}else{
-									Log.d("TestData","发生错误："+status);
-								}
-							}
-						});
-
-					} else {
-						Toast.makeText(LoginActivity.this, "授权失败", Toast.LENGTH_SHORT).show();
-					}
-
-
-				}
-				@Override
-				public void onCancel(SHARE_MEDIA platform) {}
-				@Override
-				public void onStart(SHARE_MEDIA platform) {}
-			});
-
+			mSsoHandler = new SsoHandler(LoginActivity.this, mAuthInfo);
+			mSsoHandler. authorize(new AuthListener());
 			break;
 
 		case R.id.iv_taobao:
@@ -388,6 +367,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			jsonObject = new JSONObject(data);
 			code = jsonObject.getInt("code");
 			content = jsonObject.getString("data");
+			System.out.println("code=" + content.toString());
+			
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 			request = -1;
@@ -396,7 +377,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			request = -1;
 			if (code == 0) {
 				//String userId=jsonObject.getString("data");
-				//System.out.println("code=" + data.toString());
+				System.out.println("code=" + data.toString());
 				user = gson.fromJson(content, User.class);
 				appContext.setLogin(true);
 				appContext.setLoginUid(user.getId());
@@ -563,14 +544,48 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		AppContext.queues.add(imageRequest);  
 	}
 
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		/**使用SSO授权必须添加如下代码 */  
-		UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
-		if(ssoHandler != null){
-			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
-		}
+	    super.onActivityResult(requestCode, resultCode, data);
+	    if (mSsoHandler != null) {
+	        mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+	    }
 	}
+	
+
+class AuthListener implements WeiboAuthListener {
+	    @Override
+	public void onComplete(Bundle values) {
+			Oauth2AccessToken mAccessToken = Oauth2AccessToken.parseAccessToken(values); // 从 Bundle 中解析 Token
+	        if (mAccessToken.isSessionValid()) {
+	        	Constant.weibo_token=values.getString("access_token");
+	        	Constant.weibo_uid=values.getString("uid");
+	        	//新浪登陆
+	        	request=LOGIN;
+	        	ApiClient.sinaWeiboLogin(LoginActivity.this, Constant.weibo_uid, 
+	        			Constant.weibo_token, networkHelper);
+	          //   AccessTokenKeeper.writeAccessToken(LoginActivity.this, mAccessToken); //保存Token
+					
+	        } else {
+			    // 当您注册的应用程序签名不正确时，就会收到错误Code，请确保签名正确
+	            String code = values.getString("code", "");
+	        }
+	    }
+
+		@Override
+		public void onCancel() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onWeiboException(WeiboException arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	}
+
 
 }

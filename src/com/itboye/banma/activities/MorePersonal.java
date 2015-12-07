@@ -204,13 +204,13 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	@SuppressLint("ResourceAsColor")
 	private void initData(){
 		sp=getSharedPreferences(Constant.MY_PREFERENCES, MODE_PRIVATE);
-		if (appContext.isLogin()&&AppContext.isWeixin==false) {
-			String number=sp.getString(Constant.MY_ACCOUNT, "");
-			String psw=sp.getString(Constant.MY_PASSWORD, "");
-			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
-																													//请求用户头像数据
-			
-		}else {
+//		if (appContext.isLogin()&&AppContext.isWeixin==true) {
+//			String number=sp.getString(Constant.MY_ACCOUNT, "");
+//			String psw=sp.getString(Constant.MY_PASSWORD, "");
+//			ApiClient.Login(MorePersonal.this, number, psw, networkHelper);//请求用户数据
+//																													//请求用户头像数据
+//			
+//		}else {
 			if (appContext.isLogin()) {
 				tvUserName.setText(sp.getString(Constant.MY_USER_NICK, ""));
 					ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
@@ -233,7 +233,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					e.printStackTrace();
 				}
 					
-				if (sp.getString(Constant.WEIXIN_LOGIN, "").equals("0")) {
+				if (sp.getString(Constant.MY_BANGDING, "").equals("0")) {
 					tvWeiXin.setText("未绑定");
 				}else {
 					tvWeiXin.setText("已绑定");
@@ -246,7 +246,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 				}
 			}
 	}
-	}
+//	}
 	
 	
 	//友盟统计
