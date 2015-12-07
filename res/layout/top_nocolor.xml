@@ -11,6 +11,7 @@
         android:layout_height="50dp"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
+        android:background="@drawable/top"
         android:orientation="horizontal" >
 
         <ImageButton
