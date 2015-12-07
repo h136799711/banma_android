@@ -107,8 +107,8 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 							"client_credentials", "by559a8de1c325c1",
 							"aedd16f80c192661016eebe3ac35a6e7",networkHelper);
 				} catch (Exception e) {
-					Toast.makeText(WelcomeActivity.this, "访问异常" + e,
-							Toast.LENGTH_LONG).show();
+//					Toast.makeText(WelcomeActivity.this, "访问异常" + e,
+//							Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 					Log.v("获取token异常",e+"" );
 				}
@@ -196,8 +196,8 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
-		Toast.makeText(WelcomeActivity.this, "加载失败" + error, Toast.LENGTH_LONG)
-		.show();
+//		Toast.makeText(WelcomeActivity.this, "加载失败" + error, Toast.LENGTH_LONG)
+//		.show();
 		this.startService(new Intent(this,TokenIntentService.class));
 		AppContext.setTokenSuccess(false);
 		Log.v("获取token",error.toString() );
@@ -226,13 +226,13 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			Toast.makeText(WelcomeActivity.this, "获取token成功：" + access_token, Toast.LENGTH_LONG)
-			.show();
+//			Toast.makeText(WelcomeActivity.this, "获取token成功：" + access_token, Toast.LENGTH_LONG)
+//			.show();
 		} else {
 			AppContext.setTokenSuccess(false);
 			this.startService(new Intent(this,TokenIntentService.class));
-			Toast.makeText(WelcomeActivity.this, "获取token失败：code=" + code, Toast.LENGTH_LONG)
-			.show();
+//			Toast.makeText(WelcomeActivity.this, "获取token失败：code=" + code, Toast.LENGTH_LONG)
+//			.show();
 		}
 	}
 }

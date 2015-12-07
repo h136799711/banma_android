@@ -163,8 +163,8 @@ public class OrderStateFragment extends Fragment implements StrUIDataListener ,O
 	
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(getActivity(), "返回错误信息：" + error,
-				Toast.LENGTH_LONG).show();
+//		Toast.makeText(getActivity(), "返回错误信息：" + error,
+//				Toast.LENGTH_LONG).show();
 		ll_cart.setVisibility(View.GONE);
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);

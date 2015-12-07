@@ -94,8 +94,8 @@ public class PayAlipay {
 					break;
 				}
 				case SDK_CHECK_FLAG: {
-					Toast.makeText(mContext, "检查结果为：" + msg.obj,
-							Toast.LENGTH_SHORT).show();
+//					Toast.makeText(mContext, "检查结果为：" + msg.obj,
+//							Toast.LENGTH_SHORT).show();
 					break;
 				}
 				default:

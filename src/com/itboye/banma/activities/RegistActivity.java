@@ -188,9 +188,9 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
-		Toast.makeText(RegistActivity.this, "服务器发生错误" + error, Toast.LENGTH_LONG)
-		.show();
-		System.out.println(error+"");
+//		Toast.makeText(RegistActivity.this, "服务器发生错误" + error, Toast.LENGTH_LONG)
+//		.show();
+//		System.out.println(error+"");
 	}
 
 	@Override

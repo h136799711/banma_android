@@ -227,8 +227,8 @@ public class SelectOrderAddressActivity extends Activity implements
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(SelectOrderAddressActivity.this, "加载失败", Toast.LENGTH_LONG)
-				.show();
+//		Toast.makeText(SelectOrderAddressActivity.this, "加载失败", Toast.LENGTH_LONG)
+//				.show();
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
 		loading_ll.setVisibility(View.GONE);
@@ -262,8 +262,8 @@ public class SelectOrderAddressActivity extends Activity implements
 				}
 						
 			} else {
-				Toast.makeText(SelectOrderAddressActivity.this, "加载失败",
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(SelectOrderAddressActivity.this, "加载失败",
+//						Toast.LENGTH_LONG).show();
 				wait_ll.setVisibility(View.VISIBLE);
 				retry_img.setVisibility(View.VISIBLE);
 				loading_ll.setVisibility(View.GONE);

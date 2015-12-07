@@ -83,6 +83,7 @@ StrUIDataListener {
 	private PayAlipay payAlipay;
 	private ProgressDialog dialog;
 	private String cart_ids;
+	private boolean hasAdress=false;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_order);
@@ -227,6 +228,7 @@ StrUIDataListener {
 		if (requestCode == 2000 && resultCode == 2001) {
 			int result_value = data.getIntExtra("result", 1);
 			if (result_value == 0) {
+				hasAdress=true;
 				address = (MailingAdress) data.getSerializableExtra("address");
 				adr_name.setText(address.getContactname());
 				adr_phone.setText(address.getMobile());
@@ -349,10 +351,12 @@ StrUIDataListener {
 			break;
 		case R.id.confirm:
 			// 添加订单
+			if (hasAdress==true) {
 			ordersAdd(appContext.getLoginUid(), cart_ids, discount_code.getText().toString(), null,address.getId(),2,1);
 			dialog.setMessage("提交订单...");
 			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			dialog.show();
+			}
 			
 			break;
 		case R.id.order_flex:
@@ -398,8 +402,8 @@ StrUIDataListener {
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		state = -1;
-		Toast.makeText(ConfirmOrdersActivity.this, "加载失败"+error, Toast.LENGTH_SHORT)
-		.show();
+//		Toast.makeText(ConfirmOrdersActivity.this, "加载失败"+error, Toast.LENGTH_SHORT)
+//		.show();
 		dialog.dismiss();
 	}
 
@@ -422,6 +426,7 @@ StrUIDataListener {
 					}.getType());
 					if (addresslist.size() > 0) {
 						// showListView(addresslist);
+						hasAdress=true;
 						add_adress_layout.setVisibility(View.GONE);
 						select_adress_layout.setVisibility(View.VISIBLE);
 						address = addresslist.get(0);
@@ -432,6 +437,7 @@ StrUIDataListener {
 								+ address.getDetailinfo());
 
 					} else {
+						hasAdress=false;
 						Toast.makeText(ConfirmOrdersActivity.this, "请添加地址",
 								Toast.LENGTH_SHORT).show();
 						add_adress_layout.setVisibility(View.VISIBLE);
@@ -447,6 +453,7 @@ StrUIDataListener {
 					}
 
 				} else {
+					hasAdress=false;
 					Toast.makeText(ConfirmOrdersActivity.this, "地址加载异常",
 							Toast.LENGTH_SHORT).show();
 				}

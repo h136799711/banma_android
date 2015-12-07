@@ -37,6 +37,14 @@
         <!--分享编辑页-->
         <activity android:configChanges="orientation|keyboard" android:launchMode="singleTask" android:name="com.umeng.socialize.view.ShareActivity" android:noHistory="true" android:theme="@style/Theme.UMDialog" android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
+        <!-- 新浪微博原生 -->
+ 	 <activity 
+     	android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser" 
+     	android:configChanges="keyboardHidden|orientation"
+    	android:windowSoftInputMode="adjustResize"
+   	  	android:exported="false" >
+	</activity>
+        
 
         <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
         <activity android:launchMode="singleTask" android:name="com.tencent.tauth.AuthActivity" android:noHistory="true">

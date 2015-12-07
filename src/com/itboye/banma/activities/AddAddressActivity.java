@@ -199,8 +199,8 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 				} catch (Exception e) {
 					e.printStackTrace();
 					dialog.dismiss();
-					Toast.makeText(AddAddressActivity.this, "访问异常",
-							Toast.LENGTH_LONG).show();
+//					Toast.makeText(AddAddressActivity.this, "访问异常",
+//							Toast.LENGTH_LONG).show();
 				}
 
 			} else { // 修改收货地址
@@ -223,8 +223,8 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 				} catch (Exception e) {
 					e.printStackTrace();
 					dialog.dismiss();
-					Toast.makeText(AddAddressActivity.this, "访问异常" + e,
-							Toast.LENGTH_LONG).show();
+//					Toast.makeText(AddAddressActivity.this, "访问异常" + e,
+//							Toast.LENGTH_LONG).show();
 				}
 
 			}
@@ -378,8 +378,8 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		dialog.dismiss();
-		Toast.makeText(AddAddressActivity.this, "访问异常" + error,
-				Toast.LENGTH_LONG).show();
+//		Toast.makeText(AddAddressActivity.this, "访问异常" + error,
+//				Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -411,8 +411,8 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 				try {
 					byte[] bytes = jsondata.getString("data").getBytes(); 
 					String newStr = new String(bytes , "UTF-8"); 
-					Toast.makeText(AddAddressActivity.this, "操作失败:" + newStr,
-							Toast.LENGTH_LONG).show();
+//					Toast.makeText(AddAddressActivity.this, "操作失败:" + newStr,
+//							Toast.LENGTH_LONG).show();
 				} catch (UnsupportedEncodingException e) {
 					
 					e.printStackTrace();

@@ -790,8 +790,8 @@ public class BabyActivity extends FragmentActivity implements
 			Gson gson = new Gson();
 			int code = -1;
 			String detail = null;
-			Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT)
-					.show();
+//			Toast.makeText(BabyActivity.this, "获取成功", Toast.LENGTH_SHORT)
+//					.show();
 			try {
 				JSONObject jsonObject = new JSONObject(data);
 				code = jsonObject.getInt("code");

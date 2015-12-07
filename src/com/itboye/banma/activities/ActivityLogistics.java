@@ -99,8 +99,8 @@ OnClickListener {
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(ActivityLogistics.this, "error"+error,
-				Toast.LENGTH_LONG).show();
+//		Toast.makeText(ActivityLogistics.this, "error"+error,
+//				Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -135,10 +135,10 @@ OnClickListener {
 				
 			}
 			else{
-				byte[] bytes = jsonObject.getString("data").getBytes(); 
-				String newStr = new String(bytes , "UTF-8"); 
-				Toast.makeText(ActivityLogistics.this, "操作:" + newStr,
-						Toast.LENGTH_LONG).show();
+//				byte[] bytes = jsonObject.getString("data").getBytes(); 
+//				String newStr = new String(bytes , "UTF-8"); 
+//				Toast.makeText(ActivityLogistics.this, "操作:" + newStr,
+//						Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();

@@ -227,8 +227,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-		Toast.makeText(getActivity(), "onErrorHappened" + error.toString(), Toast.LENGTH_SHORT)
-		.show();
+//		Toast.makeText(getActivity(), "onErrorHappened" + error.toString(), Toast.LENGTH_SHORT)
+//		.show();
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
 		loading_ll.setVisibility(View.GONE);
@@ -273,7 +273,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 					initData();
 				}
 				else{
-					Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();
+//					Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();
 					wait_ll.setVisibility(View.VISIBLE);
 					retry_img.setVisibility(View.VISIBLE);
 					loading_ll.setVisibility(View.GONE);

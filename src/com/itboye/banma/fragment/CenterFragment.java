@@ -316,14 +316,14 @@ public class CenterFragment extends Fragment implements OnClickListener{
 				}
 			}else {
 				try {
-					AppContext.setHasHead(true);
 					ImageRequest imageRequest = new ImageRequest(  
 							AppContext.getHeadurl(),  
 					        new Response.Listener<Bitmap>() {  
 					            @Override  
 					            public void onResponse(Bitmap response) {  
-					                ivPersonheadFail.setImageBitmap(response);  
 					                try {
+					                	ivPersonheadFail.setImageBitmap(response);  
+					                	AppContext.setHasHead(false);
 										AppContext.setHeadurl(FileUtil.saveFile(getActivity().getApplicationContext(), 
 												getActivity().getApplicationContext().getFilesDir().getCanonicalPath(),
 												Constant.IMAGE_FILE_NAME, response));
