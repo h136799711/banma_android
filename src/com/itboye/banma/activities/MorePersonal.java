@@ -233,7 +233,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					e.printStackTrace();
 				}
 					
-				if (sp.getString(Constant.MY_BANGDING, "").equals("0")) {
+				if (sp.getString(Constant.WEIXIN_OPENID, "").equals("")) {
 					tvWeiXin.setText("未绑定");
 				}else {
 					tvWeiXin.setText("已绑定");
@@ -265,10 +265,12 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	
 		case R.id.rl_weixin:
 			if (appContext.isLogin()) {
+				
 				final SendAuth.Req req = new SendAuth.Req();  
 				req.scope = "snsapi_userinfo";  
 				req.state = "wechat_sdk_demo_test";  
 				api.sendReq(req);  
+				Toast.makeText(MorePersonal.this, "正在打开微信", Toast.LENGTH_SHORT).show();
 				}
 			break;
 

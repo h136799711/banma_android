@@ -152,8 +152,8 @@ public class BabyActivity extends FragmentActivity implements
      */  
     private int myScrollViewTop; 
     //微信
-	String appID = "wx0d259d7e9716d3dd";
-	String appSecret = "94124fb74284c8dae6f188c7e269a5a0";
+//	String appID = "wx5f0b4e3f24214183";
+//	String appSecret = "d4624c36b6795d1d99dcf0547af5443d";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -169,10 +169,10 @@ public class BabyActivity extends FragmentActivity implements
 		//集成微信
 
 		// 添加微信平台
-		UMWXHandler wxHandler = new UMWXHandler(this,appID,appSecret);
+		UMWXHandler wxHandler = new UMWXHandler(this,Constant.APP_ID,Constant.AppSecret);
 		wxHandler.addToSocialSDK();
 		// 添加微信朋友圈
-		UMWXHandler wxCircleHandler = new UMWXHandler(this,appID,appSecret);
+		UMWXHandler wxCircleHandler = new UMWXHandler(this,Constant.APP_ID,Constant.AppSecret);
 		wxCircleHandler.setToCircle(true);
 		wxCircleHandler.addToSocialSDK();
 		

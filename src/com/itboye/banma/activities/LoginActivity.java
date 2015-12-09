@@ -117,14 +117,14 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			 
 		        @Override
 		        public void onSuccess() {
-//		            Toast.makeText(LoginActivity.this, "初始化成功", Toast.LENGTH_SHORT)
+//	            Toast.makeText(LoginActivity.this, "初始化成功", Toast.LENGTH_SHORT)
 //		                    .show();
 		        }
 		 
 		        @Override
 		        public void onFailure(int code, String message) {
 //		            Toast.makeText(LoginActivity.this, "初始化异常", Toast.LENGTH_SHORT)
-//		                    .show();
+//	                    .show();
 		        }
 		 
 		    });
@@ -145,9 +145,9 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		qqSsoHandler.addToSocialSDK();
 		
 //		// 添加微信平台
-		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
-		UMWXHandler wxHandler = new UMWXHandler(this,Constant.APP_ID,Constant.AppSecret);
-		wxHandler.addToSocialSDK();
+//		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
+//		UMWXHandler wxHandler = new UMWXHandler(this,Constant.APP_ID,Constant.AppSecret);
+//		wxHandler.addToSocialSDK();
 
 
 		// 添加微信平台
@@ -258,6 +258,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			req.scope = "snsapi_userinfo";  
 			req.state = "wechat_sdk_demo_test";  
 			api.sendReq(req);  
+			Toast.makeText(LoginActivity.this, "正在打开微信", Toast.LENGTH_SHORT).show();
 			break;
 
 		case R.id.iv_qq:
@@ -327,9 +328,9 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	        	request=LOGIN;
 	        	ApiClient.taobaoLogin(LoginActivity.this,
 	        			session.getUserId(), session.getUser().nick, session.getUser().avatarUrl, networkHelper);
-//	            Toast.makeText(LoginActivity.this, "欢迎"+session.getUser().nick+session.getUser().avatarUrl,
-//	                    Toast.LENGTH_SHORT).show();
-	        }
+	            Toast.makeText(LoginActivity.this, "欢迎"+session.getUser().nick+session.getUser().avatarUrl,
+	                    Toast.LENGTH_SHORT).show();
+	  }
 	 
 	        @Override
 	        public void onFailure(int code, String message) {
@@ -396,7 +397,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		// TODO Auto-generated method stub
 		request = -1;
 		dialog.dismiss();
-		appContext.setLogin(false);
+		appContext.setLogin(false);                                 
+		System.out.println(error.toString()+"PPPPPPPPPPPPP");
 		Toast.makeText(LoginActivity.this, "登陆发生异常", Toast.LENGTH_LONG).show();
 	}
 	@Override
@@ -429,6 +431,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				AppContext.setNickname(user.getNickname());
 				AppContext.setIdcode(user.getIdcode());
 				AppContext.setHasHead(true);
+				
 				saveHead(user.getHead());
 				//AppContext.setIdcode(user.get);
 				System.out.println(appContext.getPassword());
@@ -437,7 +440,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				String pas = etPassword.getText().toString(); 
 				SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 				Editor editor = sp.edit();  
-				editor.putString(Constant.MY_BANGDING, user.getWexin_bind());
+				editor.putString(Constant.WEIXIN_OPENID, user.getWxopenid());
 				editor.putString(Constant.MY_HEAD_URL, user.getHead());
 				editor.putString(Constant.MY_IDNUMBER, user.getIdnumber());
 				editor.putString(Constant.MY_SHIMING, user.getStatus());

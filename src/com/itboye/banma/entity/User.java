@@ -23,18 +23,18 @@ public class User {
 	private int id;
 	private String head;
 	private String idnumber;
-	private String wexin_bind;//微信绑定
+	private String wxopenid;//微信绑定
 	public String getIdnumber() {
 		return idnumber;
 	}
 	public void setIdnumber(String idnumber) {
 		this.idnumber = idnumber;
 	}
-	public String getWexin_bind() {
-		return wexin_bind;
+	public String getWxopenid() {
+		return wxopenid;
 	}
-	public void setWexin_bind(String wexin_bind) {
-		this.wexin_bind = wexin_bind;
+	public void setWxopenid(String wxopenid) {
+		this.wxopenid = wxopenid;
 	}
 	public String getHead() {
 		return head;

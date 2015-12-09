@@ -35,7 +35,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="进入软件"
-        android:textColor="#ffffff"
+        android:textColor="@color/red"
         android:textSize="15sp"
         android:visibility="invisible" />
 
