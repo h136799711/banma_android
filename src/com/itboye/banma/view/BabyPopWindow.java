@@ -57,10 +57,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	private TextView pow_quantity;
 	private TextView standardView;
 	private ImageView pop_del;
-	private MyGridView gridviewOne;
-	private MyGridView gridviewTwo;
-	private MyGridView gridviewThree;
 	private PopupWindow popupWindow;
+	private LinearLayout sku_info_list_layout;
 	private OnItemClickListener listener;
 	private final int ADDORREDUCE = 1;
 	private static Context context;
@@ -109,10 +107,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		pop_num = (TextView) view.findViewById(R.id.pop_num);
 		pop_ok = (TextView) view.findViewById(R.id.pop_ok);
 		pop_del = (ImageView) view.findViewById(R.id.pop_del);
-		tex_one = (TextView) view.findViewById(R.id.tex_one);
-		tex_two = (TextView) view.findViewById(R.id.tex_two);
-		tex_three = (TextView) view.findViewById(R.id.tex_three);
 		standardView = (TextView) view.findViewById(R.id.standard);
+		sku_info_list_layout = (LinearLayout) view.findViewById(R.id.sku_info_list_layout);
 
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 				new OrderBitmapCache());
@@ -124,101 +120,41 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		pow_ori_price.getPaint().setFlags(
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 		pow_quantity.setText("库存" + quantity +"件");
-
+	
 		if (skuInfo != null) {
+			int n = skuInfo.size();
+			for(int k=0; k<n; k++){   //去除为空的规格
+				if(skuInfo.get(k).getValue_list().size() == 0){
+					skuInfo.remove(k);
+					k--;
+					n--;
+				}
+			}
 			Constant.SKU_ALLNUM = skuInfo.size();
 		} else {
 			Constant.SKU_ALLNUM = 0;
 		}
-		MyGridAdapter oneAdapter;
-		MyGridAdapter twoAdapter;
-		MyGridAdapter threeAdapter;
-		switch (Constant.SKU_ALLNUM) {
-		case 0:
+		
+		
+		if(Constant.SKU_ALLNUM == 0){
 			init();
-			break;
-		case 1:
-
-			oneLayout = (LinearLayout) view.findViewById(R.id.one_layout);
-			twoLayout = (LinearLayout) view.findViewById(R.id.two_layout);
-			threeLayout = (LinearLayout) view.findViewById(R.id.three_layout);
-			oneLayout.setVisibility(View.VISIBLE);
-			twoLayout.setVisibility(View.GONE);
-			threeLayout.setVisibility(View.GONE);
-			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
-			oneAdapter = new MyGridAdapter(context, sku_info.get(0),
-					skuInfo.get(0), 0, ch);
-			getItemMaxWhith(gridviewOne, oneAdapter);
-			gridviewOne.setAdapter(oneAdapter);
-			
-			tex_one.setText(skuInfo.get(0).getName());
+		}else{
+			standardView.setText("请选择规格参数");
+			for(int k=0; k<Constant.SKU_ALLNUM; k++){
+				LayoutInflater inflater= LayoutInflater.from(context);
+				View convertView = inflater.inflate(R.layout.sku_info_item,null);
+				TextView sku_tex = BaseViewHolder.get(convertView, R.id.sku_tex);
+				MyGridView sku_info_gridview = BaseViewHolder.get(convertView, R.id.sku_info_gridview);
+				MyGridAdapter adapter = new MyGridAdapter(context, null, skuInfo.get(k), k, ch);
+				getItemMaxWhith(sku_info_gridview, adapter);
+				sku_info_gridview.setAdapter(adapter);
+				sku_tex.setText(skuInfo.get(k).getName());
+				sku_info_list_layout.addView(convertView);
+				
+			}
 			init();
-			break;
-		case 2:
-			oneLayout = (LinearLayout) view.findViewById(R.id.one_layout);
-			twoLayout = (LinearLayout) view.findViewById(R.id.two_layout);
-			threeLayout = (LinearLayout) view.findViewById(R.id.three_layout);
-			oneLayout.setVisibility(View.VISIBLE);
-			twoLayout.setVisibility(View.VISIBLE);
-			threeLayout.setVisibility(View.GONE);
-			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
-			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
-			oneAdapter = new MyGridAdapter(context, sku_info.get(0),
-					skuInfo.get(0), 0, ch);
-			getItemMaxWhith(gridviewOne, oneAdapter);
-			gridviewOne.setAdapter(oneAdapter);
-			
-			twoAdapter = new MyGridAdapter(context, sku_info.get(1),
-					skuInfo.get(1), 1, ch);
-			getItemMaxWhith(gridviewTwo, twoAdapter);
-			gridviewTwo.setAdapter(twoAdapter);
-			
-			tex_one.setText(skuInfo.get(0).getName());
-			tex_two.setText(skuInfo.get(1).getName());
-			init();
-
-			break;
-		case 3:
-			oneLayout = (LinearLayout) view.findViewById(R.id.one_layout);
-			twoLayout = (LinearLayout) view.findViewById(R.id.two_layout);
-			threeLayout = (LinearLayout) view.findViewById(R.id.three_layout);
-			oneLayout.setVisibility(View.VISIBLE);
-			twoLayout.setVisibility(View.VISIBLE);
-			threeLayout.setVisibility(View.VISIBLE);
-			gridviewOne = (MyGridView) view.findViewById(R.id.gridview_one);
-			gridviewTwo = (MyGridView) view.findViewById(R.id.gridview_two);
-			gridviewThree = (MyGridView) view.findViewById(R.id.gridview_three);
-			
-			oneAdapter = new MyGridAdapter(context, sku_info.get(0),
-					skuInfo.get(0), 0, ch);
-			getItemMaxWhith(gridviewOne, oneAdapter);
-			gridviewOne.setAdapter(oneAdapter);
-			
-			twoAdapter = new MyGridAdapter(context, sku_info.get(1),
-					skuInfo.get(1), 1, ch);
-			getItemMaxWhith(gridviewTwo, twoAdapter);
-			gridviewTwo.setAdapter(twoAdapter);
-			
-			threeAdapter = new MyGridAdapter(context,
-					sku_info.get(2), skuInfo.get(2), 2,ch);
-			getItemMaxWhith(gridviewThree, threeAdapter);
-			gridviewThree.setAdapter(threeAdapter);
-			
-			/*gridviewTwo.setAdapter(new MyGridAdapter(context, sku_info.get(1),
-					skuInfo.get(sku_info.get(1).getId()), 1, ch));
-			gridviewThree.setAdapter(new MyGridAdapter(context,
-					sku_info.get(2), skuInfo.get(sku_info.get(2).getId()), 2,
-					ch));*/
-			tex_one.setText(skuInfo.get(0).getName());
-			tex_two.setText(skuInfo.get(1).getName());
-			tex_three.setText(skuInfo.get(2).getName());
-			init();
-			break;
-
-		default:
-			init();
-			break;
 		}
+		
 	}
 	
 	/**
