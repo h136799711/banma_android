@@ -244,7 +244,10 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		super.onResume();
 		//		SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		MobclickAgent.onResume(this);//友盟统计
+//		Toast.makeText(LoginActivity.this, "进入resume", Toast.LENGTH_LONG).show();
 		if (!AppContext.getCode().equals("")) {
+			request=LOGIN;
+//			Toast.makeText(LoginActivity.this, "进入resume"+AppContext.getCode(), Toast.LENGTH_LONG).show();
 			ApiClient.wxLogin(LoginActivity.this,AppContext.getCode() ,networkHelper);
 		}
 	}
@@ -328,13 +331,13 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	        	request=LOGIN;
 	        	ApiClient.taobaoLogin(LoginActivity.this,
 	        			session.getUserId(), session.getUser().nick, session.getUser().avatarUrl, networkHelper);
-	            Toast.makeText(LoginActivity.this, "欢迎"+session.getUser().nick+session.getUser().avatarUrl,
-	                    Toast.LENGTH_SHORT).show();
+//	            Toast.makeText(LoginActivity.this, "欢迎"+session.getUser().nick+session.getUser().avatarUrl,
+//	                    Toast.LENGTH_SHORT).show();
 	  }
 	 
 	        @Override
 	        public void onFailure(int code, String message) {
-	            Toast.makeText(LoginActivity.this, "授权取消"+code+message,
+	            Toast.makeText(LoginActivity.this, "授权取消",
 	                    Toast.LENGTH_SHORT).show();
 	        }
 	    });

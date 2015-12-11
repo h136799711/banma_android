@@ -24,14 +24,14 @@ public class Constant {
     public static  final String WEIXIN_CODE="WEIXIN_CODE";//微信code
     public static final String WEIXIN_LOGIN="WEIXIN_LOGIN";//微信是否登陆
     public static final int CONORDER_ADDADR = 10; //有确认订单跳转到添加收货地址的传参
+   
+    public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
+	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
     
-    public static final String APP_ID = "wx5f0b4e3f24214183";//微信
-	 public static final String AppSecret = "d4624c36b6795d1d99dcf0547af5443d";//微信
-    
-    public static String[] SKU_INFO = {"","","","","",""};
-    public static String[] SKU_INFOSTR = {"","","","","",""};
+    public static String[] SKU_INFO = {"","","","","","","",""};
+    public static String[] SKU_INFOSTR = {"","","","","","","",""};
     public static int SKU_ALLNUM = 0;  //规格总种类
-    public static int[] SKU_NUM = {0,0,0,0};   //所选规格数
+    public static int[] SKU_NUM = {0,0,0,0,0,0,0,0};   //所选规格数
 
     public static final int arrayList_cart_id=0;
 	public static ArrayList<HashMap<String, Object>> arrayList_cart=new ArrayList<HashMap<String,Object>>();

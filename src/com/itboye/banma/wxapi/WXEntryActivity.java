@@ -75,10 +75,10 @@ public class WXEntryActivity extends Activity  implements IWXAPIEventHandler{
 		// TODO Auto-generated method stub
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK:
-			Toast.makeText(context, "授权成功", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "授权成功", Toast.LENGTH_SHORT).show();
 			 String code=((SendAuth.Resp)resp).code;
 		       AppContext.setCode(code);
-			  System.out.println( AppContext.getCode()+"code1");
+//			  Toast.makeText(context, code, Toast.LENGTH_LONG).show();
 			  
 		break;
 		case BaseResp.ErrCode.ERR_AUTH_DENIED:
