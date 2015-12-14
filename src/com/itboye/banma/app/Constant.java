@@ -18,13 +18,13 @@ public class Constant {
     public static final String MY_SHIMING="MY_SHIMING";//是否实名认证过
     public static final String MY_BANGDING="MY_BANGDING";//是否绑定的手机号
     public static final String MY_IDNUMBER="MY_IDNUMBER";//身份证号
+    
     public static final String MY_USER_NICK="MY_USER_NICK";//我的用户昵称
     public static final String 	IS_LOGIN="IS_LOGIN";//是否登陆
-    public static final String WEIXIN_OPENID="WEIXIN_OPENID";//是否微信登陆过
     public static  final String WEIXIN_CODE="WEIXIN_CODE";//微信code
     public static final String WEIXIN_LOGIN="WEIXIN_LOGIN";//微信是否登陆
     public static final int CONORDER_ADDADR = 10; //有确认订单跳转到添加收货地址的传参
-   
+    public static final String WEIXIN_OPENID="WEIXIN_OPENID";//是否微信登 陆过
     public static final String APP_ID = "wx0d259d7e9716d3dd";//微信
 	 public static final String AppSecret = "94124fb74284c8dae6f188c7e269a5a0";//微信
     
