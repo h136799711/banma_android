@@ -63,9 +63,6 @@ public class WebActivity  extends Activity{
       		wxCircleHandler.setToCircle(true);
       		wxCircleHandler.addToSocialSDK();
       		
-      		
-      		
-      		
       		//集成扣扣分享
       		//参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
       		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "1104887406",

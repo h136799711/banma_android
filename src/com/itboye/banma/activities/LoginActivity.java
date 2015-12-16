@@ -161,6 +161,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		registerReceiver(closeReceiver, intentFilter);  
 
 		initId(this);
+		sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		dialog = new ProgressDialog(LoginActivity.this);
 		appContext = (AppContext) getApplication();
 		networkHelper = new StrVolleyInterface(this);
@@ -441,7 +442,6 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				Log.v("用户id", user.getId()+"");
 				String use = etName.getText().toString();   
 				String pas = etPassword.getText().toString(); 
-				SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 				Editor editor = sp.edit();  
 				editor.putString(Constant.WEIXIN_OPENID, user.getWxopenid());
 				editor.putString(Constant.MY_HEAD_URL, user.getHead());
@@ -497,9 +497,13 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 					setResult(100, intent);
 					//sp.getString(Constant.MY_ACCOUNT, "");
 					System.out.println(data.toString());
-					finish();
-					overridePendingTransition(R.anim.push_right_in,
+					if (sp.getString(Constant.MY_ACCOUNT, "").equals("")) {
+						Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
+					}else{
+						finish();
+						overridePendingTransition(R.anim.push_right_in,
 							R.anim.push_right_out);
+					}
 				} else {
 					Toast.makeText(LoginActivity.this, "请重新登陆", Toast.LENGTH_LONG).show();
 				}
