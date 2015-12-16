@@ -393,7 +393,43 @@
                     android:layout_marginLeft="15dip"
                     android:layout_marginRight="15dip"
                     android:background="@color/line" />
+           
+				<LinearLayout
+                    android:id="@+id/ll_rank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/listview_item_selector"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="15dip"
+                    android:paddingTop="10dip" >
 
+                    <ImageView
+                        android:layout_width="35dip"
+                        android:layout_height="35dip"
+                        android:background="@drawable/shouhuo" />
+
+                    <TextView
+                        style="@style/PersonalTextStyle"
+                        android:layout_weight="1"
+                        android:text="邀请排行榜" />
+
+                    <TextView
+                        style="@style/PersonalRightTextStyle"
+                        android:text="查看排行榜" />
+
+                    <ImageView
+                        style="@style/PersonalRightIconStyle"
+                        android:src="@drawable/android_list_idex" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
+                    android:background="@color/line" />
                 <LinearLayout
                     android:id="@+id/rl_more"
                     android:layout_width="match_parent"

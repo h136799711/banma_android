@@ -43,6 +43,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	private TextView tvYongJin;//我的返佣
 	private ImageView ivShare;//扫描二维码
 	private LinearLayout rlMoney;//我的佣金
+	private LinearLayout llRank;//排行榜
 	private LinearLayout mailing_address;//地址管理
 	private LinearLayout morePersonal;//更多个人相关
 	private LinearLayout order_goods;
@@ -80,6 +81,8 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	//	ivPersonhead=(ImageView)findViewById(R.id.iv_personhead);
        // SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
       // String userId= sp.getString("MY_USERID", "");
+		llRank=(LinearLayout)chatView.findViewById(R.id.ll_rank);
+		llRank.setOnClickListener(this);
 		String userId=appContext.getLoginUid()+"";
 //		ivBack=(ImageView)chatView.findViewById(R.id.iv_back);
 		ivPersonheadFail=(CircleImg)chatView.findViewById(R.id.iv_personheadfail);
@@ -115,6 +118,18 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.ll_rank:
+			if (appContext.isLogin()) {
+				Intent intent4=new Intent(getActivity(),WebActivity.class);
+				intent4.putExtra("Url", "Rank");
+				startActivity(intent4);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}else{
+				Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_LONG).show();
+			}			
+			break;
 		case R.id.rl_money:
 			if (appContext.isLogin()) {
 				Intent intent3=new Intent(getActivity(),WebActivity.class);

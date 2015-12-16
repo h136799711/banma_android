@@ -31,6 +31,19 @@
             android:textColor="@color/white"
              android:textSize="15sp"
             />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:text="信息"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
     </RelativeLayout>
 
     <ProgressBar
