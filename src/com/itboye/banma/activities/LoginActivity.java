@@ -464,6 +464,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				editor.commit();
 				Toast.makeText(LoginActivity.this,data.toString(), Toast.LENGTH_LONG).show();
 				if (AppContext.getMoblie().equals("")) {
+					appContext.setLogin(false);
 					Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
 					startActivity(new Intent(LoginActivity.this,ActivityBind.class));
 					overridePendingTransition(R.anim.in_from_right,
