@@ -430,6 +430,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				appContext.setLogin(true);
 				appContext.setLoginUid(user.getId());
 				appContext.setPassword(user.getPassword());
+				AppContext.setUsername(user.getUsername());
 				AppContext.setMoblie(user.getMobile());
 				AppContext.setCoin(user.getCoin());
 				AppContext.setHeadurl(user.getHead());
@@ -469,6 +470,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 					startActivity(new Intent(LoginActivity.this,ActivityBind.class));
 					overridePendingTransition(R.anim.in_from_right,
 							R.anim.out_to_left);
+					dialog.dismiss();
 				}else{
 					ApiClient.youHuiMa(LoginActivity.this, user.getIdcode(), networkHelper);
 					request = RATE;
@@ -633,14 +635,11 @@ class AuthListener implements WeiboAuthListener {
 		@Override
 		public void onCancel() {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
 		public void onWeiboException(WeiboException arg0) {
 			// TODO Auto-generated method stub
-			
 		}
-
 	}
 }

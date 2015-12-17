@@ -38,12 +38,14 @@ public class ActivityBind extends Activity implements OnClickListener,StrUIDataL
 	private ImageView ivBack;//返回按钮
 	SharedPreferences sp;
 	private String requestCode="";
+	private AppContext appContext;
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bind);
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
+		appContext = (AppContext) getApplication();
 		initId();
 		sp=  this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
 		btnGetCode.setOnClickListener(this);
@@ -92,7 +94,7 @@ public class ActivityBind extends Activity implements OnClickListener,StrUIDataL
 				Toast.makeText(ActivityBind.this, "请输入正确地新手机号", Toast.LENGTH_SHORT).show();
 			}else {
 				requestCode="CODE";
-				ApiClient.getCheckCode(ActivityBind.this, mobile, "4", networkHelper);
+				ApiClient.getCheckCode(ActivityBind.this, mobile, "3", networkHelper);
 			}			
 			break;
 		case R.id.btn_sub:
@@ -102,9 +104,8 @@ public class ActivityBind extends Activity implements OnClickListener,StrUIDataL
 			}else if (checdcode.length()!=6) {
 				Toast.makeText(ActivityBind.this, "请先获取验证码", Toast.LENGTH_SHORT).show();
 			} else {
-				requestCode="SUB";
-				ApiClient.bindPhone(this, sp.getString(Constant.MY_USERID, ""), etCheckCode.getText().toString(),
-						etNewNumber.getText().toString(), networkHelper); 
+				requestCode="CHECK";
+				ApiClient.judgeCheckCode(ActivityBind.this,AppContext.getUsername(),etCheckCode.getText().toString(), "4", appContext.getLoginUid()+"", networkHelper);
 			}
 		break;
 		case R.id.iv_back:
@@ -142,8 +143,11 @@ public class ActivityBind extends Activity implements OnClickListener,StrUIDataL
 			if (requestCode.equals("CODE")){//获取的是验证码
 				Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
 				System.out.println("获取验证码成功");
-			}else if (requestCode.equals("SUB")){
-				System.out.println(content.toString()+"PPPPPPPPPPPPPPPPP");
+			}else if (requestCode.equals("CHECK")) {
+				requestCode="SUB";
+				ApiClient.bindPhone(this, sp.getString(Constant.MY_USERID, ""), etCheckCode.getText().toString(),
+						etNewNumber.getText().toString(), networkHelper); 
+			} else if (requestCode.equals("SUB")){
 				//保存登陆绑定的手机号
 				Editor editor=sp.edit();
 				AppContext.setMoblie(etNewNumber.getText().toString());

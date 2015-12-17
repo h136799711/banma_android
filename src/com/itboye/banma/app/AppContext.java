@@ -30,7 +30,16 @@ public class AppContext extends Application {
 	public static BitmapCache bitmapCache = new BitmapCache();
 	public static String coin;//我的钱包
 	public static String moblie;//手机号
+	public static String username;//用户登录账户
 	
+	public static String getUsername() {
+		return username;
+	}
+
+	public static void setUsername(String username) {
+		AppContext.username = username;
+	}
+
 	public static String getMoblie() {
 		return moblie;
 	}
