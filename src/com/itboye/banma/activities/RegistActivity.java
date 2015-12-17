@@ -114,6 +114,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 		edCheckCode=(EditText)findViewById(R.id.et_check_code);
 		edCheckCode.setText("");
 		edPhoneNumber=(EditText)findViewById(R.id.et_phone_number);
+		edPhoneNumber.setHint("手机号");
 		tvRegist=(TextView)findViewById(R.id.tv_regist);
 		llTiaoKuan=(LinearLayout)findViewById(R.id.ll_tiaokuan);
 	}

@@ -430,6 +430,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				appContext.setLogin(true);
 				appContext.setLoginUid(user.getId());
 				appContext.setPassword(user.getPassword());
+				AppContext.setMoblie(user.getMobile());
 				AppContext.setCoin(user.getCoin());
 				AppContext.setHeadurl(user.getHead());
 				AppContext.setNickname(user.getNickname());
@@ -457,15 +458,21 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 					editor.putString(Constant.MY_PASSWORD,pas);  
 					editor.putBoolean(Constant.IS_LOGIN, true);
 				}else {
-
 					AppContext.setWeixin(true);
 					AppContext.setCode("");
 				}
 				editor.commit();
-
-				ApiClient.youHuiMa(LoginActivity.this, user.getIdcode(), networkHelper);
-				request = RATE;
-
+				Toast.makeText(LoginActivity.this,data.toString(), Toast.LENGTH_LONG).show();
+				if (AppContext.getMoblie().equals("")) {
+					Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
+					startActivity(new Intent(LoginActivity.this,ActivityBind.class));
+					overridePendingTransition(R.anim.in_from_right,
+							R.anim.out_to_left);
+				}else{
+					ApiClient.youHuiMa(LoginActivity.this, user.getIdcode(), networkHelper);
+					request = RATE;
+				}
+				
 			} else {
 				dialog.dismiss();
 				appContext.setLogin(false);
@@ -475,7 +482,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			}
 		}else if(request == RATE){
 			request = -1;
-
+			
 			JSONArray jsonArray;
 			try {
 				jsonArray = new JSONArray(content);
@@ -497,13 +504,9 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 					setResult(100, intent);
 					//sp.getString(Constant.MY_ACCOUNT, "");
 					System.out.println(data.toString());
-					if (sp.getString(Constant.MY_ACCOUNT, "").equals("")) {
-						Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
-					}else{
-						finish();
-						overridePendingTransition(R.anim.push_right_in,
-							R.anim.push_right_out);
-					}
+					finish();
+					overridePendingTransition(R.anim.push_right_in,
+					R.anim.push_right_out);
 				} else {
 					Toast.makeText(LoginActivity.this, "请重新登陆", Toast.LENGTH_LONG).show();
 				}

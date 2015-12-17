@@ -8,6 +8,7 @@ import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.entity.Area;
 import com.itboye.banma.utils.BitmapCache;
+import com.tencent.stat.StatConfig;
 
 import android.app.Application;
 import android.content.Context;
@@ -28,7 +29,16 @@ public class AppContext extends Application {
 	private static boolean isTokenSuccess=false;//判断token是否拿到，启动server
 	public static BitmapCache bitmapCache = new BitmapCache();
 	public static String coin;//我的钱包
+	public static String moblie;//手机号
 	
+	public static String getMoblie() {
+		return moblie;
+	}
+
+	public static void setMoblie(String moblie) {
+		AppContext.moblie = moblie;
+	}
+
 	public static String getCoin() {
 		return coin;
 	}

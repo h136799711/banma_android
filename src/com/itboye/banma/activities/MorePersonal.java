@@ -225,7 +225,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					    	System.out.println("头像加载失败");
 					}		
 				try {
-					String newString=sp.getString(Constant.MY_ACCOUNT,"").substring(0,3)+"****"+sp.getString(Constant.MY_ACCOUNT,"").substring(7, 11);
+					String newString= AppContext.getMoblie().substring(0,3)+"****"+ AppContext.getMoblie().substring(7, 11);
 					tvPhoneNumber.setText(newString);
 			
 				} catch (Exception e) {
@@ -336,20 +336,34 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 			break;
 		case  R.id.rl_phone_number_:
 			if (appContext.isLogin()) {
-				Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
-				newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
-				startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
-				overridePendingTransition(R.anim.in_from_right,
+				if (AppContext.getMoblie().equals("")) {
+					Intent newIntent=new Intent(MorePersonal.this,ActivityBind.class);
+					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
+					overridePendingTransition(R.anim.in_from_right,
+							R.anim.out_to_left);
+				}else{
+					Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
+					newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
+					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
+					overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
+				}
 			}
 		break;
 		case  R.id.tv_phone_number:
 			if (appContext.isLogin()) {
-				Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
-				newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
-				startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
-				overridePendingTransition(R.anim.in_from_right,
+				if (AppContext.getMoblie().equals("")) {
+					Intent newIntent=new Intent(MorePersonal.this,ActivityBind.class);
+					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
+					overridePendingTransition(R.anim.in_from_right,
+							R.anim.out_to_left);
+				}else{
+					Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
+					newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
+					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
+					overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
+				}
 			}
 		break;
 		
@@ -622,10 +636,10 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
-		Log.v("注册接口",error.toString());
-	    Log.e("LOGIN-ERROR", error.getMessage(), error);
-	    byte[] htmlBodyBytes = error.networkResponse.data;
-	    Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
+//		Log.v("注册接口",error.toString());
+//	    Log.e("LOGIN-ERROR", error.getMessage(), error);
+//	    byte[] htmlBodyBytes = error.networkResponse.data;
+//	    Log.e("LOGIN-ERROR", new String(htmlBodyBytes), error);
 	}
 
 

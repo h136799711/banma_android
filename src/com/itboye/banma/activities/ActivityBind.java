@@ -3,7 +3,17 @@ package com.itboye.banma.activities;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.VolleyError;
+import com.itboye.banma.R;
+import com.itboye.banma.api.ApiClient;
+import com.itboye.banma.api.StrUIDataListener;
+import com.itboye.banma.api.StrVolleyInterface;
+import com.itboye.banma.app.AppContext;
+import com.itboye.banma.app.Constant;
+import com.umeng.analytics.MobclickAgent;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -14,18 +24,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-import com.itboye.banma.R;
-import com.itboye.banma.api.ApiClient;
-import com.itboye.banma.api.StrUIDataListener;
-import com.itboye.banma.api.StrVolleyInterface;
-import com.itboye.banma.app.AppContext;
-import com.itboye.banma.app.Constant;
-import com.umeng.analytics.MobclickAgent;
-
-public class NewPhoneActivity  extends Activity implements OnClickListener,StrUIDataListener{
+public class ActivityBind extends Activity implements OnClickListener,StrUIDataListener {
 	private StrVolleyInterface networkHelper;
 	private EditText etOldNumber;//当前手机号
 	private EditText etOldPass;//当前密码
@@ -39,7 +41,7 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_newphone);
+		setContentView(R.layout.activity_bind);
 		networkHelper = new StrVolleyInterface(this);
 		networkHelper.setStrUIDataListener(this);
 		initId();
@@ -51,14 +53,14 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 
 	private void initId() {
 		// TODO Auto-generated method stub
-		etOldNumber=(EditText)findViewById(R.id.et_old_phone_number);
-		if (getIntent().getStringExtra("oldPboneNumber")!=null) {
-			etOldNumber.setText(getIntent().getStringExtra("oldPboneNumber"));
-		}
+//		etOldNumber=(EditText)findViewById(R.id.et_old_phone_number);
+//		if (getIntent().getStringExtra("oldPboneNumber")!=null) {
+//			etOldNumber.setText(getIntent().getStringExtra("oldPboneNumber"));
+//		}
 		ivBack=(ImageView)findViewById(R.id.iv_back);
-		etOldPass=(EditText)findViewById(R.id.et_old_pass);
-		etNewNumber=(EditText)findViewById(R.id.et_new_phone_number);
-		etCheckCode=(EditText)findViewById(R.id.et_check_code);
+//		etOldPass=(EditText)findViewById(R.id.et_old_pass);
+		etNewNumber=(EditText)findViewById(R.id.et_new_phone);
+		etCheckCode=(EditText)findViewById(R.id.et_check);
 		btnGetCode=(Button)findViewById(R.id.btn_getcheckcode);
 		btnSub=(Button)findViewById(R.id.btn_sub);
 	}
@@ -87,26 +89,26 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 		switch (v.getId()) {
 		case R.id.btn_getcheckcode:
 			if (mobile.length()!=11) {
-				Toast.makeText(NewPhoneActivity.this, "请输入正确地新手机号", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivityBind.this, "请输入正确地新手机号", Toast.LENGTH_SHORT).show();
 			}else {
 				requestCode="CODE";
-				ApiClient.getCheckCode(NewPhoneActivity.this, mobile, "4", networkHelper);
+				ApiClient.getCheckCode(ActivityBind.this, mobile, "4", networkHelper);
 			}			
 			break;
 		case R.id.btn_sub:
 		
 			if (mobile.length()!=11) {
-				Toast.makeText(NewPhoneActivity.this, "请输入正确地新手机号", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivityBind.this, "请输入正确地新手机号", Toast.LENGTH_SHORT).show();
 			}else if (checdcode.length()!=6) {
-				Toast.makeText(NewPhoneActivity.this, "请先获取验证码", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivityBind.this, "请先获取验证码", Toast.LENGTH_SHORT).show();
 			} else {
 				requestCode="SUB";
-				ApiClient.changePhone(this, sp.getString(Constant.MY_USERID, ""), etCheckCode.getText().toString(),
-						etNewNumber.getText().toString(), etOldPass.getText().toString(), networkHelper);
+				ApiClient.bindPhone(this, sp.getString(Constant.MY_USERID, ""), etCheckCode.getText().toString(),
+						etNewNumber.getText().toString(), networkHelper); 
 			}
 		break;
 		case R.id.iv_back:
-			NewPhoneActivity.this.finish();
+			ActivityBind.this.finish();
 			overridePendingTransition(R.anim.push_right_in,
 					R.anim.push_right_out);
 			break;
@@ -141,9 +143,10 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 				Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
 				System.out.println("获取验证码成功");
 			}else if (requestCode.equals("SUB")){
+				System.out.println(content.toString()+"PPPPPPPPPPPPPPPPP");
 				//保存登陆绑定的手机号
-				AppContext.setMoblie(etNewNumber.getText().toString());
 				Editor editor=sp.edit();
+				AppContext.setMoblie(etNewNumber.getText().toString());
 				editor.putString(Constant.MY_BANGDING, etNewNumber.getText().toString());
 //				editor.putString(Constant.MY_ACCOUNT, etNewNumber.getText().toString());
 				editor.commit();
@@ -151,12 +154,13 @@ public class NewPhoneActivity  extends Activity implements OnClickListener,StrUI
 				Intent intent=getIntent();
 				intent.putExtra("newPhone", etNewNumber.getText().toString());
 				Log.v("新手机号", etNewNumber.getText().toString());
-				NewPhoneActivity.this.setResult(1,intent);
+				ActivityBind.this.setResult(1,intent);
 				Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
 				finish();
 			}
 		}
 		else {
+			System.out.println(content.toString()+"PPPPPPPPPPPPPPPPP");
 			Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
 		}
 	}

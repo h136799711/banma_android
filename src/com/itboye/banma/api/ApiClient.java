@@ -157,6 +157,19 @@ public class ApiClient {
 			
 		} 
 		
+		//绑定手机
+		public  static void bindPhone(Context mContext, String uid, String code,String mobile,
+				 StrVolleyInterface networkHelper) {
+			 String access_token=AppContext.getAccess_token();
+				String url = Constant.URL+"/User/bind?access_token="+access_token+"";
+			Map<String,String> params = new HashMap<String, String>();
+	        params.put("uid",uid);
+	        params.put("code",code);
+	        params.put("mobile", mobile);
+	        VolleyRequest.StrRequestPost(mContext, url, "bindPhone",params, networkHelper);
+			
+		} 
+		
 	//绑定新手机
 	public  static void changePhone(Context mContext, String uid, String code,String mobile,
 			String password, StrVolleyInterface networkHelper) {

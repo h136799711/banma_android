@@ -115,8 +115,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 								(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 						layoutParams.setMargins(20,30,20,0);//4个参数按顺序分别是左上右下
 						tv_youhui_list.setLayoutParams(layoutParams);
-						tv_youhui_list.setText("优惠码的使用方法: 您可以通过其他安装斑马海购app的手机，"
-								+ "我的名片中获取相关的优惠码字符串，然后输入到当前界面即可。");
+						tv_youhui_list.setText("优惠码的使用方法：优惠码为其他已经注册斑马海购并绑定手机的用户的手机号");
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

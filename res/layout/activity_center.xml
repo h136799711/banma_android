@@ -408,7 +408,7 @@
                     <ImageView
                         android:layout_width="35dip"
                         android:layout_height="35dip"
-                        android:background="@drawable/shouhuo" />
+                        android:background="@drawable/rank" />
 
                     <TextView
                         style="@style/PersonalTextStyle"
