@@ -104,7 +104,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private com.umeng.socialize.controller.UMSocialService mController;
 	private RequestQueue requestQueue;
 	private String httpurl="http://banma.itboye.com/index.php/Api/SinaWeibo/callback";
-	private String app_key="2334687309";
+	private String weibo_appkey="2334687309";
 	private AuthInfo mAuthInfo;
 	private SsoHandler mSsoHandler;
 	private  LoginService loginService;
@@ -130,7 +130,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		    });
 		 loginService = AlibabaSDK.getService(LoginService.class);
 		//微博
-		mAuthInfo = new AuthInfo(this,app_key,httpurl, "");
+		mAuthInfo = new AuthInfo(this,weibo_appkey,httpurl, "");
 		
 		requestQueue = AppContext.getHttpQueues();
 
@@ -338,8 +338,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	 
 	        @Override
 	        public void onFailure(int code, String message) {
-	            Toast.makeText(LoginActivity.this, "授权取消",
-	                    Toast.LENGTH_SHORT).show();
+	            Toast.makeText(LoginActivity.this, message+code+"PPP",
+	                    Toast.LENGTH_LONG).show();
 	        }
 	    });
 	}
