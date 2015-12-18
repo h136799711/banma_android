@@ -8,7 +8,7 @@ import android.R.string;
 public class Constant {
 	public static String weibo_token="";
 	public static  String weibo_uid="";
-	public static final String URL = "http://banma.itboye.com/api.php";
+	public static final String URL = "http://www.bammar.com/api.php";
 	public static final String IMAGE_FILE_NAME = "head.jpg";// 头像文件名称
 	public static final String MY_PREFERENCES = "MY_PREFERENCES";    //Preferences文件的名称   ,存登陆信息
 	public static final String MY_ACCOUNT = "MY_ACCOUNT";            //用户账号

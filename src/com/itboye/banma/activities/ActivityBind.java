@@ -104,8 +104,11 @@ public class ActivityBind extends Activity implements OnClickListener,StrUIDataL
 			}else if (checdcode.length()!=6) {
 				Toast.makeText(ActivityBind.this, "请先获取验证码", Toast.LENGTH_SHORT).show();
 			} else {
-				requestCode="CHECK";
-				ApiClient.judgeCheckCode(ActivityBind.this,AppContext.getUsername(),etCheckCode.getText().toString(), "4", appContext.getLoginUid()+"", networkHelper);
+				requestCode="SUB";
+				ApiClient.bindPhone(this, appContext.getLoginUid()+"", etCheckCode.getText().toString(),
+						etNewNumber.getText().toString(), networkHelper); 
+//				requestCode="CHECK";
+//				ApiClient.judgeCheckCode(ActivityBind.this,AppContext.getUsername(),etCheckCode.getText().toString(), "4", appContext.getLoginUid()+"", networkHelper);
 			}
 		break;
 		case R.id.iv_back:
@@ -143,11 +146,11 @@ public class ActivityBind extends Activity implements OnClickListener,StrUIDataL
 			if (requestCode.equals("CODE")){//获取的是验证码
 				Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
 				System.out.println("获取验证码成功");
-			}else if (requestCode.equals("CHECK")) {
-				requestCode="SUB";
-				ApiClient.bindPhone(this, sp.getString(Constant.MY_USERID, ""), etCheckCode.getText().toString(),
-						etNewNumber.getText().toString(), networkHelper); 
-			} else if (requestCode.equals("SUB")){
+//			}else if (requestCode.equals("CHECK")) {
+//				requestCode="SUB";
+//				ApiClient.bindPhone(this, appContext.getLoginUid()+"", etCheckCode.getText().toString(),
+//						etNewNumber.getText().toString(), networkHelper); 
+			}else if (requestCode.equals("SUB")){
 				//保存登陆绑定的手机号
 				Editor editor=sp.edit();
 				AppContext.setMoblie(etNewNumber.getText().toString());
@@ -159,7 +162,8 @@ public class ActivityBind extends Activity implements OnClickListener,StrUIDataL
 				intent.putExtra("newPhone", etNewNumber.getText().toString());
 				Log.v("新手机号", etNewNumber.getText().toString());
 				ActivityBind.this.setResult(1,intent);
-				Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
+				appContext.setLogin(true);
+				Toast.makeText(this, "绑定手机成功，请登录", Toast.LENGTH_LONG).show();
 				finish();
 			}
 		}

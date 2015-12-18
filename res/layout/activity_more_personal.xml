@@ -260,7 +260,7 @@
                  android:gravity="center"
                  android:background="@null"
                  android:focusable="false"
-                 android:text="8208208" />
+                 android:text="0571-87215950" />
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />

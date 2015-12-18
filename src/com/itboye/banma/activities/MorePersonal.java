@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import android.R.integer;
 import android.annotation.SuppressLint;
@@ -88,6 +89,7 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 	private StrVolleyInterface networkHelper;
 	private TextView tvUserName;//用户昵称
 	private TextView tvPhoneNumber;//用户手机号
+	private TextView tvtelephone;//客服
 	private TextView tvRenZhen;//实名认证
 	//private RelativeLayout rlPersonalMian;//该界面的总布局控制
 	private ImageView ivBack;//返回按钮
@@ -160,10 +162,13 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 		rlShengFenZheng.setOnClickListener(this);
 		rlWeiXin.setOnClickListener(this);
 		rl_exit.setOnClickListener(this);
+		tvtelephone.setOnClickListener(this);
 	}
 	
 	
 	private void initID(){
+		tvtelephone=(TextView)findViewById(R.id.tv_telephone);
+		
 		rl_exit=(RelativeLayout)findViewById(R.id.rl_exit1);
 		title=(TextView)findViewById(R.id.title);
 		title.setText("更多设置");
@@ -328,42 +333,44 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 					R.anim.out_to_left);
 			break;
 		case R.id.rl_call_server:
-			 Intent phoneIntent = new Intent("android.intent.action.CALL", 
-		             Uri.parse("tel:" + tvTelephone.getText().toString())); 
+//			 Intent phoneIntent = new Intent("android.intent.action.CALL", 
+//		             Uri.parse("tel:" + tvTelephone.getText().toString())); 
+//			startActivity(phoneIntent);
+			Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+			Uri data = Uri.parse("tel:" + "0571-87215950");
+			phoneIntent.setData(data);
 			startActivity(phoneIntent);
+			overridePendingTransition(R.anim.in_from_right,
+					R.anim.out_to_left);
+			break;
+		case R.id.tv_telephone:
+//			 Intent phoneIntent = new Intent("android.intent.action.CALL", 
+//		             Uri.parse("tel:" + tvTelephone.getText().toString())); 
+//			startActivity(phoneIntent);
+			Intent phoneIntent1 = new Intent(Intent.ACTION_DIAL);
+			Uri data1 = Uri.parse("tel:" + "0571-87215950");
+			phoneIntent1.setData(data1);
+			startActivity(phoneIntent1);
 			overridePendingTransition(R.anim.in_from_right,
 					R.anim.out_to_left);
 			break;
 		case  R.id.rl_phone_number_:
 			if (appContext.isLogin()) {
-				if (AppContext.getMoblie().equals("")) {
-					Intent newIntent=new Intent(MorePersonal.this,ActivityBind.class);
-					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
-					overridePendingTransition(R.anim.in_from_right,
-							R.anim.out_to_left);
-				}else{
 					Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
 					newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
 					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
 					overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
-				}
 			}
 		break;
 		case  R.id.tv_phone_number:
 			if (appContext.isLogin()) {
-				if (AppContext.getMoblie().equals("")) {
-					Intent newIntent=new Intent(MorePersonal.this,ActivityBind.class);
-					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
-					overridePendingTransition(R.anim.in_from_right,
-							R.anim.out_to_left);
-				}else{
+				
 					Intent newIntent=new Intent(MorePersonal.this,NewPhoneActivity.class);
 					newIntent.putExtra("oldPboneNumber", tvPhoneNumber.getText().toString());
 					startActivityForResult(newIntent, FROM_NEWPHONE);//请求码
 					overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
-				}
 			}
 		break;
 		

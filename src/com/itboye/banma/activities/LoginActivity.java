@@ -403,7 +403,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		dialog.dismiss();
 		appContext.setLogin(false);                                 
 		System.out.println(error.toString()+"PPPPPPPPPPPPP");
-		Toast.makeText(LoginActivity.this, "登陆发生异常", Toast.LENGTH_LONG).show();
+	//	Toast.makeText(LoginActivity.this, "登陆发生异常", Toast.LENGTH_LONG).show();
 	}
 	@Override
 	public void onDataChanged(String data) {
@@ -464,14 +464,15 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				}
 				editor.commit();
 				Toast.makeText(LoginActivity.this,data.toString(), Toast.LENGTH_LONG).show();
-				if (AppContext.getMoblie().equals("")) {
-					appContext.setLogin(false);
-					Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
-					startActivity(new Intent(LoginActivity.this,ActivityBind.class));
-					overridePendingTransition(R.anim.in_from_right,
-							R.anim.out_to_left);
-					dialog.dismiss();
-				}else{
+//				if (AppContext.getMoblie().equals("")) {
+//					appContext.setLogin(false);
+//					Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
+//					startActivity(new Intent(LoginActivity.this,ActivityBind.class));
+//					overridePendingTransition(R.anim.in_from_right,
+//							R.anim.out_to_left);
+//					dialog.dismiss();
+//				}else
+				{
 					ApiClient.youHuiMa(LoginActivity.this, user.getIdcode(), networkHelper);
 					request = RATE;
 				}
@@ -606,7 +607,13 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
-	    CallbackContext.onActivityResult(requestCode, resultCode, data);
+	    try {
+	    	 CallbackContext.onActivityResult(requestCode, resultCode, data);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	   
 	    if (mSsoHandler != null) {
 	        mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
 	    }
