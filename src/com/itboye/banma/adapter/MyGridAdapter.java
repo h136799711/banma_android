@@ -33,8 +33,6 @@ public class MyGridAdapter extends BaseAdapter {
 	private List<MapValue> value;
 	private Sku_info sku_info;
 	private ChooseStandardInterface ch;
-	public String[] img_text = { "型号000", "型号111111", "型号222222222222222", "型号33333", "型号444", "型号555",
-			"型号66776", "型号54355", "型号555555"};
 	public MyGridAdapter(Context mContext, Sku_info sku_info, SkuInfo skuInfo, int i, ChooseStandardInterface ch) {
 		super();
 		this.mContext = mContext;
@@ -95,11 +93,11 @@ public class MyGridAdapter extends BaseAdapter {
 				notifyDataSetChanged();
 				state = position;
 				Constant.SKU_INFO[i] = skuInfo.getId() + ":" + value.get(position).getId()+";";
-				Constant.SKU_INFOSTR[i] = value.get(position).getName()+"、";
+				Constant.SKU_INFOSTR[i] = skuInfo.getName() +":"+ value.get(position).getName()+"; ";
 				//tv.setBackgroundResource(R.drawable.yuanjiao_choice);
 				Constant.SKU_NUM[i] = 1;
 				int sum = 0;
-				for(int k=0; k<Constant.SKU_ALLNUM; k++){
+				for(int k=0; k<Constant.SKU_NUM.length; k++){
 					sum = sum + Constant.SKU_NUM[k];
 				}
 				if(sum >= Constant.SKU_ALLNUM){

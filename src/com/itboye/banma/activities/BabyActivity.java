@@ -466,8 +466,8 @@ public class BabyActivity extends FragmentActivity implements
 			View view = LayoutInflater.from(this).inflate(R.layout.pic_item,
 					null);
 			pic_image = (NetworkImageView) view.findViewById(R.id.pic_item);
-			// pic_image.setDefaultImageResId(R.drawable.base_map); //加载中显示的图片
-			pic_image.setErrorImageResId(R.drawable.image_load_fail); // 加载失败显示的图片
+			pic_image.setDefaultImageResId(R.drawable.loading_image_baby); //加载中显示的图片
+			pic_image.setErrorImageResId(R.drawable.loading_image_baby); // 加载失败显示的图片
 			String url_image = imageList[i];
 			if(url_image.equals("false")){
 				url_image = "";
@@ -705,6 +705,7 @@ public class BabyActivity extends FragmentActivity implements
 				}
 				else {
 					System.out.println(jsonObject.getString("data") + "失败了");
+					Toast.makeText(this, "添加购物车失败", Toast.LENGTH_SHORT).show();
 				}
 					
 			} catch (Exception e) {

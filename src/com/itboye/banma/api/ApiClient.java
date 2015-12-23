@@ -213,8 +213,8 @@ public class ApiClient {
 		        params.put("price", price+"");
 		        params.put("ori_price", ori_price+"");
 		        params.put("psku_id", psku_id+"");
-		        params.put("psku_id", weight+"");
-		        params.put("psku_id", taxrate);
+		        params.put("weight", weight+"");
+		        params.put("taxrate", taxrate);
 		        VolleyRequest.StrRequestPost(context, url, "addCart",params, networkHelper);
 			}
 	

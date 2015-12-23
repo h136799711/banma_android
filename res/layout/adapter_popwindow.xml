@@ -90,7 +90,7 @@
             android:padding="1dip"
             android:scaleType="fitXY"
             android:background="@color/bg_color"
-            android:src="@drawable/icon" />
+            android:src="@drawable/loading_image_baby" />
     </RelativeLayout>
 
     <ScrollView
@@ -99,7 +99,7 @@
         android:background="@color/white"
         android:paddingTop="10dp" >
 
-        <LinearLayout
+       <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_layout"
@@ -120,7 +120,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:background="@color/white" >
 
                 <TextView
                     android:layout_width="0dp"
@@ -165,14 +166,7 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/line" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
+           
         </LinearLayout>
     </ScrollView>
 

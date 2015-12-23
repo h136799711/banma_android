@@ -79,6 +79,8 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 	String standard = null;
 	String standardStr = null;
 	int has_sku;
+	ImageLoader imageLoader;
+	ImageListener imagelistener;
 
 	public BabyPopWindow(Context context, List<Sku_info> sku_info, String name,
 			List<SkuInfo> skuInfo, String url, Double price,
@@ -110,18 +112,66 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 		standardView = (TextView) view.findViewById(R.id.standard);
 		sku_info_list_layout = (LinearLayout) view.findViewById(R.id.sku_info_list_layout);
 
-		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
+		imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 				new OrderBitmapCache());
-		ImageListener listener = ImageLoader.getImageListener(pow_pic,
+		imagelistener = ImageLoader.getImageListener(pow_pic,
 				R.drawable.loading_image_baby, R.drawable.loading_image_baby);
-		imageLoader.get(url, listener, 150, 150);
+		imageLoader.get(url, imagelistener, 150, 150);
 		pow_price.setText("￥" + price);
 		pow_ori_price.setText("￥" + ori_price);
 		pow_ori_price.getPaint().setFlags(
 				Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 		pow_quantity.setText("库存" + quantity +"件");
 	
-		if (skuInfo != null) {
+		for(int k=0; k<Constant.SKU_NUM.length; k++){
+			Constant.SKU_NUM[k] = 0;
+		}
+		
+		if (sku_info != null) {
+			int n = sku_info.size();
+			/*for(int k=0; k<n; k++){   //去除为空的规格
+				if(skuInfo.get(k).getValue_list().size() == 0){
+					skuInfo.remove(k);
+					k--;
+					n--;
+				}
+			}*/
+			Constant.SKU_ALLNUM = sku_info.size();
+		} else {
+			Constant.SKU_ALLNUM = 0;
+		}
+		if(Constant.SKU_ALLNUM == 0){
+			init();
+		}else{
+			standardView.setText("请选择规格参数");
+			for(int k=0; k<skuInfo.size(); k++){
+				boolean state = false;
+				for(int j=0; j<sku_info.size(); j++){
+					if(skuInfo.get(k).getId() == Integer.valueOf(sku_info.get(j).getId())){
+						state = true;
+						break;
+					}
+				}
+				if(state){
+
+					LayoutInflater inflater= LayoutInflater.from(context);
+					View convertView = inflater.inflate(R.layout.sku_info_item,null);
+					TextView sku_tex = BaseViewHolder.get(convertView, R.id.sku_tex);
+					MyGridView sku_info_gridview = BaseViewHolder.get(convertView, R.id.sku_info_gridview);
+					MyGridAdapter adapter = new MyGridAdapter(context, null, skuInfo.get(k), k, ch);
+					getItemMaxWhith(sku_info_gridview, adapter);
+					sku_info_gridview.setAdapter(adapter);
+					sku_tex.setText(skuInfo.get(k).getName());
+					sku_info_list_layout.addView(convertView);
+				}
+			}
+			init();
+		}
+		
+		
+		
+		
+		/*if (skuInfo != null) {
 			int n = skuInfo.size();
 			for(int k=0; k<n; k++){   //去除为空的规格
 				if(skuInfo.get(k).getValue_list().size() == 0){
@@ -153,7 +203,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 				
 			}
 			init();
-		}
+		}*/
 		
 	}
 	
@@ -368,11 +418,12 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			if (skuList.get(k).getSku_id().equals(standard)) {
 				skuPosition = k;
 				sku_id = skuList.get(k).getId();
-
+				imageLoader.get(AppContext.getImg()+skuList.get(k).getIcon_url(), imagelistener, 150, 150);
 				break;
 			}
 		}
 		standardView.setText(standardStr);
+		
 		if(skuPosition == -1){
 			pow_quantity.setText("库存0");
 			pow_price.setText("￥" + skuList.get(0).getPrice());
@@ -380,6 +431,7 @@ public class BabyPopWindow implements OnDismissListener, OnClickListener,
 			pow_ori_price.getPaint().setFlags(
 					Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 		}else{
+			quantity = skuList.get(skuPosition).getQuantity();
 			pow_quantity.setText("库存" + skuList.get(skuPosition).getQuantity());
 			pow_price.setText("￥" + skuList.get(skuPosition).getPrice());
 			pow_ori_price.setText("￥" + skuList.get(skuPosition).getOri_price());
