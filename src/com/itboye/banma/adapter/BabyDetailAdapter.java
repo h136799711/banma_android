@@ -48,8 +48,8 @@ public class BabyDetailAdapter extends BaseAdapter {
 		NetworkImageView detailImage = BaseViewHolder.get(convertView,
 				R.id.pic_detail);
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
-		detailImage.setDefaultImageResId(R.drawable.image_loading);  //加载中显示的图片
-		detailImage.setErrorImageResId(R.drawable.image_load_fail);  //加载失败显示的图片
+		detailImage.setDefaultImageResId(R.drawable.loading_image_baby);  //加载中显示的图片
+		detailImage.setErrorImageResId(R.drawable.loading_image_baby);  //加载失败显示的图片
 		detailImage.setImageUrl(imgsurl[position], imageLoader);
 		return convertView;
 	}

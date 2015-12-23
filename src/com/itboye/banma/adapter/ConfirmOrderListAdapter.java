@@ -67,7 +67,7 @@ public class ConfirmOrderListAdapter  extends BaseAdapter {
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
 				new BitmapCache());
 		ImageListener listener = ImageLoader.getImageListener(order_pic,
-				R.drawable.image_loading, R.drawable.image_load_fail);
+				R.drawable.loading_image_baby, R.drawable.loading_image_baby);
 		imageLoader.get(order.getIcon_url(), listener, 0, 0);
 		order_name.setText(order.getName());
 		if(order.getSku()==null || order.getSku().isEmpty() || order.getSku().length()<=0 ){

@@ -70,7 +70,7 @@ public class FancyCoverFlowSampleAdapter extends FancyCoverFlowAdapter {
         }
         ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
 		ImageListener listener = ImageLoader.getImageListener(imageView,  
-				R.drawable.image_loading, R.drawable.image_load_fail); 
+				R.drawable.loading_image_baby, R.drawable.loading_image_baby); 
 		
 		imageLoader.get(productlist.get(i).getMain_img(), listener, 320, 420);
 

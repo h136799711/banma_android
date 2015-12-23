@@ -33,7 +33,7 @@
             android:layout_margin="5dp"
             android:layout_marginLeft="3dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_load_fail" />
+            android:src="@drawable/loading_image_baby" />
       </LinearLayout>
 
 

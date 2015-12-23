@@ -173,13 +173,14 @@
 					</LinearLayout>
 
                     <TextView
+                        android:id="@+id/order_state_data"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
                         android:paddingBottom="10dp"
                         android:paddingTop="3dip"
-                        android:text="2015-10-25 14:59:13"
+                        android:text=""
                         android:textColor="@color/grey"
                         android:textSize="10dip" />
                 </LinearLayout>

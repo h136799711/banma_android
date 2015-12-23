@@ -99,12 +99,12 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 			holderView.tv_name.setText(arrayList.get(position).get("name")+"");	
 			System.out.println(position+":"+arrayList.get(position).get("icon_url").toString());
 			ImageListener listener1 = ImageLoader.getImageListener(holderView.iv_icon,
-					R.drawable.image_loading, R.drawable.image_load_fail);
+					R.drawable.loading_image_baby, R.drawable.loading_image_baby);
 			try {
 			       imageLoader.get(arrayList.get(position).get("icon_url").toString(), listener1,150,150);
 			} catch (Exception e) {
 				// TODO: handle exception
-				holderView.iv_icon.setImageResource(R.drawable.image_load_fail);
+				holderView.iv_icon.setImageResource(R.drawable.loading_image_baby);
 			}
 		
 			holderView.cb_choice.setOnCheckedChangeListener(new OnCheckedChangeListener() {

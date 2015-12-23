@@ -6,7 +6,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
@@ -24,8 +26,13 @@ import com.itboye.banma.view.DrawableChangeView;
 import com.itboye.banma.view.FancyCoverFlow;
 
 import android.R.integer;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -59,9 +66,10 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	private ImageView retry_img;
 	private FrameLayout frame_layout;
 	private DrawableChangeView darwableView;
-	private Drawable[] drawables = new Drawable[NUM];
+	private Drawable[] drawables;
 	Boolean YesOrNo;
 	int state;
+	int one_bk=0, two_bk=0;  //保证前两个背景已经加载好的标志，因为界面显示必须用到前两个背景
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -150,7 +158,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		}*/
 
 		if (adapter == null) {
-			getViews();
+			
 			adapter = new MyPageAdapter(getActivity(), mImages, productlist);
 			// 添加动画效果
 			// mViewPager.setPageTransformer(true, arg1);
@@ -187,19 +195,6 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 	}
 	
-	private void getViews() {
-		
-		drawables[0] = getActivity().getResources().getDrawable(R.drawable.back001);
-		drawables[1] = getActivity().getResources().getDrawable(R.drawable.back002);
-		drawables[2] = getActivity().getResources().getDrawable(R.drawable.back003);
-		drawables[3] = getActivity().getResources().getDrawable(R.drawable.back004);
-		drawables[4] = getActivity().getResources().getDrawable(R.drawable.back005);
-		drawables[5] = getActivity().getResources().getDrawable(R.drawable.back006);
-		drawables[6] = getActivity().getResources().getDrawable(R.drawable.back001);
-		drawables[7] = getActivity().getResources().getDrawable(R.drawable.back002);
-		drawables[8] = getActivity().getResources().getDrawable(R.drawable.back003);
-	
-	}
 	
 	/**
 	 * 加载商品列表数据
@@ -248,11 +243,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			if (code == 0) {
 				/*Toast.makeText(getActivity(), "code=1" + data.toString(), Toast.LENGTH_SHORT)
 				.show();*/
-				wait_ll.setVisibility(View.GONE);
-				retry_img.setVisibility(View.GONE);
-				loading_ll.setVisibility(View.GONE);
-				frame_layout.setVisibility(View.VISIBLE);
-				
+				appContext.setImg(Constant.URL+"/Api/Picture/index?id=");
 				String producData = jsondata.getString("data");
 				jsondata = new JSONObject(producData);
 				String producList = jsondata.getString("list");
@@ -260,8 +251,58 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 						new TypeToken<List<ProductItem>>() {
 						}.getType());
 				if (productlist != null) {
-					showListView(productlist);
-					appContext.setImg(Constant.URL+"/Api/Picture/index?id=");
+			
+					drawables = new Drawable[productlist.size()+2];
+					//初始化，避免有些加载慢而引起的异常
+					for(int i=0; i<productlist.size()+2; i++){
+						drawables[i] = getActivity().getResources().getDrawable(R.drawable.back001);
+					}
+					for(int k=0; k<productlist.size(); k++){
+						final int pos = k;
+						ImageRequest imageRequest = new ImageRequest(  
+								productlist.get(k).getImg_post_bg(),  
+								new Response.Listener<Bitmap>() {  
+									@Override  
+									public void onResponse(Bitmap response) {  
+										Drawable drawable =new BitmapDrawable(response);
+										drawables[pos] = drawable;
+										if(pos == 0){
+											one_bk = 1;
+										}else if(pos == 1){
+											two_bk = 1;
+										}
+									}  
+								}, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+									@Override  
+									public void onErrorResponse(VolleyError error) {  
+										// imageView.setImageResource(R.drawable.default_image);  
+									}  
+								});
+						imageRequest.setTag("imageRequest");
+						AppContext.getHttpQueues().add(imageRequest);
+						AppContext.getHttpQueues().start();
+					}
+					
+					Thread thread=new Thread(new Runnable()  
+			        {  
+			            @Override  
+			            public void run()  
+			            {   
+			            	
+			                Message message=new Message();  
+			                message.what=1;
+			                while(true){
+								if(one_bk == 1 && two_bk == 1){
+									mHandler.sendMessage(message);  
+									break;
+								}
+							}
+			                
+			            }  
+			        });  
+			        thread.start();  
+					
+					
 				}
 
 			} else {
@@ -289,5 +330,24 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	public void onClick(View v) {
 
 	}
+	public Handler mHandler=new Handler()  
+    {  
+        public void handleMessage(Message msg)  
+        {  
+            switch(msg.what)  
+            {  
+            case 1:  
+            	showListView(productlist);
+				wait_ll.setVisibility(View.GONE);
+				retry_img.setVisibility(View.GONE);
+				loading_ll.setVisibility(View.GONE);
+				frame_layout.setVisibility(View.VISIBLE); 
+                break;  
+            default:  
+                break;        
+            }  
+            super.handleMessage(msg);  
+        }  
+    };  
 
 }

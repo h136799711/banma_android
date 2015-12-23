@@ -87,7 +87,7 @@ public class OrderListItemAdapter  extends BaseAdapter {
 			holder.order_number = (TextView) view.findViewById(R.id.order_number);
 			holder.line = view.findViewById(R.id.line);
 			holder.listener = ImageLoader.getImageListener(holder.order_pic,
-					0, R.drawable.image_load_fail);
+					0, R.drawable.loading_image_baby);
 			view.setTag(holder);
 		}else{
 			holder = (ViewHolder) view.getTag();

@@ -17,7 +17,7 @@
         android:id="@+id/con_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/iconfont_kongbaiwu"
+        android:background="@drawable/loading_image_baby"
         android:visibility="gone"
         />
 

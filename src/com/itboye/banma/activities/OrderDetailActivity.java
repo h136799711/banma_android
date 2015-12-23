@@ -62,6 +62,7 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	private LinearLayout order_flex;
 	private ImageView img_flex;
 	private TextView order_state;
+	private TextView order_state_data;
 	private Button confirm;
 	
 	private int id;			//order的id
@@ -102,6 +103,7 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		order_code_text = (TextView) findViewById(R.id.order_code_text);
 		createtime_text = (TextView) findViewById(R.id.createtime_text);
 		order_state =  (TextView) findViewById(R.id.order_state);
+		order_state_data = (TextView) findViewById(R.id.order_state_data);
 		order_all_price =  (TextView) findViewById(R.id.order_all_price);
 		discount_money = (TextView) findViewById(R.id.discount_money);
 		weight = (TextView) findViewById(R.id.weight);
@@ -233,8 +235,10 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		order_code_text.setText(orderDetail.getOrder_code());
 		//时间戳转化为时间格式
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String date = sdf.format(new Date(Long.valueOf(orderDetail.getCreatetime())*1000));
-		createtime_text.setText(date);
+		String creakTime = sdf.format(new Date(Long.valueOf(orderDetail.getCreatetime())*1000));
+		String updataTime = sdf.format(new Date(Long.valueOf(orderDetail.getUpdatetime())*1000));
+		createtime_text.setText(creakTime);
+		order_state_data.setText(updataTime);
 		post_price.setText("￥"+orderDetail.getPost_price());
 		tariff.setText("￥"+orderDetail.getTax_amount());
 		double weight_kg = 0.0;
