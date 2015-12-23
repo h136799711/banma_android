@@ -338,8 +338,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	 
 	        @Override
 	        public void onFailure(int code, String message) {
-	            Toast.makeText(LoginActivity.this, message+code+"PPP",
-	                    Toast.LENGTH_LONG).show();
+//	            Toast.makeText(LoginActivity.this, message+code+"PPP",
+//	                    Toast.LENGTH_LONG).show();
 	        }
 	    });
 	}
@@ -463,15 +463,15 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 					AppContext.setCode("");
 				}
 				editor.commit();
-				Toast.makeText(LoginActivity.this,data.toString(), Toast.LENGTH_LONG).show();
-//				if (AppContext.getMoblie().equals("")) {
-//					appContext.setLogin(false);
-//					Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
-//					startActivity(new Intent(LoginActivity.this,ActivityBind.class));
-//					overridePendingTransition(R.anim.in_from_right,
-//							R.anim.out_to_left);
-//					dialog.dismiss();
-//				}else
+				//Toast.makeText(LoginActivity.this,data.toString(), Toast.LENGTH_LONG).show();
+				if (AppContext.getMoblie().equals("")) {
+					appContext.setLogin(false);
+					Toast.makeText(LoginActivity.this, "请先进行手机绑定", Toast.LENGTH_LONG).show();
+					startActivity(new Intent(LoginActivity.this,ActivityBind.class));
+					overridePendingTransition(R.anim.in_from_right,
+							R.anim.out_to_left);
+					dialog.dismiss();
+				}else
 				{
 					ApiClient.youHuiMa(LoginActivity.this, user.getIdcode(), networkHelper);
 					request = RATE;

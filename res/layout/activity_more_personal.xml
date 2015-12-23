@@ -134,7 +134,7 @@
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />
         </RelativeLayout>
-        <View  style="@style/CenterLine"/>
+      <!--  <View  style="@style/CenterLine"/> --> 
         <RelativeLayout
        		  android:id="@+id/rl_exit1"
       		android:layout_width="fill_parent"
