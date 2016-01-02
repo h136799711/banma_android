@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <include
+        android:id="@+id/include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/top"
+        android:visibility="visible" />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:id="@+id/ll_dialog"
+        android:gravity="center"
+        android:orientation="horizontal">
+       <ProgressBar
+        style="@style/loading_large"/>
+    </LinearLayout>
+   
+  <LinearLayout 
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/main_layout"
+  		android:layout_marginLeft="10dp"
+   		android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:id="@+id/ll_list"
+        android:visibility="gone"
+        >
+    <View
+	    android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/main_layout" />
+	<ListView 
+        android:id="@+id/red_list"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/main_layout"
+        android:dividerHeight="0dip" >
+    </ListView>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/text_size_15"
+        android:gravity="center_horizontal"
+        android:text="没有更多优惠劵了"/>
+  </LinearLayout>
+</LinearLayout>

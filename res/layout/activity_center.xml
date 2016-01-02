@@ -221,7 +221,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dip"
-                            android:text="代付款"
+                            android:text="待付款"
                             android:textColor="@color/grey" />
                     </LinearLayout>
 
@@ -245,7 +245,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dip"
-                            android:text="代发货"
+                            android:text="待发货"
                             android:textColor="@color/grey" />
                     </LinearLayout>
 
@@ -307,17 +307,54 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dip" />
-
-            <LinearLayout
+             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical" >
+                
+                  <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dip"
+                    android:background="@color/line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_red"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/listview_item_selector"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="15dip"
+                    android:paddingTop="10dip"
+                     >
+
+                    <ImageView
+                        android:layout_width="35dip"
+                        android:layout_height="35dip"
+                        android:background="@drawable/redbao" />
+
+                    <TextView
+                        style="@style/PersonalTextStyle"
+                        android:layout_weight="1"
+                        android:text="我的红包" />
+
+                    <TextView
+                        style="@style/PersonalRightTextStyle"
+                        android:text="查看我的红包" />
+
+                    <ImageView
+                        style="@style/PersonalRightIconStyle"
+                        android:src="@drawable/android_list_idex" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dip"
                     android:background="@color/line" />
+                
+                
 
                 <LinearLayout
                     android:id="@+id/rl_money"
@@ -349,6 +386,8 @@
                         style="@style/PersonalRightIconStyle"
                         android:src="@drawable/android_list_idex" />
                 </LinearLayout>
+
+               
 
                 <View
                     android:layout_width="match_parent"
@@ -423,6 +462,10 @@
                         style="@style/PersonalRightIconStyle"
                         android:src="@drawable/android_list_idex" />
                 </LinearLayout>
+             <View
+                android:layout_width="match_parent"
+                android:background="@color/backgroundgray"
+                android:layout_height="10dip" />
 
                 <View
                     android:layout_width="match_parent"
@@ -464,6 +507,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dip"
                     android:background="@color/line" />
+                <LinearLayout
+                    android:id="@+id/ll_suggest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/listview_item_selector"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="15dip"
+                    android:paddingTop="10dip" >
+
+                    <ImageView
+                        android:layout_width="35dip"
+                        android:layout_height="35dip"
+                        android:background="@drawable/shezhi" />
+
+                    <TextView
+                        style="@style/PersonalTextStyle"
+                        android:layout_weight="1"
+                        android:text="意见与建议" />
+
+                    <TextView
+                        style="@style/PersonalRightTextStyle"
+                        android:text="意见反馈" />
+
+                    <ImageView
+                        style="@style/PersonalRightIconStyle"
+                        android:src="@drawable/android_list_idex" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </com.itboye.banma.view.BounceScrollView>

@@ -23,6 +23,16 @@ public class ApiClient {
 	
 	public static StringRequest stringRequest;
 	
+	//红包接口
+		public static void redEnvelope(Context mContext, String uid, String curpage,StrVolleyInterface networkHelper) {
+			String access_token=AppContext.getAccess_token();
+			String url = Constant.URL+"/RedEnvelope/index?access_token="+access_token;
+			Map<String,String> params = new HashMap<String, String>();
+			params.put("uid",uid);
+			params.put("curpage",curpage);
+			VolleyRequest.StrRequestPost(mContext, url, "RedEnvelope",params, networkHelper);
+		
+		} 
 	//意见反馈
 			public static void suggest(Context mContext, String text, String uid,StrVolleyInterface networkHelper) {
 				String access_token=AppContext.getAccess_token();

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <ImageView 
+        android:id="@+id/red_title"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+   />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/listview_item_selector"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/red_jine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:singleLine="true"
+                android:layout_gravity="center_horizontal"
+                android:text="￥1"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/red_tiaojian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="满50可用"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_12" />
+           <TextView
+                 android:id="@+id/red_guoqi"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="20dp"
+                 android:layout_marginBottom="10dp"
+                 android:layout_gravity="center_horizontal"
+                 android:singleLine="true"
+                 android:text="还有1天过期"
+                 android:textColor="@color/lightcoral"
+                 android:textSize="@dimen/text_size_12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2.61"
+            android:orientation="vertical" >
+
+		  <RelativeLayout 
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content">
+		       <CheckBox
+                android:id="@+id/hongbao_choice"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/hongbao_check"
+                android:button="@null"
+                android:checked="false"
+                android:focusableInTouchMode="false" />
+		      
+		  </RelativeLayout>
+
+            <TextView
+                android:id="@+id/red_laiyuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:singleLine="true"
+                android:text="支付红包"
+                android:textColor="@color/sienna"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/order_beizhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App下单使用，面膜专用"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/red_youxiaoqi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_horizontal"
+                android:singleLine="true"
+                android:text="有效日期：2015—12—30"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_12" />
+        </LinearLayout>
+    </LinearLayout>
+	<View
+	    android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@color/main_layout" />
+</LinearLayout>

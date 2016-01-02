@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,19 +23,24 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.itboye.banma.R;
+import com.itboye.banma.activities.ActivityRedEnvelope;
 import com.itboye.banma.activities.BabyOrderActivity;
 import com.itboye.banma.activities.LoginActivity;
 import com.itboye.banma.activities.MailingAddressActivity;
 import com.itboye.banma.activities.MorePersonal;
+import com.itboye.banma.activities.SuggestActivity;
 import com.itboye.banma.activities.WebActivity;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
+import com.itboye.banma.entity.RedEnvelope;
 import com.itboye.banma.util.CircleImg;
 import com.itboye.banma.util.FileUtil;
 
 public class CenterFragment extends Fragment implements OnClickListener{
 	private View chatView;
+	private  LinearLayout ll_suggest;//反馈意见
+	private LinearLayout ll_red;//红包
 	private CircleImg ivPersonheadFail;//未登录头头像
 	private CircleImg ivPersonhead;//登陆的头像
 	TextView tvCheckList;//选择按钮
@@ -81,6 +87,10 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	//	ivPersonhead=(ImageView)findViewById(R.id.iv_personhead);
        // SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
       // String userId= sp.getString("MY_USERID", "");
+		ll_suggest=(LinearLayout)chatView.findViewById(R.id.ll_suggest);
+		ll_suggest.setOnClickListener(this);
+		ll_red=(LinearLayout)chatView.findViewById(R.id.ll_red);
+		ll_red.setOnClickListener(this);;
 		llRank=(LinearLayout)chatView.findViewById(R.id.ll_rank);
 		llRank.setOnClickListener(this);
 		String userId=appContext.getLoginUid()+"";
@@ -118,6 +128,31 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.ll_suggest:
+			if (appContext.isLogin()) {
+				Intent intent5=new Intent(getActivity(),SuggestActivity.class);
+				//intent3.putExtra("Url", "FanYong");
+				startActivity(intent5);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			}else{
+				Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_LONG).show();
+			}			
+			break;
+		
+		case R.id.ll_red:
+			//if (appContext.isLogin()) {
+				Intent intent6=new Intent(getActivity(),ActivityRedEnvelope.class);
+				//intent3.putExtra("Url", "FanYong");
+				startActivity(intent6);
+				getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+			//}else{
+//				Toast.makeText(getActivity(), "请先登录",
+//						Toast.LENGTH_LONG).show();
+			//}			
+			break;
 		case R.id.ll_rank:
 			if (appContext.isLogin()) {
 				Intent intent4=new Intent(getActivity(),WebActivity.class);
