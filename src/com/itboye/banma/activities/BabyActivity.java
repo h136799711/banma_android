@@ -146,7 +146,7 @@ public class BabyActivity extends FragmentActivity implements
 	private int pid;  //商品ID
     UMSocialService mController;
     private ProgressDialog dialog;
-    public String urlShare="http://banma.itboye.com/index.php/Home/Share/index";
+    public String urlShare="";
     /** 
      * myScrollView与其父类布局的顶部距离 
      */  
@@ -160,7 +160,7 @@ public class BabyActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_babydetail_a);
 		appContext = (AppContext) getApplication();
-		
+		urlShare= "http://banma.itboye.com/index.php/Home/InviteRegister/index?uid="+appContext.getLoginUid()+"";
 	
 		
 		//设置新浪SSO handler
@@ -398,14 +398,13 @@ public class BabyActivity extends FragmentActivity implements
 		    	//设置微信好友分享内容
 		    	WeiXinShareContent weixinContent = new WeiXinShareContent();
 		    	//设置分享文字
-		    	weixinContent.setShareContent(productDetail.getName());
+		    	weixinContent.setShareContent(Constant.shareTextSmall);
 		    	//设置title
-		    	weixinContent.setTitle("斑马海外购");
+		    	weixinContent.setTitle(Constant.shareTextBig);
 		    	//设置分享内容跳转URL
 		    	weixinContent.setTargetUrl(urlShare);
 		    	//设置分享图片
-		    	weixinContent.setShareImage(new UMImage(this, 
-	                   productDetail.getMain_img()));
+		    	weixinContent.setShareImage(new UMImage(this,R.drawable.icon));
 		    	System.out.println(productDetail.getDetail()+urlShare+new UMImage(this, 
 		                   productDetail.getMain_img()));
 		    	mController.setShareMedia(weixinContent);			
@@ -414,36 +413,33 @@ public class BabyActivity extends FragmentActivity implements
 		    	
 		    	//设置微信朋友圈分享内容
 		    	CircleShareContent circleMedia = new CircleShareContent();
-		    	circleMedia.setShareContent(productDetail.getName());
+		    	circleMedia.setShareContent(Constant.shareTextSmall);
 		    	//设置朋友圈title
-		    	circleMedia.setTitle("斑马海外购");
-		    	circleMedia.setShareImage(new UMImage(this, 
-		                   productDetail.getMain_img()));
+		    	circleMedia.setTitle(Constant.shareTextBig);
+		    	circleMedia.setShareImage(new UMImage(this,R.drawable.icon));
 		    	circleMedia.setTargetUrl(urlShare);
 		    	mController.setShareMedia(circleMedia);
 		    	
 		    	QQShareContent qqShareContent = new QQShareContent();
 		    	//设置分享文字
-		    	qqShareContent.setShareContent(productDetail.getName());
+		    	qqShareContent.setShareContent(Constant.shareTextSmall);
 		    	//设置分享title
-		    	qqShareContent.setTitle("斑马海外购");
+		    	qqShareContent.setTitle(Constant.shareTextBig);
 		    	//设置分享图片
-		    	qqShareContent.setShareImage(new UMImage(this, 
-		                   productDetail.getMain_img()));
+		    	qqShareContent.setShareImage(new UMImage(this,R.drawable.icon));
 		    	//设置点击分享内容的跳转链接
 		    	qqShareContent.setTargetUrl(urlShare);
 		    	mController.setShareMedia(qqShareContent);
 		    	
 		    	QZoneShareContent qzone = new QZoneShareContent();
 		    	//设置分享文字
-		    	qzone.setShareContent(productDetail.getName());
+		    	qzone.setShareContent(Constant.shareTextSmall);
 		    	//设置点击消息的跳转URL
 		    	qzone.setTargetUrl(urlShare);
 		    	//设置分享内容的标题
-		    	qzone.setTitle("斑马海外购");
+		    	qzone.setTitle(Constant.shareTextBig);
 		    	//设置分享图片
-		    	qzone.setShareImage(new UMImage(this, 
-		                   productDetail.getMain_img()));
+		    	qzone.setShareImage(new UMImage(this,R.drawable.icon));
 		    	mController.setShareMedia(qzone);
 		    	
 		    	mController.openShare(BabyActivity.this, false);

@@ -521,7 +521,7 @@
                     <ImageView
                         android:layout_width="35dip"
                         android:layout_height="35dip"
-                        android:background="@drawable/shezhi" />
+                        android:background="@drawable/suggest" />
 
                     <TextView
                         style="@style/PersonalTextStyle"

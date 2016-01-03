@@ -25,10 +25,12 @@ import android.widget.TextView;
 public class RedEnvelope_adapter extends BaseAdapter{
 	private Context context;
 	private List<RedEnvelope> list = new ArrayList<RedEnvelope>();
+	private String hongbao;//区分哪个activity传来的参数
 
-	public RedEnvelope_adapter(Context context, List<RedEnvelope> list) {
+	public RedEnvelope_adapter(Context context, List<RedEnvelope> list,String hongbao) {
 		this.context = context;
 		this.list = list;
+		this.hongbao=hongbao;
 	}
 
 	@Override
@@ -81,21 +83,22 @@ public class RedEnvelope_adapter extends BaseAdapter{
 			holder.red_beizhu = (TextView) view.findViewById(R.id.order_beizhu);
 			holder.red_youxiaoqi = (TextView) view.findViewById(R.id.red_youxiaoqi);
 			holder.line = view.findViewById(R.id.line);
-//			holder.listener = ImageLoader.getImageListener(holder.order_pic,
-//					0, R.drawable.loading_image_baby);
 			view.setTag(holder);
 		}else{
 			holder = (ViewHolder) view.getTag();
 		}
-		if (red.use_status.equals(0)) {
+		if (red.use_status.equals("0")) {
 			holder.red_title.setImageResource(R.drawable.hongbao_on);
+//			if (hongbao.equals("hongbao_centerFragment")) {
+//				holder.red_check.setVisibility(View.INVISIBLE);
+//			}
 			holder.red_check.setOnClickListener(new OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(context, BabyActivity.class);
 					intent.putExtra("HONGBAO_ID", red.getId());
+					intent.putExtra("HONGBAO_CONDITION", red.getUse_condition());
 					context.startActivity(intent);
 					((Activity) context).finish();
 					((Activity) context).overridePendingTransition(R.anim.push_right_in,
@@ -103,14 +106,20 @@ public class RedEnvelope_adapter extends BaseAdapter{
 				}
 			});
 			holder.red_jine.setText("￥"+red.getMoney());
-			holder.red_guoqi.setText(TimeToDate.isOvertime((int)(System.currentTimeMillis() / 1000)+"",
-					red.getExpire_time(),red.use_status));
+		//	holder.red_jine.setTextColor(R.color.red);
+			String time=TimeToDate.isOvertime((int)(System.currentTimeMillis() / 1000)+"",
+					red.getExpire_time(),red.use_status);
+			if (time.equals("已过期")) {
+				
+			}
+			holder.red_guoqi.setText(time);
 			holder.red_youxiaoqi.setText("有效期："+TimeToDate.timeToDate(red.expire_time));
 			holder.red_tiaojian.setText("满"+red.use_condition+"元可用");
 			holder.red_laiyuan.setText(red.dtree_type_name);
-			holder.red_beizhu.setText(red.getTpl_notes());
+			//holder.red_laiyuan.setTextColor(R.color.sienna);
+			holder.red_beizhu.setText(red.getNotes());
 		}else if (red.use_status.equals("1")) {
-	    	holder.red_check.setVisibility(view.GONE);
+	    	holder.red_check.setVisibility(View.INVISIBLE);
 			holder.red_jine.setText("￥"+red.getMoney());
 			holder.red_jine.setTextColor(R.color.lightgray);
 			holder.red_title.setImageResource(R.drawable.hongbao_off);
@@ -120,36 +129,9 @@ public class RedEnvelope_adapter extends BaseAdapter{
 			holder.red_tiaojian.setText("满"+red.use_condition+"元可用");
 			holder.red_laiyuan.setText(red.dtree_type_name);
 			holder.red_laiyuan.setTextColor(R.color.lightgray);
-			holder.red_beizhu.setText(red.getTpl_notes());
+			holder.red_beizhu.setText(red.getNotes());
 			//holder.red_beizhu.setTextColor(R.color.lightgray);
 		}
-		
-//		if(order.getSku_desc()==null || order.getSku_desc().length()<=0){
-//			holder.order_standard.setText("无规格参数");
-//		}else{
-//			holder.order_standard.setText(order.getSku_desc());
-//		}
-//		holder.order_price.setText("￥" + order.getPrice());
-//		// order_number.setText("×"+skuStandard.getNum());
-//		holder.order_number.setText("×"+order.getCount());
-//		int num = getCount()-1;
-//		if(position >= num){
-//			holder.line.setVisibility(View.GONE);
-//		}else{
-//			holder.line.setVisibility(View.VISIBLE);
-//		}
-//		
-//		view.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(context, BabyActivity.class);
-//				intent.putExtra("PID", Integer.valueOf(order.getP_id()));
-//				context.startActivity(intent);
-//				((Activity) context).overridePendingTransition(R.anim.in_from_right,
-//						R.anim.out_to_left);
-//			}
-//		});
 		
 		return view;
 	}

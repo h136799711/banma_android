@@ -39,7 +39,7 @@ public class TimeToDate {
 	}
 	
 	public static String isOvertime(String time1,String time2,String is_used){
-		int day=remianTime(time1, time2);
+		int day=remianTime(time1, time2)+1;
 		String temp="";
 		if (is_used.equals("1")) {
 			temp="已使用";

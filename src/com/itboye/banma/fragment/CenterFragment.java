@@ -144,7 +144,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 		case R.id.ll_red:
 			//if (appContext.isLogin()) {
 				Intent intent6=new Intent(getActivity(),ActivityRedEnvelope.class);
-				//intent3.putExtra("Url", "FanYong");
+				intent6.putExtra("HONGBAO", "hongbao_centerFragment");
 				startActivity(intent6);
 				getActivity().overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
