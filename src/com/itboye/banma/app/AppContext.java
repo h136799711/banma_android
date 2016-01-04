@@ -404,11 +404,11 @@ public class AppContext extends Application {
 	 * @throws Exception 
 	 */
 	public Boolean ordersAdd(Context mContext,int uid, String cart_ids, String idcode, String note,
-			int addr_id, int from, int payType, StrVolleyInterface networkHelper) throws Exception {
+			int addr_id, int from, int payType, String redID, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
 				ApiClient.ordersAdd(mContext, uid, cart_ids, idcode, note, addr_id,
-						from, payType, networkHelper);
+						from, payType, redID, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;

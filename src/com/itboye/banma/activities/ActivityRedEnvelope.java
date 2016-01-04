@@ -21,6 +21,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,6 +46,8 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 	private ArrayList<RedEnvelope> redList;
 	private CheckBox hongbao_check;
 	private RedEnvelope_adapter adapter;
+	private int skipState = 0; //1表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
+	private Double priceAll;
 	//private ImageView ivBack;
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -82,6 +85,9 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 	
 	private void initdata() {
 		// TODO Auto-generated method stub
+		Intent intent = getIntent();
+		skipState = intent.getIntExtra("skipState", 0);
+		priceAll = intent.getDoubleExtra("price", 0);
 		ApiClient.redEnvelope(this, 114+"", 0+"", networkHelper);
 	}
 
@@ -158,7 +164,7 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 			ll_list.setVisibility(View.VISIBLE);
 			red_list = (ListView) findViewById(R.id.red_list);
 			adapter = new RedEnvelope_adapter(
-					ActivityRedEnvelope.this, redList);
+					ActivityRedEnvelope.this, redList, skipState, priceAll);
 			red_list.setAdapter(adapter);
 		}
 	}

@@ -50,20 +50,22 @@ public class ConfirmOrdersActivity extends Activity implements OnClickListener,
 StrUIDataListener {
 	private LinearLayout ll_youhui;
 	private LinearLayout ll_beizhu;
+	private LinearLayout ll_red_envelope;
 	
 	private final int ADDORREDUCE = 1;
 	private final int ADDRESS = 1;
 	private final int ORDER = 2;
 	private AppContext appContext; 
 	private Double priceAll;
+	private Double order_priceAll;
 	private Double tax_moneyAll;
 	private int numAll;
 	private ImageView top_back;
 	private TextView top_title;
 	private ListView orderListView;
 	private TextView all_num;
-	private TextView all_price;
-	private TextView order_all_price;
+	private TextView all_price;   //订单总价格
+	private TextView order_all_price; //优惠后订单总价格
 	private LinearLayout order_flex;
 	private ImageView img_flex;
 	private TextView adr_name;
@@ -72,6 +74,7 @@ StrUIDataListener {
 	private TextView discount_code;
 	private TextView privilege_money;
 	private TextView tax_money;
+	private TextView red_envelope;
 	private LinearLayout select_adress_layout;
 	private LinearLayout add_adress_layout;
 	private MailingAdress address = null;
@@ -83,6 +86,7 @@ StrUIDataListener {
 	private PayAlipay payAlipay;
 	private ProgressDialog dialog;
 	private String cart_ids;
+	String redID; //红包ID
 	private boolean hasAdress=false;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,6 +111,7 @@ StrUIDataListener {
 		priceAll = 0.0;
 		numAll = 0;
 		tax_moneyAll = 0.0;
+		order_priceAll = 0.0;
 		for (int i = 0; i < list.size(); i++) {
 			priceAll += list.get(i).getPrice()
 					* Integer.valueOf(list.get(i).getNum());
@@ -125,6 +130,7 @@ StrUIDataListener {
 		}else{
 			tax_moneyAll = 0.0;
 		}
+		order_priceAll = priceAll;
 	}
 
 	private void initView() {
@@ -140,12 +146,15 @@ StrUIDataListener {
 		tax_money = (TextView) findViewById(R.id.tax_money);
 		adr_phone = (TextView) findViewById(R.id.adr_phone);
 		adr_address = (TextView) findViewById(R.id.adr_address);
+		red_envelope = (TextView) findViewById(R.id.red_envelope);
 		discount_code = (TextView) findViewById(R.id.discount_code);
 		privilege_money = (TextView) findViewById(R.id.privilege_money);
 		ll_beizhu=(LinearLayout)findViewById(R.id.ll_beizhu);
 		ll_beizhu.setOnClickListener(this);
 		ll_youhui=(LinearLayout)findViewById(R.id.ll_youhui);
 		ll_youhui.setOnClickListener(this);
+		ll_red_envelope=(LinearLayout)findViewById(R.id.ll_red_envelope);
+		ll_red_envelope.setOnClickListener(this);
 		/*
 		 * pop_add = (TextView) findViewById(R.id.pop_add); pop_reduce =
 		 * (TextView) findViewById(R.id.pop_reduce); pop_num = (TextView)
@@ -177,7 +186,7 @@ StrUIDataListener {
 		discount_code.setText(appContext.getIdcode());
 		privilege_money.setText("￥"+df.format(discount_price));
 		//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
-		
+		order_priceAll = Double.valueOf(priceAll) - discount_price;
 		order_all_price.setText("￥"+df.format((Double.valueOf(priceAll) - discount_price)));
 		
 		//order_all_price.setText("￥" + priceAll);
@@ -250,10 +259,20 @@ StrUIDataListener {
 				discount_code.setText(idcode);
 				privilege_money.setText("￥"+discount_price);
 				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
-				order_all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
+				order_priceAll = Double.valueOf(priceAll) - discount_price;
+				order_all_price.setText("￥"+(order_priceAll));
 				
 			}
 		
+		}else if(requestCode==1006){
+			if (data!=null) {
+				redID=data.getStringExtra("RedEnvelopeID");
+				Double red_Mony = Double.valueOf(data.getStringExtra("RedEnvelopeMony"));
+				red_envelope.setText("￥"+red_Mony);
+				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
+				order_all_price.setText("￥"+(Double.valueOf(order_priceAll) - red_Mony));
+				
+			}
 		}
 
 	}
@@ -322,6 +341,12 @@ StrUIDataListener {
 			intent = new Intent(this, YouHuiActivity .class);
 			startActivityForResult(intent,1005);
 			break;
+		case R.id.ll_red_envelope:
+			intent = new Intent(this, ActivityRedEnvelope.class);
+			intent.putExtra("skipState", 1);  //表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
+			intent.putExtra("price", priceAll);
+			startActivityForResult(intent,1006);
+			break;
 			
 		case R.id.ll_beizhu:
 			startActivity(new Intent(ConfirmOrdersActivity.this,SuggestActivity.class));
@@ -383,7 +408,7 @@ StrUIDataListener {
 		try {
 			state = ORDER;
 			YesOrNo = appContext.ordersAdd(ConfirmOrdersActivity.this, uid,
-					cart_ids, idcode, note, addr_id, from, payType,
+					cart_ids, idcode, note, addr_id, from, payType,redID,
 					strnetworkHelper);
 
 			if (!YesOrNo) { // 如果没联网

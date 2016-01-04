@@ -92,7 +92,7 @@
                 android:id="@+id/order_beizhu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="App下单使用，面膜专用"
+                android:text="App下单使用"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_size_12" />

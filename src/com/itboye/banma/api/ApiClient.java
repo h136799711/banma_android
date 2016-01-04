@@ -439,7 +439,7 @@ public class ApiClient {
 	
 	public static void ordersAdd(Context mContext, int uid, String cart_ids,
 			String idcode, String note, int addr_id, int from, int payType,
-			StrVolleyInterface networkHelper) {
+			String redID, StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Orders/add?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
@@ -450,6 +450,9 @@ public class ApiClient {
 		}
 		if(note!=null){
 			params.put("note",note);
+		}
+		if(redID!=null){
+			params.put("red_id",redID);
 		}
 		params.put("addr_id",""+addr_id);
 		params.put("from",""+from);
