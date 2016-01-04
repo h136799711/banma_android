@@ -1,14 +1,10 @@
 package com.itboye.banma.adapter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.itboye.banma.R;
-import com.itboye.banma.activities.BabyActivity;
 import com.itboye.banma.activities.ConfirmOrdersActivity;
-import com.itboye.banma.activities.YouHuiActivity;
 import com.itboye.banma.entity.RedEnvelope;
 import com.itboye.banma.util.TimeToDate;
 
@@ -16,7 +12,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +27,7 @@ public class RedEnvelope_adapter extends BaseAdapter{
 	private int skipState;  //记录由哪个页面跳转过来，1表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
 	Double priceAll;
 	private List<RedEnvelope> list = new ArrayList<RedEnvelope>();
-	private String hongbao;//区分哪个activity传来的参数
+//	private String hongbao;//区分哪个activity传来的参数
 
 	public RedEnvelope_adapter(Context context, List<RedEnvelope> list,
 			int skipState, Double priceAll) {
@@ -100,9 +95,9 @@ public class RedEnvelope_adapter extends BaseAdapter{
 		//red.setUse_status(0+"");
 		if (Integer.valueOf(red.getUse_status())==0) {
 			holder.red_title.setImageResource(R.drawable.hongbao_on);
+			holder.red_check.setVisibility(View.VISIBLE);
 			if(skipState == 1){  //由订单确认页面跳转过来，响应点击事件，并返回红包ID
-				view.setOnClickListener(new OnClickListener() {
-
+				holder.red_check.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						int day = TimeToDate.remianTime((long)(System.currentTimeMillis() / 1000)+"",
@@ -120,36 +115,14 @@ public class RedEnvelope_adapter extends BaseAdapter{
 						}else{
 							Toast.makeText(context, "订单满"+ red.getUse_condition() +"才可用", Toast.LENGTH_SHORT).show();
 						}
-						/*// TODO Auto-generated method stub
-						Intent intent = new Intent(context, BabyActivity.class);
-						intent.putExtra("HONGBAO_ID", red.getId());
-						context.startActivity(intent);
-						((Activity) context).finish();
-						((Activity) context).overridePendingTransition(R.anim.push_right_in,
-								R.anim.push_right_out);*/
 					}
 				});
 			}
-
-//			if (hongbao.equals("hongbao_centerFragment")) {
-//				holder.red_check.setVisibility(View.INVISIBLE);
-//			}
-			/*holder.red_check.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(context, BabyActivity.class);
-					intent.putExtra("HONGBAO_ID", red.getId());
-					intent.putExtra("HONGBAO_CONDITION", red.getUse_condition());
-					context.startActivity(intent);
-					((Activity) context).finish();
-					((Activity) context).overridePendingTransition(R.anim.push_right_in,
-							R.anim.push_right_out);
-				}
-			});*/
-
+			if (skipState==200) {
+				holder.red_check.setVisibility(View.INVISIBLE);
+			}
 			holder.red_jine.setText("￥"+red.getMoney());
-		//	holder.red_jine.setTextColor(R.color.red);
+			holder.red_jine.setTextColor(context.getResources().getColor(R.color.red));
 			String time=TimeToDate.isOvertime((int)(System.currentTimeMillis() / 1000)+"",
 					red.getExpire_time(),red.use_status);
 			
@@ -157,6 +130,7 @@ public class RedEnvelope_adapter extends BaseAdapter{
 			holder.red_youxiaoqi.setText("有效期："+TimeToDate.timeToDate(red.expire_time));
 			holder.red_tiaojian.setText("满"+red.getUse_condition()+"元可用");
 			holder.red_laiyuan.setText(red.getDtree_type_name());
+			holder.red_laiyuan.setTextColor(context.getResources().getColor(R.color.sienna));
 			holder.red_beizhu.setText(red.getTpl_notes());
 		}else if (Integer.valueOf(red.getUse_status())==1) {
 			holder.red_check.setVisibility(View.INVISIBLE);

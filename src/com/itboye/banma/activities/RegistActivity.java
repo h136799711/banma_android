@@ -30,6 +30,7 @@ import com.umeng.analytics.MobclickAgent;
 
 public class RegistActivity extends Activity implements StrUIDataListener {
 	private 	Button btnNextStep;//下一步按钮
+	private EditText et_invite_code;//邀请人手机号
 	private Button btnGetCheckCode;//获取验证码
 	private  EditText edPhoneNumber;//手机号
 	private EditText edCheckCode;//验证码编辑框
@@ -106,6 +107,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 
 	private void initId(RegistActivity registActivity) {
 		// TODO Auto-generated method stub
+		et_invite_code=(EditText)findViewById(R.id.et_invite_code);
 		tvBackRegist=(ImageView)findViewById(R.id.tv_back_regesit);
 		tvUrl=(TextView) findViewById(R.id.tv_url);
 		//	wvShowView=(WebView)findViewById(R.id.wv_show_view);
@@ -150,7 +152,8 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 			}
 			else{
 				Flags=1;
-				ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), edCheckCode.getText().toString(), "1", " ", networkHelper);
+				ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), edCheckCode.getText().toString(),
+						"1", " ",et_invite_code.getText().toString(), networkHelper);
 			}
 		}
 	};

@@ -30,7 +30,6 @@
                 android:singleLine="true"
                 android:layout_gravity="center_horizontal"
                 android:text="￥1"
-                android:textColor="@color/red"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -85,7 +84,6 @@
                 android:layout_marginTop="4dp"
                 android:singleLine="true"
                 android:text="支付红包"
-                android:textColor="@color/sienna"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView

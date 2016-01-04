@@ -46,7 +46,7 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 	private ArrayList<RedEnvelope> redList;
 	private CheckBox hongbao_check;
 	private RedEnvelope_adapter adapter;
-	private int skipState = 0; //1表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
+	private int skipState = 0; //，200，表示来自centerfragement  1表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
 	private Double priceAll;
 	private Intent intent;
 	private String hongbao;//区分不同activity来的请求红包
@@ -62,8 +62,8 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 		initId();
 		initdata();
 		
-		intent=getIntent();
-		hongbao=intent.getStringExtra("HONGBAO");
+//		intent=getIntent();
+//		hongbao=intent.getStringExtra("HONGBAO");
 		
 		ivBack.setOnClickListener(new OnClickListener() {
 			
@@ -83,7 +83,7 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 		Intent intent = getIntent();
 		skipState = intent.getIntExtra("skipState", 0);
 		priceAll = intent.getDoubleExtra("price", 0);
-		ApiClient.redEnvelope(this, 114+"", 0+"", networkHelper);
+		ApiClient.redEnvelope(this, appContext.getLoginUid()+"", 0+"", networkHelper);
 	}
 
 	//友盟统计
