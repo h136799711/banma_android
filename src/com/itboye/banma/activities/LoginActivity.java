@@ -106,7 +106,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private User user;
 	private com.umeng.socialize.controller.UMSocialService mController;
 	private RequestQueue requestQueue;
-	private String httpurl="http://banma.itboye.com/index.php/Api/SinaWeibo/callback";
+	private String httpurl="http://www.bammar.com/index.php/Api/SinaWeibo/callback";
 	private String weibo_appkey="2334687309";
 	private AuthInfo mAuthInfo;
 	private SsoHandler mSsoHandler;
