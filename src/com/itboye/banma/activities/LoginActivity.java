@@ -276,7 +276,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			req.scope = "snsapi_userinfo";  
 			req.state = "wechat_sdk_demo_test";  
 			api.sendReq(req);  
-			Toast.makeText(LoginActivity.this, "正在打开微信", Toast.LENGTH_SHORT).show();
+			Toast.makeText(LoginActivity.this, "正在打开微信", Toast.LENGTH_LONG).show();
 			break;
 
 		case R.id.iv_qq:
@@ -449,6 +449,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				AppContext.setCoin(user.getCoin());
 				AppContext.setHeadurl(user.getHead());
 				AppContext.setNickname(user.getNickname());
+				Constant.shareTextBig="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
 				AppContext.setIdcode(user.getIdcode());
 				AppContext.setHasHead(true);
 				
