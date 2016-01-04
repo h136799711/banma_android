@@ -106,7 +106,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private User user;
 	private com.umeng.socialize.controller.UMSocialService mController;
 	private RequestQueue requestQueue;
-	private String httpurl="http://banma.itboye.com/index.php/Api/SinaWeibo/callback";
+	private String httpurl="http://www.bammar.com/index.php/Api/SinaWeibo/callback";
 	private String weibo_appkey="2334687309";
 	private AuthInfo mAuthInfo;
 	private SsoHandler mSsoHandler;
@@ -280,55 +280,50 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			break;
 
 		case R.id.iv_qq:
-//			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.QQ, new UMAuthListener() {
-//				@Override
-//				public void onStart(SHARE_MEDIA platform) {
-//					Toast.makeText(LoginActivity.this, "正在启动", Toast.LENGTH_SHORT).show();
-//				}
-//				@Override
-//				public void onError(SocializeException e, SHARE_MEDIA platform) {
-//					Toast.makeText(LoginActivity.this, "授权错误", Toast.LENGTH_SHORT).show();
-//				}
-//				@Override
-//				public void onComplete(Bundle value, SHARE_MEDIA platform) {
-//					Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
-//					qqOpen=value.getString("openid", "");
-//					qqToken=value.getString("access_token", "");
-//					System.out.println(value.toString());
-//					request=LOGIN;
-//					ApiClient.qqLogin(LoginActivity.this, qqOpen, qqToken, networkHelper);
-//					//获取相关授权信息
-//					mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, new UMDataListener() {
-//						@Override
-//						public void onStart() {
-//
-//						}                                              
-//						@Override
-//						public void onComplete(int status, Map<String, Object> info) {
-//							if(status == 200 && info != null){
-//								StringBuilder sb = new StringBuilder();
-//								Set<String> keys = info.keySet();
-//								for(String key : keys){
-//									sb.append(key+"="+info.get(key).toString()+"\r\n");
-//								}
-//								Log.v("TestData",sb.toString());
-//							}else{
-//								Log.v("TestData","发生错误："+status);
-//							}
-//						}
-//
-//					});
-//				}
-//				@Override
-//				public void onCancel(SHARE_MEDIA platform) {
-//					Toast.makeText(LoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
-//				}
-//			} );
-		        if (!mTencent.isSessionValid())
-		        {
-		            mTencent.login(this,"", new BaseUilistener());
-		        }
-		    
+			mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.QQ, new UMAuthListener() {
+				@Override
+				public void onStart(SHARE_MEDIA platform) {
+					Toast.makeText(LoginActivity.this, "正在启动", Toast.LENGTH_SHORT).show();
+				}
+				@Override
+				public void onError(SocializeException e, SHARE_MEDIA platform) {
+					Toast.makeText(LoginActivity.this, "授权错误", Toast.LENGTH_SHORT).show();
+				}
+				@Override
+				public void onComplete(Bundle value, SHARE_MEDIA platform) {
+					Toast.makeText(LoginActivity.this, "授权完成", Toast.LENGTH_SHORT).show();
+					qqOpen=value.getString("openid", "");
+					qqToken=value.getString("access_token", "");
+					System.out.println(value.toString());
+					request=LOGIN;
+					ApiClient.qqLogin(LoginActivity.this, qqOpen, qqToken, networkHelper);
+					//获取相关授权信息
+					mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, new UMDataListener() {
+						@Override
+						public void onStart() {
+
+						}                                              
+						@Override
+						public void onComplete(int status, Map<String, Object> info) {
+							if(status == 200 && info != null){
+								StringBuilder sb = new StringBuilder();
+								Set<String> keys = info.keySet();
+								for(String key : keys){
+									sb.append(key+"="+info.get(key).toString()+"\r\n");
+								}
+								Log.v("TestData",sb.toString());
+							}else{
+								Log.v("TestData","发生错误："+status);
+							}
+						}
+
+					});
+				}
+				@Override
+				public void onCancel(SHARE_MEDIA platform) {
+					Toast.makeText(LoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
+				}
+			} );
 			break;
 
 		case R.id.iv_xinlang:
@@ -575,20 +570,6 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	}
 
 
-
-	//    @Override
-	//    protected void onRestart() {
-	//    	// TODO Auto-generated method stub
-	//    	super.onRestart();
-	//    	//appContext = (AppContext) getApplication();
-	//    	System.out.println(AppContext.getCode());
-	//    	ApiClient.wxLogin(LoginActivity.this,AppContext.getCode() ,networkHelper);
-	////    	 SharedPreferences sp = this.getSharedPreferences(Constant.MY_PREFERENCES, 0);  
-	////         String code = sp.getString(Constant.WEIXIN_CODE, "");
-	////         System.out.println(sp.getString(Constant.WEIXIN_CODE, "")+"执行");
-	////     	ApiClient.wxLogin(LoginActivity.this,code ,networkHelper);
-	//    }
-	//		
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -628,7 +609,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	    super.onActivityResult(requestCode, resultCode, data);
 	    try {
 	    	 CallbackContext.onActivityResult(requestCode, resultCode, data);
-	    	 mTencent.onActivityResult(requestCode, resultCode, data);
+	    	// mTencent.onActivityResult(requestCode, resultCode, data);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -669,27 +650,4 @@ class AuthListener implements WeiboAuthListener {
 			// TODO Auto-generated method stub
 		}
 	}
-//QQ回调方法
-private class BaseUilistener implements IUiListener{
-
-	@Override
-	public void onCancel() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onComplete(Object arg0) {
-		// TODO Auto-generated method stub
-		Toast.makeText(LoginActivity.this, "用户信息", Toast.LENGTH_LONG).show();
-		System.out.println(arg0.toString()+"PPPPPPPPPPP");
-	}
-
-	@Override
-	public void onError(UiError arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-  }
 }
