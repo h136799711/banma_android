@@ -82,7 +82,7 @@
                 android:id="@+id/red_laiyuan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:singleLine="true"
                 android:text="支付红包"
                 android:textColor="@color/sienna"

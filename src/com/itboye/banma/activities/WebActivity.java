@@ -45,8 +45,8 @@ public class WebActivity  extends Activity{
 	private TextView tvRight;
 	private String url;
 	private AppContext appContext;
-	private String shareTextBig="["+AppContext.getNickname()+"]"+"邀请您加入...";
-	private String shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
+//	private String shareTextBig="["+AppContext.getNickname()+"]"+"邀请您加入...";
+//	private String shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
 	private  String urlShare;
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,9 +191,9 @@ public class WebActivity  extends Activity{
 		    	//设置微信好友分享内容
 		    	WeiXinShareContent weixinContent = new WeiXinShareContent();
 		    	//设置分享文字
-		    	weixinContent.setShareContent(shareTextSmall);
+		    	weixinContent.setShareContent(Constant.shareTextSmall);
 		    	//设置title
-		    	weixinContent.setTitle("斑马海外购");
+		    	weixinContent.setTitle(Constant.shareTextBig);
 		    	//设置分享内容跳转URL
 		    	weixinContent.setTargetUrl(urlShare);
 		    	//设置分享图片
@@ -204,18 +204,18 @@ public class WebActivity  extends Activity{
 		    	
 		    	//设置微信朋友圈分享内容
 		    	CircleShareContent circleMedia = new CircleShareContent();
-		    	circleMedia.setShareContent(shareTextSmall);
+		    	circleMedia.setShareContent(Constant.shareTextSmall);
 		    	//设置朋友圈title
-		    	circleMedia.setTitle("斑马海外购");
+		    	circleMedia.setTitle(Constant.shareTextBig);
 		    	circleMedia.setShareImage(new UMImage(this,R.drawable.icon));
 		    	circleMedia.setTargetUrl(urlShare);
 		    	mController.setShareMedia(circleMedia);
 		    	
 		    	QQShareContent qqShareContent = new QQShareContent();
 		    	//设置分享文字
-		    	qqShareContent.setShareContent(shareTextSmall);
+		    	qqShareContent.setShareContent(Constant.shareTextSmall);
 		    	//设置分享title
-		    	qqShareContent.setTitle("斑马海外购");
+		    	qqShareContent.setTitle(Constant.shareTextBig);
 		    	//设置分享图片
 		    	qqShareContent.setShareImage(new UMImage(this,R.drawable.icon));
 		    	//设置点击分享内容的跳转链接
@@ -224,11 +224,11 @@ public class WebActivity  extends Activity{
 		    	
 		    	QZoneShareContent qzone = new QZoneShareContent();
 		    	//设置分享文字
-		    	qzone.setShareContent(shareTextSmall);
+		    	qzone.setShareContent(Constant.shareTextSmall);
 		    	//设置点击消息的跳转URL
 		    	qzone.setTargetUrl(urlShare);
 		    	//设置分享内容的标题
-		    	qzone.setTitle("斑马海外购");
+		    	qzone.setTitle(Constant.shareTextBig);
 		    	//设置分享图片
 		    	qzone.setShareImage(new UMImage(this,R.drawable.icon));
 		    	mController.setShareMedia(qzone);

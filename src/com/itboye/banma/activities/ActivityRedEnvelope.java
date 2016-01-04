@@ -48,6 +48,9 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 	private RedEnvelope_adapter adapter;
 	private int skipState = 0; //1表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
 	private Double priceAll;
+	private Intent intent;
+	private String hongbao;//区分不同activity来的请求红包
+	private LinearLayout no_hongbao;
 	//private ImageView ivBack;
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -58,6 +61,9 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 		appContext=(AppContext) getApplication();
 		initId();
 		initdata();
+		
+		intent=getIntent();
+		hongbao=intent.getStringExtra("HONGBAO");
 		
 		ivBack.setOnClickListener(new OnClickListener() {
 			
@@ -70,17 +76,6 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 			}
 		});
 		
-//		btnXiuGai.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				ApiClient.modifyPersonal(ActivityRedEnvelope.this,appContext.getLoginUid()+"", "",tvNickName.getText().toString(), "", "", "", "", "", "", "", networkHelper);
-//				dialog.setMessage("正在修改个人信息");
-//		        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//				dialog.show();
-//			}
-//		});
 	}
 	
 	private void initdata() {
@@ -106,6 +101,7 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 
 	private void initId() {
 		// TODO Auto-generated method stub
+		no_hongbao=(LinearLayout)findViewById(R.id.no_hongbao);
 		hongbao_check=(CheckBox)findViewById(R.id.hongbao_choice);
 		ll_dialog=(LinearLayout)findViewById(R.id.ll_dialog);
 		ll_list=(LinearLayout)findViewById(R.id.ll_list);
@@ -133,6 +129,7 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 		try {
 			jsonObject = new JSONObject(data);
 			code = jsonObject.getInt("code");
+			System.out.println(jsonObject.toString());
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
@@ -146,11 +143,20 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 						redEnvelope = gson.fromJson(jsonArray.getString(i), RedEnvelope.class);
 						redList.add(i, redEnvelope);
 					}
+					showRedList();
+				}else{
+					ll_dialog.setVisibility(View.GONE);
+					ll_list.setVisibility(View.GONE);
+					no_hongbao.setVisibility(View.VISIBLE);
+					//showRedList();
 				}
-				showRedList();
 				System.out.println(jsonObject2.toString());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
+				ll_dialog.setVisibility(View.GONE);
+				ll_list.setVisibility(View.GONE);
+				no_hongbao.setVisibility(View.VISIBLE);
+				//showRedList();
 				e.printStackTrace();
 			}
 		}
@@ -158,13 +164,14 @@ public class ActivityRedEnvelope extends Activity implements StrUIDataListener{
 
 	private void showRedList() {
 		// TODO Auto-generated method stub
+		ll_dialog.setVisibility(View.GONE);
+		//dialog.setVisibility(View.GONE);
+		ll_list.setVisibility(View.VISIBLE);
 		if (!redList.isEmpty()) {
-			ll_dialog.setVisibility(View.GONE);
-			//dialog.setVisibility(View.GONE);
-			ll_list.setVisibility(View.VISIBLE);
 			red_list = (ListView) findViewById(R.id.red_list);
 			adapter = new RedEnvelope_adapter(
 					ActivityRedEnvelope.this, redList, skipState, priceAll);
+
 			red_list.setAdapter(adapter);
 		}
 	}

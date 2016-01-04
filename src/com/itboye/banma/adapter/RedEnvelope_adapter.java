@@ -32,6 +32,7 @@ public class RedEnvelope_adapter extends BaseAdapter{
 	private int skipState;  //记录由哪个页面跳转过来，1表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
 	Double priceAll;
 	private List<RedEnvelope> list = new ArrayList<RedEnvelope>();
+	private String hongbao;//区分哪个activity传来的参数
 
 	public RedEnvelope_adapter(Context context, List<RedEnvelope> list,
 			int skipState, Double priceAll) {
@@ -39,6 +40,7 @@ public class RedEnvelope_adapter extends BaseAdapter{
 		this.list = list;
 		this.priceAll = priceAll;
 		this.skipState = skipState;
+
 	}
 
 	@Override
@@ -91,13 +93,11 @@ public class RedEnvelope_adapter extends BaseAdapter{
 			holder.red_beizhu = (TextView) view.findViewById(R.id.order_beizhu);
 			holder.red_youxiaoqi = (TextView) view.findViewById(R.id.red_youxiaoqi);
 			holder.line = view.findViewById(R.id.line);
-//			holder.listener = ImageLoader.getImageListener(holder.order_pic,
-//					0, R.drawable.loading_image_baby);
 			view.setTag(holder);
 		}else{
 			holder = (ViewHolder) view.getTag();
 		}
-
+		//red.setUse_status(0+"");
 		if (Integer.valueOf(red.getUse_status())==0) {
 			holder.red_title.setImageResource(R.drawable.hongbao_on);
 			if(skipState == 1){  //由订单确认页面跳转过来，响应点击事件，并返回红包ID
@@ -130,15 +130,36 @@ public class RedEnvelope_adapter extends BaseAdapter{
 					}
 				});
 			}
+
+//			if (hongbao.equals("hongbao_centerFragment")) {
+//				holder.red_check.setVisibility(View.INVISIBLE);
+//			}
+			/*holder.red_check.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(context, BabyActivity.class);
+					intent.putExtra("HONGBAO_ID", red.getId());
+					intent.putExtra("HONGBAO_CONDITION", red.getUse_condition());
+					context.startActivity(intent);
+					((Activity) context).finish();
+					((Activity) context).overridePendingTransition(R.anim.push_right_in,
+							R.anim.push_right_out);
+				}
+			});*/
+
 			holder.red_jine.setText("￥"+red.getMoney());
-			holder.red_guoqi.setText(TimeToDate.isOvertime((int)(System.currentTimeMillis() / 1000)+"",
-					red.getExpire_time(),red.use_status));
+		//	holder.red_jine.setTextColor(R.color.red);
+			String time=TimeToDate.isOvertime((int)(System.currentTimeMillis() / 1000)+"",
+					red.getExpire_time(),red.use_status);
+			
+			holder.red_guoqi.setText(time);
 			holder.red_youxiaoqi.setText("有效期："+TimeToDate.timeToDate(red.expire_time));
 			holder.red_tiaojian.setText("满"+red.getUse_condition()+"元可用");
 			holder.red_laiyuan.setText(red.getDtree_type_name());
 			holder.red_beizhu.setText(red.getTpl_notes());
 		}else if (Integer.valueOf(red.getUse_status())==1) {
-	    	holder.red_check.setVisibility(view.GONE);
+			holder.red_check.setVisibility(View.INVISIBLE);
 			holder.red_jine.setText("￥"+red.getMoney());
 			holder.red_jine.setTextColor(R.color.lightgray);
 			holder.red_title.setImageResource(R.drawable.hongbao_off);
@@ -148,41 +169,14 @@ public class RedEnvelope_adapter extends BaseAdapter{
 			holder.red_tiaojian.setText("满"+red.getUse_condition()+"元可用");
 			holder.red_laiyuan.setText(red.getDtree_type_name());
 			holder.red_laiyuan.setTextColor(R.color.lightgray);
-			holder.red_beizhu.setText(red.getTpl_notes());
+			holder.red_beizhu.setText(red.getNotes());
 			//holder.red_beizhu.setTextColor(R.color.lightgray);
 		}
-		
-//		if(order.getSku_desc()==null || order.getSku_desc().length()<=0){
-//			holder.order_standard.setText("无规格参数");
-//		}else{
-//			holder.order_standard.setText(order.getSku_desc());
-//		}
-//		holder.order_price.setText("￥" + order.getPrice());
-//		// order_number.setText("×"+skuStandard.getNum());
-//		holder.order_number.setText("×"+order.getCount());
-//		int num = getCount()-1;
-//		if(position >= num){
-//			holder.line.setVisibility(View.GONE);
-//		}else{
-//			holder.line.setVisibility(View.VISIBLE);
-//		}
-//		
-//		view.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(context, BabyActivity.class);
-//				intent.putExtra("PID", Integer.valueOf(order.getP_id()));
-//				context.startActivity(intent);
-//				((Activity) context).overridePendingTransition(R.anim.in_from_right,
-//						R.anim.out_to_left);
-//			}
-//		});
 		
 		return view;
 	}
 	
-	private static class ViewHolder {
+	class ViewHolder {
 		ImageView red_title;
 		TextView red_jine;//红包金额
 		TextView red_tiaojian;//使用条件
