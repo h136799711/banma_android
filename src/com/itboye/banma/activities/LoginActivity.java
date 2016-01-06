@@ -112,7 +112,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 	private SsoHandler mSsoHandler;
 	private  LoginService loginService;
 	private Tencent mTencent;
-	private String QQ_APP_ID="1104887406";
+	private String QQ_APP_ID="1105055976";
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -154,8 +154,8 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		
 //		//参数1为当前Activity， 参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.这里默认是友盟自带的
 //		
-		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "1104887406",
-				"7mxqFi07TN8QD1ZR");
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "1105055976",
+				"b44TUbyYeFslzqaw");
 		qqSsoHandler.addToSocialSDK();
 		
 		// 添加微信平台
