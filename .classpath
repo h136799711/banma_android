@@ -27,7 +27,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/alipaysecsdk.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/alipayutdid.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/weiboSDKCore_3.1.2.jar"/>
-	<classpathentry kind="lib" path="libs/open_sdk_r5509_lite.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_QQZone_2.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>

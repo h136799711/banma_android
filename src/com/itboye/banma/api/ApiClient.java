@@ -242,14 +242,16 @@ public class ApiClient {
 	}
 	
 	//验证验证码
-	public static void judgeCheckCode(Context context,String username,String checkcode,String type,String userId, StrVolleyInterface networkHelper){
+	public static void judgeCheckCode(Context context,String username,String checkcode,String type,
+			String userId, String invite_code,StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Message/checkCode?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
         params.put("username",username);
         params.put("type",type);
         params.put("code", checkcode);
-       params.put("uid", userId);
+        params.put("uid", userId);
+        params.put("invite_code", invite_code);
         VolleyRequest.StrRequestPost(context, url, "judgeCode",params, networkHelper);
 	}
 	

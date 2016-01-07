@@ -142,16 +142,16 @@ public class CenterFragment extends Fragment implements OnClickListener{
 			break;
 		
 		case R.id.ll_red:
-			//if (appContext.isLogin()) {
+			if (appContext.isLogin()) {
 				Intent intent6=new Intent(getActivity(),ActivityRedEnvelope.class);
-				intent6.putExtra("HONGBAO", "hongbao_centerFragment");
+				intent6.putExtra("skipState", 200);
 				startActivity(intent6);
 				getActivity().overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
-			//}else{
-//				Toast.makeText(getActivity(), "请先登录",
-//						Toast.LENGTH_LONG).show();
-			//}			
+			}else{
+				Toast.makeText(getActivity(), "请先登录",
+						Toast.LENGTH_LONG).show();
+			}			
 			break;
 		case R.id.ll_rank:
 			if (appContext.isLogin()) {

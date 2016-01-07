@@ -45,7 +45,7 @@ public class WebActivity  extends Activity{
 	private TextView tvRight;
 	private String url;
 	private AppContext appContext;
-//	private String shareTextBig="["+AppContext.getNickname()+"]"+"邀请您加入...";
+	//private String shareTextBig="["+AppContext.getNickname()+"]"+"邀请您加入...";
 //	private String shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
 	private  String urlShare;
 	protected void onCreate(Bundle savedInstanceState) {

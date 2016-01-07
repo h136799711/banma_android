@@ -21,6 +21,7 @@
     <string name="registered">新用户注册</string>
     <string name="phone_number">仅支持手机号注册</string>
     <string name="check_code">验证码</string>
+    <string name="et_invite_code">邀请人手机号（可不填）</string>
 	<string name="password1">密码</string>
 	<string name="password2">确认密码</string>
 	<string name="prompt">提示</string>

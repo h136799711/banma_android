@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.3" package="com.itboye.banma">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2" android:versionName="2.0" package="com.itboye.banma">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="18"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -54,7 +54,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <!-- 100424468，如果你使用的公用账号，则不需要修改；否则修改成你在QQ开放平台申请的 APP ID-->
-                <data android:scheme="tencent1104887406"/> 
+                <data android:scheme="tencent1105055976"/> 
             </intent-filter>
         </activity>
         <activity android:name="com.tencent.connect.common.AssistActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar">
