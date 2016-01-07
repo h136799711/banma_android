@@ -119,10 +119,16 @@ public class Adapter_ListView_cart extends BaseAdapter  {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(context, BabyActivity.class);
-					intent.putExtra("PID", Integer.parseInt(arrayList.get(position).get("p_id").toString()));
-					context.startActivity(intent);
-					((Activity) context).overridePendingTransition(R.anim.in_from_right,
-							R.anim.out_to_left);
+					try {
+						intent.putExtra("PID", Integer.parseInt(arrayList.get(position).get("p_id").toString()));
+						context.startActivity(intent);
+						((Activity) context).overridePendingTransition(R.anim.in_from_right,
+								R.anim.out_to_left);
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+					
 				}
 			});
 			
