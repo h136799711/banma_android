@@ -28,6 +28,10 @@ public class BitmapCacheHomageImage implements ImageCache {
 
 	@Override
 	public Bitmap getBitmap(String url) {
+		if(url == null){
+			return null;
+		}
+			
 		return mCache.get(url);
 	}
 
