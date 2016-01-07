@@ -196,7 +196,7 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 								R.anim.s_out_to_left);
 						WelcomeActivity.this.finish();
 					}
-				}, 800);
+				}, 650);
 			}
 		});
 	}
