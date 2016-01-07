@@ -69,6 +69,7 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 	private StrVolleyInterface networkHelper;
 	private Animation animation;
 	private int net_state = -1;
+	boolean finish_a = false;
 	Intent intent;
 	private String nextBck;   //传到首页暂时充当背景图片的地址，根据这个地址可以再缓存中找到图片
 
@@ -188,13 +189,16 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 							intent = new Intent(AppStartActivity.this,
 									HomePageActivity.class);
 						}*/
-						intent = new Intent(WelcomeActivity.this,
+						if(finish_a == false){
+							finish_a = true;
+							intent = new Intent(WelcomeActivity.this,
 								HomePageActivity.class);
-						intent.putExtra("nextBck", nextBck);
-						startActivity(intent);
-						overridePendingTransition(R.anim.s_in_from_right,
+							intent.putExtra("nextBck", nextBck);
+							startActivity(intent);
+							overridePendingTransition(R.anim.s_in_from_right,
 								R.anim.s_out_to_left);
-						WelcomeActivity.this.finish();
+							WelcomeActivity.this.finish();
+						}
 					}
 				}, 650);
 			}
@@ -210,13 +214,16 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 			editor.putBoolean("First", false);
 			editor.commit();
 			
-			intent = new Intent(WelcomeActivity.this,
+			if(finish_a == false){
+				finish_a = true;
+				intent = new Intent(WelcomeActivity.this,
 					HomePageActivity.class);
-			intent.putExtra("nextBck", nextBck);
-			startActivity(intent);
-			overridePendingTransition(R.anim.s_in_from_right,
+				intent.putExtra("nextBck", nextBck);
+				startActivity(intent);
+				overridePendingTransition(R.anim.s_in_from_right,
 					R.anim.s_out_to_left);
-			WelcomeActivity.this.finish();
+				WelcomeActivity.this.finish();
+			}
 			
 		}
 		if (v.getId() == R.id.enter_app) {
@@ -226,13 +233,16 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 			editor.putBoolean("First", false);
 			editor.commit();
 			
-			intent = new Intent(WelcomeActivity.this,
+			if(finish_a == false){
+				finish_a = true;
+				intent = new Intent(WelcomeActivity.this,
 					HomePageActivity.class);
-			intent.putExtra("nextBck", nextBck);
-			startActivity(intent);
-			overridePendingTransition(R.anim.s_in_from_right,
+				intent.putExtra("nextBck", nextBck);
+				startActivity(intent);
+				overridePendingTransition(R.anim.s_in_from_right,
 					R.anim.s_out_to_left);
-			WelcomeActivity.this.finish();
+				WelcomeActivity.this.finish();
+			}
 		}
 	}
 
