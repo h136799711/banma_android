@@ -95,9 +95,9 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		chatView = inflater.inflate(R.layout.home_page, container, false);
-		mHiddenAction = new AlphaAnimation(1.0f, 0.0f);
+		mHiddenAction = new AlphaAnimation(1.0f, 1.0f);
 		mShowAction = new AlphaAnimation(0.0f, 1.0f);
-		mHiddenAction.setDuration(500);
+		mHiddenAction.setDuration(1000);
 		mShowAction.setDuration(1000);
 		initView();
 		return chatView;
