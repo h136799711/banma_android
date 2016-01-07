@@ -46,7 +46,7 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	TextView tvCheckList;//选择按钮
 	//ImageView ivBack;//返回按钮
 	TextView tvPersonnamefail;//未登录提示
-	private TextView tvYongJin;//我的返佣
+	private TextView tvYongJin;//返佣
 	private ImageView ivShare;//扫描二维码
 	private LinearLayout rlMoney;//我的佣金
 	private LinearLayout llRank;//排行榜
@@ -356,6 +356,10 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		if (AppContext.getCoin()==null) {
+			tvYongJin.setText("0.00元");
+		}else
+		{tvYongJin.setText(AppContext.getCoin()+"元");}
 		if (appContext.isLogin()==true) {
 			if (AppContext.hasHead==true) {
 				try {

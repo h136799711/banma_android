@@ -1,4 +1,5 @@
 package com.itboye.banma.activities;
+import android.annotation.SuppressLint;
 /*
  * 主要用于显示webview相关的链接界面
  */
@@ -48,6 +49,7 @@ public class WebActivity  extends Activity{
 	//private String shareTextBig="["+AppContext.getNickname()+"]"+"邀请您加入...";
 //	private String shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
 	private  String urlShare;
+	@SuppressLint("SetJavaScriptEnabled")
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
@@ -125,7 +127,7 @@ public class WebActivity  extends Activity{
 //			 url="http://banma.itboye.com/index.php/Home/Share/ranking_invite";
 //		}
         
-        
+        wvShow.getSettings().setJavaScriptEnabled(true);
         wvShow.setHorizontalScrollBarEnabled(false);
         wvShow.setHorizontalScrollbarOverlay(false);  
         wvShow.loadUrl(url);
