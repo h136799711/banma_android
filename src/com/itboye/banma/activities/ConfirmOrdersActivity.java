@@ -80,6 +80,7 @@ StrUIDataListener {
 	private MailingAdress address = null;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
+	private DecimalFormat df=new DecimalFormat(".##");
 	private List<SkuStandard> list = new ArrayList<SkuStandard>();
 	private int state = -1;
 	private Button confirm;
@@ -181,7 +182,6 @@ StrUIDataListener {
 		/* pop_num.setText(""+numAll); */
 		all_num.setText("" + numAll);
 		all_price.setText("￥" + priceAll);
-		DecimalFormat df=new DecimalFormat(".##");
 		Double discount_price = (Double) (priceAll * Double.valueOf(appContext.getDiscount_ratio()));
 		discount_code.setText(appContext.getIdcode());
 		privilege_money.setText("￥"+df.format(discount_price));
@@ -260,7 +260,7 @@ StrUIDataListener {
 				privilege_money.setText("￥"+discount_price);
 				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
 				order_priceAll = Double.valueOf(priceAll) - discount_price;
-				order_all_price.setText("￥"+(order_priceAll));
+				order_all_price.setText("￥"+df.format((order_priceAll)));
 				
 			}
 		
@@ -270,7 +270,7 @@ StrUIDataListener {
 				Double red_Mony = Double.valueOf(data.getStringExtra("RedEnvelopeMony"));
 				red_envelope.setText("￥"+red_Mony);
 				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
-				order_all_price.setText("￥"+(Double.valueOf(order_priceAll) - red_Mony));
+				order_all_price.setText("￥"+df.format((Double.valueOf(order_priceAll) - red_Mony)));
 				
 			}
 		}
