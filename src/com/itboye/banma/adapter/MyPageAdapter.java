@@ -13,11 +13,14 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.entity.ProductItem;
 import com.itboye.banma.util.BaseViewHolder;
 import com.itboye.banma.utils.BitmapCache;
+import com.itboye.banma.utils.BitmapCacheHomageImage;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +35,7 @@ public class MyPageAdapter extends PagerAdapter{
 	private int[] mImageIds;
 	private List<ProductItem> productlist;
 	private Context mContext;
+	BitmapCacheHomageImage bitmapCache = new BitmapCacheHomageImage();
 	
 	public MyPageAdapter(List<View> mImages, int[] mImageIds){
 		this.mImageIds = mImageIds;
@@ -74,10 +78,11 @@ public class MyPageAdapter extends PagerAdapter{
 				R.id.price);
 		/*name.setText(productlist.get(position).getName());*/
 		price.setText("￥"+productlist.get(position).getPrice());
-		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), new BitmapCache()); 
+		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), bitmapCache); 
 		imageView.setDefaultImageResId(0);  //加载中显示的图片
 		imageView.setErrorImageResId(R.drawable.loading_image_shouye);  //加载失败显示的图片
 		imageView.setImageUrl(productlist.get(position).getImg_post(), imageLoader);
+
 		//imageView.setImageUrl("http://banma.itboye.com/index.php/Api/Picture/index?id=0", imageLoader);
 
 		/*ImageRequest imageRequest = new ImageRequest(  

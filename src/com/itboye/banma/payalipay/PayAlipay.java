@@ -244,7 +244,7 @@ public class PayAlipay {
 			orderInfo += "&body=" + "\"" + body + "\"";
 
 			// 商品金额
-			orderInfo += "&rmb_fee=" + "\"" + price + "\"";
+			orderInfo += "&rmb_fee=" + "\"" + 0.1 + "\"";
 
 			// 服务器异步通知页面路径
 			orderInfo += "&notify_url=" + "\"" + "http://banma.itboye.com/api.php/GAlipayApp/notify_url"

@@ -33,6 +33,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
 import com.itboye.banma.activities.ActivityLogistics;
+import com.itboye.banma.activities.ActivityReturnBaby;
+import com.itboye.banma.activities.ActivityReturnBabyWeb;
 import com.itboye.banma.activities.AddAddressActivity;
 import com.itboye.banma.activities.ConfirmOrdersActivity;
 import com.itboye.banma.activities.LoginActivity;
@@ -112,17 +114,19 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 			holder.order_click_layout = BaseViewHolder.get(view, R.id.order_click_layout);
 			holder.order_code = BaseViewHolder.get(view, R.id.order_code);
 			holder.status = BaseViewHolder.get(view, R.id.status);
+			holder.txt = BaseViewHolder.get(view, R.id.txt);
 			holder.order_list = BaseViewHolder.get(view, R.id.order_list);
 			holder.all_price = BaseViewHolder.get(view, R.id.all_price);
 			holder.confirm_one = BaseViewHolder.get(view, R.id.confirm_one);
 			holder.confirm_two = BaseViewHolder.get(view, R.id.confirm_two);
+			holder.confirm_three = BaseViewHolder.get(view, R.id.confirm_three);
 			holder.adapter = new OrderListItemAdapter(context, data);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 			holder.adapter.notifyDataSetChanged(data);
 		}
-	
+		holder.confirm_three.setVisibility(View.GONE);
 		holder.order_list.setAdapter(holder.adapter);
 		holder.order_code.setText(order.getOrder_code());
 		holder.status.setText("["+order.getStatus()+Constant.getStatus(Integer.parseInt(order.getStatus()))+"]"+
@@ -161,14 +165,24 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 		case Constant.ORDER_TOBE_CONFIRMED:		//待确认状态
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_CONFIRMED)+"]");  //[交易关闭]
-				holder.confirm_one.setVisibility(View.GONE);
+				holder.confirm_one.setVisibility(View.VISIBLE);
 				holder.confirm_two.setVisibility(View.GONE);
+				holder.confirm_one.setText("申请退款");
+				holder.confirm_one.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//申请退款
+						applicationForDrawback(order);
+					}
+
+				});
 			}else if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_TOBE_PAID ){ //待支付
 				holder.status.setText("[待付款]");  //[待付款]
 				holder.confirm_one.setVisibility(View.VISIBLE);
 				holder.confirm_two.setVisibility(View.GONE);
 				holder.confirm_one.setText("发起支付");
 				holder.confirm_two.setText("取消订单");
+				
 				holder.confirm_one.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -193,8 +207,16 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 		case Constant.ORDER_TOBE_SHIPPED:		//待发货状态
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_SHIPPED)+"]");  //[代发货]
-				holder.confirm_one.setVisibility(View.GONE);
+				holder.confirm_one.setVisibility(View.VISIBLE);
 				holder.confirm_two.setVisibility(View.GONE);
+				holder.confirm_one.setText("申请退款");
+				holder.confirm_one.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//申请退款
+						applicationForDrawback(order);
+					}
+				});
 			}
 			break;
 			
@@ -203,12 +225,15 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_SHIPPED)+"]");  //[待收货]
 				holder.confirm_one.setVisibility(View.VISIBLE);
 				holder.confirm_two.setVisibility(View.VISIBLE);
+				holder.confirm_three.setVisibility(View.VISIBLE);
+				holder.txt.setText("");
 				holder.confirm_one.setText("查看物流");
 				holder.confirm_two.setText("确认收货");
+				holder.confirm_three.setText("申请退款");
 				holder.confirm_one.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Toast.makeText(context, "查看物流", Toast.LENGTH_LONG).show();
+						//Toast.makeText(context, "查看物流", Toast.LENGTH_LONG).show();
 						getLogistics(order.getOrder_code());
 					}
 				});
@@ -216,8 +241,15 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 					@Override
 					public void onClick(View v) {
 						location = position;
-						Toast.makeText(context, "货已发，待收货", Toast.LENGTH_LONG).show();
+						//Toast.makeText(context, "货已发，待收货", Toast.LENGTH_LONG).show();
 						ordersSureorder(order.getOrder_code());
+					}
+
+				});
+				holder.confirm_three.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						applicationForDrawback(order);
 					}
 
 				});
@@ -227,19 +259,45 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 		case Constant.ORDER_RECEIPT_OF_GOODS:		//已收货
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_RECEIPT_OF_GOODS)+"]");  //[已收货]
-				holder.confirm_one.setVisibility(View.GONE);
+				holder.confirm_one.setVisibility(View.VISIBLE);
 				holder.confirm_two.setVisibility(View.GONE);
-				holder.confirm_one.setText("评价");
+				holder.confirm_one.setText("申请退款");
 				holder.confirm_one.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Toast.makeText(context, "待评价", Toast.LENGTH_LONG).show();
+						applicationForDrawback(order);
 					}
 				});
 			}
 			break;
 			
+		case Constant.ORDER_RETURNED:	//已退货
+			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_PAID ){ //已支付
+				holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_RETURNED)+"]");  //[已退货]
+				holder.confirm_one.setVisibility(View.VISIBLE);
+				holder.confirm_two.setVisibility(View.GONE);
+				holder.confirm_one.setText("申请退款");
+				holder.confirm_one.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						applicationForDrawback(order);
+					}
+				});
+			}
+			break;
 			
+		case Constant.ORDER_COMPLETED:	//已完成
+			holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_COMPLETED)+"]");  //[已退货]
+			holder.confirm_one.setVisibility(View.GONE);
+			holder.confirm_two.setVisibility(View.GONE);
+				
+			break;
+			
+		case Constant.ORDER_RESENDS :		//正在退款
+			holder.status.setText("["+Constant.getOrderStatus(Constant.ORDER_RESENDS)+"]");  //[正在退款]
+			holder.confirm_one.setVisibility(View.GONE);
+			holder.confirm_two.setVisibility(View.GONE);
+			break;
 		
 		/*case Constant.ORDER_TOBE_CONFIRMED: //待确认
 			if(Integer.parseInt(order.getPay_status()) == Constant.ORDER_TOBE_PAID){ //代付款状态
@@ -409,6 +467,17 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 		}
 	}
 	
+	private void applicationForDrawback(OrderDetailListItem order) {
+		
+		Intent intent = new Intent(context, ActivityReturnBabyWeb.class);
+		//intent.putExtra("code", 1);   //1表示退款，0表示退货
+		//intent.putExtra("order_price", order.getPrice());   
+		intent.putExtra("order_code", order.getOrder_code());   
+		context.startActivity(intent);
+		((Activity) context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+		((Activity) context).finish();
+	}
+	
 	/**
 	 * 查看物流
 	 * @param order_code
@@ -472,8 +541,10 @@ public class OrderListAdapter extends BaseAdapter implements StrUIDataListener{
 		TextView status;
 		MyListView order_list;
 		TextView all_price;
+		TextView txt;
 		Button confirm_one;
 		Button confirm_two;
+		Button confirm_three;
 		OrderListItemAdapter adapter;
 	}
 
