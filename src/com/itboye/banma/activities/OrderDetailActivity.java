@@ -64,9 +64,12 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	private TextView order_state;
 	private TextView order_state_data;
 	private Button confirm;
+	private LinearLayout ll_order_detail;
+	private String Order_detail_web="";
 	
 	private int id;			//order的id
 	private OrderDetail orderDetail;
+	private String key_state;//用于参看订单状态详情
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +93,8 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 				}
 			}
 		});
+		ll_order_detail=(LinearLayout) findViewById(R.id.ll_order_detail);
+		ll_order_detail.setOnClickListener(this);
 		back = (ImageView) findViewById(R.id.iv_back);
 		title = (TextView) findViewById(R.id.title);
 		order_flex = (LinearLayout) findViewById(R.id.order_flex);
@@ -226,6 +231,9 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 	 * 获取到的数据展示出来
 	 */
 	private void showDataView() {
+		//查询订单状态的url
+		Order_detail_web="http://www.bammar.com/index.php/Home/User/order_status?uid="+appContext.getLoginUid()+
+				"&key="+appContext.getPassword()+"&access_token="+AppContext.getAccess_token()+"&order_code="+orderDetail.getOrder_code();
 		adr_name.setText(orderDetail.getContactname());
 		adr_phone.setText(orderDetail.getMobile());
 		adr_address.setText(orderDetail.getCountry()+" "+orderDetail.getProvince()
@@ -253,26 +261,30 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		switch (Integer.parseInt(orderDetail.getOrder_status())) {
 		case Constant.ORDER_CANCEL:		//取消或交易关闭
 			order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_CANCEL)+"状态]");  //[交易关闭]
+//			key_state=Constant.ORDER_CANCEL+"";
 			break;
 			
 		case Constant.ORDER_TOBE_CONFIRMED:		//待确认状态
 			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_CONFIRMED)+"状态]");  //[交易关闭]
-				
+				key_state=Constant.ORDER_PAID+"";
 			}else if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_TOBE_PAID ){ //待支付
 				order_state.setText("[待付款]");  //[待付款]
+//				key_state=Constant.ORDER_TOBE_PAID+"";
 			}
 			break;
 		
 		case Constant.ORDER_TOBE_SHIPPED:		//待发货状态
 			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_TOBE_SHIPPED)+"状态]");  //[代发货]
+//				key_state=Constant.ORDER_PAID+"";
 			}
 			break;
 			
 		case Constant.ORDER_SHIPPED:		//已发货
 			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_SHIPPED)+"状态]");  //[待收货]
+//				key_state=Constant.ORDER_PAID+"";
 				confirm.setVisibility(View.VISIBLE);
 			}
 			break;
@@ -280,18 +292,25 @@ public class OrderDetailActivity extends Activity implements OnClickListener, St
 		case Constant.ORDER_RECEIPT_OF_GOODS:		//已收货
 			if(Integer.parseInt(orderDetail.getPay_status()) == Constant.ORDER_PAID ){ //已支付
 				order_state.setText("["+Constant.getOrderStatus(Constant.ORDER_RECEIPT_OF_GOODS)+"状态]");  //[已收货]
-				
+//				key_state=Constant.ORDER_PAID+"";
 			}
 			break;
 		default:
 			break;
 		}
-		
-		
 	}
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.ll_order_detail:
+				Intent intent1=new Intent(OrderDetailActivity.this,WebActivity.class);
+				intent1.putExtra("Url", "Order_detail_web");
+				intent1.putExtra("url", Order_detail_web);
+				startActivity(intent1);
+				this.overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
+				break;
+		
 		case R.id.order_flex:
 			if (order_list.getVisibility() == View.VISIBLE) {
 				order_list.setVisibility(View.GONE);

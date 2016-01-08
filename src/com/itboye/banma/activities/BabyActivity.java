@@ -656,12 +656,16 @@ public class BabyActivity extends FragmentActivity implements
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (popWindow.isOrNot()) {
-				popWindow.dissmiss();
-			} else {
-				finish();
-				overridePendingTransition(R.anim.push_right_in,
-						R.anim.push_right_out);
+			try {
+				if (popWindow.isOrNot()) {
+					popWindow.dissmiss();
+				} else {
+					finish();
+					overridePendingTransition(R.anim.push_right_in,
+							R.anim.push_right_out);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
 		}
 		return false;

@@ -38,7 +38,6 @@
         android:textColor="@color/red"
         android:textSize="15sp"
         android:visibility="invisible" />
-
     <Button
         android:id="@+id/enter_app"
         android:layout_width="80dp"
@@ -49,6 +48,6 @@
         android:text="跳过"
         android:textColor="@color/red"
         android:textSize="13sp"
-        android:visibility="visible" />
+        android:visibility="gone" /> 
 
 </RelativeLayout>

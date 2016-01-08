@@ -200,7 +200,7 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 							WelcomeActivity.this.finish();
 						}
 					}
-				}, 650);
+				}, 5000);
 			}
 		});
 	}
@@ -239,8 +239,8 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 					HomePageActivity.class);
 				intent.putExtra("nextBck", nextBck);
 				startActivity(intent);
-				overridePendingTransition(R.anim.s_in_from_right,
-					R.anim.s_out_to_left);
+//				overridePendingTransition(R.anim.s_in_from_right,
+//					R.anim.s_out_to_left);
 				WelcomeActivity.this.finish();
 			}
 		}
@@ -262,11 +262,11 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 	public void onPageSelected(int arg0) {
 		if (arg0 == indicators.length - 1) {
 			startButton.setVisibility(View.VISIBLE);
-			enter.setVisibility(View.GONE);
+//			enter.setVisibility(View.GONE);
 			
 		} else {
 			startButton.setVisibility(View.GONE);
-			enter.setVisibility(View.VISIBLE);
+//			enter.setVisibility(View.VISIBLE);
 		}
 		for (int i = 0; i < indicators.length; i++) {
 			indicators[i]

@@ -92,6 +92,7 @@ public class WebActivity  extends Activity{
         Intent intent=getIntent();
       //  String uid=appContext.getLoginUid()+"";
         String reslut=intent.getStringExtra("Url"); 
+        
         if (reslut.equals("http://banma.itboye.com/Public/html/about.html")) {
 			tvTitle.setText("关于斑马");
 			url="http://banma.itboye.com/Public/html/about.html";
@@ -118,7 +119,13 @@ public class WebActivity  extends Activity{
         if (reslut.equals("Rank")) {
 			tvTitle.setText("邀请排行榜");
 			tvRight.setVisibility(View.VISIBLE);
-			 url="http://banma.itboye.com/index.php/Home/Share/ranking_invite";
+			url="http://banma.itboye.com/index.php/Home/Share/ranking_invite";
+		}
+        if (reslut.equals("Order_detail_web")) {
+			tvTitle.setText("订单状态");
+		//	tvRight.setVisibility(View.VISIBLE);
+			url=intent.getStringExtra("url");
+			System.out.println("PPPPPPPPPPPPPPPPPP"+url);
 		}
 //        
 //        if (reslut.equals("Invite")) {

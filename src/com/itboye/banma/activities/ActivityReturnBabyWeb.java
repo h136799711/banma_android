@@ -11,6 +11,7 @@ import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
+import com.itboye.banma.bean.AccessToken;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,13 +34,14 @@ public class ActivityReturnBabyWeb extends Activity implements OnClickListener{
 	TextView title;
 	ImageView iv_back;
 	WebView refund_web;
-	
+	AppContext appContext;
 	String order_code;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_return_order_web);
+		appContext=(AppContext) getApplicationContext();
 		init();
 	}
 
@@ -52,6 +54,8 @@ public class ActivityReturnBabyWeb extends Activity implements OnClickListener{
 		title.setText("退款业务");
 		iv_back.setOnClickListener(this);
 		refund_web = (WebView) findViewById(R.id.refund_web);
+//		refund_web.loadUrl("http://www.bammar.com/index.php/Home/Refund/index?order_code="+order_code+
+//				"access_token="+AppContext.getAccess_token()+"uid="+appContext.getLoginUid());
 		refund_web.loadUrl("http://www.bammar.com/index.php/Home/Refund/index?order_code="+order_code);
 		//启用支持javascript
 		WebSettings settings = refund_web.getSettings();
