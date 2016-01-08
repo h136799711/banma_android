@@ -555,5 +555,25 @@ public class AppContext extends Application {
 			return false;
 		}	
 	}
+
+	/**
+	 * 申请退款接口
+	 * @return
+	 * @throws Exception 
+	 */
+	public Boolean refund(Context mContext, String order_price, String order_code, String reason,
+			StrVolleyInterface strnetworkHelper) throws Exception {
+		if (isNetworkConnected()) {
+			try {
+				ApiClient.refund(mContext, order_price, order_code, reason, strnetworkHelper);
+			} catch (Exception e) {
+				Log.i(TAG, "readObject(key)");
+				throw e;
+			}
+			return true;
+		}else{
+			return false;
+		}	
+	}
 	
 }

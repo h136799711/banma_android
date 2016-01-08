@@ -520,4 +520,16 @@ public class ApiClient {
 		params.put("id",""+id);
 		VolleyRequest.StrRequestPost(mContext, url, "getCartById",params, strnetworkHelper);
 	}
+	public static void refund(Context mContext, String order_price,
+			String order_code, String reason, StrVolleyInterface strnetworkHelper) {
+		String access_token=AppContext.getAccess_token();
+		String url = Constant.URL+"/Refund/index?access_token="+access_token;
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("order_code",""+order_code);
+		params.put("money",""+order_price);
+		if(reason != null){
+			params.put("reason",""+reason);
+		}
+		VolleyRequest.StrRequestPost(mContext, url, "getCartById",params, strnetworkHelper);
+	}
 }

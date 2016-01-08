@@ -22,10 +22,13 @@ import com.itboye.banma.app.AppContext;
 import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.MailingAdress;
 import com.itboye.banma.entity.ProductItem;
+import com.itboye.banma.utils.BitmapCache;
+import com.itboye.banma.utils.BitmapCacheHomageImage;
 import com.itboye.banma.view.DrawableChangeView;
 import com.itboye.banma.view.FancyCoverFlow;
 
 import android.R.integer;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
@@ -40,6 +43,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -67,9 +72,13 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	private FrameLayout frame_layout;
 	private DrawableChangeView darwableView;
 	private Drawable[] drawables;
+	private Animation mHiddenAction;
+	private Animation mShowAction;
+	BitmapCacheHomageImage bitmapCache = new BitmapCacheHomageImage();
 	Boolean YesOrNo;
 	int state;
 	int one_bk=0, two_bk=0;  //保证前两个背景已经加载好的标志，因为界面显示必须用到前两个背景
+	private String nextBck;   //传到首页暂时充当背景图片的地址，根据这个地址可以再缓存中找到图片
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,17 +95,26 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		chatView = inflater.inflate(R.layout.home_page, container, false);
-
+		mHiddenAction = new AlphaAnimation(1.0f, 1.0f);
+		mShowAction = new AlphaAnimation(0.0f, 1.0f);
+		mHiddenAction.setDuration(1000);
+		mShowAction.setDuration(1000);
 		initView();
 		return chatView;
 	}
 
 	private void initView() {
+		Intent intent = getActivity().getIntent();
+		nextBck = intent.getStringExtra("nextBck");
 		// 旋转等待页
 				wait_ll = (LinearLayout) chatView.findViewById(R.id.wait_ll);
 				retry_img = (ImageView) chatView.findViewById(R.id.retry_img);
 				loading_ll = (LinearLayout) chatView.findViewById(R.id.loading_ll);
 				frame_layout = (FrameLayout) chatView.findViewById(R.id.frame_layout);
+				if(bitmapCache.getBitmap(nextBck) != null){
+					Drawable drawable = new BitmapDrawable(bitmapCache.getBitmap(nextBck));
+					wait_ll.setBackgroundDrawable(drawable);
+				}
 				wait_ll.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -116,7 +134,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.GONE);
-		loading_ll.setVisibility(View.VISIBLE);
+		loading_ll.setVisibility(View.GONE);
 		frame_layout.setVisibility(View.GONE);
 		
 		initData();
@@ -178,7 +196,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 					//arg1 显示的view前一个view所占屏幕的比例
 					//arg2 viewpager的总宽度
 					System.out.println("arg0所占屏幕的比例"+arg1+"  arg0"+arg0);
-					darwableView.setPosition(arg0 % 6);
+					darwableView.setPosition(arg0);
 					darwableView.setDegree(arg1);
 					darwableView.invalidate();
 				}
@@ -259,28 +277,38 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 					}
 					for(int k=0; k<productlist.size(); k++){
 						final int pos = k;
-						ImageRequest imageRequest = new ImageRequest(  
-								productlist.get(k).getImg_post_bg(),  
-								new Response.Listener<Bitmap>() {  
-									@Override  
-									public void onResponse(Bitmap response) {  
-										Drawable drawable =new BitmapDrawable(response);
-										drawables[pos] = drawable;
-										if(pos == 0){
-											one_bk = 1;
-										}else if(pos == 1){
-											two_bk = 1;
-										}
-									}  
-								}, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
-									@Override  
-									public void onErrorResponse(VolleyError error) {  
-										// imageView.setImageResource(R.drawable.default_image);  
-									}  
-								});
-						imageRequest.setTag("imageRequest");
-						AppContext.getHttpQueues().add(imageRequest);
-						AppContext.getHttpQueues().start();
+						if(bitmapCache.getBitmap(productlist.get(k).getImg_post_bg()) != null){
+							Drawable drawable = new BitmapDrawable(bitmapCache.getBitmap(productlist.get(k).getImg_post_bg()));
+							drawables[pos] = drawable;
+							if(pos == 0){
+								one_bk = 1;
+							}else if(pos == 1){
+								two_bk = 1;
+							}
+						}else{
+							ImageRequest imageRequest = new ImageRequest(  
+									productlist.get(k).getImg_post_bg(),  
+									new Response.Listener<Bitmap>() {  
+										@Override  
+										public void onResponse(Bitmap response) {  
+											Drawable drawable = new BitmapDrawable(response);
+											drawables[pos] = drawable;
+											if(pos == 0){
+												one_bk = 1;
+											}else if(pos == 1){
+												two_bk = 1;
+											}
+										}  
+									}, 0, 0, Config.RGB_565, new Response.ErrorListener() {  
+										@Override  
+										public void onErrorResponse(VolleyError error) {  
+											// imageView.setImageResource(R.drawable.default_image);  
+										}  
+									});
+							imageRequest.setTag("imageRequest");
+							AppContext.getHttpQueues().add(imageRequest);
+							AppContext.getHttpQueues().start();
+						}
 					}
 					
 					Thread thread=new Thread(new Runnable()  
@@ -291,6 +319,10 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			            	
 			                Message message=new Message();  
 			                message.what=1;
+			                
+			               /* one_bk = 1 ; two_bk = 1;
+			                mHandler.sendMessage(message);*/
+			                
 			                while(true){
 								if(one_bk == 1 && two_bk == 1){
 									mHandler.sendMessage(message);  
@@ -338,9 +370,11 @@ public class HomePageFragment extends Fragment implements OnClickListener,
             {  
             case 1:  
             	showListView(productlist);
+            	wait_ll.startAnimation(mHiddenAction);
 				wait_ll.setVisibility(View.GONE);
 				retry_img.setVisibility(View.GONE);
 				loading_ll.setVisibility(View.GONE);
+				frame_layout.startAnimation(mShowAction);
 				frame_layout.setVisibility(View.VISIBLE); 
                 break;  
             default:  

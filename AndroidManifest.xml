@@ -96,12 +96,15 @@
            <activity android:name="com.itboye.banma.activities.AddAddressActivity" android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
            <activity android:name="com.itboye.banma.activities.BabyActivity"/>
            <activity android:name="com.itboye.banma.activities.ConfirmOrdersActivity"/>
-           <activity android:name="com.itboye.banma.activities.BabyOrderActivity"/>
+           <activity android:name="com.itboye.banma.activities.BabyOrderActivity"
+            	android:launchMode="singleTask"/>
         <!--   <activity android:name="com.itboye.banma.welcome.WelcomeActivity"/> --> 
            <activity android:name="com.itboye.banma.welcome.HomeActivity"/>
            <activity android:name="com.itboye.banma.activities.PasswordActivity"/>
              <activity android:name="com.itboye.banma.activities.WebActivity"/>
            <activity android:name="com.itboye.banma.activities.MorePersonal"/>
+           <activity android:name="com.itboye.banma.activities.ActivityReturnBaby"/>
+           <activity android:name="com.itboye.banma.activities.ActivityReturnBabyWeb"/>
            <activity android:name="com.itboye.banma.activities.NickName"/>
            <activity android:name="com.itboye.banma.activities.NewPhoneActivity"/>
            <activity android:name="com.itboye.banma.shoppingcart.ShoppingCartActivity"/>
