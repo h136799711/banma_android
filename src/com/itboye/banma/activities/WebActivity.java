@@ -92,7 +92,10 @@ public class WebActivity  extends Activity{
         Intent intent=getIntent();
       //  String uid=appContext.getLoginUid()+"";
         String reslut=intent.getStringExtra("Url"); 
-        
+        if (reslut.equals("RULE")) {
+			tvTitle.setText("规则说明");
+			url="http://www.bammar.com/index.php/Home/Public/help";
+		}
         if (reslut.equals("http://banma.itboye.com/Public/html/about.html")) {
 			tvTitle.setText("关于斑马");
 			url="http://banma.itboye.com/Public/html/about.html";

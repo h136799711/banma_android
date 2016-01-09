@@ -536,6 +536,40 @@
                         style="@style/PersonalRightIconStyle"
                         android:src="@drawable/android_list_idex" />
                 </LinearLayout>
+                
+                 <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dip"
+                    android:background="@color/line" />
+                <LinearLayout
+                    android:id="@+id/ll_rule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/listview_item_selector"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="15dip"
+                    android:paddingTop="10dip" >
+
+                    <ImageView
+                        android:layout_width="35dip"
+                        android:layout_height="35dip"
+                        android:background="@drawable/help_small" />
+
+                    <TextView
+                        style="@style/PersonalTextStyle"
+                        android:layout_weight="1"
+                        android:text="规格说明" />
+
+                    <TextView
+                        style="@style/PersonalRightTextStyle"
+                        android:text="规则说明" />
+
+                    <ImageView
+                        style="@style/PersonalRightIconStyle"
+                        android:src="@drawable/android_list_idex" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </com.itboye.banma.view.BounceScrollView>
