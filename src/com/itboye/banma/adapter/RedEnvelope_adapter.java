@@ -128,7 +128,11 @@ public class RedEnvelope_adapter extends BaseAdapter{
 			
 			holder.red_guoqi.setText(time);
 			holder.red_youxiaoqi.setText("有效期："+TimeToDate.timeToDate(red.expire_time));
-			holder.red_tiaojian.setText("满"+red.getUse_condition()+"元可用");
+			if (!red.getUse_condition().equals("0")) {
+				holder.red_tiaojian.setText("满"+red.getUse_condition()+"元可用");
+			}else{
+				holder.red_tiaojian.setText("无条件");
+			}
 			holder.red_laiyuan.setText(red.getDtree_type_name());
 			holder.red_laiyuan.setTextColor(context.getResources().getColor(R.color.sienna));
 			holder.red_beizhu.setText(red.getTpl_notes());
@@ -140,7 +144,11 @@ public class RedEnvelope_adapter extends BaseAdapter{
 			holder.red_guoqi.setText(TimeToDate.isOvertime((int)(System.currentTimeMillis() / 1000)+"",
 					red.getExpire_time(),red.use_status));
 			holder.red_youxiaoqi.setText("有效期："+TimeToDate.timeToDate(red.expire_time));
-			holder.red_tiaojian.setText("满"+red.getUse_condition()+"元可用");
+			if (!red.getUse_condition().equals("0")) {
+				holder.red_tiaojian.setText("满"+red.getUse_condition()+"元可用");
+			}else{
+				holder.red_tiaojian.setText("无条件");
+			}
 			holder.red_laiyuan.setText(red.getDtree_type_name());
 			holder.red_laiyuan.setTextColor(R.color.lightgray);
 			holder.red_beizhu.setText(red.getNotes());

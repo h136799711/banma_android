@@ -133,16 +133,11 @@ public class CenterFragment extends Fragment implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ll_rule:
-			if (appContext.isLogin()) {
-				Intent intent6=new Intent(getActivity(),WebActivity.class);
-				intent6.putExtra("Url", "RULE");
-				startActivity(intent6);
-				getActivity().overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
-			}else{
-				Toast.makeText(getActivity(), "请先登录",
-						Toast.LENGTH_LONG).show();
-			}			
+			Intent intent7=new Intent(getActivity(),WebActivity.class);
+			intent7.putExtra("Url", "RULE");
+			startActivity(intent7);
+			getActivity().overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);		
 			break;
 		
 		case R.id.ll_suggest:

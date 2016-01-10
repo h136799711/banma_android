@@ -560,7 +560,7 @@
                     <TextView
                         style="@style/PersonalTextStyle"
                         android:layout_weight="1"
-                        android:text="规格说明" />
+                        android:text="规则说明" />
 
                     <TextView
                         style="@style/PersonalRightTextStyle"

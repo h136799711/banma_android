@@ -196,6 +196,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 									.toString(), name.getText().toString(),
 							telephone.getText().toString(), postcode.getText()
 									.toString(), id_card.getText().toString());
+									
 				} catch (Exception e) {
 					e.printStackTrace();
 					dialog.dismiss();
@@ -394,7 +395,7 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 							Toast.LENGTH_SHORT).show();
 					netState = 0;
 				} else {
-					Toast.makeText(AddAddressActivity.this, "操作成功" + data,
+					Toast.makeText(AddAddressActivity.this, "操作成功",
 							Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent();
 					intent.putExtra("result", 0);
