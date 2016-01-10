@@ -139,11 +139,11 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 
 		if (address != null) {
 			DataStore.AREA_PROVINCE = new Area(address.getProvinceid(),
-					address.getProvince(), null);
+					address.getProvince().trim(), null);
 			DataStore.AREA_CITY = new Area(address.getCityid(),
-					address.getCity(), address.getProvinceid());
+					address.getCity().trim(), address.getProvinceid());
 			DataStore.AREA_DISTRICT = new Area(address.getAreaid(),
-					address.getArea(), address.getCityid());
+					address.getArea().trim(), address.getCityid());
 			name.setText(address.getContactname());
 			telephone.setText(address.getMobile());
 			downtown.setText(DataStore.AREA_PROVINCE.getName() + " "
@@ -158,9 +158,9 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 			remove.setVisibility(View.VISIBLE);
 			kong.setVisibility(View.VISIBLE);
 		} else {
-			DataStore.AREA_PROVINCE = new Area("110000", "北京市 ", null);
-			DataStore.AREA_CITY = new Area("110100", "市辖区 ", "110000");
-			DataStore.AREA_DISTRICT = new Area("110101", "东城区 ", "110100");
+			DataStore.AREA_PROVINCE = new Area("110000", "北京市", null);
+			DataStore.AREA_CITY = new Area("110100", "市辖区", "110000");
+			DataStore.AREA_DISTRICT = new Area("110101", "东城区", "110100");
 			title.setText(R.string.add_address);
 			remove.setVisibility(View.GONE);
 			kong.setVisibility(View.GONE);
@@ -412,8 +412,8 @@ public class AddAddressActivity extends Activity implements StrUIDataListener,
 				try {
 					byte[] bytes = jsondata.getString("data").getBytes(); 
 					String newStr = new String(bytes , "UTF-8"); 
-//					Toast.makeText(AddAddressActivity.this, "操作失败:" + newStr,
-//							Toast.LENGTH_LONG).show();
+					Toast.makeText(AddAddressActivity.this, "操作失败:" + newStr,
+							Toast.LENGTH_LONG).show();
 				} catch (UnsupportedEncodingException e) {
 					
 					e.printStackTrace();

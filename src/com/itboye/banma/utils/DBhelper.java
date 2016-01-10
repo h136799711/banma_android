@@ -54,7 +54,7 @@ public class DBhelper {
 	        	byte bytes[]=cursor.getBlob(2); 
 		        String name=new String(bytes,"UTF-8");
 		        Area area=new Area();
-		        area.setName(name);
+		        area.setName(name.trim());
 		        area.setCode(code);
 		        area.setPcode(pcode);
 		        list.add(area);
@@ -64,7 +64,7 @@ public class DBhelper {
 	        byte bytes[]=cursor.getBlob(2); 
 	        String name=new String(bytes,"UTF-8");
 	        Area area=new Area();
-	        area.setName(name);
+	        area.setName(name.trim());
 	        area.setCode(code);
 	        area.setPcode(pcode);
 	        list.add(area);
@@ -92,7 +92,7 @@ public class DBhelper {
 		        byte bytes[]=cursor.getBlob(2); 
 		        String name=new String(bytes,"UTF-8");
 		        Area area=new Area();
-		        area.setName(name);
+		        area.setName(name.trim());
 		        area.setCode(code);
 		        list.add(area);
 		        cursor.moveToNext();
@@ -101,7 +101,7 @@ public class DBhelper {
 	        byte bytes[]=cursor.getBlob(2); 
 	        String name=new String(bytes,"UTF-8");
 	        Area area=new Area();
-	        area.setName(name);
+	        area.setName(name.trim());
 	        area.setCode(code);
 	        list.add(area);
 	        
@@ -127,7 +127,7 @@ public class DBhelper {
 					byte bytes[] = cursor.getBlob(2);
 					String name = new String(bytes, "UTF-8");
 					Area area = new Area();
-					area.setName(name);
+					area.setName(name.trim());
 					area.setCode(code);
 					area.setPcode(pcode);
 					list.add(area);
@@ -137,7 +137,7 @@ public class DBhelper {
 				byte bytes[] = cursor.getBlob(2);
 				String name = new String(bytes, "UTF-8");
 				Area area = new Area();
-				area.setName(name);
+				area.setName(name.trim());
 		        area.setCode(code);
 		        area.setPcode(pcode);
 				list.add(area);

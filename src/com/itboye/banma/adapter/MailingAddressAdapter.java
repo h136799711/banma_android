@@ -79,8 +79,8 @@ public class MailingAddressAdapter extends BaseAdapter {
 
 		name.setText(address.getContactname());
 		phone.setText(address.getMobile());
-		addressDetail.setText(address.getProvince() + address.getCity()
-				+ address.getArea() + address.getDetailinfo());
+		addressDetail.setText(address.getProvince()+ " " + address.getCity()+ " "
+				+ address.getArea() + " " + address.getDetailinfo());
 		if (state == 0) {
 			view.setOnClickListener(new OnClickListener() {
 				@Override
