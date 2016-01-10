@@ -59,6 +59,7 @@ StrUIDataListener {
 	private Double priceAll;
 	private Double order_priceAll;
 	private Double tax_moneyAll;
+	private TextView  beizhu;
 	private int numAll;
 	private ImageView top_back;
 	private TextView top_title;
@@ -135,6 +136,7 @@ StrUIDataListener {
 	}
 
 	private void initView() {
+		beizhu=(TextView) findViewById(R.id.beizhu);
 		confirm = (Button) findViewById(R.id.confirm);
 		select_adress_layout = (LinearLayout) findViewById(R.id.select_adress_layout);
 		add_adress_layout = (LinearLayout) findViewById(R.id.add_adress_layout);
@@ -181,7 +183,7 @@ StrUIDataListener {
 
 		/* pop_num.setText(""+numAll); */
 		all_num.setText("" + numAll);
-		all_price.setText("￥" + priceAll);
+		all_price.setText("￥" + df.format(priceAll));
 		Double discount_price = (Double) (priceAll * Double.valueOf(appContext.getDiscount_ratio()));
 		discount_code.setText(appContext.getIdcode());
 		privilege_money.setText("￥"+df.format(discount_price));
@@ -248,6 +250,8 @@ StrUIDataListener {
 		}else if(requestCode == 2100 && resultCode == 1001){
 		
 			load_data();
+		}else if(requestCode == 1106 && resultCode == 1106){
+			beizhu.setText(data.getStringExtra("beizhu"));
 		}else if(requestCode==1005) {
 			//在这里处理优惠的问题
 			//处理方法，比较store_id,计算折扣
@@ -257,8 +261,8 @@ StrUIDataListener {
 				String  idcode=data.getStringExtra("idcode");
 				Double discount_price = (Double) (priceAll * Double.valueOf(discount));
 				discount_code.setText(idcode);
-				privilege_money.setText("￥"+discount_price);
-				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
+				privilege_money.setText("￥"+df.format(discount_price));
+				//all_price.setText("￥"+(Double.val ueOf(priceAll) - discount_price));
 				order_priceAll = Double.valueOf(priceAll) - discount_price;
 				order_all_price.setText("￥"+df.format((order_priceAll)));
 				
@@ -268,7 +272,7 @@ StrUIDataListener {
 			if (data!=null) {
 				redID=data.getStringExtra("RedEnvelopeID");
 				Double red_Mony = Double.valueOf(data.getStringExtra("RedEnvelopeMony"));
-				red_envelope.setText("￥"+red_Mony);
+				red_envelope.setText("￥"+df.format(red_Mony));
 				//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
 				order_all_price.setText("￥"+df.format((Double.valueOf(order_priceAll) - red_Mony)));
 				
@@ -349,7 +353,9 @@ StrUIDataListener {
 			break;
 			
 		case R.id.ll_beizhu:
-			startActivity(new Intent(ConfirmOrdersActivity.this,SuggestActivity.class));
+			Intent intent2=new Intent(ConfirmOrdersActivity.this,SuggestActivity.class);
+			intent2.putExtra("beizhuCode", 1);  //表示由订单确认页面跳转至红包页面，选择红包后要返回红包ID
+			startActivityForResult(intent2,1106);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.iv_back:
@@ -377,7 +383,7 @@ StrUIDataListener {
 		case R.id.confirm:
 			// 添加订单
 			if (hasAdress==true) {
-			ordersAdd(appContext.getLoginUid(), cart_ids, discount_code.getText().toString(), null,address.getId(),2,1);
+			ordersAdd(appContext.getLoginUid(), cart_ids, discount_code.getText().toString(), beizhu.getText().toString(),address.getId(),2,1);
 			dialog.setMessage("提交订单...");
 			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			dialog.show();

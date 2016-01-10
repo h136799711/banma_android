@@ -59,12 +59,13 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 		registerReceiver(closeReceiver, intentFilter);  
 		
 		initId(this);
-
+		et_invite_code.setVisibility(View.VISIBLE);
 		forgetFlag=intent.getStringExtra("forgetFlag");
 		if (forgetFlag==null) {
 			forgetFlag=" ";
 		}else {
 			tvRegist.setText("找回密码");
+			et_invite_code.setVisibility(View.GONE);
 			llTiaoKuan.setVisibility(View.GONE);
 
 		}
@@ -76,7 +77,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 	}
 	
 	//友盟统计
-		@Override
+@Override
 		protected void onResume() {
 
 			super.onResume();
@@ -147,13 +148,14 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 				nextIntent.putExtra("username", edPhoneNumber.getText().toString());
 				nextIntent.putExtra("code",edCheckCode.getText().toString());
 				nextIntent.putExtra("Flags", Flags);
+				System.out.println("PPPPPPPPPPPPPPP"+edCheckCode.getText().toString());
 				startActivity(nextIntent);
 				//ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), checkcode, "2", " ", networkHelper);
 			}
 			else{
 				Flags=1;
 				ApiClient.judgeCheckCode(RegistActivity.this, edPhoneNumber.getText().toString(), edCheckCode.getText().toString(),
-						"1", " ",et_invite_code.getText().toString(), networkHelper);
+						"1", " ",networkHelper);
 			}
 		}
 	};
@@ -215,6 +217,7 @@ public class RegistActivity extends Activity implements StrUIDataListener {
 			if (checkcode.equals("验证通过!")) {
 				Intent nextIntent=new Intent(RegistActivity.this,PasswordActivity.class);
 				nextIntent.putExtra("username", edPhoneNumber.getText().toString());
+				nextIntent.putExtra("invite_code", et_invite_code.getText().toString());
 				nextIntent.putExtra("Flags", Flags);
 				Flags=0;
 				startActivity(nextIntent);

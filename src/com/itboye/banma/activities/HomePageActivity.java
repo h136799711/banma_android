@@ -176,6 +176,11 @@ ChangeItemListener,StateGoShoppingListener,AllGoShoppingListener{
 		}
 
 	}
+	
+	@Override 
+	protected void onResumeFragments() {
+		super.onResumeFragments();
+	};
 	/**
 	 * 改变Tab颜色
 	 * @param arg0

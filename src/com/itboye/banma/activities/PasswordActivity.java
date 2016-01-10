@@ -81,13 +81,14 @@ public class PasswordActivity extends Activity implements StrUIDataListener{
 			String name=etName.getText().toString();
 			String password=etPassword.getText().toString();
 			checkCode=intent.getStringExtra("code");
+			String invite_code=intent.getStringExtra("invite_code");
 			username=	intent.getStringExtra("username");
 			System.out.println(username);
 			System.out.println(password);
 			if (name.equals(password)) {
 				switch (state) {
 				case 1:
-					ApiClient.finishRegisit(PasswordActivity.this,username, password, networkHelper);//用户注册来的
+					ApiClient.finishRegisit(PasswordActivity.this,username, password,invite_code,networkHelper);//用户注册来的
 					break;
 				case 2:
 					ApiClient.forgetPassword(PasswordActivity.this, username, password, checkCode, networkHelper);

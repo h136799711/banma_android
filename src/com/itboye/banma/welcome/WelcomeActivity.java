@@ -200,7 +200,7 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 							WelcomeActivity.this.finish();
 						}
 					}
-				}, 5000);
+				}, 3000);
 			}
 		});
 	}

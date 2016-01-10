@@ -243,7 +243,7 @@ public class ApiClient {
 	
 	//验证验证码
 	public static void judgeCheckCode(Context context,String username,String checkcode,String type,
-			String userId, String invite_code,StrVolleyInterface networkHelper){
+			String userId,StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Message/checkCode?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
@@ -251,7 +251,7 @@ public class ApiClient {
         params.put("type",type);
         params.put("code", checkcode);
         params.put("uid", userId);
-        params.put("invite_code", invite_code);
+      //  params.put("invite_code", invite_code);
         VolleyRequest.StrRequestPost(context, url, "judgeCode",params, networkHelper);
 	}
 	
@@ -283,7 +283,8 @@ public class ApiClient {
 	}
 	
 	//发送密码，用户完成用手机号的注册
-	public static void finishRegisit(Context context,String username,String  password, StrVolleyInterface networkHelper){
+	public static void finishRegisit(Context context,String username,String  password, 
+			String invite_code,StrVolleyInterface networkHelper){
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/User/register?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
@@ -292,6 +293,7 @@ public class ApiClient {
 		System.out.println(password);
         params.put("username",username);  
         params.put("password",password);
+        params.put("invite_code", invite_code);
         params.put("from", "0");
         params.put("type", "3");
         VolleyRequest.StrRequestPost(context, url, "finishRegisit",params, networkHelper);
@@ -459,7 +461,7 @@ public class ApiClient {
 		params.put("addr_id",""+addr_id);
 		params.put("from",""+from);
 		params.put("payType",""+payType);
-		
+
 		VolleyRequest.StrRequestPost(mContext, url, "ordersAdd",params, networkHelper);
 	}
 	public static void getAllOrder(Context mContext, int loginUid, int pageNo,

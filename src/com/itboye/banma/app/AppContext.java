@@ -32,6 +32,16 @@ public class AppContext extends Application {
 	public static String moblie;//手机号
 	public static String username;//用户登录账户
 	
+	public static String beizhu="";//備註 提交備註
+	
+	public static String getBeizhu() {
+		return beizhu;
+	}
+
+	public static void setBeizhu(String beizhu) {
+		AppContext.beizhu = beizhu;
+	}
+
 	public static String getUsername() {
 		return username;
 	}

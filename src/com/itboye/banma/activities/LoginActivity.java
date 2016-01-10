@@ -140,7 +140,11 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		requestQueue = AppContext.getHttpQueues();
 
 		mController = UMServiceFactory.getUMSocialService("com.umeng.login");
-
+	
+		// 添加微信平台
+		UMWXHandler wxHandler = new UMWXHandler(this,Constant.APP_ID,Constant.AppSecret);
+		wxHandler.addToSocialSDK();
+		
 		api = WXAPIFactory.createWXAPI(this,Constant.APP_ID, true);  
 		api.registerApp(Constant.APP_ID);
 		
@@ -277,6 +281,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			req.state = "wechat_sdk_demo_test";  
 			api.sendReq(req);  
 			Toast.makeText(LoginActivity.this, "正在打开微信", Toast.LENGTH_LONG).show();
+			//wxLogin();
 			break;
 
 		case R.id.iv_qq:
@@ -339,6 +344,48 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			break;
 		}
 	}
+//	private void wxLogin() {
+//		// TODO Auto-generated method stub
+//		mController.doOauthVerify(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMAuthListener() {
+//		    @Override
+//		    public void onStart(SHARE_MEDIA platform) {
+//		        Toast.makeText(LoginActivity.this, "授权开始", Toast.LENGTH_SHORT).show();
+//		    }
+//		    @Override
+//		    public void onError(SocializeException e, SHARE_MEDIA platform) {
+//		        Toast.makeText(LoginActivity.this, "授权错误", Toast.LENGTH_SHORT).show();
+//		    }
+//		    @Override
+//		    public void onComplete(Bundle value, SHARE_MEDIA platform) {
+//		        Toast.makeText(LoginActivity.this, "授权完成"+value.toString(), Toast.LENGTH_LONG).show();
+//		        //获取相关授权信息
+//		        mController.getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, new UMDataListener() {
+//		    @Override
+//		    public void onStart() {
+//		        Toast.makeText(LoginActivity.this, "获取平台数据开始...", Toast.LENGTH_SHORT).show();
+//		    }                                              
+//		    @Override
+//		        public void onComplete(int status, Map<String, Object> info) {
+//		            if(status == 200 && info != null){
+//		                StringBuilder sb = new StringBuilder();
+//		                Set<String> keys = info.keySet();
+//		                for(String key : keys){
+//		                   sb.append(key+"="+info.get(key).toString()+"\r\n");
+//		                }
+//		                Log.d("TestData",sb.toString());
+//		            }else{
+//		               Log.d("TestData","发生错误："+status);
+//		           }
+//		        }
+//		});
+//		    }
+//		    @Override
+//		    public void onCancel(SHARE_MEDIA platform) {
+//		        Toast.makeText(LoginActivity.this, "授权取消", Toast.LENGTH_SHORT).show();
+//		    }
+//		} );
+//	}
+
 	public void showLogin(View view) {
 	    loginService.showLogin(LoginActivity.this, new LoginCallback() {
 	        @Override
@@ -495,7 +542,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 			} else {
 				dialog.dismiss();
 				appContext.setLogin(false);
-				Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" +content.toString(), Toast.LENGTH_LONG)
+				Toast.makeText(LoginActivity.this, "登陆失败，请检查用户名和密码" , Toast.LENGTH_LONG)
 				.show();
 				System.out.println("code=" + content.toString());
 			}

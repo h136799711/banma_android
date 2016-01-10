@@ -78,8 +78,10 @@ import com.umeng.analytics.social.UMPlatformData;
 import com.umeng.analytics.social.UMPlatformData.GENDER;
 import com.umeng.analytics.social.UMPlatformData.UMedia;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
 import com.umeng.socialize.media.QQShareContent;
 import com.umeng.socialize.media.QZoneShareContent;
 import com.umeng.socialize.media.UMImage;
@@ -147,6 +149,7 @@ public class BabyActivity extends FragmentActivity implements
     UMSocialService mController;
     private ProgressDialog dialog;
     public String urlShare="";
+    private SnsPostListener mSnsPostListener;
     /** 
      * myScrollView与其父类布局的顶部距离 
      */  
@@ -161,8 +164,7 @@ public class BabyActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_babydetail_a);
 		appContext = (AppContext) getApplication();
 		urlShare= "http://banma.itboye.com/index.php/Home/InviteRegister/index?uid="+appContext.getLoginUid()+"";
-	
-		
+			
 		//设置新浪SSO handler
 	//	mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		
@@ -193,7 +195,27 @@ public class BabyActivity extends FragmentActivity implements
 		
 		initView();
 		iniData();
-
+		
+		mSnsPostListener=new SnsPostListener() {
+			
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+			}
+			 @Override
+			    public void onComplete(SHARE_MEDIA platform, int stCode,
+			        SocializeEntity entity) {
+			      if (stCode == 200) {
+			        Toast.makeText(BabyActivity.this, "分享成功", Toast.LENGTH_SHORT)
+			            .show();
+			      } else {
+			        Toast.makeText(BabyActivity.this,
+			            "分享失败 : error code : " + stCode, Toast.LENGTH_SHORT)
+			            .show();
+			      }
+			    }
+			  };
+			 // mController.registerListener(mSnsPostListener);
 	}
 
 	//友盟统计
@@ -382,12 +404,13 @@ public class BabyActivity extends FragmentActivity implements
 			break;
 		}
 	}
+       
 
 	private void umengShare() {
 
 			 // 首先在您的Activity中添加如下成员变量
 				mController = UMServiceFactory.getUMSocialService("com.umeng.share");
-
+				mController.registerListener(mSnsPostListener);
 				//设置腾讯微博SSO handler
 				mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
 				
@@ -441,9 +464,10 @@ public class BabyActivity extends FragmentActivity implements
 		    	//设置分享图片
 		    	qzone.setShareImage(new UMImage(this,R.drawable.icon));
 		    	mController.setShareMedia(qzone);
-		    	
 		    	mController.openShare(BabyActivity.this, false);
 	}
+	
+	
 
 	private void initViewPager() {
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(),
@@ -924,10 +948,14 @@ public class BabyActivity extends FragmentActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    super.onActivityResult(requestCode, resultCode, data);
 	    /**使用SSO授权必须添加如下代码 */
-	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
-	    if(ssoHandler != null){
-	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
-	    }
+//	    try {
+	    	 UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
+	 	    if(ssoHandler != null){
+	 	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+	 	    }
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
 	}
 
 	/** 
@@ -1000,7 +1028,5 @@ public class BabyActivity extends FragmentActivity implements
         	}
         }
     }  
-	
-
-
+    
 }

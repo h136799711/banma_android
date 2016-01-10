@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,8 @@ public class SuggestActivity extends Activity implements StrUIDataListener ,andr
 	private  TextView title;
 	private  ImageView iv_back;
 	private EditText et_suggest;;
-	private Button btn_tijiao;;
+	private Button btn_tijiao;
+	int beizhuCode;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_suggest);
@@ -39,15 +41,18 @@ public class SuggestActivity extends Activity implements StrUIDataListener ,andr
 		initId(this);
 		initData();
 
-}
+	}
 
 	private void initData() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void initId(SuggestActivity suggestActivity) {
 		// TODO Auto-generated method stub
+		Intent intent=getIntent();
+		beizhuCode=intent.getIntExtra("beizhuCode", 0); 
+
 		title=(TextView)findViewById(R.id.title);
 		title.setText("意见与建议");
 		iv_back=(ImageView)findViewById(R.id.iv_back);
@@ -55,13 +60,17 @@ public class SuggestActivity extends Activity implements StrUIDataListener ,andr
 		et_suggest=(EditText)findViewById(R.id.et_suggest);
 		btn_tijiao=(Button)findViewById(R.id.btn_tijiao);
 		btn_tijiao.setOnClickListener(this);
+
+		if (beizhuCode==1) {
+			title.setText("备注");
+		}
 	}
 
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -95,7 +104,17 @@ public class SuggestActivity extends Activity implements StrUIDataListener ,andr
 			finish();
 			break;
 		case R.id.btn_tijiao:
-			ApiClient.suggest(this, et_suggest.getText().toString(), appContext.getLoginUid()+"", networkHelper);
+			if (beizhuCode==1) {
+				Intent intent=new Intent(SuggestActivity.this,ConfirmOrdersActivity.class);
+				 intent.putExtra("beizhu",et_suggest.getText().toString() );
+				 setResult(1106, intent);
+				 finish();
+				 overridePendingTransition(R.anim.push_right_in,
+						 R.anim.push_right_out);
+			}else {
+				ApiClient.suggest(this, et_suggest.getText().toString(), appContext.getLoginUid()+"", networkHelper);
+			}
+			
 			break;
 		default:
 			break;

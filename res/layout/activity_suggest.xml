@@ -25,7 +25,7 @@
          android:layout_marginTop="50dp"
          android:background="@color/titlebar"
          android:gravity="center"
-         android:text="提交反馈"
+         android:text="提交"
          android:textColor="@color/white"
          android:textSize="@dimen/text_size_14" />
 

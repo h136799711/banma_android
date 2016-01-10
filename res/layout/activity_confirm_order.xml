@@ -468,6 +468,7 @@
                         android:text="留言备注" />
 
                     <TextView
+                        android:id="@+id/beizhu"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
