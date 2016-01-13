@@ -59,7 +59,7 @@ public class WXEntryActivity extends WXCallbackActivity  implements IWXAPIEventH
 		try {
 			switch (resp.errCode) {
 			case BaseResp.ErrCode.ERR_OK:
-				Toast.makeText(context, "授权成功", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(context, "授权成功", Toast.LENGTH_SHORT).show();
 
 				String code=((SendAuth.Resp)resp).code;
 				AppContext.setCode(code);
