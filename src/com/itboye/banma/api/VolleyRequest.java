@@ -41,7 +41,7 @@ public class VolleyRequest {
 		};
 		strRequest.setTag(tag);
 		AppContext.getHttpQueues().add(strRequest);
-		AppContext.getHttpQueues().start();
+		//AppContext.getHttpQueues().start();
 	}
 
 	public static void StrRequestPost(Context mContext, String url, String tag,
@@ -68,7 +68,7 @@ public class VolleyRequest {
 		};
 		strRequest.setTag(tag);
 		AppContext.getHttpQueues().add(strRequest);
-		AppContext.getHttpQueues().start();
+		//AppContext.getHttpQueues().start();
 	}
 	public  static String getTime(){
 		Date date=new Date();
