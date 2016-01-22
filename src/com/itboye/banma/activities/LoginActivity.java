@@ -253,7 +253,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 		etName.addTextChangedListener(new TextChange());
 		etPassword.addTextChangedListener(new TextChange());
 		etName.setText(account);
-		etPassword.setText(pass);
+		//etPassword.setText(pass);
 	}
 
 

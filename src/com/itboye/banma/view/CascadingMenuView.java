@@ -96,26 +96,37 @@ public class CascadingMenuView extends LinearLayout {
 					@Override
 					public void onItemClick(View view, int position) {
 						// 选择主菜单，清空原本子菜单内容，增加新内容
-						secondItem.clear();
-						secondItem = getSecondItem(menuItem.get(position)
-								.getCode());
-						if (secondItem != null) {
-							Log.i("wer", "" + secondItem.size());
-						}
-						DataStore.AREA_PROVINCE = menuItem.get(position);
-						// 通知适配器刷新
-						secondMenuListViewAdapter.notifyDataSetChanged();
-						secondMenuListViewAdapter.setSelectedPositionNoNotify(
-								0, secondItem);
+						try {
 
-						thirdItem.clear();
-						thirdItem = getThirdItem(secondItem.get(0)
-								.getCode());
-						DataStore.AREA_CITY = secondItem.get(0);
-						// 通知适配器刷新
-						thirdMenuListViewAdapter.notifyDataSetChanged();
-						thirdMenuListViewAdapter.setSelectedPositionNoNotify(0,
-								thirdItem);
+
+							secondItem.clear();
+							secondItem = getSecondItem(menuItem.get(position)
+									.getCode());
+							if (secondItem != null) {
+								Log.i("wer", "" + secondItem.size());
+
+								DataStore.AREA_PROVINCE = menuItem.get(position);
+								// 通知适配器刷新
+								secondMenuListViewAdapter.notifyDataSetChanged();
+								secondMenuListViewAdapter.setSelectedPositionNoNotify(
+										0, secondItem);
+
+								thirdItem.clear();
+								thirdItem = getThirdItem(secondItem.get(0)
+										.getCode());
+								DataStore.AREA_CITY = secondItem.get(0);
+								// 通知适配器刷新
+								thirdMenuListViewAdapter.notifyDataSetChanged();
+								thirdMenuListViewAdapter.setSelectedPositionNoNotify(0,
+										thirdItem);
+							}else{
+								if (mOnSelectListener != null) {
+									mOnSelectListener.getValue(null);
+								}
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				});
 		// 初始化二级主菜单
@@ -142,14 +153,24 @@ public class CascadingMenuView extends LinearLayout {
 					public void onItemClick(View view, final int position) {
 						// 选择主菜单，清空原本子菜单内容，增加新内容
 
-						thirdItem.clear();
-						thirdItem = getThirdItem(secondItem.get(position).getCode());
-						BaseAdapter thirdItemMenuListViewAdapter;
-						DataStore.AREA_CITY = secondItem.get(position);
-						// 通知适配器刷新
-						thirdMenuListViewAdapter.notifyDataSetChanged();
-						thirdMenuListViewAdapter.setSelectedPositionNoNotify(0,
-								thirdItem);
+						if(secondItem == null){
+							if (mOnSelectListener != null) {
+								mOnSelectListener.getValue(null);
+							}
+						}else{
+							try {
+								thirdItem.clear();
+								thirdItem = getThirdItem(secondItem.get(position).getCode());
+								BaseAdapter thirdItemMenuListViewAdapter;
+								DataStore.AREA_CITY = secondItem.get(position);
+								// 通知适配器刷新
+								thirdMenuListViewAdapter.notifyDataSetChanged();
+								thirdMenuListViewAdapter.setSelectedPositionNoNotify(0,
+										thirdItem);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
 					}
 				});
 
@@ -168,18 +189,27 @@ public class CascadingMenuView extends LinearLayout {
 				thirdItem);
 		thirdMenuListView.setAdapter(thirdMenuListViewAdapter);
 		thirdMenuListViewAdapter
-				.setOnItemClickListener(new MenuItemAdapter.OnItemClickListener() {
+		.setOnItemClickListener(new MenuItemAdapter.OnItemClickListener() {
 
-					@Override
-					public void onItemClick(View view, final int position) {
+			@Override
+			public void onItemClick(View view, final int position) {
+				try {
+					if(thirdItem != null){
+
 						Area menuItem = thirdItem.get(position);
-						if (mOnSelectListener != null) {
-							DataStore.AREA_DISTRICT = menuItem;
-							mOnSelectListener.getValue(menuItem);
-						}
-						Log.e(TAG, menuItem.toString());
+						DataStore.AREA_DISTRICT = menuItem;
 					}
-				});
+					if (mOnSelectListener != null) {
+
+						mOnSelectListener.getValue(null);
+					}
+					Log.e(TAG, menuItem.toString());
+				}
+				catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		});
 		// 设置默认选择
 		setDefaultSelect();
 	}
