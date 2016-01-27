@@ -45,6 +45,7 @@ public  class StrVolleyInterface implements Response.Listener<String>, ErrorList
 
 	@Override
 	public void onResponse(String response) {
+		//在这里进行解密和验证工作
 		notifyDataChanged(response);
 		
 	}

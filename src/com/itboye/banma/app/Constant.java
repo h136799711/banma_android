@@ -6,7 +6,7 @@ import java.util.HashMap;
 import android.R.string;
 
 public class Constant {
-	public static String shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
+	public static String shareTextSmall=getShareTextSmall();
 	public static String shareTextBig="斑马海外购";
 	public static String weibo_token="";
 	public static  String weibo_uid="";
@@ -47,6 +47,15 @@ public class Constant {
     public static final int STATE_DAIFAHUO = 2;
     public static final int STATE_DAISHOUHUO = 3;
     public static final int STATE_YISHOUHUO = 4;
+    
+    public static String getShareTextSmall(){
+    	if (AppContext.getNickname()!=null) {
+    		shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
+		}else{
+			shareTextSmall="[斑马]"+"邀请您加入斑马海购";
+		}
+    	return shareTextSmall;
+    }
     
     /**
      * 订单状态
