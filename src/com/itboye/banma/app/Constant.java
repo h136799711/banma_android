@@ -7,7 +7,7 @@ import android.R.string;
 
 public class Constant {
 	public static String shareTextSmall=getShareTextSmall();
-	public static String shareTextBig="斑马海外购";
+	public static String shareTextBig="斑马爱购";
 	public static String weibo_token="";
 	public static  String weibo_uid="";
 	public static final String URL = "http://www.bammar.com/api.php";
@@ -50,9 +50,9 @@ public class Constant {
     
     public static String getShareTextSmall(){
     	if (AppContext.getNickname()!=null) {
-    		shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
+    		shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马爱购";
 		}else{
-			shareTextSmall="[斑马]"+"邀请您加入斑马海购";
+			shareTextSmall="[斑马]"+"邀请您加入斑马爱购";
 		}
     	return shareTextSmall;
     }
