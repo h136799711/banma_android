@@ -324,6 +324,10 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			                mHandler.sendMessage(message);*/
 			                
 			                while(true){
+			                	if(productlist.size()<=1){
+			                		mHandler.sendMessage(message); 
+			                		break;
+			                	}else
 								if(one_bk == 1 && two_bk == 1){
 									mHandler.sendMessage(message);  
 									break;

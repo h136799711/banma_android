@@ -535,7 +535,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 					dialog.dismiss();
 				}else
 				{
-					ApiClient.youHuiMa(LoginActivity.this, user.getIdcode(), networkHelper);
+					ApiClient.youHuiMa(LoginActivity.this, user.getIdcode(),",", networkHelper);
 					request = RATE;
 				}
 				

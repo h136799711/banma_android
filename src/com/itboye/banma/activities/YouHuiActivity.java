@@ -41,6 +41,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 	private TextView tv_list;
 	private TextView tv_youhui_list;
 	private  int Request=0;//为1表示请求历史记录
+	private String p_ids;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 
 	private void initData() {
 		// TODO Auto-generated method stub
+		p_ids = getIntent().getStringExtra("p_ids");
 		ApiClient.youHuiHistory(this, appContext.getLoginUid()+"", networkHelper);
 		Request=1;
 	}
@@ -164,7 +166,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 			break;
 		case R.id.btn_yanzheng:
 			Request=2;
-			ApiClient.youHuiMa(YouHuiActivity.this, et_youhuima.getText().toString(),networkHelper);
+			ApiClient.youHuiMa(YouHuiActivity.this, et_youhuima.getText().toString(), p_ids,networkHelper);
 			break;
 		default:
 			break;

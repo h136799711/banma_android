@@ -81,7 +81,7 @@ StrUIDataListener {
 	private MailingAdress address = null;
 	private Boolean YesOrNo; // 是否连接网络
 	private StrVolleyInterface strnetworkHelper;
-	private DecimalFormat df=new DecimalFormat(".##");
+	private DecimalFormat df=new DecimalFormat("#.##");
 	private List<SkuStandard> list = new ArrayList<SkuStandard>();
 	private int state = -1;
 	private Button confirm;
@@ -342,7 +342,12 @@ StrUIDataListener {
 		Intent intent;
 		switch (v.getId()) {
 		case R.id.ll_youhui:
+			String p_ids = "";
+			for(int i=0; i<list.size(); i++){
+				p_ids += list.get(i).getProduct_id()+",";
+			}
 			intent = new Intent(this, YouHuiActivity .class);
+			intent.putExtra("p_ids", p_ids);
 			startActivityForResult(intent,1005);
 			break;
 		case R.id.ll_red_envelope:

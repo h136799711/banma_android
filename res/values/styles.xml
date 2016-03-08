@@ -67,5 +67,5 @@
 		<item name="android:layout_height">18.5dip</item>
 		<item name="android:layout_gravity">center_vertical</item>
 	</style>
-
+    
 </resources>

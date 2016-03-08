@@ -104,6 +104,7 @@ public class ViewPagerScroller extends ScrollView {
         }  
         switch(ev.getAction()){  
         case MotionEvent.ACTION_UP:  
+        	//通过调用obtainMessage方法获取Message对象就能避免创建对象，从而减少内存的开销了。
              handler.sendMessageDelayed(handler.obtainMessage(), 20);    
             break;  
         }  
