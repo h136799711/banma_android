@@ -826,6 +826,7 @@ public class BabyActivity extends FragmentActivity implements
 				if (code == 0) {
 
 					productDetail = gson.fromJson(detail, ProductDetail.class);
+					System.out.println("PPPPPPPPPPPP"+productDetail);
 					imageList = productDetail.getImg().split(",");
 					sku_info = new ArrayList<ProductDetail.Sku_info>();
 					// String ssString =

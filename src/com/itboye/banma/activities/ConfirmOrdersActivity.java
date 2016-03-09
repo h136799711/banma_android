@@ -3,6 +3,7 @@ package com.itboye.banma.activities;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONException;
@@ -21,6 +22,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,6 +44,7 @@ import com.itboye.banma.app.Constant;
 import com.itboye.banma.entity.MailingAdress;
 import com.itboye.banma.entity.OrderPayData;
 import com.itboye.banma.entity.SkuStandard;
+import com.itboye.banma.entity.YouHuiList;
 import com.itboye.banma.payalipay.PayAlipay;
 import com.itboye.banma.utils.BitmapCache;
 import com.umeng.analytics.MobclickAgent;
@@ -256,10 +259,14 @@ StrUIDataListener {
 			//在这里处理优惠的问题
 			//处理方法，比较store_id,计算折扣
 			if (data!=null) {
+				ArrayList< YouHuiList> youHuiLists=new ArrayList<YouHuiList>();
+				youHuiLists=data.getParcelableArrayListExtra("ratio");
 				String  discount=data.getStringExtra("discount_ratio");
 				String store_id=data.getStringExtra("store_id");
 				String  idcode=data.getStringExtra("idcode");
-				Double discount_price = (Double) (priceAll * Double.valueOf(discount));
+				//System.out.println(data);
+				Double discount_price=getDiscoutPrice(youHuiLists);
+				//Double discount_price = (Double) (priceAll * Double.valueOf(discount));
 				discount_code.setText(idcode);
 				privilege_money.setText("￥"+df.format(discount_price));
 				//all_price.setText("￥"+(Double.val ueOf(priceAll) - discount_price));
@@ -279,6 +286,23 @@ StrUIDataListener {
 			}
 		}
 
+	}
+
+	private Double getDiscoutPrice(ArrayList<YouHuiList> youHuiLists) {
+		// 比较两个list中的相同商品id根据价格计算出优惠价格
+		Double discout =0.0;
+		YouHuiList youHui;
+		for(int i=0;i<youHuiLists.size();i++){
+			youHui=youHuiLists.get(i);
+			String P_id=youHui.getP_id();
+			for(int j=0;j<list.size();j++){
+				System.out.println("PPPPPPPP"+list.size());
+				if(P_id.equals(list.get(j).getProduct_id())){
+					discout += (Double) ((Double)list.get(j).getPrice() * Double.valueOf(youHui.getCommission_ratio()));
+				}
+			}
+		}
+		return discout;
 	}
 
 	/*
@@ -344,7 +368,15 @@ StrUIDataListener {
 		case R.id.ll_youhui:
 			String p_ids = "";
 			for(int i=0; i<list.size(); i++){
-				p_ids += list.get(i).getProduct_id()+",";
+				if (list.get(i).getNum().equals("1")) {
+					p_ids += list.get(i).getProduct_id()+",";
+				}else{
+					for(int j=1;j<Integer.parseInt(list.get(i).getNum());j++){
+						p_ids += list.get(i).getProduct_id()+",";
+					}
+				}
+				
+				System.out.println(p_ids+"PPPPPPPPPPP");
 			}
 			intent = new Intent(this, YouHuiActivity .class);
 			intent.putExtra("p_ids", p_ids);

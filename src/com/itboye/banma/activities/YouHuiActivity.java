@@ -1,5 +1,10 @@
 package com.itboye.banma.activities;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +17,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +30,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.itboye.banma.R;
 import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
+import com.itboye.banma.entity.MailingAdress;
+import com.itboye.banma.entity.YouHuiList;
 
 public class YouHuiActivity extends Activity implements StrUIDataListener,android.view.View.OnClickListener{
 	private StrVolleyInterface networkHelper;
@@ -57,6 +68,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 	private void initData() {
 		// TODO Auto-generated method stub
 		p_ids = getIntent().getStringExtra("p_ids");
+		System.out.println("PPPPPPPPPPPP"+p_ids);
 		ApiClient.youHuiHistory(this, appContext.getLoginUid()+"", networkHelper);
 		Request=1;
 	}
@@ -127,19 +139,29 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 		}else if (Request==2)  {
 				try {
 					content = jsonObject.getString("data");
+					ArrayList<YouHuiList> ratioList=new ArrayList<YouHuiList>();
 					JSONArray jsonArray=new JSONArray(content);
+					Gson gson=new Gson();
 					if (code==0) {
 					if (jsonArray.length()>0) {
 						String discount="";
 						String store_id="";
+						YouHuiList youHuiList=new YouHuiList();
+						System.out.println("PPPPPPPPPPPP"+content);
 						for (int i = 0; i < jsonArray.length(); i++) {
-							discount=jsonArray.getJSONObject(i).getString("discount_ratio");
-							store_id=jsonArray.getJSONObject(i).getString("store_id");
+							youHuiList=gson.fromJson(jsonArray.getString(i),YouHuiList.class);
+							ratioList.add(youHuiList);
+//							discount=jsonArray.getJSONObject(i).getString("commission_ratio");
+//							String ratio=jsonArray.getJSONObject(i).getString("p_id"); 
+//							store_id=jsonArray.getJSONObject(i).getString("store_id");
 						}
+						Bundle bundle=new Bundle();
+						bundle.putParcelableArrayList("ratio", (ArrayList<? extends Parcelable>) ratioList);
 						Intent intent=new Intent(YouHuiActivity.this,ConfirmOrdersActivity.class);
 						 intent.putExtra("discount_ratio", discount);
 						 intent.putExtra("store_id", store_id);
 						 intent.putExtra("idcode", et_youhuima.getText().toString());
+						 intent.putExtras(bundle);
 						 setResult(1005, intent);
 						 finish();
 						 overridePendingTransition(R.anim.push_right_in,
