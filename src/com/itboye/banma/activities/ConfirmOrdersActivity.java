@@ -1,11 +1,13 @@
 package com.itboye.banma.activities;
 
 import java.io.UnsupportedEncodingException;
+import java.security.KeyStore.PrivateKeyEntry;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +26,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.itboye.banma.adapter.ConfirmOrderListAdapter;
+import com.itboye.banma.api.ApiClient;
 import com.itboye.banma.api.StrUIDataListener;
 import com.itboye.banma.api.StrVolleyInterface;
 import com.itboye.banma.app.AppContext;
@@ -58,6 +62,7 @@ StrUIDataListener {
 	private final int ADDORREDUCE = 1;
 	private final int ADDRESS = 1;
 	private final int ORDER = 2;
+	private final int PERSONAL_DISCOUNT=3;
 	private AppContext appContext; 
 	private Double priceAll;
 	private Double order_priceAll;
@@ -91,8 +96,11 @@ StrUIDataListener {
 	private PayAlipay payAlipay;
 	private ProgressDialog dialog;
 	private String cart_ids;
+	private Double discount_price=0.0;
+	String p_ids = "";//保存商品id,用于请求优惠比例
 	String redID; //红包ID
 	private boolean hasAdress=false;
+	private  int RATIO_STATE=0;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confirm_order);
@@ -183,21 +191,12 @@ StrUIDataListener {
 				ConfirmOrdersActivity.this, list);
 		orderListView.setAdapter(adapter);
 		setListViewHeightBasedOnChildren(orderListView);
-
-		/* pop_num.setText(""+numAll); */
 		all_num.setText("" + numAll);
-		all_price.setText("￥" + df.format(priceAll));
-		Double discount_price = (Double) (priceAll * Double.valueOf(appContext.getDiscount_ratio()));
-		discount_code.setText(appContext.getIdcode());
-		privilege_money.setText("￥"+df.format(discount_price));
-		//all_price.setText("￥"+(Double.valueOf(priceAll) - discount_price));
-		order_priceAll = Double.valueOf(priceAll) - discount_price;
-		order_all_price.setText("￥"+df.format((Double.valueOf(priceAll) - discount_price)));
-		
 		//order_all_price.setText("￥" + priceAll);
 		top_title.setText(string.confirm_order);
 		tax_money.setText("￥" + df.format(tax_moneyAll));
-
+		all_price.setText("￥" + df.format(priceAll));
+		discount_code.setText(appContext.getIdcode());
 		load_data();
 	}
 
@@ -207,6 +206,7 @@ StrUIDataListener {
 	public void load_data() {
 		try {
 			state = ADDRESS;
+			requestPersonDiscountRatio();
 			YesOrNo = appContext.getAddressList(ConfirmOrdersActivity.this,
 					strnetworkHelper);
 
@@ -218,6 +218,19 @@ StrUIDataListener {
 		} catch (Exception e) {
 			state = -1;
 			e.printStackTrace();
+		}
+	}
+
+	private void requestPersonDiscountRatio() {
+		// TODO Auto-generated method stub
+		for(int i=0; i<list.size(); i++){
+			if (list.get(i).getNum().equals("1")) {
+				p_ids += list.get(i).getProduct_id()+",";
+			}else{
+				for(int j=0;j<Integer.parseInt(list.get(i).getNum());j++){
+					p_ids += list.get(i).getProduct_id()+",";
+				}
+			}
 		}
 	}
 
@@ -261,11 +274,12 @@ StrUIDataListener {
 			if (data!=null) {
 				ArrayList< YouHuiList> youHuiLists=new ArrayList<YouHuiList>();
 				youHuiLists=data.getParcelableArrayListExtra("ratio");
+				System.out.println("PPPPPPPP"+youHuiLists.size());
 				String  discount=data.getStringExtra("discount_ratio");
 				String store_id=data.getStringExtra("store_id");
 				String  idcode=data.getStringExtra("idcode");
 				//System.out.println(data);
-				Double discount_price=getDiscoutPrice(youHuiLists);
+				discount_price+=getDiscoutPrice(youHuiLists);
 				//Double discount_price = (Double) (priceAll * Double.valueOf(discount));
 				discount_code.setText(idcode);
 				privilege_money.setText("￥"+df.format(discount_price));
@@ -292,15 +306,17 @@ StrUIDataListener {
 		// 比较两个list中的相同商品id根据价格计算出优惠价格
 		Double discout =0.0;
 		YouHuiList youHui;
+		if(list.size()>0&&youHuiLists.size()>0){
 		for(int i=0;i<youHuiLists.size();i++){
 			youHui=youHuiLists.get(i);
 			String P_id=youHui.getP_id();
 			for(int j=0;j<list.size();j++){
 				System.out.println("PPPPPPPP"+list.size());
 				if(P_id.equals(list.get(j).getProduct_id())){
-					discout += (Double) ((Double)list.get(j).getPrice() * Double.valueOf(youHui.getCommission_ratio()));
+					discout += (Double) ((Double)list.get(j).getPrice() * Double.valueOf(youHui.getDiscount_ratio()));
 				}
 			}
+		}
 		}
 		return discout;
 	}
@@ -366,18 +382,6 @@ StrUIDataListener {
 		Intent intent;
 		switch (v.getId()) {
 		case R.id.ll_youhui:
-			String p_ids = "";
-			for(int i=0; i<list.size(); i++){
-				if (list.get(i).getNum().equals("1")) {
-					p_ids += list.get(i).getProduct_id()+",";
-				}else{
-					for(int j=1;j<Integer.parseInt(list.get(i).getNum());j++){
-						p_ids += list.get(i).getProduct_id()+",";
-					}
-				}
-				
-				System.out.println(p_ids+"PPPPPPPPPPP");
-			}
 			intent = new Intent(this, YouHuiActivity .class);
 			intent.putExtra("p_ids", p_ids);
 			startActivityForResult(intent,1005);
@@ -482,10 +486,10 @@ StrUIDataListener {
 		JSONObject jsondata;
 		try {
 			jsondata = new JSONObject(data);
-
 			int code = jsondata.getInt("code");
-
 			if (state == ADDRESS) { // 地址的请求相应
+				RATIO_STATE=1;//这里为了避免请求冲突，避而求其次
+				ApiClient.youHuiMa(ConfirmOrdersActivity.this, AppContext.getIdcode(), p_ids,strnetworkHelper);
 				dialog.dismiss();
 				if (code == 0) {
 					String addressData = jsondata.getString("data");
@@ -552,6 +556,38 @@ StrUIDataListener {
 					dialog.dismiss();
 				}
 				state = -1;
+			}else if(RATIO_STATE==1) {
+				jsondata = new JSONObject(data);
+				String content = null;
+				if (code==0) {
+					try {
+						RATIO_STATE=0;
+						ArrayList<YouHuiList> personRatioList=new ArrayList<YouHuiList>();
+						content = jsondata.getString("data");
+						personRatioList=new ArrayList<YouHuiList>();
+						JSONArray jsonArray=new JSONArray(content);
+						Gson gson1=new Gson();
+						YouHuiList youHuiList=new YouHuiList();
+						if (jsonArray.length()>0) {
+							System.out.println("PPPPPPPPPPPP_+++++++++"+content);
+							for (int i = 0; i < jsonArray.length(); i++) {
+								youHuiList=gson.fromJson(jsonArray.getString(i),YouHuiList.class);
+								personRatioList.add(youHuiList);
+							}
+						}
+						//更新优惠后的价格
+						/* pop_num.setText(""+numAll); */
+						if (personRatioList.size()>0) {
+							discount_price+=getDiscoutPrice(personRatioList);
+						}
+						privilege_money.setText("￥"+df.format(discount_price));
+						order_priceAll = Double.valueOf(priceAll) - discount_price;
+						order_all_price.setText("￥"+df.format((Double.valueOf(priceAll) - discount_price)));
+					}catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 
 		} catch (JSONException e) {

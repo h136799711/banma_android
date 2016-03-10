@@ -53,6 +53,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 	private TextView tv_youhui_list;
 	private  int Request=0;//为1表示请求历史记录
 	private String p_ids;
+	private ArrayList<YouHuiList> ratioList;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -139,7 +140,7 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 		}else if (Request==2)  {
 				try {
 					content = jsonObject.getString("data");
-					ArrayList<YouHuiList> ratioList=new ArrayList<YouHuiList>();
+					ratioList=new ArrayList<YouHuiList>();
 					JSONArray jsonArray=new JSONArray(content);
 					Gson gson=new Gson();
 					if (code==0) {
@@ -151,9 +152,8 @@ public class YouHuiActivity extends Activity implements StrUIDataListener,androi
 						for (int i = 0; i < jsonArray.length(); i++) {
 							youHuiList=gson.fromJson(jsonArray.getString(i),YouHuiList.class);
 							ratioList.add(youHuiList);
-//							discount=jsonArray.getJSONObject(i).getString("commission_ratio");
-//							String ratio=jsonArray.getJSONObject(i).getString("p_id"); 
-//							store_id=jsonArray.getJSONObject(i).getString("store_id");
+							discount=jsonArray.getJSONObject(i).getString("discount_ratio");
+							store_id=jsonArray.getJSONObject(i).getString("store_id");
 						}
 						Bundle bundle=new Bundle();
 						bundle.putParcelableArrayList("ratio", (ArrayList<? extends Parcelable>) ratioList);
