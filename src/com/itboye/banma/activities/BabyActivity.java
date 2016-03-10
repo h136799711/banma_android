@@ -150,7 +150,7 @@ public class BabyActivity extends FragmentActivity implements
     private ProgressDialog dialog;
     public String urlShare="";
     private SnsPostListener mSnsPostListener;
-    private String shareTextSmall;
+    private String shareTextSmall="";
     /** 
      * myScrollView与其父类布局的顶部距离 
      */  
@@ -165,11 +165,6 @@ public class BabyActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_babydetail_a);
 		appContext = (AppContext) getApplication();
 		urlShare= "http://banma.itboye.com/index.php/Home/InviteRegister/index?uid="+appContext.getLoginUid()+"";
-		if (AppContext.getNickname()!=null) {
-			shareTextSmall="["+AppContext.getNickname()+"]"+Constant.shareTextSmall;	
-		}else{
-			shareTextSmall="[斑马]"+Constant.shareTextSmall;	
-		}
 		
 		//设置新浪SSO handler
 	//	mController.getConfig().setSsoHandler(new SinaSsoHandler());
@@ -242,6 +237,11 @@ public class BabyActivity extends FragmentActivity implements
 	 * 加载数据
 	 */
 	private void iniData() {
+		if (AppContext.getNickname()!=null) {
+			shareTextSmall="["+AppContext.getNickname()+"]"+Constant.shareTextSmall;	
+		}else{
+			shareTextSmall="[斑马]"+Constant.shareTextSmall;	
+		}
 		dialog = new ProgressDialog(BabyActivity.this);
 		Intent intent = getIntent();
 		pid = intent.getIntExtra("PID", 21);

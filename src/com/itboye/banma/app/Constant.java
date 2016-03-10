@@ -48,15 +48,6 @@ public class Constant {
     public static final int STATE_DAISHOUHUO = 3;
     public static final int STATE_YISHOUHUO = 4;
     
-    public String getShareTextSmall(){
-    	if (AppContext.getNickname()!=null) {
-    		shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马爱购";
-		}else{
-			shareTextSmall="[斑马]"+"邀请您加入斑马爱购";
-		}
-    	return shareTextSmall;
-    }
-    
     /**
      * 订单状态
      * @return

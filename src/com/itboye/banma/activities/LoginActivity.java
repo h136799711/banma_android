@@ -496,7 +496,7 @@ public class LoginActivity extends Activity implements StrUIDataListener,OnClick
 				AppContext.setCoin(user.getCoin());
 				AppContext.setHeadurl(user.getHead());
 				AppContext.setNickname(user.getNickname());
-				Constant.shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
+				//Constant.shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马爱购";
 				AppContext.setIdcode(user.getIdcode());
 				AppContext.setHasHead(true);
 				

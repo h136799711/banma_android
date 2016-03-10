@@ -58,8 +58,10 @@ public class WebActivity  extends Activity{
 		urlShare="http://banma.itboye.com/index.php/Home/InviteRegister/index?uid="+appContext.getLoginUid()+"";
 		if (AppContext.getNickname()!=null) {
 			shareTextSmall="["+AppContext.getNickname()+"]"+Constant.shareTextSmall;	
+			System.out.println("PPPPPPPPPP"+shareTextSmall);
 		}else{
 			shareTextSmall="[斑马]"+Constant.shareTextSmall;	
+			System.out.println("PPPPPPPPPP"+shareTextSmall);
 		}
 		//集成微信
 
