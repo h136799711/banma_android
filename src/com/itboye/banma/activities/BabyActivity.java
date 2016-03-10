@@ -150,6 +150,7 @@ public class BabyActivity extends FragmentActivity implements
     private ProgressDialog dialog;
     public String urlShare="";
     private SnsPostListener mSnsPostListener;
+    private String shareTextSmall;
     /** 
      * myScrollView与其父类布局的顶部距离 
      */  
@@ -164,7 +165,12 @@ public class BabyActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_babydetail_a);
 		appContext = (AppContext) getApplication();
 		urlShare= "http://banma.itboye.com/index.php/Home/InviteRegister/index?uid="+appContext.getLoginUid()+"";
-			
+		if (AppContext.getNickname()!=null) {
+			shareTextSmall="["+AppContext.getNickname()+"]"+Constant.shareTextSmall;	
+		}else{
+			shareTextSmall="[斑马]"+Constant.shareTextSmall;	
+		}
+		
 		//设置新浪SSO handler
 	//	mController.getConfig().setSsoHandler(new SinaSsoHandler());
 		
@@ -421,7 +427,7 @@ public class BabyActivity extends FragmentActivity implements
 		    	//设置微信好友分享内容
 		    	WeiXinShareContent weixinContent = new WeiXinShareContent();
 		    	//设置分享文字
-		    	weixinContent.setShareContent(Constant.shareTextSmall);
+		    	weixinContent.setShareContent(shareTextSmall);
 		    	//设置title
 		    	weixinContent.setTitle(Constant.shareTextBig);
 		    	//设置分享内容跳转URL
@@ -436,7 +442,7 @@ public class BabyActivity extends FragmentActivity implements
 		    	
 		    	//设置微信朋友圈分享内容
 		    	CircleShareContent circleMedia = new CircleShareContent();
-		    	circleMedia.setShareContent(Constant.shareTextSmall);
+		    	circleMedia.setShareContent(shareTextSmall);
 		    	//设置朋友圈title
 		    	circleMedia.setTitle(Constant.shareTextBig);
 		    	circleMedia.setShareImage(new UMImage(this,R.drawable.icon));
@@ -445,7 +451,7 @@ public class BabyActivity extends FragmentActivity implements
 		    	
 		    	QQShareContent qqShareContent = new QQShareContent();
 		    	//设置分享文字
-		    	qqShareContent.setShareContent(Constant.shareTextSmall);
+		    	qqShareContent.setShareContent(shareTextSmall);
 		    	//设置分享title
 		    	qqShareContent.setTitle(Constant.shareTextBig);
 		    	//设置分享图片
@@ -456,7 +462,7 @@ public class BabyActivity extends FragmentActivity implements
 		    	
 		    	QZoneShareContent qzone = new QZoneShareContent();
 		    	//设置分享文字
-		    	qzone.setShareContent(Constant.shareTextSmall);
+		    	qzone.setShareContent(shareTextSmall);
 		    	//设置点击消息的跳转URL
 		    	qzone.setTargetUrl(urlShare);
 		    	//设置分享内容的标题

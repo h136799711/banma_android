@@ -46,6 +46,7 @@ public class WebActivity  extends Activity{
 	private TextView tvRight;
 	private String url;
 	private AppContext appContext;
+	private String shareTextSmall;
 	//private String shareTextBig="["+AppContext.getNickname()+"]"+"邀请您加入...";
 	//	private String shareTextSmall="["+AppContext.getNickname()+"]"+"邀请您加入斑马海购";
 	private  String urlShare;
@@ -55,6 +56,11 @@ public class WebActivity  extends Activity{
 		setContentView(R.layout.activity_web);
 		appContext = (AppContext) getApplication();
 		urlShare="http://banma.itboye.com/index.php/Home/InviteRegister/index?uid="+appContext.getLoginUid()+"";
+		if (AppContext.getNickname()!=null) {
+			shareTextSmall="["+AppContext.getNickname()+"]"+Constant.shareTextSmall;	
+		}else{
+			shareTextSmall="[斑马]"+Constant.shareTextSmall;	
+		}
 		//集成微信
 
 		// 添加微信平台
@@ -203,7 +209,7 @@ public class WebActivity  extends Activity{
 		//设置微信好友分享内容
 		WeiXinShareContent weixinContent = new WeiXinShareContent();
 		//设置分享文字
-		weixinContent.setShareContent(Constant.shareTextSmall);
+		weixinContent.setShareContent(shareTextSmall);
 		//设置title
 		weixinContent.setTitle(Constant.shareTextBig);
 		//设置分享内容跳转URL
@@ -216,7 +222,7 @@ public class WebActivity  extends Activity{
 
 		//设置微信朋友圈分享内容
 		CircleShareContent circleMedia = new CircleShareContent();
-		circleMedia.setShareContent(Constant.shareTextSmall);
+		circleMedia.setShareContent(shareTextSmall);
 		//设置朋友圈title
 		circleMedia.setTitle(Constant.shareTextBig);
 		circleMedia.setShareImage(new UMImage(this,R.drawable.icon));
@@ -225,7 +231,7 @@ public class WebActivity  extends Activity{
 
 		QQShareContent qqShareContent = new QQShareContent();
 		//设置分享文字
-		qqShareContent.setShareContent(Constant.shareTextSmall);
+		qqShareContent.setShareContent(shareTextSmall);
 		//设置分享title
 		qqShareContent.setTitle(Constant.shareTextBig);
 		//设置分享图片
@@ -236,7 +242,7 @@ public class WebActivity  extends Activity{
 
 		QZoneShareContent qzone = new QZoneShareContent();
 		//设置分享文字
-		qzone.setShareContent(Constant.shareTextSmall);
+		qzone.setShareContent(shareTextSmall);
 		//设置点击消息的跳转URL
 		qzone.setTargetUrl(urlShare);
 		//设置分享内容的标题
