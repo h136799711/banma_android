@@ -127,6 +127,11 @@ public class WebActivity  extends Activity{
 			url="http://banma.itboye.com/index.php/Home/User/order?uid="+appContext.getLoginUid()+""
 					+ "&access_token="+AppContext.getAccess_token()+"&key="+appContext.getPassword()+"";
 		}
+		if (reslut.equals("callServer")) {
+			tvTitle.setText("客户服务");
+			//tvRight.setVisibility(View.VISIBLE);
+			url="http://chat.looyuoms.com/chat/chat/p.do?c=20001409&f=10058767&g=10060946";
+		}
 		if (reslut.equals("Rank")) {
 			tvTitle.setText("邀请排行榜");
 			tvRight.setVisibility(View.VISIBLE);

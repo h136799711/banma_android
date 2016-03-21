@@ -259,8 +259,7 @@
                  android:layout_alignParentRight="true"
                  android:gravity="center"
                  android:background="@null"
-                 android:focusable="false"
-                 android:text="0571-87215950" />
+                 android:focusable="false" />
             <ImageView
                 style="@style/PersonalRightIconStyle"
                 android:src="@drawable/android_list_idex" />

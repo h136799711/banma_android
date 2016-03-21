@@ -336,10 +336,15 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 //			 Intent phoneIntent = new Intent("android.intent.action.CALL", 
 //		             Uri.parse("tel:" + tvTelephone.getText().toString())); 
 //			startActivity(phoneIntent);
-			Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
-			Uri data = Uri.parse("tel:" + "0571-87215950");
-			phoneIntent.setData(data);
-			startActivity(phoneIntent);
+//			Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+//			Uri data = Uri.parse("tel:" + "0571-87215950");
+//			phoneIntent.setData(data);
+//			startActivity(phoneIntent);
+//			overridePendingTransition(R.anim.in_from_right,
+//					R.anim.out_to_left);
+			Intent intentCall=new Intent(MorePersonal.this,WebActivity.class);
+			intentCall.putExtra("Url", "callServer");
+			startActivity(intentCall);
 			overridePendingTransition(R.anim.in_from_right,
 					R.anim.out_to_left);
 			break;
@@ -347,12 +352,12 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 //			 Intent phoneIntent = new Intent("android.intent.action.CALL", 
 //		             Uri.parse("tel:" + tvTelephone.getText().toString())); 
 //			startActivity(phoneIntent);
-			Intent phoneIntent1 = new Intent(Intent.ACTION_DIAL);
-			Uri data1 = Uri.parse("tel:" + "0571-87215950");
-			phoneIntent1.setData(data1);
-			startActivity(phoneIntent1);
-			overridePendingTransition(R.anim.in_from_right,
-					R.anim.out_to_left);
+//			Intent phoneIntent1 = new Intent(Intent.ACTION_DIAL);
+//			Uri data1 = Uri.parse("tel:" + "0571-87215950");
+//			phoneIntent1.setData(data1);
+//			startActivity(phoneIntent1);
+//			overridePendingTransition(R.anim.in_from_right,
+//					R.anim.out_to_left);			
 			break;
 		case  R.id.rl_phone_number_:
 			if (appContext.isLogin()) {
