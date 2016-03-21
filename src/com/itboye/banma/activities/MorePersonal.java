@@ -342,11 +342,16 @@ public class MorePersonal extends Activity implements OnClickListener,StrUIDataL
 //			startActivity(phoneIntent);
 //			overridePendingTransition(R.anim.in_from_right,
 //					R.anim.out_to_left);
-			Intent intentCall=new Intent(MorePersonal.this,WebActivity.class);
-			intentCall.putExtra("Url", "callServer");
-			startActivity(intentCall);
-			overridePendingTransition(R.anim.in_from_right,
-					R.anim.out_to_left);
+//			Intent intentCall=new Intent(MorePersonal.this,WebActivity.class);
+//			intentCall.putExtra("Url", "callServer");
+//			startActivity(intentCall);
+//			overridePendingTransition(R.anim.in_from_right,
+//					R.anim.out_to_left);
+			Intent intentServer = new Intent();        
+			intentServer.setAction("android.intent.action.VIEW");    
+		    Uri content_url = Uri.parse("http://chat.looyuoms.com/chat/chat/p.do?c=20001409&f=10058767&g=10060946");   
+		    intentServer.setData(content_url);  
+		    startActivity(intentServer);
 			break;
 		case R.id.tv_telephone:
 //			 Intent phoneIntent = new Intent("android.intent.action.CALL", 

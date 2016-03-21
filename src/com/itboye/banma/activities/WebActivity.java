@@ -143,14 +143,13 @@ public class WebActivity  extends Activity{
 			url=intent.getStringExtra("url");
 			System.out.println("PPPPPPPPPPPPPPPPPP"+url);
 		}
-		//        
-		//        if (reslut.equals("Invite")) {
-		//			tvTitle.setText("邀请排行榜");
-		//			tvRight.setVisibility(View.VISIBLE);
-		//			 url="http://banma.itboye.com/index.php/Home/Share/ranking_invite";
-		//		}
 
 		wvShow.getSettings().setJavaScriptEnabled(true);
+		wvShow.getSettings().setUseWideViewPort(false);  
+		wvShow.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		wvShow.getSettings().setSupportZoom(true);  
+		wvShow.getSettings().setLoadWithOverviewMode(true);
+		wvShow.requestFocusFromTouch();
 		wvShow.setHorizontalScrollBarEnabled(false);
 		wvShow.setHorizontalScrollbarOverlay(false);  
 		wvShow.loadUrl(url);
