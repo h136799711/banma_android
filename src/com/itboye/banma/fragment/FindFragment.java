@@ -133,7 +133,7 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 		JSONObject jsondata;
 		try {
 			jsondata = new JSONObject(data);
-			System.out.println("发现"+data.toString());
+			System.out.println("发现PPPPPPPPPPP"+data.toString());
 			int code = jsondata.getInt("code");
 			if (code == 0) {
 				System.out.println(data.toString());
@@ -183,7 +183,7 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 										| DateUtils.FORMAT_ABBREV_ALL);
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-						updateDataAdd();
+						updateDataRed();
 					}
 
 					private void updateDataAdd() {
@@ -200,9 +200,9 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 					private void updateDataRed() {
 						// TODO Auto-generated method stub				
 						pageNow-=1;
-//						if (pageNow<1) {
-//							pageNow=1;
-//						}
+						if (pageNow<1) {
+							pageNow=1;
+						}
 						try {
 							appContext.getProductList(getActivity(), pageNow,
 									Constant.PAGE_SIZE, networkHelper);
@@ -218,7 +218,8 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 					{
 						Log.e("TAG", "onPullUpToRefresh"); // Do work to refresh
 															// the list here.
-						updateDataRed();
+					
+						updateDataAdd();
 					}
 				});
 	}
