@@ -54,7 +54,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class HomePageFragment extends Fragment implements OnClickListener,
-		StrUIDataListener {
+StrUIDataListener {
 	// private AppContext appContext;
 	private static final int NUM = 9;
 	private View chatView;
@@ -71,14 +71,17 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	private ImageView retry_img;
 	private FrameLayout frame_layout;
 	private DrawableChangeView darwableView;
-	private Drawable[] drawables;
+	private List<Drawable> drawables;
 	private Animation mHiddenAction;
 	private Animation mShowAction;
-	BitmapCacheHomageImage bitmapCache = new BitmapCacheHomageImage();
-	Boolean YesOrNo;
-	int state;
-	int one_bk=0, two_bk=0;  //保证前两个背景已经加载好的标志，因为界面显示必须用到前两个背景
+	private BitmapCacheHomageImage bitmapCache = new BitmapCacheHomageImage();
+	private Boolean YesOrNo;
+	private int state;
+	private int one_bk=0, two_bk=0;  //保证前两个背景已经加载好的标志，因为界面显示必须用到前两个背景
 	private String nextBck;   //传到首页暂时充当背景图片的地址，根据这个地址可以再缓存中找到图片
+	private int pageNo = 1;
+	private int all_baby = 0;
+	private boolean refresh = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		networkHelper = new StrVolleyInterface(getActivity());
 		networkHelper.setStrUIDataListener(this);
 		appContext = (AppContext) getActivity().getApplication();
+		drawables = new ArrayList<Drawable>();
+		productlist = new ArrayList<ProductItem>();
 		state = 0;
 	}
 
@@ -107,43 +112,43 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		Intent intent = getActivity().getIntent();
 		nextBck = intent.getStringExtra("nextBck");
 		// 旋转等待页
-				wait_ll = (LinearLayout) chatView.findViewById(R.id.wait_ll);
-				retry_img = (ImageView) chatView.findViewById(R.id.retry_img);
-				loading_ll = (LinearLayout) chatView.findViewById(R.id.loading_ll);
-				frame_layout = (FrameLayout) chatView.findViewById(R.id.frame_layout);
-				if(bitmapCache.getBitmap(nextBck) != null){
-					Drawable drawable = new BitmapDrawable(bitmapCache.getBitmap(nextBck));
-					wait_ll.setBackgroundDrawable(drawable);
-				}
-				wait_ll.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (retry_img.getVisibility() == View.VISIBLE) {
-							wait_ll.setVisibility(View.VISIBLE);
-							retry_img.setVisibility(View.GONE);
-							loading_ll.setVisibility(View.VISIBLE);
-							frame_layout.setVisibility(View.GONE);
-						
-							initData();
+		wait_ll = (LinearLayout) chatView.findViewById(R.id.wait_ll);
+		retry_img = (ImageView) chatView.findViewById(R.id.retry_img);
+		loading_ll = (LinearLayout) chatView.findViewById(R.id.loading_ll);
+		frame_layout = (FrameLayout) chatView.findViewById(R.id.frame_layout);
+		if(bitmapCache.getBitmap(nextBck) != null){
+			Drawable drawable = new BitmapDrawable(bitmapCache.getBitmap(nextBck));
+			wait_ll.setBackgroundDrawable(drawable);
+		}
+		wait_ll.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (retry_img.getVisibility() == View.VISIBLE) {
+					wait_ll.setVisibility(View.VISIBLE);
+					retry_img.setVisibility(View.GONE);
+					loading_ll.setVisibility(View.VISIBLE);
+					frame_layout.setVisibility(View.GONE);
 
-						}
-					}
-				});
+					initData();
+
+				}
+			}
+		});
 		darwableView = (DrawableChangeView) chatView.findViewById(R.id.drawableChangeView);
 		mViewPager = (ViewPager) chatView.findViewById(R.id.id_viewpager);
-		
+
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.GONE);
 		loading_ll.setVisibility(View.GONE);
 		frame_layout.setVisibility(View.GONE);
-		
+
 		initData();
 	}
 
 	private void showListView(List<ProductItem> productlist2) {
 		// 查找布局文件用LayoutInflater.inflate
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		for (int i = 0; i < productlist.size(); i++) {
+		for (int i = ((productlist.size()/Constant.PAGE_SIZE)-1)*Constant.PAGE_SIZE; i < productlist.size(); i++) {
 			View convertView = inflater.inflate(R.layout.view, null);
 
 			mImages.add(convertView);
@@ -176,7 +181,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 		}*/
 
 		if (adapter == null) {
-			
+
 			adapter = new MyPageAdapter(getActivity(), mImages, productlist);
 			// 添加动画效果
 			// mViewPager.setPageTransformer(true, arg1);
@@ -184,13 +189,20 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 			mViewPager.setAdapter(adapter);
 			mViewPager.setOffscreenPageLimit(2);
 			mViewPager.setAdapter(adapter);
+			
 			mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 				@Override
 				public void onPageSelected(int arg0) {
 					System.out.println("当前现实的view"+arg0);
+					if(arg0 + 5 >= all_baby){
+						all_baby = all_baby + 10;
+						pageNo++;
+						refresh = true;
+						initData();
+					}
 				}
-				
+
 				@Override
 				public void onPageScrolled(int arg0, float arg1, int arg2) {
 					//arg1 显示的view前一个view所占屏幕的比例
@@ -200,26 +212,28 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 					darwableView.setDegree(arg1);
 					darwableView.invalidate();
 				}
-				
+
 				@Override
 				public void onPageScrollStateChanged(int arg0) {
-					
+
 				}
 
 			});
 			darwableView.setDrawables(drawables);
-			
+
+		}else{
+			adapter.notifyDataSetChanged();
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * 加载商品列表数据
 	 */
 	private void initData() {
 		try {
-			YesOrNo = appContext.getProductList(getActivity(), 1,
+			YesOrNo = appContext.getProductList(getActivity(), pageNo,
 					Constant.PAGE_SIZE, networkHelper);
 			if (!YesOrNo) { // 如果没联网
 				/*
@@ -229,7 +243,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 				 * list_Layout.setVisibility(View.GONE);
 				 */
 				Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT)
-						.show();
+				.show();
 			}
 		} catch (Exception e) {
 
@@ -240,8 +254,8 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 	@Override
 	public void onErrorHappened(VolleyError error) {
-//		Toast.makeText(getActivity(), "onErrorHappened" + error.toString(), Toast.LENGTH_SHORT)
-//		.show();
+		//		Toast.makeText(getActivity(), "onErrorHappened" + error.toString(), Toast.LENGTH_SHORT)
+		//		.show();
 		wait_ll.setVisibility(View.VISIBLE);
 		retry_img.setVisibility(View.VISIBLE);
 		loading_ll.setVisibility(View.GONE);
@@ -252,7 +266,6 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 	public void onDataChanged(String data) {
 		state += 1;
 		Gson gson = new Gson();
-		productlist = new ArrayList<ProductItem>();
 		JSONObject jsondata;
 		try {
 			jsondata = new JSONObject(data);
@@ -265,21 +278,20 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 				String producData = jsondata.getString("data");
 				jsondata = new JSONObject(producData);
 				String producList = jsondata.getString("list");
-				productlist = gson.fromJson(producList,
+				final List<ProductItem> productlistData = gson.fromJson(producList,
 						new TypeToken<List<ProductItem>>() {
-						}.getType());
-				if (productlist != null) {
-			
-					drawables = new Drawable[productlist.size()+2];
+				}.getType());
+				if (productlistData != null) {
+					final List<Drawable> drawablesData = new ArrayList<Drawable>();
 					//初始化，避免有些加载慢而引起的异常
-					for(int i=0; i<productlist.size()+2; i++){
-						drawables[i] = getActivity().getResources().getDrawable(R.drawable.back001);
+					for(int i=0; i<productlistData.size()+2; i++){
+						drawablesData.add(getActivity().getResources().getDrawable(R.drawable.back001));
 					}
-					for(int k=0; k<productlist.size(); k++){
+					for(int k=0; k<productlistData.size(); k++){
 						final int pos = k;
-						if(bitmapCache.getBitmap(productlist.get(k).getImg_post_bg()) != null){
-							Drawable drawable = new BitmapDrawable(bitmapCache.getBitmap(productlist.get(k).getImg_post_bg()));
-							drawables[pos] = drawable;
+						if(bitmapCache.getBitmap(productlistData.get(k).getImg_post_bg()) != null){
+							Drawable drawable = new BitmapDrawable(bitmapCache.getBitmap(productlistData.get(k).getImg_post_bg()));
+							drawablesData.set(pos, drawable);
 							if(pos == 0){
 								one_bk = 1;
 							}else if(pos == 1){
@@ -287,12 +299,12 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 							}
 						}else{
 							ImageRequest imageRequest = new ImageRequest(  
-									productlist.get(k).getImg_post_bg(),  
+									productlistData.get(k).getImg_post_bg(),  
 									new Response.Listener<Bitmap>() {  
 										@Override  
 										public void onResponse(Bitmap response) {  
 											Drawable drawable = new BitmapDrawable(response);
-											drawables[pos] = drawable;
+											drawablesData.set(pos, drawable);
 											if(pos == 0){
 												one_bk = 1;
 											}else if(pos == 1){
@@ -310,35 +322,43 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 							AppContext.getHttpQueues().start();
 						}
 					}
-					
-					Thread thread=new Thread(new Runnable()  
-			        {  
-			            @Override  
-			            public void run()  
-			            {   
-			            	
-			                Message message=new Message();  
-			                message.what=1;
-			                
-			               /* one_bk = 1 ; two_bk = 1;
+					if(drawables.size() > 0){
+						drawables.remove(drawables.size()-1);
+						drawables.remove(drawables.size()-1);
+					}
+					productlist.addAll(productlistData);
+					drawables.addAll(drawablesData);
+					all_baby = productlist.size();
+					if(refresh == false){
+						Thread thread=new Thread(new Runnable()  
+						{  
+							@Override  
+							public void run()  
+							{   
+
+								Message message=new Message();  
+								message.what=1;
+
+								/* one_bk = 1 ; two_bk = 1;
 			                mHandler.sendMessage(message);*/
-			                
-			                while(true){
-			                	if(productlist.size()<=1){
-			                		mHandler.sendMessage(message); 
-			                		break;
-			                	}else
-								if(one_bk == 1 && two_bk == 1){
-									mHandler.sendMessage(message);  
-									break;
+
+								while(true){
+									if(productlistData.size()<=1){
+										mHandler.sendMessage(message); 
+										break;
+									}else
+										if(one_bk == 1 && two_bk == 1){
+											mHandler.sendMessage(message);  
+											break;
+										}
 								}
-							}
-			                
-			            }  
-			        });  
-			        thread.start();  
-					
-					
+
+							}  
+						});  
+						thread.start();  
+					}else{
+						showListView(productlist);
+					}
 				}
 
 			} else {
@@ -350,7 +370,7 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 					initData();
 				}
 				else{
-//					Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();
+					//					Toast.makeText(getActivity(), "加载失败", Toast.LENGTH_LONG).show();
 					wait_ll.setVisibility(View.VISIBLE);
 					retry_img.setVisibility(View.VISIBLE);
 					loading_ll.setVisibility(View.GONE);
@@ -367,25 +387,25 @@ public class HomePageFragment extends Fragment implements OnClickListener,
 
 	}
 	public Handler mHandler=new Handler()  
-    {  
-        public void handleMessage(Message msg)  
-        {  
-            switch(msg.what)  
-            {  
-            case 1:  
-            	showListView(productlist);
-            	wait_ll.startAnimation(mHiddenAction);
+	{  
+		public void handleMessage(Message msg)  
+		{  
+			switch(msg.what)  
+			{  
+			case 1:  
+				showListView(productlist);
+				wait_ll.startAnimation(mHiddenAction);
 				wait_ll.setVisibility(View.GONE);
 				retry_img.setVisibility(View.GONE);
 				loading_ll.setVisibility(View.GONE);
 				frame_layout.startAnimation(mShowAction);
 				frame_layout.setVisibility(View.VISIBLE); 
-                break;  
-            default:  
-                break;        
-            }  
-            super.handleMessage(msg);  
-        }  
-    };  
+				break;  
+			default:  
+				break;        
+			}  
+			super.handleMessage(msg);  
+		}  
+	};  
 
 }

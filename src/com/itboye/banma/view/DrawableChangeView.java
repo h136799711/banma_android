@@ -1,5 +1,7 @@
 package com.itboye.banma.view;
 
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -18,7 +20,7 @@ public class DrawableChangeView extends View  {
     private int mPrevPosition;
     private float mDegree;
     
-    private Drawable[] mDrawables;
+    private List<Drawable> mDrawables;
     private Drawable mBack;
     
     public DrawableChangeView(Context context) {
@@ -36,9 +38,9 @@ public class DrawableChangeView extends View  {
         setWillNotDraw(false);
     }
 
-    public void setDrawables(Drawable[] drawables) {
+    public void setDrawables(List<Drawable> drawables) {
         mDrawables = drawables;
-        mBack = drawables[1];
+        mBack = drawables.get(1);
     }
     
     public void setPosition(int position) {
@@ -55,14 +57,14 @@ public class DrawableChangeView extends View  {
             return;
         }
         int alpha = 255 - (int) (mDegree * 255);
-        Drawable fore = mDrawables[mPosition];
+        Drawable fore = mDrawables.get(mPosition);
         fore.setBounds(0, 0, getWidth(), getHeight());
         mBack.setBounds(0, 0, getWidth(), getHeight());
         if (mPrevPosition != mPosition) {
-            if (mPosition != mDrawables.length - 1) {
-                mBack = mDrawables[mPosition + 1];
+            if (mPosition != mDrawables.size() - 1) {
+                mBack = mDrawables.get(mPosition + 1);
             } else {
-                mBack = mDrawables[mPosition];
+                mBack = mDrawables.get(mPosition);
             }
         }
         

@@ -51,7 +51,13 @@ public class MyPageAdapter extends PagerAdapter{
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mImages.size();
+		return productlist.size();
+	}
+
+	@Override
+	public int getItemPosition(Object object) {
+		// TODO Auto-generated method stub
+		return POSITION_NONE;
 	}
 
 	@Override
@@ -77,9 +83,9 @@ public class MyPageAdapter extends PagerAdapter{
 		TextView price = BaseViewHolder.get(convertView,
 				R.id.price);
 		/*name.setText(productlist.get(position).getName());*/
-		price.setText("￥"+productlist.get(position).getPrice());
+		//price.setText("￥"+productlist.get(position).getPrice());
 		ImageLoader imageLoader = new ImageLoader(AppContext.getHttpQueues(), bitmapCache); 
-		imageView.setDefaultImageResId(0);  //加载中显示的图片
+		imageView.setDefaultImageResId(R.drawable.loading_image_shouye);  //加载中显示的图片
 		imageView.setErrorImageResId(R.drawable.loading_image_shouye);  //加载失败显示的图片
 		imageView.setImageUrl(productlist.get(position).getImg_post(), imageLoader);
 
