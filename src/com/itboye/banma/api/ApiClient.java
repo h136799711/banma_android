@@ -422,12 +422,15 @@ public class ApiClient {
 	}
 	
 	public static void getProductList(Context mContext, int pageNo, 
-			int pageSize, StrVolleyInterface networkHelper) {
+			int pageSize, String index, StrVolleyInterface networkHelper) {
 		String access_token=AppContext.getAccess_token();
 		String url = Constant.URL+"/Product/query?access_token="+access_token;
 		Map<String,String> params = new HashMap<String, String>();
 		params.put("pageNo",""+pageNo);
 		params.put("pageSize",""+pageSize);
+		if(index != null){
+			params.put("position",index);
+		}
 		VolleyRequest.StrRequestPost(mContext, url, "getProductList",params, networkHelper);
 	}
 	

@@ -234,7 +234,7 @@ StrUIDataListener {
 	private void initData() {
 		try {
 			YesOrNo = appContext.getProductList(getActivity(), pageNo,
-					Constant.PAGE_SIZE, networkHelper);
+					Constant.PAGE_SIZE,"index", networkHelper);
 			if (!YesOrNo) { // 如果没联网
 				/*
 				 * wait_ll.setVisibility(View.VISIBLE);

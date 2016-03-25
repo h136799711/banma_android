@@ -336,13 +336,14 @@ public class AppContext extends Application {
 	
 	/**
 	 * 获取商品列表
+	 * @param index 
 	 * @return
 	 * @throws Exception 
 	 */
-	public Boolean getProductList(Context mContext, int pageNo, int pageSize, StrVolleyInterface networkHelper) throws Exception {
+	public Boolean getProductList(Context mContext, int pageNo, int pageSize, String index, StrVolleyInterface networkHelper) throws Exception {
 		if (isNetworkConnected()) {
 			try {
-				ApiClient.getProductList(mContext, pageNo, pageSize, networkHelper);
+				ApiClient.getProductList(mContext, pageNo, pageSize, index, networkHelper);
 			} catch (Exception e) {
 				Log.i(TAG, "readObject(key)");
 				throw e;
