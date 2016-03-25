@@ -145,7 +145,7 @@ public class WebActivity  extends Activity{
 		}
 
 		wvShow.getSettings().setJavaScriptEnabled(true);
-		wvShow.getSettings().setUseWideViewPort(false);  
+		wvShow.getSettings().setUseWideViewPort(true);  
 		wvShow.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		wvShow.getSettings().setSupportZoom(true);  
 		wvShow.getSettings().setLoadWithOverviewMode(true);
