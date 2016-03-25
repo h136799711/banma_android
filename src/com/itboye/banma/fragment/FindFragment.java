@@ -95,7 +95,7 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 	{
 			try {
 				YesOrNo = appContext.getProductList(getActivity(), pageNow,
-						Constant.PAGE_SIZE, networkHelper);
+						Constant.PAGE_SIZE,null, networkHelper);
 				if (!YesOrNo) { // 如果没联网
 					Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT)
 							.show();
@@ -191,7 +191,7 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 						pageNow+=1;
 						try {
 							appContext.getProductList(getActivity(), pageNow,
-									Constant.PAGE_SIZE, networkHelper);
+									Constant.PAGE_SIZE, null,networkHelper);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -205,7 +205,7 @@ public class FindFragment extends Fragment implements StrUIDataListener{
 						}
 						try {
 							appContext.getProductList(getActivity(), pageNow,
-									Constant.PAGE_SIZE, networkHelper);
+									Constant.PAGE_SIZE, null, networkHelper);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

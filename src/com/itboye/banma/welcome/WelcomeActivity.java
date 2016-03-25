@@ -386,7 +386,7 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 		net_state = BABY;
 		try {
 			boolean YesOrNo = appContext.getProductList(WelcomeActivity.this, 1,
-					4, networkHelper);
+					4, "index",networkHelper);
 			if (!YesOrNo) { // 如果没联网
 				Toast.makeText(WelcomeActivity.this, "请检查网络连接", Toast.LENGTH_SHORT)
 						.show();
