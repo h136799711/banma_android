@@ -101,8 +101,7 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 				String device_token = UmengRegistrar.getRegistrationId(this);
 				System.out.println(device_token+"设备");
 		
-		images = new int[] { R.drawable.welcome_01, R.drawable.welcome2,
-				 };
+		images = new int[] { R.drawable.welcome_01};
 		initView();
 		initAnimation();
 
@@ -200,7 +199,7 @@ public class WelcomeActivity extends Activity implements StrUIDataListener, OnPa
 							WelcomeActivity.this.finish();
 						}
 					}
-				}, 3000);
+				}, 2000);
 			}
 		});
 	}
